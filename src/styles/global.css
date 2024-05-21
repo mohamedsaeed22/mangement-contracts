@@ -11,3 +11,45 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ==================================== sidebar css ============= */
+form label {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+form input[type="text"],
+form input[type="password"] {
+  padding: 10px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  font-size: 15px;
+  display: block;
+  flex: 1;
+  caret-color: #fff;
+  color: #fff;
+}
+::-ms-reveal {
+  filter: invert(100%);
+}
+form input[type="submit"] {
+  background-color: #ffc100;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 40px;
+  display: block;
+  margin-inline: auto;
+}
+@media (max-width: 1114px) {
+  .image-container {
+    display: none; /* Hide form when the screen width is 1114px or below */
+  }
+}
