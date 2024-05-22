@@ -11,7 +11,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+a{
+  text-decoration: none !important;
+  color: #fff !important; 
+}
 /* ==================================== sidebar css ============= */
 form label {
   color: #fff;
@@ -52,4 +55,10 @@ form input[type="submit"] {
   .image-container {
     display: none; /* Hide form when the screen width is 1114px or below */
   }
+}
+
+/* ================ sidebar =================== */
+.navlink.active-link {
+  background-color: #fff !important;
+  color: #000 !important;
 }
