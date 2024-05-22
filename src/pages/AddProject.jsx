@@ -14,6 +14,7 @@ import {
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import CustomTextField from "../components/Form/Input/CustomTextField";
 
 const AddProject = () => {
   const [age, setAge] = useState("");
@@ -29,9 +30,11 @@ const AddProject = () => {
   const handleEndDateChange = (newValue) => {
     setEndDate(newValue);
   };
+
   const handleDateChange = (newValue) => {
     setSelectedDate(newValue);
   };
+
   const handleChange = (event) => {
     setAge(event.target.value);
   };
@@ -93,12 +96,16 @@ const AddProject = () => {
             اسم و وصف المشروع
           </Typography>
           <TextField
+            size="small"
             id="project-name"
             label=" الاسم"
             variant="outlined"
             sx={{ minWidth: "250px" }}
           />
+
           <TextField
+            size="small"
+
             id="project-desc"
             label="الوصف"
             variant="outlined"
@@ -239,8 +246,7 @@ const AddProject = () => {
           </LocalizationProvider>
         </Stack>
         <Box mt={3} textAlign="center">
-
-        <Button variant="contained">اضافة</Button>
+          <Button variant="contained">اضافة</Button>
         </Box>
       </Box>
     </Box>

@@ -11,7 +11,7 @@ const Login = () => {
       {/* top logo */}
       <Box
         sx={{
-          backgroundColor: "#F0F0F0",
+          backgroundColor: "#263238",
           width: "200px",
           marginInline: "auto",
           textAlign: "center",
@@ -41,7 +41,7 @@ const Login = () => {
           }}
         >
           <Typography
-            variant="h3"
+            variant="h4"
             sx={{
               color: "#FFC100",
               fontWeight: 700,
@@ -70,7 +70,7 @@ const Login = () => {
                   id="userName"
                   type="text"
                   placeholder="ادخل اسم المستخدم"
-                  name="userHandle"
+                  name="username"
                 />
               </Stack>
             </Stack>
@@ -94,11 +94,11 @@ const Login = () => {
                   id="password"
                   type="password"
                   placeholder="ادخل كلمة المرور"
-                  name="userHandle"
+                  name="password"
                 />
               </Stack>
             </Stack>
-            <input type="submit" value="تسجيل الدخول" />
+            <input type="submit" value="تسجيل" />
           </form>
         </Stack>
 

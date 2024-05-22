@@ -11,7 +11,7 @@ const Heading = ({ title }) => {
         sx={{
           fontSize: "14px",
           display: "inline-block",
-          backgroundColor: "#475CA7",
+          backgroundColor: "#263238",
           padding: "10px 20px",
           color: "white",
           fontWeight: "bold",

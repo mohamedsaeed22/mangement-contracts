@@ -11,12 +11,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-html{
+html {
   font-size: 16px;
 }
-a{
+a {
   text-decoration: none !important;
-  color: #fff !important; 
+  color: #fff !important;
+}
+input,
+input::placeholder {
+  font-family: Cairo, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif !important;
 }
 /* ==================================== sidebar css ============= */
 form label {
@@ -43,16 +49,17 @@ form input[type="password"] {
 }
 form input[type="submit"] {
   background-color: #ffc100;
-  color: #fff;
+  color: #000;
   outline: none;
   border: none;
   font-size: 14px;
-  font-weight: bold;
-  padding: 8px;
+  font-weight: 700;
+  padding: 10px;
   border-radius: 4px;
   margin-top: 40px;
   display: block;
   margin-inline: auto;
+  cursor: pointer;
 }
 @media (max-width: 1114px) {
   .image-container {
@@ -66,12 +73,12 @@ form input[type="submit"] {
   color: #000 !important;
 }
 
-.search-input{
+.search-input {
   font-family: Cairo, BlinkMacSystemFont;
 
   outline: none;
   border: none;
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   border-radius: 8px;
   width: 280px;
   padding: 8px 10px;
