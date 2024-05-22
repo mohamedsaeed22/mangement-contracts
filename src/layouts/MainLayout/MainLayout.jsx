@@ -1,15 +1,16 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/manageContracts/Sidebar/Sidebar";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Footer from "../../components/common/Footer/Footer";
 
 const MainLayout = () => {
   return (
-    <>
+    <Stack direction="row">
       <Sidebar />
       <Box
         sx={{
-          width: "calc(100% - 250px)",
+          // width: "calc(100% - 250px)",
+          flex: 1,
           height: "100vh",
           marginLeft: "auto",
         }}
@@ -20,14 +21,14 @@ const MainLayout = () => {
             borderTop: "2px solid #ccc",
             borderRight: "2px solid #ccc",
             borderBottom: "2px solid #ccc",
-            height: "calc(100vh - 53px)",
+            height: "calc(100vh - 58px)",
           }}
         >
           <Outlet />
         </Box>
         <Footer />
       </Box>
-    </>
+    </Stack>
   );
 };
 

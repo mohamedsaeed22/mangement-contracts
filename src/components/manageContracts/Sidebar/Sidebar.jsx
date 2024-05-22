@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 // icons and imgs
@@ -9,10 +9,16 @@ import ExitIcon from "../../../assets/icon/exit.svg";
 import FoeLogo from "../../../assets/imgs/foeLogo.png";
 
 const Sidebar = () => {
+  const [showSubmenu, setShowSubmenu] = useState(false);
+
+  const toggleSubmenu = () => {
+    setShowSubmenu(!showSubmenu);
+  };
+
   return (
     <Box
       sx={{
-        position: "fixed",
+        position: "relative",
         left: 0,
         top: 0,
         width: "250px",
@@ -23,13 +29,14 @@ const Sidebar = () => {
         zIndex: 100,
         overflowY: "auto",
         overflowX: "hidden",
+        // display:'none',
       }}
     >
       <img
         src={MenuIcon}
         alt="menu icon"
         style={{
-          width: "40px",
+          width: "30px",
           display: "block",
           marginTop: "20px",
           marginRight: "auto",
@@ -41,7 +48,7 @@ const Sidebar = () => {
         src={FoeLogo}
         alt="foe logo"
         style={{
-          width: "200px",
+          width: "150px",
           display: "block",
           marginInline: "auto",
           marginTop: "40px",
@@ -63,97 +70,73 @@ const Sidebar = () => {
             sx={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}
           >
             <Typography
-              variant="h5"
+              variant="h6"
               color="initial"
               ml={1}
               fontWeight="bold"
-              sx={{ color: "inherit" }}
+              sx={{ color: "inherit", fontSize: "14px" }}
             >
               الصفحة الرئيسية
             </Typography>
-            <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
+            {/* <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} /> */}
           </Stack>
         </NavLink>
       </Box>
       <Box mt={4}>
-        <NavLink
-          to="/contracts"
-          className={({ isActive }) =>
-            `navlink ${isActive ? "active-link" : ""}`
-          }
-        >
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            p={1}
-            bgcolor="inherit"
-            sx={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}
-          >
-            <Typography
-              variant="h5"
-              color="initial"
-              ml={1}
-              fontWeight="bold"
-              sx={{ color: "inherit" }}
-            >
-              العقود
-            </Typography>
-            <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
-          </Stack>
-        </NavLink>
-      </Box>
-      <Box mt={4}>
-        <NavLink
-          to="/companies"
-          className={({ isActive }) =>
-            `navlink ${isActive ? "active-link" : ""}`
-          }
-        >
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            p={1}
-            bgcolor="inherit"
-            sx={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}
-          >
-            <Typography
-              variant="h5"
-              color="initial"
-              ml={1}
-              fontWeight="bold"
-              sx={{ color: "#inherit" }}
-            >
-              الشركات
-            </Typography>
-            <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
-          </Stack>
-        </NavLink>
-      </Box>
-      <Box
-        sx={{
-          cursor: "pointer",
-          position: "absolute",
-          bottom: "40px",
-          width: "100%",
-        }}
-      >
         <Stack
           direction="row"
           justifyContent="space-between"
           p={1}
-          sx={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}
+          bgcolor="inherit"
+          sx={{
+            borderTopLeftRadius: "10px",
+            borderBottomLeftRadius: "10px",
+            cursor: "pointer",
+          }}
+          onClick={toggleSubmenu}
         >
           <Typography
-            variant="h5"
+            variant="h6"
             color="initial"
             ml={1}
             fontWeight="bold"
-            sx={{ color: "#fff" }}
+            sx={{ color: "#fff", fontSize: "14px" }}
           >
-            تسجيل خروج
+            المشروعات
           </Typography>
-          <img src={ExitIcon} alt="burger icon" style={{ width: "18px" }} />
+          <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
         </Stack>
+        {showSubmenu && (
+          <Box pl={2} mt={2}>
+            <NavLink
+              to="/addProject"
+              className={({ isActive }) =>
+                `navlink ${isActive ? "active-link" : ""}`
+              }
+            >
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                p={1}
+                bgcolor="inherit"
+                sx={{
+                  borderTopLeftRadius: "10px",
+                  borderBottomLeftRadius: "10px",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  color="initial"
+                  ml={1}
+                  fontWeight="bold"
+                  sx={{ color: "inherit",fontSize:'14px' }}
+                >
+                  إضافة مشروع
+                </Typography>
+              </Stack>
+            </NavLink>
+          </Box>
+        )}
       </Box>
     </Box>
   );

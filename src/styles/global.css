@@ -5,11 +5,14 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  font-family: Cairo, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+html{
+  font-size: 16px;
 }
 a{
   text-decoration: none !important;
@@ -61,4 +64,21 @@ form input[type="submit"] {
 .navlink.active-link {
   background-color: #fff !important;
   color: #000 !important;
+}
+
+.search-input{
+  font-family: Cairo, BlinkMacSystemFont;
+
+  outline: none;
+  border: none;
+  background-color: #F3F3F3;
+  border-radius: 8px;
+  width: 280px;
+  padding: 8px 10px;
+  font-size: 16px;
+}
+.search-input::placeholder {
+  color: #999; /* Placeholder text color */
+  font-family: Cairo, BlinkMacSystemFont;
+  /* font-size: 16px; */
 }

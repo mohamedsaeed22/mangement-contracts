@@ -3,10 +3,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PageSuspenseFallback from "../components/feedback/PageSuspenseFallback/PageSuspenseFallback";
 
 import Error from "../pages/Error";
-import Companies from "../pages/Companies";
-import Contracts from "../pages/Contracts";
-import Home from "../pages/Home";
-import ContractsBox from "../pages/ContractsBox";
+ import Home from "../pages/Home";
+
+ import AddProject from "../pages/AddProject";
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 
@@ -42,22 +41,13 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "companies",
+        path: "addProject",
         element: (
           <PageSuspenseFallback>
-            <Companies />
+            <AddProject />
           </PageSuspenseFallback>
         ),
-      },
-      {
-        path: "contracts",
-        element: (
-          <PageSuspenseFallback>
-            {/* <Contracts /> */}
-            <ContractsBox/>
-          </PageSuspenseFallback>
-        ),
-      },
+      }
     ],
   },
 ]);
