@@ -2,14 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import axiosErrorHandler from "../../../utils/axiosErrorHandler";
 
-const actAuthLogin = createAsyncThunk(
-  "auth/actAuthLogin",
-  async (formData, thunk) => {
+const actCreateProject = createAsyncThunk(
+  "project/actCreateProject",
+  async (project, thunk) => {
     const { rejectWithValue } = thunk;
-    console.log(formData)
     try {
-      const res = await api.post("api/users/Identity/auth", formData);
-      console.log(res);
+      const res = await api.post("api/Project/create");
       return res.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));
@@ -17,4 +15,4 @@ const actAuthLogin = createAsyncThunk(
   }
 );
 
-export default actAuthLogin;
+export default actCreateProject;

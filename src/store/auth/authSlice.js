@@ -1,9 +1,10 @@
 import actAuthLogin from "./act/actAuthLogin";
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 const initialState = {
   user: { name: "ali" } | null,
-  accessToken: null,
+  accessToken: Cookies.get("token") || null,
   loading: false,
   error: null,
 };
@@ -27,10 +28,11 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actAuthLogin.fulfilled, (state, action) => {
+    builder.addCase(actAuthLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.accessToken = action.payload.accessToken;
-      state.user = action.payload.user;
+      Cookies.set("token", payload.accessToken);
+      state.accessToken = payload.accessToken;
+      state.user = payload.user;
     });
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;

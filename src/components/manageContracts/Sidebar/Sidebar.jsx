@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 
 // icons and imgs
 import MenuIcon from "../../../assets/icon/menu.svg";
+import MenuBlack from "../../../assets/icon/menu-black.svg";
+
 import BurgerIcon from "../../../assets/icon/burgerMenu.svg";
 import ExitIcon from "../../../assets/icon/exit.svg";
 import FoeLogo from "../../../assets/imgs/foeLogo.png";
@@ -24,9 +26,10 @@ const Sidebar = () => {
     <>
       <Box>
         <img
-          src={MenuIcon}
+          src={MenuBlack}
           alt="burger icon"
           style={{
+            position:'absolute',
             width: "30px",
             margin: "20px",
             cursor: "pointer",
@@ -41,7 +44,8 @@ const Sidebar = () => {
           left: 0,
           top: 0,
           width: "250px",
-          height: "100vh",
+          minWidth: "250px",
+          minHeight: "100vh",
           backgroundColor: "#263238",
           borderTopRightRadius: "30px",
           borderBottomRightRadius: "30px",

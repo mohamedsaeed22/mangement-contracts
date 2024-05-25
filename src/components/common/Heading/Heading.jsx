@@ -15,8 +15,8 @@ const Heading = ({ title }) => {
           padding: "10px 20px",
           color: "white",
           fontWeight: "bold",
-          borderBottomRightRadius: "10px",
-          borderBottomLeftRadius: "10px",
+          borderBottomRightRadius: "8px",
+          borderBottomLeftRadius: "8px",
         }}
       >
         {title}

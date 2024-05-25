@@ -1,14 +1,66 @@
-import { Box, Stack, Typography } from "@mui/material";
+import React from "react";
+import {
+  Box,
+  Stack,
+  Typography,
+  Button,
+  TextField,
+  CircularProgress,
+} from "@mui/material";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import FoeLogo from "../assets/imgs/foeLogo.png";
 import FoeBackground from "../assets/imgs/background.svg";
 import UserVictor from "../assets/icon/user.svg";
 import KeyVictor from "../assets/icon/key-outline.svg";
 import Footer from "../components/common/Footer/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { actAuthLogin } from "../store/auth/authSlice";
+import { Navigate, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
+const validationSchema = Yup.object({
+  userHandle: Yup.string().required("اسم المستخدم مطلوب"),
+  password: Yup.string().required("كلمة المرور مطلوبة"),
+});
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { error, loading, accessToken } = useSelector((state) => state.auth);
+
+  const formik = useFormik({
+    initialValues: {
+      userHandle: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      dispatch(
+        actAuthLogin({
+          userHandle: values.userHandle,
+          password: values.password,
+        })
+        // .unwrap()
+        // .then((res) => {
+        //   console.log(res);
+        //   navigate("/");
+        // })
+      );
+    },
+  });
+
+  if (accessToken) {
+    return <Navigate to="/" />;
+  }
+
   return (
-    <Stack alignItems="center" justifyContent="space-between" minHeight="100vh" gap={2}>
-      {/* top logo */}
+    <Stack
+      alignItems="center"
+      justifyContent="space-between"
+      minHeight="100vh"
+      gap={2}
+    >
       <Box
         sx={{
           backgroundColor: "#263238",
@@ -22,12 +74,11 @@ const Login = () => {
         <img src={FoeLogo} alt="future logo" style={{ width: "180px" }} />
       </Box>
 
-      {/* hero section  */}
+      {/* hero section */}
       <Stack
         direction="row"
         justifyContent="space-evenly"
         alignItems="center"
-        // bgcolor="#ccc"
         width="100%"
       >
         <Stack
@@ -35,7 +86,7 @@ const Login = () => {
             backgroundColor: "#263238",
             width: "500px",
             maxWidth: "100%",
-            marginInline:'10px',
+            marginInline: "10px",
             height: "550px",
             borderRadius: "80px",
           }}
@@ -52,30 +103,43 @@ const Login = () => {
             تسجيل الدخول
           </Typography>
           <form
+            onSubmit={formik.handleSubmit}
             style={{ width: "355px", marginInline: "auto", padding: "8px" }}
           >
             <Stack
-              sx={{ position: "relative", marginTop: "50px", maxWidth: "100%" }}
+              sx={{ position: "relative", marginTop: "40px", maxWidth: "100%" }}
             >
-              <label htmlFor="userName">اسم المستخدم</label>
+              <label htmlFor="userHandle">اسم المستخدم</label>
               <Stack
                 spacing="3px"
                 direction="row"
                 border="1px solid #eee"
                 padding="4px 8px"
                 borderRadius="8px"
+                alignItems="center"
               >
                 <img src={UserVictor} alt="user icon" />
-                <input
-                  id="userName"
+                <TextField
+                  id="userHandle"
+                  name="userHandle"
                   type="text"
                   placeholder="ادخل اسم المستخدم"
-                  name="username"
+                  value={formik.values.userHandle}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  variant="standard"
+                  InputProps={{ disableUnderline: true }}
+                  sx={{ flex: 1 }}
                 />
               </Stack>
+              {formik.touched.userHandle && formik.errors.userHandle && (
+                <Typography color="#ffc100" sx={{ mt: 1, fontSize: "12px" }}>
+                  {formik.errors.userHandle}
+                </Typography>
+              )}
             </Stack>
             <Stack
-              sx={{ position: "relative", marginTop: "40px", maxWidth: "100%" }}
+              sx={{ position: "relative", marginTop: "30px", maxWidth: "100%" }}
             >
               <label htmlFor="password">كلمة المرور</label>
               <Stack
@@ -84,21 +148,39 @@ const Login = () => {
                 border="1px solid #eee"
                 padding="4px 8px"
                 borderRadius="8px"
+                alignItems="center"
               >
                 <img
                   src={KeyVictor}
                   alt="user icon"
                   style={{ width: "21px" }}
                 />
-                <input
+                <TextField
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="ادخل كلمة المرور"
-                  name="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  variant="standard"
+                  InputProps={{ disableUnderline: true }}
+                  sx={{ flex: 1 }}
                 />
               </Stack>
+              {formik.touched.password && formik.errors.password && (
+                <Typography color="#ffc100" sx={{ mt: 1, fontSize: "12px" }}>
+                  {formik.errors.password}
+                </Typography>
+              )}
             </Stack>
-            <input type="submit" value="تسجيل" />
+            <Box textAlign="center" mt="30px">
+              {loading ? (
+                <CircularProgress color="success" />
+              ) : (
+                <input type="submit" value="تسجيل" />
+              )}
+            </Box>
           </form>
         </Stack>
 

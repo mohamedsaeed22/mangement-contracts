@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const BASE_URL = "http://172.16.1.183:1010/";
+const BASE_URL = "http://172.16.3.230:9433/";
 
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 const api = axios.create({

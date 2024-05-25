@@ -3,44 +3,312 @@ import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import SearchIcon from "../../src/assets/icon/search.svg";
 import Heading from "../components/common/Heading/Heading";
-import { Box, Button, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  LinearProgress,
+  Stack,
+  TableContainer,
+} from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: "#BECAF9",
+    color: "#000",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
+  maxHeight: "8px",
+  "@media print": {
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: "#070F2B",
+    },
+  },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
+  backgroundColor: "#F3F3F3",
+  borderRadius: "10px",
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(
+  activity,
+  name,
+  description,
+  CustomCost,
+  ActualOutgoing,
+  accomplished,
+  start,
+  end
+) {
+  return {
+    activity,
+    name,
+    description,
+    CustomCost,
+    ActualOutgoing,
+    accomplished,
+    start,
+    end,
+  };
 }
 
 const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
+  createData(
+    "التعدين",
+    "مشروع 1",
+    "وصف المشروع 1",
+    "10000",
+    "8000",
+    "20%",
+    "01/01/2023",
+    "06/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 2",
+    "وصف المشروع 2",
+    "20000",
+    "18000",
+    "30%",
+    "02/01/2023",
+    "07/01/2023"
+  ),
+  createData(
+    "الزراعة",
+    "مشروع 3",
+    "وصف المشروع 3",
+    "15000",
+    "13000",
+    "40%",
+    "03/01/2023",
+    "08/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 4",
+    "وصف المشروع 4",
+    "12000",
+    "11000",
+    "5%",
+    "04/01/2023",
+    "09/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 5",
+    "وصف المشروع 5",
+    "25000",
+    "23000",
+    "25%",
+    "05/01/2023",
+    "10/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 1",
+    "وصف المشروع 1",
+    "10000",
+    "8000",
+    "80%",
+    "01/01/2023",
+    "06/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 2",
+    "وصف المشروع 2",
+    "20000",
+    "18000",
+    "90%",
+    "02/01/2023",
+    "07/01/2023"
+  ),
+  createData(
+    "الزراعة",
+    "مشروع 3",
+    "وصف المشروع 3",
+    "15000",
+    "13000",
+    "85%",
+    "03/01/2023",
+    "08/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 4",
+    "وصف المشروع 4",
+    "12000",
+    "11000",
+    "92%",
+    "04/01/2023",
+    "09/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 5",
+    "وصف المشروع 5",
+    "25000",
+    "23000",
+    "95%",
+    "05/01/2023",
+    "10/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 1",
+    "وصف المشروع 1",
+    "10000",
+    "8000",
+    "80%",
+    "01/01/2023",
+    "06/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 2",
+    "وصف المشروع 2",
+    "20000",
+    "18000",
+    "90%",
+    "02/01/2023",
+    "07/01/2023"
+  ),
+  createData(
+    "الزراعة",
+    "مشروع 3",
+    "وصف المشروع 3",
+    "15000",
+    "13000",
+    "85%",
+    "03/01/2023",
+    "08/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 4",
+    "وصف المشروع 4",
+    "12000",
+    "11000",
+    "92%",
+    "04/01/2023",
+    "09/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 5",
+    "وصف المشروع 5",
+    "25000",
+    "23000",
+    "95%",
+    "05/01/2023",
+    "10/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 1",
+    "وصف المشروع 1",
+    "10000",
+    "8000",
+    "80%",
+    "01/01/2023",
+    "06/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 2",
+    "وصف المشروع 2",
+    "20000",
+    "18000",
+    "90%",
+    "02/01/2023",
+    "07/01/2023"
+  ),
+  createData(
+    "الزراعة",
+    "مشروع 3",
+    "وصف المشروع 3",
+    "15000",
+    "13000",
+    "85%",
+    "03/01/2023",
+    "08/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 4",
+    "وصف المشروع 4",
+    "12000",
+    "11000",
+    "92%",
+    "04/01/2023",
+    "09/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 5",
+    "وصف المشروع 5",
+    "25000",
+    "23000",
+    "95%",
+    "05/01/2023",
+    "10/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 1",
+    "وصف المشروع 1",
+    "10000",
+    "8000",
+    "80%",
+    "01/01/2023",
+    "06/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 2",
+    "وصف المشروع 2",
+    "20000",
+    "18000",
+    "90%",
+    "02/01/2023",
+    "07/01/2023"
+  ),
+  createData(
+    "الزراعة",
+    "مشروع 3",
+    "وصف المشروع 3",
+    "15000",
+    "13000",
+    "85%",
+    "03/01/2023",
+    "08/01/2023"
+  ),
+  createData(
+    "التعدين",
+    "مشروع 4",
+    "وصف المشروع 4",
+    "12000",
+    "11000",
+    "30%",
+    "04/01/2023",
+    "09/01/2023"
+  ),
+  createData(
+    "المحاجر",
+    "مشروع 5",
+    "وصف المشروع 5",
+    "25000",
+    "23000",
+    "95%",
+    "05/01/2023",
+    "10/01/2023"
+  ),
 ];
 
 const Home = () => {
@@ -65,31 +333,49 @@ const Home = () => {
           </Box>
           <Button variant="outlined">تصنيف</Button>
         </Stack>
-        <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
+          <Table aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                <StyledTableCell align="right">Calories</StyledTableCell>
-                <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                <StyledTableCell align="right">
-                  Protein&nbsp;(g)
+                <StyledTableCell align="center">النشاط</StyledTableCell>
+                <StyledTableCell align="center">اسم المشروع</StyledTableCell>
+                <StyledTableCell align="center">الوصف</StyledTableCell>
+                <StyledTableCell align="center">
+                  التكلفة المخصصة
                 </StyledTableCell>
+                <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
+                <StyledTableCell align="center">ما تم انجازه</StyledTableCell>
+                <StyledTableCell align="center">بداية المشروع</StyledTableCell>
+                <StyledTableCell align="center">نهاية المشروع</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <StyledTableRow key={row}>
-                  <StyledTableCell component="th" scope="row">
-                    {row.name}
+                <StyledTableRow key={row.activity}>
+                  <StyledTableCell align="center">
+                    {row.activity}
                   </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {row.calories}
+                  <StyledTableCell align="center">{row.name}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.description}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                  <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                  <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.CustomCost}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.ActualOutgoing}
+                  </StyledTableCell>
+                  <StyledTableCell align="center"  >
+                    {row.accomplished}
+                    <Box sx={{ width: "100%",marginTop:"2px"}}>
+                      <LinearProgress
+                        variant="determinate"
+                        value={parseInt(row.accomplished)}
+                      />
+                    </Box>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{row.start}</StyledTableCell>
+                  <StyledTableCell align="center">{row.end}</StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>

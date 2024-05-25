@@ -56,7 +56,7 @@ form input[type="submit"] {
   font-weight: 700;
   padding: 10px;
   border-radius: 4px;
-  margin-top: 40px;
+  /* margin-top: 30px; */
   display: block;
   margin-inline: auto;
   cursor: pointer;
@@ -75,7 +75,6 @@ form input[type="submit"] {
 
 .search-input {
   font-family: Cairo, BlinkMacSystemFont;
-
   outline: none;
   border: none;
   background-color: #f3f3f3;
@@ -88,4 +87,30 @@ form input[type="submit"] {
   color: #999; /* Placeholder text color */
   font-family: Cairo, BlinkMacSystemFont;
   /* font-size: 16px; */
+}
+/* =============== contarcts table ============== */
+table {
+  border-collapse: separate !important;
+  border-spacing: 0 8px !important;
+}
+thead {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+tr td,
+.muirtl-17k0b6q-MuiTableCell-root {
+  border-bottom: none !important;
+}
+table thead tr {
+  border-radius: 10px !important;
+}
+.muirtl-17k0b6q-MuiTableCell-root {
+  box-shadow: none !important;
+  margin-top: 0 !important;
+}
+table tr td,
+th {
+  padding: 10px !important;
 }
