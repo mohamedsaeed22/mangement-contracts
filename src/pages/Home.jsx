@@ -1,388 +1,479 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import SearchIcon from "../../src/assets/icon/search.svg";
+import OverviewImage from "../assets/imgs/overview.svg";
+import StartTimeImage from "../assets/imgs/startTime.svg";
+import PlanningImage from "../assets/imgs/planning.svg";
+import WorkingImage from "../assets/imgs/working.svg";
+import ClosingImage from "../assets/imgs/closing.svg";
+import DisableImage from "../assets/imgs/disables.svg";
+import DownsImage from "../assets/imgs/downs.svg";
+
 import Heading from "../components/common/Heading/Heading";
-import {
-  Box,
-  Button,
-  LinearProgress,
-  Stack,
-  TableContainer,
-} from "@mui/material";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#BECAF9",
-    color: "#000",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-  maxHeight: "8px",
-  "@media print": {
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: "#070F2B",
-    },
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#F3F3F3",
-  borderRadius: "10px",
-}));
-
-function createData(
-  activity,
-  name,
-  description,
-  CustomCost,
-  ActualOutgoing,
-  accomplished,
-  start,
-  end
-) {
-  return {
-    activity,
-    name,
-    description,
-    CustomCost,
-    ActualOutgoing,
-    accomplished,
-    start,
-    end,
-  };
-}
-
-const rows = [
-  createData(
-    "التعدين",
-    "مشروع 1",
-    "وصف المشروع 1",
-    "10000",
-    "8000",
-    "20%",
-    "01/01/2023",
-    "06/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 2",
-    "وصف المشروع 2",
-    "20000",
-    "18000",
-    "30%",
-    "02/01/2023",
-    "07/01/2023"
-  ),
-  createData(
-    "الزراعة",
-    "مشروع 3",
-    "وصف المشروع 3",
-    "15000",
-    "13000",
-    "40%",
-    "03/01/2023",
-    "08/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 4",
-    "وصف المشروع 4",
-    "12000",
-    "11000",
-    "5%",
-    "04/01/2023",
-    "09/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 5",
-    "وصف المشروع 5",
-    "25000",
-    "23000",
-    "25%",
-    "05/01/2023",
-    "10/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 1",
-    "وصف المشروع 1",
-    "10000",
-    "8000",
-    "80%",
-    "01/01/2023",
-    "06/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 2",
-    "وصف المشروع 2",
-    "20000",
-    "18000",
-    "90%",
-    "02/01/2023",
-    "07/01/2023"
-  ),
-  createData(
-    "الزراعة",
-    "مشروع 3",
-    "وصف المشروع 3",
-    "15000",
-    "13000",
-    "85%",
-    "03/01/2023",
-    "08/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 4",
-    "وصف المشروع 4",
-    "12000",
-    "11000",
-    "92%",
-    "04/01/2023",
-    "09/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 5",
-    "وصف المشروع 5",
-    "25000",
-    "23000",
-    "95%",
-    "05/01/2023",
-    "10/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 1",
-    "وصف المشروع 1",
-    "10000",
-    "8000",
-    "80%",
-    "01/01/2023",
-    "06/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 2",
-    "وصف المشروع 2",
-    "20000",
-    "18000",
-    "90%",
-    "02/01/2023",
-    "07/01/2023"
-  ),
-  createData(
-    "الزراعة",
-    "مشروع 3",
-    "وصف المشروع 3",
-    "15000",
-    "13000",
-    "85%",
-    "03/01/2023",
-    "08/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 4",
-    "وصف المشروع 4",
-    "12000",
-    "11000",
-    "92%",
-    "04/01/2023",
-    "09/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 5",
-    "وصف المشروع 5",
-    "25000",
-    "23000",
-    "95%",
-    "05/01/2023",
-    "10/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 1",
-    "وصف المشروع 1",
-    "10000",
-    "8000",
-    "80%",
-    "01/01/2023",
-    "06/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 2",
-    "وصف المشروع 2",
-    "20000",
-    "18000",
-    "90%",
-    "02/01/2023",
-    "07/01/2023"
-  ),
-  createData(
-    "الزراعة",
-    "مشروع 3",
-    "وصف المشروع 3",
-    "15000",
-    "13000",
-    "85%",
-    "03/01/2023",
-    "08/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 4",
-    "وصف المشروع 4",
-    "12000",
-    "11000",
-    "92%",
-    "04/01/2023",
-    "09/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 5",
-    "وصف المشروع 5",
-    "25000",
-    "23000",
-    "95%",
-    "05/01/2023",
-    "10/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 1",
-    "وصف المشروع 1",
-    "10000",
-    "8000",
-    "80%",
-    "01/01/2023",
-    "06/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 2",
-    "وصف المشروع 2",
-    "20000",
-    "18000",
-    "90%",
-    "02/01/2023",
-    "07/01/2023"
-  ),
-  createData(
-    "الزراعة",
-    "مشروع 3",
-    "وصف المشروع 3",
-    "15000",
-    "13000",
-    "85%",
-    "03/01/2023",
-    "08/01/2023"
-  ),
-  createData(
-    "التعدين",
-    "مشروع 4",
-    "وصف المشروع 4",
-    "12000",
-    "11000",
-    "30%",
-    "04/01/2023",
-    "09/01/2023"
-  ),
-  createData(
-    "المحاجر",
-    "مشروع 5",
-    "وصف المشروع 5",
-    "25000",
-    "23000",
-    "95%",
-    "05/01/2023",
-    "10/01/2023"
-  ),
-];
+import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 
 const Home = () => {
   return (
-    <>
+    <Box>
       <Heading title="الصفحة الرئيسية" />
-      <Box p={2}>
-        <Stack direction="row" justifyContent="space-between">
-          <Box position="relative">
-            <input type="text" className="search-input" placeholder="بحث" />
-            <img
-              src={SearchIcon}
-              alt="search icon"
-              style={{
-                position: "absolute",
-                zIndex: 5,
-                left: 12,
-                top: 15,
-                width: "15px",
+
+      <Box p={2} bgcolor="#ccc" borderRadius={2} mt={3}>
+        {/* top paper */}
+        <Paper
+          sx={{
+            padding: "8px",
+            marginBottom:2
+          }}
+        >
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            gap={4}
+            flexWrap="wrap"
+            marginRight="40px"
+          >
+            <Box
+              sx={{
+                backgroundColor: "#ccc",
+                borderRadius: "50%",
+                padding: "10px",
+                marginRight: "0",
               }}
-            />
-          </Box>
-          <Button variant="outlined">تصنيف</Button>
-        </Stack>
-        <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">النشاط</StyledTableCell>
-                <StyledTableCell align="center">اسم المشروع</StyledTableCell>
-                <StyledTableCell align="center">الوصف</StyledTableCell>
-                <StyledTableCell align="center">
-                  التكلفة المخصصة
-                </StyledTableCell>
-                <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
-                <StyledTableCell align="center">ما تم انجازه</StyledTableCell>
-                <StyledTableCell align="center">بداية المشروع</StyledTableCell>
-                <StyledTableCell align="center">نهاية المشروع</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <StyledTableRow key={row.activity}>
-                  <StyledTableCell align="center">
-                    {row.activity}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.name}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.description}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.CustomCost}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.ActualOutgoing}
-                  </StyledTableCell>
-                  <StyledTableCell align="center"  >
-                    {row.accomplished}
-                    <Box sx={{ width: "100%",marginTop:"2px"}}>
-                      <LinearProgress
-                        variant="determinate"
-                        value={parseInt(row.accomplished)}
-                      />
-                    </Box>
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.start}</StyledTableCell>
-                  <StyledTableCell align="center">{row.end}</StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            >
+              <img
+                src={OverviewImage}
+                alt="overview"
+                style={{ width: "80px" }}
+              />
+            </Box>
+            <Stack textAlign="center">
+              <Typography variant="h4" fontWeight="bold" color="#01204E">
+                28
+              </Typography>
+              <Typography variant="body1" color="initial">
+                اجمالى عدد المشروعات
+              </Typography>
+            </Stack>
+            <Stack textAlign="center">
+              <Typography variant="h4" fontWeight="bold" color="#01204E">
+                255 %
+              </Typography>
+              <Typography variant="body1" color="initial">
+                نسبة التنفيذ الفعلى (%)
+              </Typography>
+            </Stack>
+            <Stack textAlign="center">
+              <Typography variant="h4" fontWeight="bold" color="#01204E">
+                165,999
+              </Typography>
+              <Typography variant="body1" color="initial">
+                التكلفة المخططة
+              </Typography>
+            </Stack>
+            <Stack textAlign="center">
+              <Typography variant="h4" fontWeight="bold" color="#01204E">
+                20,256
+              </Typography>
+              <Typography variant="body1" color="initial">
+                المنصرف الفعلى
+              </Typography>
+            </Stack>
+          </Stack>
+        </Paper>
+
+        {/* center paper */}
+        <Grid container spacing={2} mb={2}>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper
+              sx={{
+                padding: "8px",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Box
+                sx={{
+                  backgroundColor: "#ccc",
+                  borderRadius: "50%",
+                  padding: "10px",
+                }}
+              >
+                <img
+                  src={StartTimeImage}
+                  alt="overview"
+                  style={{ width: "80px" }}
+                />
+              </Box>
+              <Stack textAlign="center" flex={1}>
+                <Typography
+                  variant="h4"
+                  fontWeight="bold"
+                  color="#01204E"
+                  textAlign="center"
+                >
+                  0
+                </Typography>
+                <Typography variant="body1" color="initial">
+                  مرحلة البدء
+                </Typography>
+              </Stack>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper
+              sx={{
+                padding: "8px",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Box
+                sx={{
+                  backgroundColor: "#ccc",
+                  borderRadius: "50%",
+                  padding: "10px",
+                }}
+              >
+                <img
+                  src={PlanningImage}
+                  alt="overview"
+                  style={{ width: "80px" }}
+                />
+              </Box>
+              <Stack textAlign="center" flex={1}>
+                <Typography
+                  variant="h4"
+                  fontWeight="bold"
+                  color="#01204E"
+                  textAlign="center"
+                >
+                  0
+                </Typography>
+                <Typography variant="body1" color="initial">
+                  مرحلة التخطيط
+                </Typography>
+              </Stack>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper
+              sx={{
+                padding: "8px",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Box
+                sx={{
+                  backgroundColor: "#ccc",
+                  borderRadius: "50%",
+                  padding: "10px",
+                }}
+              >
+                <img
+                  src={WorkingImage}
+                  alt="overview"
+                  style={{ width: "80px" }}
+                />
+              </Box>
+              <Stack textAlign="center" flex={1}>
+                <Typography
+                  variant="h4"
+                  fontWeight="bold"
+                  color="#01204E"
+                  textAlign="center"
+                >
+                  8
+                </Typography>
+                <Typography variant="body1" color="initial">
+                  مرحلة التنفيذ
+                </Typography>
+              </Stack>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper
+              sx={{
+                padding: "8px",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Box
+                sx={{
+                  backgroundColor: "#ccc",
+                  borderRadius: "50%",
+                  padding: "10px",
+                }}
+              >
+                <img
+                  src={ClosingImage}
+                  alt="overview"
+                  style={{ width: "80px" }}
+                />
+              </Box>
+              <Stack textAlign="center" flex={1}>
+                <Typography
+                  variant="h4"
+                  fontWeight="bold"
+                  color="#01204E"
+                  textAlign="center"
+                >
+                  20
+                </Typography>
+                <Typography variant="body1" color="initial">
+                  مرحلة الاغلاق
+                </Typography>
+              </Stack>
+            </Paper>
+          </Grid>
+        </Grid>
+
+        {/* Bottom paper */}
+        <Grid container spacing={2}  >
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ padding: "8px" }}>
+              <Stack direction="row" alignItems="center">
+                <Box
+                  sx={{
+                    backgroundColor: "#ccc",
+                    borderRadius: "50%",
+                    padding: "10px",
+                  }}
+                >
+                  <img
+                    src={DisableImage}
+                    alt="overview"
+                    style={{ width: "80px" }}
+                  />
+                </Box>
+                <Stack textAlign="center" flex={1}>
+                  <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    color="#01204E"
+                    textAlign="center"
+                  >
+                    0
+                  </Typography>
+                  <Typography variant="body1" color="initial">
+                    المعوقات
+                  </Typography>
+                </Stack>
+              </Stack>
+
+              <Grid container spacing={3} p={1}>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Paper
+                    elevation={5}
+                    sx={{
+                      padding: "8px",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Stack textAlign="center" flex={1}>
+                      <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        color="#01204E"
+                        textAlign="center"
+                      >
+                        0
+                      </Typography>
+                      <Typography variant="body1" color="initial">
+                        نشط
+                      </Typography>
+                    </Stack>
+                  </Paper>
+                </Grid>
+
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Paper
+                    elevation={5}
+                    sx={{
+                      padding: "8px",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Stack textAlign="center" flex={1}>
+                      <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        color="#01204E"
+                        textAlign="center"
+                      >
+                        0
+                      </Typography>
+                      <Typography variant="body1" color="initial">
+                        مؤجل
+                      </Typography>
+                    </Stack>
+                  </Paper>
+                </Grid>
+
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Paper
+                    elevation={5}
+                    sx={{
+                      padding: "8px",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Stack textAlign="center" flex={1}>
+                      <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        color="#01204E"
+                        textAlign="center"
+                      >
+                        8
+                      </Typography>
+                      <Typography variant="body1" color="initial">
+                        مغلق
+                      </Typography>
+                    </Stack>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ padding: "8px" }}>
+              <Stack direction="row" alignItems="center">
+                <Box
+                  sx={{
+                    backgroundColor: "#ccc",
+                    borderRadius: "50%",
+                    padding: "10px",
+                  }}
+                >
+                  <img
+                    src={DownsImage}
+                    alt="overview"
+                    style={{ width: "80px" }}
+                  />
+                </Box>
+                <Stack textAlign="center" flex={1}>
+                  <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    color="#01204E"
+                    textAlign="center"
+                  >
+                    0
+                  </Typography>
+                  <Typography variant="body1" color="initial">
+                    المخاطر
+                  </Typography>
+                </Stack>
+              </Stack>
+
+              <Grid container spacing={3} p={1}>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Paper
+                    elevation={5}
+                    sx={{
+                      padding: "8px",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Stack textAlign="center" flex={1}>
+                      <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        color="#01204E"
+                        textAlign="center"
+                      >
+                        0
+                      </Typography>
+                      <Typography variant="body1" color="initial">
+                        نشط
+                      </Typography>
+                    </Stack>
+                  </Paper>
+                </Grid>
+
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Paper
+                    elevation={5}
+                    sx={{
+                      padding: "8px",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Stack textAlign="center" flex={1}>
+                      <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        color="#01204E"
+                        textAlign="center"
+                      >
+                        0
+                      </Typography>
+                      <Typography variant="body1" color="initial">
+                        مؤجل
+                      </Typography>
+                    </Stack>
+                  </Paper>
+                </Grid>
+
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Paper
+                    elevation={5}
+                    sx={{
+                      padding: "8px",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Stack textAlign="center" flex={1}>
+                      <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        color="#01204E"
+                        textAlign="center"
+                      >
+                        8
+                      </Typography>
+                      <Typography variant="body1" color="initial">
+                        مغلق
+                      </Typography>
+                    </Stack>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+        </Grid>
       </Box>
-    </>
+    </Box>
   );
 };
 

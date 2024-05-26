@@ -1,6 +1,8 @@
+import { CircularProgress } from "@mui/material";
+
 const Loading = ({ status, error, children }) => {
   if (status === true) {
-    return "loading components";
+    return <CircularProgress color="success" />;
   }
   if (error) {
     return <span>{error}</span>;

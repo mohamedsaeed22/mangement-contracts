@@ -7,7 +7,7 @@ const actGetBranches = createAsyncThunk(
   async (_, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.get("api/Branch");
+      const res = await api.get("api/Branch/browse");
       return res.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));

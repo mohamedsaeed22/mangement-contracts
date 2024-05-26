@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actAuthLogin } from "../store/auth/authSlice";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import Loading from "../components/feedback/Loading/Loading";
 
 const validationSchema = Yup.object({
   userHandle: Yup.string().required("اسم المستخدم مطلوب"),
@@ -26,7 +27,6 @@ const validationSchema = Yup.object({
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { error, loading, accessToken } = useSelector((state) => state.auth);
 
   const formik = useFormik({
@@ -51,7 +51,7 @@ const Login = () => {
   });
 
   if (accessToken) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace={true} />;
   }
 
   return (
@@ -175,11 +175,21 @@ const Login = () => {
               )}
             </Stack>
             <Box textAlign="center" mt="30px">
-              {loading ? (
-                <CircularProgress color="success" />
-              ) : (
-                <input type="submit" value="تسجيل" />
+              {error && (
+                <span
+                  style={{
+                    display: "inline-block",
+                    color: "red",
+                    marginBottom: "10px",
+                    fontSize:'12px'
+                  }}
+                >
+                  {error}
+                </span>
               )}
+              <Loading status={loading}>
+                <input type="submit" value="تسجيل" />
+              </Loading>
             </Box>
           </form>
         </Stack>

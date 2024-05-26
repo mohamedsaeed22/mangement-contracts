@@ -22,7 +22,7 @@ const branchSlice = createSlice({
     });
     builder.addCase(actGetBranches.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.branches = payload.accessToken;
+      state.branches = payload;
     });
     builder.addCase(actGetBranches.rejected, (state, action) => {
       state.loading = false;

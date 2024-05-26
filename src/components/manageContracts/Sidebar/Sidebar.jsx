@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // icons and imgs
 import MenuIcon from "../../../assets/icon/menu.svg";
@@ -9,8 +9,13 @@ import MenuBlack from "../../../assets/icon/menu-black.svg";
 import BurgerIcon from "../../../assets/icon/burgerMenu.svg";
 import ExitIcon from "../../../assets/icon/exit.svg";
 import FoeLogo from "../../../assets/imgs/foeLogo.png";
+import { SweatAlert } from "../../feedback/alerts";
+import { useDispatch } from "react-redux";
+import { authLogout } from "../../../store/auth/authSlice";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(true);
 
@@ -22,6 +27,18 @@ const Sidebar = () => {
     setToggleSidebar(!toggleSidebar);
   };
 
+  const handleLogout = async () => {
+    const willDelete = await SweatAlert({
+      title: "هل متاكد من تسجيل الخروج ؟",
+      icon: "warning",
+      dangerMode: true,
+    });
+    if (willDelete) {
+      dispatch(authLogout());
+      // navigate("/login", { replace: true });
+    }
+  };
+
   return (
     <>
       <Box>
@@ -29,7 +46,7 @@ const Sidebar = () => {
           src={MenuBlack}
           alt="burger icon"
           style={{
-            position:'absolute',
+            position: "absolute",
             width: "30px",
             margin: "20px",
             cursor: "pointer",
@@ -81,7 +98,7 @@ const Sidebar = () => {
         <Box mt={6}>
           <NavLink
             to="/"
-            exact
+            exact="true"
             className={({ isActive }) =>
               `navlink ${isActive ? "active-link" : ""}`
             }
@@ -134,35 +151,66 @@ const Sidebar = () => {
             <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
           </Stack>
           {showSubmenu && (
-            <Box pl={2} mt={2}>
-              <NavLink
-                to="/addProject"
-                className={({ isActive }) =>
-                  `navlink ${isActive ? "active-link" : ""}`
-                }
-              >
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  p={1}
-                  bgcolor="inherit"
-                  sx={{
-                    borderTopLeftRadius: "10px",
-                    borderBottomLeftRadius: "10px",
-                  }}
+            <>
+              <Box pl={2} mt={2}>
+                <NavLink
+                  to="/addProject"
+                  className={({ isActive }) =>
+                    `navlink ${isActive ? "active-link" : ""}`
+                  }
                 >
-                  <Typography
-                    variant="h6"
-                    color="initial"
-                    ml={1}
-                    fontWeight="bold"
-                    sx={{ color: "inherit", fontSize: "14px" }}
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    p={1}
+                    bgcolor="inherit"
+                    sx={{
+                      borderTopLeftRadius: "10px",
+                      borderBottomLeftRadius: "10px",
+                    }}
                   >
-                    إضافة مشروع
-                  </Typography>
-                </Stack>
-              </NavLink>
-            </Box>
+                    <Typography
+                      variant="h6"
+                      color="initial"
+                      ml={1}
+                      fontWeight="bold"
+                      sx={{ color: "inherit", fontSize: "14px" }}
+                    >
+                      إضافة مشروع
+                    </Typography>
+                  </Stack>
+                </NavLink>
+              </Box>
+              <Box pl={2} mt={2}>
+                <NavLink
+                  to="/projectsbox"
+                  className={({ isActive }) =>
+                    `navlink ${isActive ? "active-link" : ""}`
+                  }
+                >
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    p={1}
+                    bgcolor="inherit"
+                    sx={{
+                      borderTopLeftRadius: "10px",
+                      borderBottomLeftRadius: "10px",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      color="initial"
+                      ml={1}
+                      fontWeight="bold"
+                      sx={{ color: "inherit", fontSize: "14px" }}
+                    >
+                      صندوق المشاريع
+                    </Typography>
+                  </Stack>
+                </NavLink>
+              </Box>
+            </>
           )}
         </Box>
         <Stack
@@ -181,6 +229,7 @@ const Sidebar = () => {
               border: "1px solid #fff",
             },
           }}
+          onClick={handleLogout}
         >
           <Typography
             variant="h6"

@@ -114,3 +114,7 @@ table tr td,
 th {
   padding: 10px !important;
 }
+.swal-btn-yes {
+  background-color: red;
+  color: #fff;
+}

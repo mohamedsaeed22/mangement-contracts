@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../components/common/Heading/Heading";
 import {
   Box,
@@ -13,10 +13,18 @@ import {
 } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+import { actGetBranches } from "../store/branch/branchSlice";
+import { actGetSupervisors } from "../store/supervisor/supervisorSlice";
+import actCreateProject from "../store/project/act/actCreateProject";
+import { notifyFailed, notifySuccess } from "../components/feedback/alerts";
 
 const AddProject = () => {
-  const [age, setAge] = useState("");
+  const dispatch = useDispatch();
+  const { branches } = useSelector((state) => state.branch);
+  const { supervisors } = useSelector((state) => state.supervisor);
+  const [branche, setBranch] = useState("");
+  const [supervisor, setSupervisor] = useState("");
   const [projectName, setProjectName] = useState("");
   const [projectDesc, setProjectDesc] = useState("");
   const [plannedCost, setPlannedCost] = useState("");
@@ -24,24 +32,32 @@ const AddProject = () => {
   const [progress, setProgress] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
   const handleStartDateChange = (newValue) => {
     setStartDate(newValue);
-    setEndDate(null); // Clear the end date when start date changes
+    setEndDate(null);
   };
+
+  useEffect(() => {
+    dispatch(actGetBranches());
+    dispatch(actGetSupervisors());
+  }, [dispatch]);
 
   const handleEndDateChange = (newValue) => {
     setEndDate(newValue);
   };
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleChangeBranche = (event) => {
+    setBranch(event.target.value);
+  };
+  const handleChangeSupervisor = (event) => {
+    setSupervisor(event.target.value);
   };
 
   const isFormValid = () => {
     return (
-      age &&
-      projectName &&
+      branche &&
+      supervisor &&
+      projectName.length > 5 &&
       projectDesc &&
       plannedCost &&
       actualCost &&
@@ -60,26 +76,18 @@ const AddProject = () => {
       budget: parseFloat(plannedCost),
       spentBudget: parseFloat(actualCost),
       percentage: parseFloat(progress),
-      status: age,
-      branchId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      supervisorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      status: 1,
+      branchId: branche,
+      supervisorId: supervisor,
     };
-    console.log(projectData);
-    // Replace the console.log with your backend call
-    // fetch('your-backend-url', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(projectData),
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //   // Handle the response data
-    // })
-    // .catch((error) => {
-    //   console.error('Error:', error);
-    // });
+    dispatch(actCreateProject(projectData))
+      .unwrap()
+      .then((res) => {
+        notifySuccess("تم اضافة المشروع بنجاح");
+      })
+      .catch((err) => {
+        notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+      });
   };
 
   return (
@@ -87,21 +95,43 @@ const AddProject = () => {
       <Heading title="اضافة مشروع" />
       <Box border="1px dashed #ccc" borderRadius={2} m={4}>
         <Box p={2}>
-          {/* activity */}
-          <Stack ml={1}>
+          {/* branches and supervisor */}
+          <Stack direction="row" gap={3} ml={1} flexWrap="wrap">
             <Box>
-              <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
-                <InputLabel id="demo-simple-select-label">النشاط</InputLabel>
+              <FormControl sx={{ minWidth: 250 }} size="small">
+                <InputLabel id="demo-simple-select-branche">النشاط</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={age}
+                  labelId="demo-simple-select-branche"
+                  id="demo-simple-selectBranch"
+                  value={branche}
                   label="النشاط"
-                  onChange={handleChange}
+                  onChange={handleChangeBranche}
                 >
-                  <MenuItem value={10}>التعدين</MenuItem>
-                  <MenuItem value={20}>المحاجر</MenuItem>
-                  <MenuItem value={30}>الزراعة</MenuItem>
+                  {branches?.map((branch) => (
+                    <MenuItem key={branch.id} value={branch.id}>
+                      {branch.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box>
+              <FormControl sx={{ minWidth: 250 }} size="small">
+                <InputLabel id="demo-simple-select-supervisor">
+                  مشرف المشروع
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-supervisor"
+                  id="demo-simple-selectSupervisor"
+                  value={supervisor}
+                  label="مشرف المشروع"
+                  onChange={handleChangeSupervisor}
+                >
+                  {supervisors?.map((supervisor) => (
+                    <MenuItem key={supervisor.id} value={supervisor.id}>
+                      {supervisor.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Box>
@@ -137,7 +167,14 @@ const AddProject = () => {
               id="project-name"
               label=" الاسم"
               variant="outlined"
-              sx={{ width: "250px" }}
+              sx={{
+                width: "250px",
+                "& .MuiFormHelperText-root": {
+                  color: "red",
+                  fontSize: "12px !important ",
+                },
+              }}
+              helperText="اسم المشروع لابد ان يكون اكثر من 5 احرف"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
             />

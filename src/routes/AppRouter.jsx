@@ -7,6 +7,7 @@ import Home from "../pages/Home";
 
 import AddProject from "../pages/AddProject";
 import WithGuard from "../components/common/Auth/WithGuard";
+import ProjectsTable from "../components/manageContracts/ProjectsTable";
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "addProject",
         element: <AddProject />,
+      },
+      {
+        path: "projectsbox",
+        element: <ProjectsTable />,
       },
     ],
   },
