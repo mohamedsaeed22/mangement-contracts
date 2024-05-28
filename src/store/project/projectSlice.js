@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import actGetProjects from "./act/actGetProjects";
+import { AxiosHeaders } from "axios";
 
 const initialState = {
   projects: [],
@@ -25,6 +26,8 @@ const branchSlice = createSlice({
     });
     builder.addCase(actGetProjects.rejected, (state, action) => {
       state.loading = false;
+      console.log(action)
+      // console.log(AxiosHeaders(action))
       if (action.payload) {
         state.error = action.payload;
       }

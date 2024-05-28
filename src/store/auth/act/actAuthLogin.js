@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
-
+ 
 const actAuthLogin = createAsyncThunk(
   "auth/actAuthLogin",
   async (formData, thunk) => {
@@ -12,7 +11,7 @@ const actAuthLogin = createAsyncThunk(
       console.log(res);
       return res.data;
     } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+      return rejectWithValue(error);
     }
   }
 );

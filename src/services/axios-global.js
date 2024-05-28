@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const BASE_URL = "http://172.16.3.230:9433/";
 
@@ -11,23 +12,7 @@ const api = axios.create({
   },
 });
 
-// request middleware
-api.interceptors.request.use(
-  function (config) {
-    const accessToken = Cookies.get("token");
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  {
-    function(error) {
-      return Promise.reject(error);
-    },
-  }
-);
-
-// response middleware
+// Request middleware
 api.interceptors.request.use(
   function (config) {
     const accessToken = Cookies.get("token");
@@ -37,7 +22,79 @@ api.interceptors.request.use(
     return config;
   },
   function (error) {
-    // <--- Correct syntax
+    return Promise.reject(error);
+  }
+);
+
+// Response middleware
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // If the error response status is 401 and the original request did not have the `isRetryRequest` flag, try to refresh the token
+    if (error.response.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        // If a refresh token request is already in progress, queue the original request
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return api(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      const refreshToken = Cookies.get("refreshToken");
+      const token = Cookies.get("token");
+      console.log(refreshToken, token);
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${BASE_URL}api/users/Identity/refresh-token?refreshToken=${refreshToken}&accessToken=${token}`
+          )
+          .then(({ data }) => {
+            const { accessToken } = data;
+            Cookies.set("token", accessToken, {
+              expires: new Date(jwtDecode(accessToken).exp * 1000),
+            });
+            api.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${accessToken}`;
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            processQueue(null, accessToken);
+            resolve(api(originalRequest));
+          })
+          .catch((err) => {
+            processQueue(err, null);
+            reject(err);
+          })
+          .finally(() => {
+            isRefreshing = false;
+          });
+      });
+    }
+
     return Promise.reject(error);
   }
 );

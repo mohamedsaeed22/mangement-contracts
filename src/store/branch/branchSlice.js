@@ -13,7 +13,12 @@ const initialState = {
 const branchSlice = createSlice({
   name: "branch",
   initialState,
-  reducers: {},
+  reducers: {
+    filterBranches: (state, { payload }) => {
+      state.branches = state.branches.filter((b) => b.id !== `${payload}`);
+      console.log(state.branches);
+    },
+  },
   extraReducers: (builder) => {
     // get all branches
     builder.addCase(actGetBranches.pending, (state) => {
@@ -26,9 +31,10 @@ const branchSlice = createSlice({
     });
     builder.addCase(actGetBranches.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
-        state.error = action.payload;
-      }
+      console.log(action)
+      // if (action.payload) {
+      //   state.error = action.payload;
+      // }
     });
 
     // create branche
@@ -38,7 +44,8 @@ const branchSlice = createSlice({
     });
     builder.addCase(actCreateBranch.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.branches = payload.accessToken;
+      const { id, name, description } = payload;
+      state.branches.push({ id, name, description });
     });
     builder.addCase(actCreateBranch.rejected, (state, action) => {
       state.loading = false;
@@ -54,7 +61,14 @@ const branchSlice = createSlice({
     });
     builder.addCase(actUpdateBranch.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.branches = payload.accessToken;
+      const index = state.branches.findIndex(
+        (branch) => branch.id === payload.id
+      );
+      if (index !== -1) {
+        state.branches[index] = payload;
+      } else {
+        console.error("Branch not found");
+      }
     });
     builder.addCase(actUpdateBranch.rejected, (state, action) => {
       state.loading = false;
@@ -70,10 +84,10 @@ const branchSlice = createSlice({
     });
     builder.addCase(actDeleteBranch.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.branches = payload.accessToken;
     });
     builder.addCase(actDeleteBranch.rejected, (state, action) => {
       state.loading = false;
+      console.log(action)
       if (action.payload) {
         state.error = action.payload;
       }
@@ -82,4 +96,5 @@ const branchSlice = createSlice({
 });
 
 export { actCreateBranch, actDeleteBranch, actGetBranches, actUpdateBranch };
+export const { filterBranches } = branchSlice.actions;
 export default branchSlice.reducer;

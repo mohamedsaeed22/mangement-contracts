@@ -12,7 +12,7 @@ const Heading = ({ title }) => {
           fontSize: "14px",
           display: "inline-block",
           backgroundColor: "#263238",
-          padding: "10px 20px",
+          padding: "15px 40px",
           color: "white",
           fontWeight: "bold",
           borderBottomRightRadius: "8px",

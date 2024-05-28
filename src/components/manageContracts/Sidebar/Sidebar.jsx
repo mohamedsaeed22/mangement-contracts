@@ -1,27 +1,47 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+
+import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 // icons and imgs
 import MenuIcon from "../../../assets/icon/menu.svg";
 import MenuBlack from "../../../assets/icon/menu-black.svg";
-
 import BurgerIcon from "../../../assets/icon/burgerMenu.svg";
 import ExitIcon from "../../../assets/icon/exit.svg";
 import FoeLogo from "../../../assets/imgs/foeLogo.png";
+
 import { SweatAlert } from "../../feedback/alerts";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authLogout } from "../../../store/auth/authSlice";
+import { actGetBranches } from "../../../store/branch/branchSlice";
+import { actGetSupervisors } from "../../../store/supervisor/supervisorSlice";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [showSubmenu, setShowSubmenu] = useState(false);
-  const [toggleSidebar, setToggleSidebar] = useState(true);
+  const [showProjectsMenu, setShowProjectsMenu] = useState(false);
+  const [showBranchesMenu, setShowBranchesMenu] = useState(false);
+  const [showSupervisorsMenu, setShowSupervisorsMenu] = useState(false);
 
-  const toggleSubmenu = () => {
-    setShowSubmenu(!showSubmenu);
+  const [toggleSidebar, setToggleSidebar] = useState(true);
+  const { branches } = useSelector((state) => state.branch);
+  const { supervisors } = useSelector((state) => state.supervisor);
+
+  const toggleProjectSubmenu = () => {
+    setShowProjectsMenu(!showProjectsMenu);
   };
+
+  const toggleBranchSubmenu = () => {
+    setShowBranchesMenu(!showBranchesMenu);
+  };
+
+  const toggleSupervisorSubmenu = () => {
+    setShowSupervisorsMenu(!showSupervisorsMenu);
+  };
+
+  useEffect(() => {
+    dispatch(actGetBranches());
+    dispatch(actGetSupervisors());
+  }, [dispatch]);
 
   const handleToggleSidebar = () => {
     setToggleSidebar(!toggleSidebar);
@@ -35,7 +55,6 @@ const Sidebar = () => {
     });
     if (willDelete) {
       dispatch(authLogout());
-      // navigate("/login", { replace: true });
     }
   };
 
@@ -122,11 +141,11 @@ const Sidebar = () => {
               >
                 الصفحة الرئيسية
               </Typography>
-              {/* <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} /> */}
             </Stack>
           </NavLink>
         </Box>
-        <Box mt={4}>
+        {/* menu projects */}
+        <Box mt={1}>
           <Stack
             direction="row"
             justifyContent="space-between"
@@ -137,7 +156,7 @@ const Sidebar = () => {
               borderBottomLeftRadius: "10px",
               cursor: "pointer",
             }}
-            onClick={toggleSubmenu}
+            onClick={toggleProjectSubmenu}
           >
             <Typography
               variant="h6"
@@ -150,38 +169,9 @@ const Sidebar = () => {
             </Typography>
             <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
           </Stack>
-          {showSubmenu && (
+          {showProjectsMenu && (
             <>
-              <Box pl={2} mt={2}>
-                <NavLink
-                  to="/addProject"
-                  className={({ isActive }) =>
-                    `navlink ${isActive ? "active-link" : ""}`
-                  }
-                >
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    p={1}
-                    bgcolor="inherit"
-                    sx={{
-                      borderTopLeftRadius: "10px",
-                      borderBottomLeftRadius: "10px",
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      color="initial"
-                      ml={1}
-                      fontWeight="bold"
-                      sx={{ color: "inherit", fontSize: "14px" }}
-                    >
-                      إضافة مشروع
-                    </Typography>
-                  </Stack>
-                </NavLink>
-              </Box>
-              <Box pl={2} mt={2}>
+              <Box pl={2} mt={1}>
                 <NavLink
                   to="/projectsbox"
                   className={({ isActive }) =>
@@ -191,7 +181,7 @@ const Sidebar = () => {
                   <Stack
                     direction="row"
                     justifyContent="space-between"
-                    p={1}
+                    p="4px"
                     bgcolor="inherit"
                     sx={{
                       borderTopLeftRadius: "10px",
@@ -203,9 +193,39 @@ const Sidebar = () => {
                       color="initial"
                       ml={1}
                       fontWeight="bold"
-                      sx={{ color: "inherit", fontSize: "14px" }}
+                      sx={{ color: "inherit", fontSize: "12px" }}
                     >
                       صندوق المشاريع
+                    </Typography>
+                  </Stack>
+                </NavLink>
+              </Box>
+              <Box pl={2} mt={1}>
+                <NavLink
+                  to="/addProject"
+                  className={({ isActive }) =>
+                    `navlink ${isActive ? "active-link" : ""}`
+                  }
+                >
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    p="4px"
+                    bgcolor="inherit"
+                    sx={{
+                      borderTopLeftRadius: "10px",
+                      borderBottomLeftRadius: "10px",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      color="initial"
+                      ml={1}
+                      fontWeight="bold"
+                      sx={{ color: "inherit", fontSize: "12px" }}
+                    >
+                      {/* <Add /> */}
+                      إضافة مشروع
                     </Typography>
                   </Stack>
                 </NavLink>
@@ -213,6 +233,217 @@ const Sidebar = () => {
             </>
           )}
         </Box>
+        {/* menu branches */}
+        <Box
+          mt={1}
+          // pb={2}
+          // borderBottom={showBranchesMenu ? "1px solid #fff" : ""}
+        >
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            p={1}
+            bgcolor="inherit"
+            sx={{
+              borderTopLeftRadius: "10px",
+              borderBottomLeftRadius: "10px",
+              cursor: "pointer",
+            }}
+            onClick={toggleBranchSubmenu}
+          >
+            <Typography
+              variant="h6"
+              color="initial"
+              ml={1}
+              fontWeight="bold"
+              sx={{ color: "#fff", fontSize: "14px" }}
+            >
+              الانشطة
+            </Typography>
+            <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
+          </Stack>
+          {showBranchesMenu && (
+            <Box
+              pl={2}
+              mt={1}
+              sx={{
+                maxHeight: "150px", // Set your desired max height
+                overflowY: "scroll",
+                direction: "rtl",
+                "&::-webkit-scrollbar": {
+                  width: "4px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  background: "transparent",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "#ddd",
+                  borderRadius: "10px",
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  background: "green",
+                },
+              }}
+            >
+              <NavLink
+                to={`/mangebranches`}
+                className={({ isActive }) =>
+                  `navlink ${isActive ? "active-link" : ""}`
+                }
+              >
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  p="4px"
+                  bgcolor="inherit"
+                  sx={{
+                    direction: "ltr",
+                    borderTopLeftRadius: "10px",
+                    borderBottomLeftRadius: "10px",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    color="initial"
+                    ml={1}
+                    fontWeight="bold"
+                    sx={{ color: "inherit", fontSize: "12px" }}
+                  >
+                    ادارة الانشطة
+                  </Typography>
+                </Stack>
+              </NavLink>
+              {branches?.map((branch) => (
+                <Box key={branch.id} mt={1}>
+                  <NavLink
+                    to={`/branch/${branch.id}`}
+                    className={({ isActive }) =>
+                      `navlink ${isActive ? "active-link" : ""}`
+                    }
+                  >
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      p="4px"
+                      bgcolor="inherit"
+                      sx={{
+                        direction: "ltr",
+                        borderTopLeftRadius: "10px",
+                        borderBottomLeftRadius: "10px",
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        color="initial"
+                        ml={1}
+                        fontWeight="bold"
+                        sx={{ color: "inherit", fontSize: "12px" }}
+                      >
+                        {branch.name}
+                      </Typography>
+                    </Stack>
+                  </NavLink>
+                </Box>
+              ))}
+            </Box>
+          )}
+        </Box>
+        {/* menu supervisors */}
+        <Box
+          mt={1}
+          pb={2}
+          // borderBottom={showSupervisorsMenu ? "1px solid #fff" : ""}
+        >
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            p={1}
+            bgcolor="inherit"
+            sx={{
+              borderTopLeftRadius: "10px",
+              borderBottomLeftRadius: "10px",
+              cursor: "pointer",
+            }}
+            onClick={toggleSupervisorSubmenu}
+          >
+            <Typography
+              variant="h6"
+              color="initial"
+              ml={1}
+              fontWeight="bold"
+              sx={{ color: "#fff", fontSize: "14px" }}
+            >
+              المسؤلين
+            </Typography>
+            <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
+          </Stack>
+          {showSupervisorsMenu && (
+            <Box pl={2} mt={1}>
+              <NavLink
+                to={`/mangesupervisors`}
+                className={({ isActive }) =>
+                  `navlink ${isActive ? "active-link" : ""}`
+                }
+              >
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  p="4px"
+                  bgcolor="inherit"
+                  sx={{
+                    direction: "ltr",
+                    borderTopLeftRadius: "10px",
+                    borderBottomLeftRadius: "10px",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    color="initial"
+                    ml={1}
+                    fontWeight="bold"
+                    sx={{ color: "inherit", fontSize: "12px" }}
+                  >
+                    ادارة المسؤلين
+                  </Typography>
+                </Stack>
+              </NavLink>
+              {/* {supervisors?.map((branch) => (
+                <Box key={branch.id} mt={1}>
+                  <NavLink
+                    to={`/branch/${branch.id}`}
+                    className={({ isActive }) =>
+                      `navlink ${isActive ? "active-link" : ""}`
+                    }
+                  >
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      p="4px"
+                      bgcolor="inherit"
+                      sx={{
+                        direction: "ltr",
+                        borderTopLeftRadius: "10px",
+                        borderBottomLeftRadius: "10px",
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        color="initial"
+                        ml={1}
+                        fontWeight="bold"
+                        sx={{ color: "inherit", fontSize: "12px" }}
+                      >
+                        {branch.name}
+                      </Typography>
+                    </Stack>
+                  </NavLink>
+                </Box>
+              ))} */}
+            </Box>
+          )}
+        </Box>
+
+        {/* logout */}
         <Stack
           direction="row"
           position="absolute"

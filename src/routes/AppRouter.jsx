@@ -8,6 +8,9 @@ import Home from "../pages/Home";
 import AddProject from "../pages/AddProject";
 import WithGuard from "../components/common/Auth/WithGuard";
 import ProjectsTable from "../components/manageContracts/ProjectsTable";
+import Branch from "../pages/Branch";
+import MangeBranches from "../pages/MangeBranches";
+import ManageSupervisors from "../pages/ManageSupervisors";
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 
@@ -38,6 +41,18 @@ const router = createBrowserRouter([
       {
         path: "projectsbox",
         element: <ProjectsTable />,
+      },
+      {
+        path: "branch/:id",
+        element: <Branch />,
+      },
+      {
+        path: "mangebranches",
+        element: <MangeBranches />,
+      },
+      {
+        path: "mangesupervisors",
+        element: <ManageSupervisors />,
       },
     ],
   },

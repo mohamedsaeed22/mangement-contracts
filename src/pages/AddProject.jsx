@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../components/common/Heading/Heading";
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +8,20 @@ import { actGetBranches } from "../store/branch/branchSlice";
 import { actGetSupervisors } from "../store/supervisor/supervisorSlice";
 import actCreateProject from "../store/project/act/actCreateProject";
 import { notifyFailed, notifySuccess } from "../components/feedback/alerts";
+import MySelect from "../components/common/UI/MySelect";
+import MyInput from "../components/common/UI/MyInput";
+import MyInputsWrapper from "../components/common/UI/MyInputsWrapper";
+import MyDatePicker from "../components/common/UI/MyDatePicker";
+import MyButton from "../components/common/UI/MyButton";
+
+const projectStateOptions = [
+  { id: 1, name: "لم يتم البدء" },
+  { id: 2, name: "جار العمل علية" },
+  { id: 3, name: "اكتمل" },
+  { id: 4, name: "مرفوض" },
+  { id: 5, name: "معلق" },
+];
+const myWidth = 250;
 
 const AddProject = () => {
   const dispatch = useDispatch();
@@ -32,15 +36,16 @@ const AddProject = () => {
   const [progress, setProgress] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [projectState, setProjectState] = useState("");
+
+  // useEffect(() => {
+  //   dispatch(actGetSupervisors());
+  // }, [dispatch]);
+
   const handleStartDateChange = (newValue) => {
     setStartDate(newValue);
     setEndDate(null);
   };
-
-  useEffect(() => {
-    dispatch(actGetBranches());
-    dispatch(actGetSupervisors());
-  }, [dispatch]);
 
   const handleEndDateChange = (newValue) => {
     setEndDate(newValue);
@@ -53,12 +58,17 @@ const AddProject = () => {
     setSupervisor(event.target.value);
   };
 
+  const handleChangeProjectState = (event) => {
+    setProjectState(event.target.value);
+  };
+
   const isFormValid = () => {
     return (
       branche &&
       supervisor &&
       projectName.length > 5 &&
       projectDesc &&
+      projectState &&
       plannedCost &&
       actualCost &&
       progress &&
@@ -76,7 +86,7 @@ const AddProject = () => {
       budget: parseFloat(plannedCost),
       spentBudget: parseFloat(actualCost),
       percentage: parseFloat(progress),
-      status: 1,
+      status: projectState,
       branchId: branche,
       supervisorId: supervisor,
     };
@@ -93,221 +103,77 @@ const AddProject = () => {
   return (
     <>
       <Heading title="اضافة مشروع" />
-      <Box border="1px dashed #ccc" borderRadius={2} m={4}>
-        <Box p={2}>
-          {/* branches and supervisor */}
-          <Stack direction="row" gap={3} ml={1} flexWrap="wrap">
-            <Box>
-              <FormControl sx={{ minWidth: 250 }} size="small">
-                <InputLabel id="demo-simple-select-branche">النشاط</InputLabel>
-                <Select
-                  labelId="demo-simple-select-branche"
-                  id="demo-simple-selectBranch"
-                  value={branche}
-                  label="النشاط"
-                  onChange={handleChangeBranche}
-                >
-                  {branches?.map((branch) => (
-                    <MenuItem key={branch.id} value={branch.id}>
-                      {branch.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl sx={{ minWidth: 250 }} size="small">
-                <InputLabel id="demo-simple-select-supervisor">
-                  مشرف المشروع
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-supervisor"
-                  id="demo-simple-selectSupervisor"
-                  value={supervisor}
-                  label="مشرف المشروع"
-                  onChange={handleChangeSupervisor}
-                >
-                  {supervisors?.map((supervisor) => (
-                    <MenuItem key={supervisor.id} value={supervisor.id}>
-                      {supervisor.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-          </Stack>
-          {/* name and desc */}
-          <Stack
-            mt={3}
-            sx={{
-              border: "1px solid #ddd ",
-              borderRadius: "8px",
-              padding: "24px 18px",
-              position: "relative",
-              gap: 3,
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-          >
-            <Typography
-              variant="body1"
-              color="initial"
-              sx={{
-                fontSize: "13px",
-                position: "absolute",
-                top: "-10px",
-                paddingInline: "6px",
-                backgroundColor: "#fff",
-              }}
-            >
-              اسم و وصف المشروع
-            </Typography>
-            <TextField
-              size="small"
-              id="project-name"
-              label=" الاسم"
-              variant="outlined"
-              sx={{
-                width: "250px",
-                "& .MuiFormHelperText-root": {
-                  color: "red",
-                  fontSize: "12px !important ",
-                },
-              }}
-              helperText="اسم المشروع لابد ان يكون اكثر من 5 احرف"
+      <Box border="1px dashed #ccc" borderRadius={2} m={2}>
+        <Box p={1}>
+          <MyInputsWrapper>
+            <MySelect
+              label="النشاط"
+              value={supervisor}
+              onChangeValue={handleChangeBranche}
+              list={supervisors}
+            />
+            <MySelect
+              label="مشرف المشروع"
+              value={supervisor}
+              onChangeValue={handleChangeSupervisor}
+              list={supervisors}
+            />
+            <MySelect
+              label="حاله المشروع"
+              value={projectState}
+              onChangeValue={handleChangeProjectState}
+              list={projectStateOptions}
+            />
+          </MyInputsWrapper>
+
+          <MyInputsWrapper direction="column" title="اسم و وصف المشروع">
+            <MyInput
               value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
+              onChangeValue={(e) => setProjectName(e.target.value)}
+              label="الاسم"
+              width={myWidth}
             />
-
-            <TextField
-              size="small"
-              id="project-desc"
-              label="الوصف"
-              variant="outlined"
-              multiline
-              rows={3}
-              fullWidth
+            <MyInput
               value={projectDesc}
-              onChange={(e) => setProjectDesc(e.target.value)}
+              onChangeValue={(e) => setProjectDesc(e.target.value)}
+              label="الوصف"
+              multiline={true}
+              rows={3}
+              fullWidth={true}
             />
-          </Stack>
+          </MyInputsWrapper>
 
-          <Stack
-            mt={3}
-            sx={{
-              border: "1px solid #ddd ",
-              borderRadius: "8px",
-              padding: "24px 18px",
-              position: "relative",
-              gap: 3,
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-          >
-            <Typography
-              variant="body1"
-              color="initial"
-              sx={{
-                fontSize: "13px",
-                position: "absolute",
-                top: "-10px",
-                paddingInline: "6px",
-                backgroundColor: "#fff",
-              }}
-            >
-              تكلفة المشروع
-            </Typography>
-            <TextField
-              size="small"
-              id="planned-cost"
-              type="number"
-              label="التكلفة المخططة"
-              variant="outlined"
-              sx={{ width: "250px" }}
+          <MyInputsWrapper title="تكلفة المشروع">
+            <MyInput
               value={plannedCost}
-              onChange={(e) => setPlannedCost(e.target.value)}
-            />
-            <TextField
-              size="small"
-              id="actual-cost"
+              onChangeValue={(e) => setPlannedCost(e.target.value)}
+              label="التكلفة المخططة"
+              width={myWidth}
               type="number"
-              label="المنصرف الفعلى"
-              variant="outlined"
-              sx={{ width: "250px" }}
+            />
+            <MyInput
               value={actualCost}
-              onChange={(e) => setActualCost(e.target.value)}
-            />
-          </Stack>
-
-          <Stack
-            mt={3}
-            sx={{
-              border: "1px solid #ddd ",
-              borderRadius: "8px",
-              padding: "24px 18px",
-              position: "relative",
-              gap: 3,
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-          >
-            <Typography
-              variant="body1"
-              color="initial"
-              sx={{
-                fontSize: "13px",
-                position: "absolute",
-                top: "-10px",
-                paddingInline: "6px",
-                backgroundColor: "#fff",
-              }}
-            >
-              ما تم انجازة من المشروع
-            </Typography>
-            <TextField
-              size="small"
-              id="progress"
-              label="نسبة مؤية %"
-              variant="outlined"
-              sx={{ width: "250px" }}
+              onChangeValue={(e) => setActualCost(e.target.value)}
+              label="المنصرف الفعلى"
+              width={myWidth}
               type="number"
+            />
+          </MyInputsWrapper>
+
+          <MyInputsWrapper title="ما تم انجازة من المشروع">
+            <MyInput
               value={progress}
-              onChange={(e) => {
-                const newValue = Math.min(Math.max(e.target.value, 0), 100); // Ensure the value is between 0 and 100
+              onChangeValue={(e) => {
+                const newValue = Math.min(Math.max(e.target.value, 0), 100);
                 setProgress(newValue);
               }}
-              inputProps={{
-                min: 0,
-                max: 100,
-              }}
+              label="نسبة مؤية %"
+              width={myWidth}
+              type="number"
             />
-          </Stack>
+          </MyInputsWrapper>
 
-          <Stack
-            mt={3}
-            sx={{
-              border: "1px solid #ddd ",
-              borderRadius: "8px",
-              padding: "24px 18px",
-              position: "relative",
-              gap: 3,
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-          >
-            <Typography
-              variant="body1"
-              color="initial"
-              sx={{
-                fontSize: "13px",
-                position: "absolute",
-                top: "-10px",
-                paddingInline: "6px",
-                backgroundColor: "#fff",
-              }}
-            >
-              الخطة الزمنية للمشروع
-            </Typography>
+          <MyInputsWrapper title="الخطة الزمنية للمشروع">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Box
                 sx={{
@@ -319,44 +185,30 @@ const AddProject = () => {
                   flexWrap: "wrap",
                 }}
               >
-                <Box sx={{ width: "250px" }}>
-                  <DatePicker
-                    label="بداية المشروع"
-                    slotProps={{ textField: { size: "small" } }}
-                    value={startDate}
-                    onChange={handleStartDateChange}
-                    renderInput={(params) => <TextField {...params} />}
-                    inputFormat="MM/DD/YYYY"
-                  />
-                </Box>
-                <Box sx={{ width: "250px" }}>
-                  <DatePicker
-                    label="نهاية المشروع"
-                    value={endDate}
-                    onChange={handleEndDateChange}
-                    renderInput={(params) => <TextField {...params} />}
-                    inputFormat="MM/DD/YYYY"
-                    minDate={startDate || null}
-                    slotProps={{ textField: { size: "small" } }}
-                    disabled={!startDate}
-                  />
-                </Box>
+                <MyDatePicker
+                  title="بداية المشروع"
+                  value={startDate}
+                  onChangeDate={handleStartDateChange}
+                  width={250}
+                />
+
+                <MyDatePicker
+                  title="نهاية المشروع"
+                  value={endDate}
+                  onChangeDate={handleEndDateChange}
+                  width={250}
+                  disabled={!startDate}
+                />
               </Box>
             </LocalizationProvider>
-          </Stack>
+          </MyInputsWrapper>
+
           <Box mt={3} textAlign="center">
-            <Button
-              variant="contained"
-              sx={{
-                minWidth: 180,
-                backgroundColor: "black",
-                "&:hover": { backgroundColor: "#000", color: "#FFC100" },
-              }}
-              onClick={handleSubmit}
+            <MyButton
+              label="اضافة"
+              handleClick={handleSubmit}
               disabled={!isFormValid()}
-            >
-              اضافة
-            </Button>
+            />
           </Box>
         </Box>
       </Box>
