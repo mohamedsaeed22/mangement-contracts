@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Heading from "../components/common/Heading/Heading";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { useState } from "react";
+import { Box, Button, MenuItem, Stack } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDispatch, useSelector } from "react-redux";
-import { actGetBranches } from "../store/branch/branchSlice";
-import { actGetSupervisors } from "../store/supervisor/supervisorSlice";
+import { Field, Formik } from "formik";
 import actCreateProject from "../store/project/act/actCreateProject";
 import { notifyFailed, notifySuccess } from "../components/feedback/alerts";
 import MySelect from "../components/common/UI/MySelect";
@@ -13,6 +11,9 @@ import MyInput from "../components/common/UI/MyInput";
 import MyInputsWrapper from "../components/common/UI/MyInputsWrapper";
 import MyDatePicker from "../components/common/UI/MyDatePicker";
 import MyButton from "../components/common/UI/MyButton";
+import Heading from "../components/common/Heading/Heading";
+import dayjs from "dayjs";
+import projectSchema from "../validations/projectSchema";
 
 const projectStateOptions = [
   { id: 1, name: "لم يتم البدء" },
@@ -21,75 +22,49 @@ const projectStateOptions = [
   { id: 4, name: "مرفوض" },
   { id: 5, name: "معلق" },
 ];
+
+const initialValues = {
+  name: "",
+  description: "",
+  startDate: "2024-05-29T10:38:00.817Z",
+  endDate: "2024-05-29T10:38:00.817Z",
+  budget: "",
+  spentBudget: "",
+  percentage: "",
+  status: "",
+  branchId: "",
+  supervisorId: "",
+};
+
 const myWidth = 250;
 
 const AddProject = () => {
   const dispatch = useDispatch();
-  const { branches } = useSelector((state) => state.branch);
   const { supervisors } = useSelector((state) => state.supervisor);
-  const [branche, setBranch] = useState("");
-  const [supervisor, setSupervisor] = useState("");
-  const [projectName, setProjectName] = useState("");
-  const [projectDesc, setProjectDesc] = useState("");
-  const [plannedCost, setPlannedCost] = useState("");
-  const [actualCost, setActualCost] = useState("");
-  const [progress, setProgress] = useState("");
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [projectState, setProjectState] = useState("");
+  const { branches } = useSelector((state) => state.branch);
+  // const [startDate, setStartDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null);
+  // const handleStartDateChange = (newValue) => {
+  //   setStartDate(newValue);
+  //   setEndDate(null);
+  // };
 
-  // useEffect(() => {
-  //   dispatch(actGetSupervisors());
-  // }, [dispatch]);
-
-  const handleStartDateChange = (newValue) => {
-    setStartDate(newValue);
-    setEndDate(null);
-  };
-
-  const handleEndDateChange = (newValue) => {
-    setEndDate(newValue);
-  };
-
-  const handleChangeBranche = (event) => {
-    setBranch(event.target.value);
-  };
-  const handleChangeSupervisor = (event) => {
-    setSupervisor(event.target.value);
-  };
-
-  const handleChangeProjectState = (event) => {
-    setProjectState(event.target.value);
-  };
-
-  const isFormValid = () => {
-    return (
-      branche &&
-      supervisor &&
-      projectName.length > 5 &&
-      projectDesc &&
-      projectState &&
-      plannedCost &&
-      actualCost &&
-      progress &&
-      startDate &&
-      endDate
-    );
-  };
-
-  const handleSubmit = () => {
+  // const handleEndDateChange = (newValue) => {
+  //   setEndDate(newValue ? newValue.toDate() : null); // Convert newValue to a Date object
+  // };
+  const handleFormSubmit = (values) => {
+    console.log(values);
     const projectData = {
-      name: projectName,
-      description: projectDesc,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
-      budget: parseFloat(plannedCost),
-      spentBudget: parseFloat(actualCost),
-      percentage: parseFloat(progress),
-      status: projectState,
-      branchId: branche,
-      supervisorId: supervisor,
+      ...values,
+      // startDate: values.startDate.toISOString(),
+      // endDate: values.endDate.toISOString(),
+      endDate: values.endDate,
+      startDate: values.startDate,
+      budget: parseFloat(values.budget),
+      spentBudget: parseFloat(values.spentBudget),
+      percentage: parseFloat(values.percentage),
     };
+
     dispatch(actCreateProject(projectData))
       .unwrap()
       .then((res) => {
@@ -105,111 +80,198 @@ const AddProject = () => {
       <Heading title="اضافة مشروع" />
       <Box border="1px dashed #ccc" borderRadius={2} m={2}>
         <Box p={1}>
-          <MyInputsWrapper>
-            <MySelect
-              label="النشاط"
-              value={supervisor}
-              onChangeValue={handleChangeBranche}
-              list={supervisors}
-            />
-            <MySelect
-              label="مشرف المشروع"
-              value={supervisor}
-              onChangeValue={handleChangeSupervisor}
-              list={supervisors}
-            />
-            <MySelect
-              label="حاله المشروع"
-              value={projectState}
-              onChangeValue={handleChangeProjectState}
-              list={projectStateOptions}
-            />
-          </MyInputsWrapper>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Formik
+              onSubmit={handleFormSubmit}
+              initialValues={initialValues}
+              validationSchema={projectSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldValue,
+              }) => (
+                <Stack component="form" onSubmit={handleSubmit}>
+                  <MyInputsWrapper>
+                    <MyInput
+                      name="branchId"
+                      select
+                      label="النشاط"
+                      value={values.branchId}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      width={myWidth}
+                      error={!!touched.branchId && !!errors.branchId}
+                      helperText={touched.branchId && errors.branchId}
+                    >
+                      {branches.length > 0 ? (
+                        branches.map((branch) => (
+                          <MenuItem key={branch.id} value={branch.id}>
+                            {branch.name}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem>لا يوجد انشطة</MenuItem>
+                      )}
+                    </MyInput>
 
-          <MyInputsWrapper direction="column" title="اسم و وصف المشروع">
-            <MyInput
-              value={projectName}
-              onChangeValue={(e) => setProjectName(e.target.value)}
-              label="الاسم"
-              width={myWidth}
-            />
-            <MyInput
-              value={projectDesc}
-              onChangeValue={(e) => setProjectDesc(e.target.value)}
-              label="الوصف"
-              multiline={true}
-              rows={3}
-              fullWidth={true}
-            />
-          </MyInputsWrapper>
+                    <MyInput
+                      name="supervisorId"
+                      select
+                      label="مشرف المشروع"
+                      value={values.supervisorId}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      width={myWidth}
+                      error={!!touched.supervisorId && !!errors.supervisorId}
+                      helperText={touched.supervisorId && errors.supervisorId}
+                    >
+                      {supervisors.length > 0 ? (
+                        supervisors.map((supervisor) => (
+                          <MenuItem key={supervisor.id} value={supervisor.id}>
+                            {supervisor.name}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>لا يوجد مشرفين</MenuItem>
+                      )}
+                    </MyInput>
 
-          <MyInputsWrapper title="تكلفة المشروع">
-            <MyInput
-              value={plannedCost}
-              onChangeValue={(e) => setPlannedCost(e.target.value)}
-              label="التكلفة المخططة"
-              width={myWidth}
-              type="number"
-            />
-            <MyInput
-              value={actualCost}
-              onChangeValue={(e) => setActualCost(e.target.value)}
-              label="المنصرف الفعلى"
-              width={myWidth}
-              type="number"
-            />
-          </MyInputsWrapper>
+                    <MyInput
+                      name="status"
+                      select
+                      label="حالة المشروع"
+                      value={values.status}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      width={myWidth}
+                      error={!!touched.status && !!errors.status}
+                      helperText={touched.status && errors.status}
+                    >
+                      {projectStateOptions.map((status) => (
+                        <MenuItem key={status.id} value={status.id}>
+                          {status.name}
+                        </MenuItem>
+                      ))}
+                    </MyInput>
+                  </MyInputsWrapper>
 
-          <MyInputsWrapper title="ما تم انجازة من المشروع">
-            <MyInput
-              value={progress}
-              onChangeValue={(e) => {
-                const newValue = Math.min(Math.max(e.target.value, 0), 100);
-                setProgress(newValue);
-              }}
-              label="نسبة مؤية %"
-              width={myWidth}
-              type="number"
-            />
-          </MyInputsWrapper>
+                  <MyInputsWrapper direction="column" title="اسم و وصف المشروع">
+                    <MyInput
+                      name="name"
+                      label="الاسم"
+                      value={values.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      width={myWidth}
+                      error={!!touched.name && !!errors.name}
+                      helperText={touched.name && errors.name}
+                    />
 
-          <MyInputsWrapper title="الخطة الزمنية للمشروع">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  mt: 2,
-                  gap: 3,
-                  flexWrap: "wrap",
-                }}
-              >
-                <MyDatePicker
-                  title="بداية المشروع"
-                  value={startDate}
-                  onChangeDate={handleStartDateChange}
-                  width={250}
-                />
+                    <MyInput
+                      name="description"
+                      label="الوصف"
+                      multiline={true}
+                      rows={3}
+                      fullWidth={true}
+                      value={values.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={!!touched.description && !!errors.description}
+                      helperText={touched.description && errors.description}
+                    />
+                  </MyInputsWrapper>
 
-                <MyDatePicker
-                  title="نهاية المشروع"
-                  value={endDate}
-                  onChangeDate={handleEndDateChange}
-                  width={250}
-                  disabled={!startDate}
-                />
-              </Box>
-            </LocalizationProvider>
-          </MyInputsWrapper>
+                  <MyInputsWrapper title="تكلفة المشروع">
+                    <MyInput
+                      name="budget"
+                      label="التكلفة المخططة"
+                      width={myWidth}
+                      type="number"
+                      value={values.budget}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={!!touched.budget && !!errors.budget}
+                      helperText={touched.budget && errors.budget}
+                    />
+                    <MyInput
+                      name="spentBudget"
+                      label="المنصرف الفعلى"
+                      width={myWidth}
+                      type="number"
+                      value={values.spentBudget}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={!!touched.spentBudget && !!errors.spentBudget}
+                      helperText={touched.spentBudget && errors.spentBudget}
+                    />
+                  </MyInputsWrapper>
 
-          <Box mt={3} textAlign="center">
-            <MyButton
-              label="اضافة"
-              handleClick={handleSubmit}
-              disabled={!isFormValid()}
-            />
-          </Box>
+                  <MyInputsWrapper title="ما تم انجازة من المشروع">
+                    <MyInput
+                      name="percentage"
+                      value={values.percentage}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={!!touched.percentage && !!errors.percentage}
+                      helperText={touched.percentage && errors.percentage}
+                      label="نسبة مؤية %"
+                      width={myWidth}
+                      type="number"
+                    />
+                  </MyInputsWrapper>
+                  <MyInputsWrapper title="الخطة الزمنية للمشروع">
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        mt: 2,
+                        gap: 3,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <MyDatePicker
+                        name="startDate"
+                        title="بداية المشروع"
+                        value={dayjs(values.startDate)}
+                        onChangeDate={(value) => {
+                          setFieldValue("startDate", value);
+                          setFieldValue("endDate", null); // Reset endDate when startDate changes
+                        }}
+                        disabled={true}
+                        width={250}
+                        error={!!touched.startDate && !!errors.startDate}
+                        helperText={touched.startDate && errors.startDate}
+                      />
+
+                      <MyDatePicker
+                        name="endDate"
+                        title="نهاية المشروع"
+                        value={dayjs(values.endDate)}
+                        onChangeDate={(value) => {
+                          setFieldValue("endDate", value);
+                        }}
+                        width={250}
+                        // disabled={!values.startDate}
+                        disabled={true}
+                        error={!!touched.endDate && !!errors.endDate}
+                        helperText={touched.endDate && errors.endDate}
+                      />
+                    </Box>
+                  </MyInputsWrapper>
+
+                  <Box mt={3} textAlign="center">
+                    <MyButton label="اضافة" type="submit" />
+                  </Box>
+                </Stack>
+              )}
+            </Formik>{" "}
+          </LocalizationProvider>
         </Box>
       </Box>
     </>

@@ -11,7 +11,7 @@ const Home = () => {
     <Box>
       <Heading title="الصفحة الرئيسية" />
 
-      <Box p={2} bgcolor="#ddd" borderRadius={2} mt={3}>
+      <Box p={2}  borderRadius={2} mt={3}>
         {/* top paper */}
         <TopStat />
 

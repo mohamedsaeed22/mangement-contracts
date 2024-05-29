@@ -1,26 +1,32 @@
-import { Box, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import React from "react";
+import { TextField } from "@mui/material";
 
 const MyDatePicker = ({
-  width,
+  name,
+  title,
   value,
   onChangeDate,
-  title,
-  disabled = false,
+  width,
+  error,
+  helperText,
+  disabled,
 }) => {
   return (
-    <Box sx={{ width: width }}>
-      <DatePicker
-        label={title}
-        slotProps={{ textField: { size: "small" } }}
-        value={value}
-        onChange={onChangeDate}
-        renderInput={(params) => <TextField {...params} />}
-        inputFormat="MM/DD/YYYY"
-        disabled={disabled}
-      />
-    </Box>
+    <DatePicker
+      label={title}
+      value={value}
+      onChange={onChangeDate}
+      disabled={disabled}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          name={name}
+          sx={{ width: width }}
+          error={error}
+          helperText={helperText}
+        />
+      )}
+    />
   );
 };
 

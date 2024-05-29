@@ -8,7 +8,9 @@ const TopStat = () => {
       sx={{
         padding: "8px",
         marginBottom: 2,
+        border:'1px solid #ddd'
       }}
+      elevation={0}
     >
       <Stack
         flexDirection="row"

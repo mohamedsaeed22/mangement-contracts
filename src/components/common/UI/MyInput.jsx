@@ -3,14 +3,19 @@ import React from "react";
 
 const MyInput = ({
   value,
-  onChangeValue,
   label,
-  width ,
+  width,
   multiline = false,
   fullWidth = false,
   rows = 0,
-  helperText,
   type = "text",
+  error,
+  helperText,
+  onBlur,
+  onChange,
+  name,
+  select = false,
+  children,
 }) => {
   return (
     <TextField
@@ -18,11 +23,12 @@ const MyInput = ({
         width: width,
         "& .MuiFormHelperText-root": {
           color: "red",
-          fontSize: "12px !important ",
+          fontSize: "10px !important ",
+          margin: "3px 0px 0px !important",
         },
       }}
       size="small"
-      id={`my-input-${label}`}
+      id={`my-input-${name}`}
       label={label}
       type={type}
       variant="outlined"
@@ -30,9 +36,15 @@ const MyInput = ({
       rows={rows}
       fullWidth={fullWidth}
       value={value}
-      onChange={onChangeValue}
-      helperText={helperText && helperText}
-    />
+      onChange={onChange}
+      helperText={helperText}
+      error={error}
+      onBlur={onBlur}
+      name={name}
+      select={select}
+    >
+      {children}
+    </TextField>
   );
 };
 

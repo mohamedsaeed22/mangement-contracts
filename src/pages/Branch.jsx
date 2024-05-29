@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Heading from "../components/common/Heading/Heading";
 import TopStat from "../components/manageContracts/TopStat";
@@ -15,9 +15,12 @@ import {
   Pagination,
   Stack,
   TableContainer,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import StatusLabel from "../components/manageContracts/StatusLabel";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { actGetProjectByBranch } from "../store/project/projectSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,17 +45,34 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Branch = () => {
   const params = useParams();
-  const { projects, totalItems, loading, error } = useSelector(
-    (state) => state.project
-  );
+  const dispatch = useDispatch();
+  const { projectsByBranch, error } = useSelector((state) => state.project);
+  console.log(projectsByBranch);
+  useEffect(() => {
+    dispatch(actGetProjectByBranch(params.id));
+  }, [dispatch, params]);
   console.log(params.id);
+
+  const handleShowProject = (project) => {
+    console.log(project);
+  };
   return (
     <>
-      <Heading title="تفاصيل نشاط المالية" />
-      <Box p={2} mt={3} bgcolor="#ddd" borderRadius={2}>
+      <Heading title="تفاصيل النشاط" />
+      <Box p={2} mt={3} bgcolor="" borderRadius={2}>
         <TopStat />
         <BottomStat />
-      </Box>
+        <Typography variant="h6" color="initial">
+          المشاريع الخاصة بـ {""}
+          <Typography
+            component="span"
+            variant="span"
+            color="initial"
+            fontWeight="bold"
+          >
+            {projectsByBranch.length > 0 && projectsByBranch[0].branchName}
+          </Typography>
+        </Typography>
         <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
           <Table aria-label="customized table">
             <TableHead>
@@ -72,47 +92,58 @@ const Branch = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {projects?.map((row) => (
-                <StyledTableRow key={row.id}>
-                  <StyledTableCell align="center">
-                    {row.branchName}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.supervisorName}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.name}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.description}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.budget}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.spentBudget}
-                  </StyledTableCell>
+              {projectsByBranch?.map((row) => (
+                <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
+                  <StyledTableRow
+                    key={row.id}
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": { backgroundColor: "#ddd !important" },
+                    }}
+                    onClick={() => handleShowProject(row)}
+                  >
+                    <StyledTableCell align="center">
+                      {row.branchName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.supervisorName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{row.name}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.description}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.budget}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.spentBudget}
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    {row.percentage}
-                    <Box sx={{ width: "100%", marginTop: "2px" }}>
-                      <LinearProgress
-                        variant="determinate"
-                        value={parseInt(row.percentage)}
-                      />
-                    </Box>
-                  </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.percentage}
+                      <Box sx={{ width: "100%", marginTop: "2px" }}>
+                        <LinearProgress
+                          variant="determinate"
+                          value={parseInt(row.percentage)}
+                        />
+                      </Box>
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    <Box sx={{ width: "100%", marginTop: "2px" }}>
-                      <StatusLabel status={row.status} />
-                    </Box>
-                  </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box sx={{ width: "100%", marginTop: "2px" }}>
+                        <StatusLabel status={row.status} />
+                      </Box>
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    {row.startDate.split("T")[0]}
-                  </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.startDate.split("T")[0]}
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    {row.endDate.split("T")[0]}
-                  </StyledTableCell>
-                </StyledTableRow>
+                    <StyledTableCell align="center">
+                      {row.endDate.split("T")[0]}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                </Tooltip>
               ))}
             </TableBody>
           </Table>
@@ -124,16 +155,17 @@ const Branch = () => {
           mt={3}
         >
           {error && error.message && error.message}
-          {totalItems > 0 ? (
-            <Pagination
-              count={Math.ceil(totalItems / 10)}
-              page={page}
-              onChange={handleChange}
-            />
-          ) : (
-            "لا يوجد مشاريع"
-          )}
+          {/* {totalItems > 0 ? (
+          <Pagination
+            count={Math.ceil(totalItems / 10)}
+            page={page}
+            onChange={handleChange}
+          />
+        ) : (
+          "لا يوجد مشاريع"
+        )} */}
         </Stack>
+      </Box>
     </>
   );
 };

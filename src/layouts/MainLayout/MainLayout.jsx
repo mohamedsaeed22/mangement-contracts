@@ -21,12 +21,8 @@ const MainLayout = () => {
         >
           <Box
             sx={{
-              // borderRadius: "30px",
-              // borderTop: "2px solid #ccc",
-              // borderRight: "2px solid #ccc",
-              // borderBottom: "2px solid #ccc",
-              height: "calc(100vh - 60px)",
-              // overflowY: "scroll",
+              height: "calc(100vh)",
+              overflowY: "scroll",
             }}
           >
             <Outlet />

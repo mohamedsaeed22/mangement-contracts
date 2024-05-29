@@ -16,7 +16,9 @@ const BottomStat = () => {
             flexDirection: "row",
             alignItems: "center",
             width: "100%",
+            border: "1px solid #ddd",
           }}
+          elevation={0}
         >
           <Box
             sx={{
@@ -55,7 +57,9 @@ const BottomStat = () => {
             flexDirection: "row",
             alignItems: "center",
             width: "100%",
+            border: "1px solid #ddd",
           }}
+          elevation={0}
         >
           <Box
             sx={{
@@ -90,7 +94,10 @@ const BottomStat = () => {
             flexDirection: "row",
             alignItems: "center",
             width: "100%",
+            border: "1px solid #ddd",
           }}
+          elevation={0}
+
         >
           <Box
             sx={{
@@ -125,7 +132,10 @@ const BottomStat = () => {
             flexDirection: "row",
             alignItems: "center",
             width: "100%",
+            border: "1px solid #ddd",
           }}
+          elevation={0}
+
         >
           <Box
             sx={{

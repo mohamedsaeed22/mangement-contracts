@@ -171,7 +171,7 @@ const MangeBranches = () => {
           <TextField
             size="small"
             id="project-name"
-            label="اضافة نشاط"
+            label="اسم النشاط"
             variant="outlined"
             sx={{ width: "250px" }}
             value={branch.name}

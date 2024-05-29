@@ -28,6 +28,10 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/alerts";
+import { Formik } from "formik";
+import supervisorSchema from "../validations/supervisorSchema";
+import MyInput from "../components/common/UI/MyInput";
+import SupervisorForm from "../components/manageContracts/SupervisorForm";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -54,46 +58,20 @@ const initialSupervisor = {
   name: "",
   phone: "",
 };
-const phoneRegExp = /^01[1250][0-9]{8}$/;
+
 const MangeBranches = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const { supervisors } = useSelector((state) => state.supervisor);
-  const [supervisor, setSupervisor] = useState(initialSupervisor);
   const [updatedSupervisor, setUpdatedSupervisor] = useState(initialSupervisor);
 
-  const handleSupervisorValues = (e) => {
-    setSupervisor({
-      ...supervisor,
-      [e.target.name]: e.target.value,
-    });
-  };
   const handleCloseModal = () => {
     setOpenModal(false);
-  };
-
-  const handleChangeSupervisor = (e) => {
-    setUpdatedSupervisor({
-      ...updatedSupervisor,
-      [e.target.name]: e.target.value,
-    });
   };
 
   const handleUpdateSupervisor = (supervisor) => {
     setUpdatedSupervisor(supervisor);
     setOpenModal(true);
-  };
-
-  const updateSupervisor = async () => {
-    dispatch(actUpdateSupervisor(updatedSupervisor))
-      .unwrap()
-      .then((e) => {
-        notifySuccess("تم تعديل البيانات بنجاح");
-        setOpenModal(false);
-      })
-      .catch((err) => {
-        notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-      });
   };
 
   const handleDeleteBranch = async (supervisor) => {
@@ -117,18 +95,6 @@ const MangeBranches = () => {
     }
   };
 
-  const handleAddSuprvisor = () => {
-    dispatch(actCreateSupervisor(supervisor))
-      .unwrap()
-      .then((e) => {
-        notifySuccess("تم اضافة المسؤل بنجاح");
-        setSupervisor(initialSupervisor);
-      })
-      .catch((err) => {
-        notifyFailed("هذا المسؤل موجود مسبقا");
-      });
-  };
-
   return (
     <>
       <MyModal
@@ -136,67 +102,16 @@ const MangeBranches = () => {
         handleClose={handleCloseModal}
         title="تعديل بيانات مسؤل"
       >
-        <Stack gap={2} alignItems="center" m={3}>
-          <TextField
-            size="small"
-            id="supervisor-name"
-            label="تعديل الاسم"
-            variant="outlined"
-            value={updatedSupervisor.name}
-            name="name"
-            fullWidth
-            onChange={handleChangeSupervisor}
-          />
-          <TextField
-            size="small"
-            id="project-phone"
-            label="تعديل رقم الهاتف"
-            variant="outlined"
-            value={updatedSupervisor.phone}
-            name="phone"
-            fullWidth
-            type="number"
-            onChange={handleChangeSupervisor}
-          />
-          <Button variant="contained" onClick={updateSupervisor}>
-            تعديل
-          </Button>
-        </Stack>
+        <SupervisorForm
+          isUpdate={true}
+          initialValues={updatedSupervisor}
+          handleCloseModal={handleCloseModal}
+        />
       </MyModal>
       <Heading title="ادارة المسؤلين" />
-      <Box p={2}>
+      <Box p={2} mt={4}>
         {/* add supervisor */}
-        <Stack direction="row" gap={2} alignItems="center">
-          <TextField
-            size="small"
-            id="supervisor-name"
-            label="اسم المسؤل"
-            variant="outlined"
-            sx={{ width: "250px" }}
-            value={supervisor.name}
-            name="name"
-            onChange={handleSupervisorValues}
-          />
-          <TextField
-            size="small"
-            id="project-desc"
-            label="رقم المحمول"
-            variant="outlined"
-            sx={{ width: "250px" }}
-            value={supervisor.phone}
-            name="phone"
-            type="number"
-            onChange={handleSupervisorValues}
-          />
-          <Button
-            variant="contained"
-            disabled={!supervisor.name | !supervisor.phone}
-            startIcon={<Add />}
-            onClick={handleAddSuprvisor}
-          >
-            اضافة
-          </Button>
-        </Stack>
+        <SupervisorForm isUpdate={false} handleCloseModal={handleCloseModal}/>
         {/* supervisors table */}
         <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
           <Table aria-label="customized table">

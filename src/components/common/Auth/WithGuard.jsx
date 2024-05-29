@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const WithGuard = ({ children }) => {
   const { accessToken } = useSelector((state) => state.auth);
-  if (!accessToken) {
+   if (!accessToken) {
     return <Navigate to="/login" />;
   }
   return children ? children : <Outlet />;

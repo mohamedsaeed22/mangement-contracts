@@ -67,7 +67,6 @@ api.interceptors.response.use(
 
       const refreshToken = Cookies.get("refreshToken");
       const token = Cookies.get("token");
-      console.log(refreshToken, token);
       return new Promise((resolve, reject) => {
         axios
           .post(
@@ -75,8 +74,10 @@ api.interceptors.response.use(
           )
           .then(({ data }) => {
             const { accessToken } = data;
+            const sevenDaysFromNow = new Date();
+            sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
             Cookies.set("token", accessToken, {
-              expires: new Date(jwtDecode(accessToken).exp * 1000),
+              expires: sevenDaysFromNow,
             });
             api.defaults.headers.common[
               "Authorization"
