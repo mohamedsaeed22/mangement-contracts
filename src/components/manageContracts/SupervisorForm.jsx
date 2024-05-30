@@ -77,7 +77,9 @@ const SupervisorForm = ({
             onBlur={handleBlur}
             width={250}
             error={!!touched.name && !!errors.name}
-            helperText={touched.name && errors.name}
+            helperText={
+              touched.name && errors.name ? touched.name && errors.name : " "
+            }
           />
           <MyInput
             name="phone"
@@ -87,7 +89,11 @@ const SupervisorForm = ({
             onBlur={handleBlur}
             width={250}
             error={!!touched.phone && !!errors.phone}
-            helperText={touched.phone && errors.phone}
+            helperText={
+              touched.phone && errors.phone
+                ? touched.phone && errors.phone
+                : " "
+            }
           />
           <Button
             variant="contained"

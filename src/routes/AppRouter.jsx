@@ -35,7 +35,11 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "addProject",
+        path: "project/add",
+        element: <AddProject />,
+      },
+      {
+        path: "project/edit/:id",
         element: <AddProject />,
       },
       {
@@ -47,11 +51,11 @@ const router = createBrowserRouter([
         element: <Branch />,
       },
       {
-        path: "mangebranches",
+        path: "managebranches",
         element: <MangeBranches />,
       },
       {
-        path: "mangesupervisors",
+        path: "managesupervisors",
         element: <ManageSupervisors />,
       },
     ],

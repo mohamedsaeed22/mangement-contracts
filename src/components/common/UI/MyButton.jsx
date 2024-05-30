@@ -6,13 +6,15 @@ const MyButton = ({ label, disabled = false, handleClick, type }) => {
     <Button
       variant="contained"
       sx={{
-        minWidth: 180,
+        minWidth: "100%",
+        height:'56px',
         backgroundColor: "#475CA7",
         "&:hover": { backgroundColor: "#475CA7", color: "#fff " },
       }}
       onClick={() => handleClick}
-      disabled={disabled}
+      disableElevation
       type={type}
+      
     >
       {label}
     </Button>

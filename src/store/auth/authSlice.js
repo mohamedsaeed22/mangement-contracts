@@ -7,8 +7,8 @@ const token = Cookies.get("token");
 
 const initialState = {
   user: null,
-  accessToken: (token && refreshToken) || null,
-  // accessToken: true,
+  // accessToken: (token && refreshToken) || null,
+  accessToken: true,
   loading: false,
   error: null,
 };

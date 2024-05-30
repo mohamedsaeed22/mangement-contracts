@@ -28,9 +28,7 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/alerts";
-import { Formik } from "formik";
-import supervisorSchema from "../validations/supervisorSchema";
-import MyInput from "../components/common/UI/MyInput";
+
 import SupervisorForm from "../components/manageContracts/SupervisorForm";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

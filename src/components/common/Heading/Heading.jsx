@@ -3,7 +3,16 @@ import React from "react";
 
 const Heading = ({ title }) => {
   return (
-    <Box textAlign="center">
+    <Box
+      textAlign="center"
+      position="absolute"
+      sx={{
+        position: "absolute",
+        left: "50%",
+        top: "0",
+        transform: "translateX(-50%)",
+      }}
+    >
       <Typography
         component="span"
         variant="h6"
@@ -11,8 +20,9 @@ const Heading = ({ title }) => {
         sx={{
           fontSize: "14px",
           display: "inline-block",
-          backgroundColor: "#263238",
+          backgroundColor: "#475CA7",
           padding: "15px 40px",
+          width: "250px",
           color: "white",
           fontWeight: "bold",
           borderBottomRightRadius: "8px",
