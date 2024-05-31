@@ -2,6 +2,10 @@ import actAuthLogin from "./act/actAuthLogin";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import {
+  setAccessToken,
+  setRefreshToken,
+} from "../../utils/accessLocalStorage";
 const refreshToken = Cookies.get("refreshToken");
 const token = Cookies.get("token");
 
@@ -43,16 +47,15 @@ const authSlice = createSlice({
       Cookies.set("token", payload.accessToken, {
         expires: sevenDaysFromNow,
       });
-      Cookies.set("refreshToken", payload.refreshToken, {
-        expires: sevenDaysFromNow,
-      });
+      setAccessToken(payload.accessToken);
+      setRefreshToken(payload.refreshToken);
       state.accessToken = payload.accessToken;
       state.user = payload.user;
     });
 
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;
-      console.log(action)
+      console.log(action);
       if (action?.payload?.status === 401 || action?.payload?.status === 404) {
         state.error = "خطا فى اسم المستخدم او كلمة المرور";
       } else if (action?.payload?.status === 500) {

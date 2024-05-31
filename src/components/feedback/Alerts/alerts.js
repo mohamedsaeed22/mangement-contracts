@@ -12,7 +12,7 @@ export const notifySuccess = (msg) =>
     progress: undefined,
     theme: "light",
   });
-  
+
 export const notifyFailed = (msg) =>
   toast.warning(msg, {
     position: "top-right",
@@ -35,12 +35,12 @@ const SweatAlert = (options) => {
         yes: {
           text: "نعم",
           value: true,
-          className: "swal-btn-yes",  
+          className: "swal-btn-yes",
         },
         no: {
           text: "لا",
           value: false,
-          className: "swal-btn-no",  
+          className: "swal-btn-no",
         },
       },
       // dangerMode: options.dangerMode || true,

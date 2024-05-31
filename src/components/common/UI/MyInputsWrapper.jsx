@@ -6,10 +6,11 @@ const MyInputsWrapper = ({ direction = "row", children }) => {
     <Stack
       direction={direction}
       justifyContent="space-evenly"
-      // bgcolor="#ccc"
       alignItems="flex-start"
+      // bgcolor="#ccc"
       flexWrap="wrap"
-      gap={1}
+      gap={5}
+      mb={3}
     >
       {children}
     </Stack>

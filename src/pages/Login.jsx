@@ -109,7 +109,7 @@ const Login = () => {
             <Stack
               sx={{ position: "relative", marginTop: "40px", maxWidth: "100%" }}
             >
-              <label htmlFor="userHandle">اسم المستخدم</label>
+              <label id="login-label-username" htmlFor="userHandle">اسم المستخدم</label>
               <Stack
                 spacing="3px"
                 direction="row"
@@ -120,7 +120,7 @@ const Login = () => {
               >
                 <img src={UserVictor} alt="user icon" />
                 <TextField
-                  id="userHandle"
+                  id="my-input-userName"
                   name="userHandle"
                   type="text"
                   placeholder="ادخل اسم المستخدم"
@@ -141,7 +141,7 @@ const Login = () => {
             <Stack
               sx={{ position: "relative", marginTop: "30px", maxWidth: "100%" }}
             >
-              <label htmlFor="password">كلمة المرور</label>
+              <label id="login-label-password" htmlFor="password">كلمة المرور</label>
               <Stack
                 spacing="3px"
                 direction="row"
@@ -156,7 +156,7 @@ const Login = () => {
                   style={{ width: "21px" }}
                 />
                 <TextField
-                  id="password"
+                  id="my-input-password"
                   name="password"
                   type="password"
                   placeholder="ادخل كلمة المرور"

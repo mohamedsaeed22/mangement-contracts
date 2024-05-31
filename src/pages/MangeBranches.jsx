@@ -26,7 +26,8 @@ import {
   notifyFailed,
   notifySuccess,
   SweatAlert,
-} from "../components/feedback/alerts";
+} from "../components/feedback/Alerts/alerts";
+import BranchForm from "../components/Form/BranchForm";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -61,40 +62,18 @@ const MangeBranches = () => {
   const [branch, setbranch] = useState(initialBranch);
   const [updatedBranch, setUpdatedBranch] = useState(initialBranch);
 
-  const handleBranchValues = (e) => {
-    setbranch({
-      ...branch,
-      [e.target.name]: e.target.value,
-    });
-  };
+  
   console.log(branch);
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
-  const handleChangeBranch = (e) => {
-    setUpdatedBranch({
-      ...updatedBranch,
-      [e.target.name]: e.target.value,
-    });
-  };
+ 
 
   const handleUpdateBranch = (branch) => {
     setUpdatedBranch(branch);
     setOpenModal(true);
-  };
-
-  const updateBranch = async () => {
-    dispatch(actUpdateBranch(updatedBranch))
-      .unwrap()
-      .then((e) => {
-        notifySuccess("تم تعديل البيانات بنجاح");
-        setOpenModal(false);
-      })
-      .catch((err) => {
-        notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-      });
   };
 
   const handleDeleteBranch = async (branch) => {
@@ -117,17 +96,6 @@ const MangeBranches = () => {
     }
   };
 
-  const handleAddBranch = () => {
-    dispatch(actCreateBranch(branch))
-      .unwrap()
-      .then((e) => {
-        notifySuccess("تم اضافة النشاط بنجاح");
-        setbranch(initialBranch);
-      })
-      .catch((err) => {
-        notifyFailed("هذا النشاط موجود مسبقا");
-      });
-  };
 
   return (
     <>
@@ -136,38 +104,17 @@ const MangeBranches = () => {
         handleClose={handleCloseModal}
         title="تعديل بيانات نشاط"
       >
-        <Stack gap={2} alignItems="center" m={3}>
-          <TextField
-            size="small"
-            id="project-name"
-            label="تعديل الاسم"
-            variant="outlined"
-            value={updatedBranch.name}
-            name="name"
-            fullWidth
-            onChange={handleChangeBranch}
-          />
-          <TextField
-            size="small"
-            id="project-description"
-            label="تعديل وصف"
-            variant="outlined"
-            value={updatedBranch.description}
-            name="description"
-            fullWidth
-            onChange={handleChangeBranch}
-            multiline
-            rows={3}
-          />
-          <Button variant="contained" onClick={updateBranch}>
-            تعديل
-          </Button>
-        </Stack>
+        <BranchForm
+          isUpdate={true}
+          initialValues={updatedBranch}
+          handleCloseModal={handleCloseModal}
+        />
       </MyModal>
       <Heading title="ادارة الانشطة" />
-      <Box p={2}>
+      <Box>
+        <BranchForm isUpdate={false} initialValues={updatedBranch} />
         {/* add branch */}
-        <Stack direction="row" gap={2} alignItems="center">
+        {/* <Stack direction="row" gap={2} alignItems="center">
           <TextField
             size="small"
             id="project-name"
@@ -196,7 +143,7 @@ const MangeBranches = () => {
           >
             اضافة
           </Button>
-        </Stack>
+        </Stack> */}
         {/* branches table */}
         <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
           <Table aria-label="customized table">
@@ -215,20 +162,20 @@ const MangeBranches = () => {
                     {row.description}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Box>
+                  <Stack direction="row" justifyContent="center">
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         onClick={() => handleUpdateBranch(row)}
                       >
                         تعديل
                       </Button>
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         sx={{
+                          color:'#fff',
                           backgroundColor: "red",
                           "&:hover": {
                             backgroundColor: "red",
-                            color: "#fff",
                           },
                           marginLeft: "10px",
                         }}
@@ -236,7 +183,7 @@ const MangeBranches = () => {
                       >
                         حذف
                       </Button>
-                    </Box>
+                    </Stack>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}

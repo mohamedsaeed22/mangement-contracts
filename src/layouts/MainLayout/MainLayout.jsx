@@ -14,35 +14,30 @@ const MainLayout = () => {
         <Sidebar />
         <Box
           sx={{
-            width: "calc(100% - 250px)",
+            // maxWidth: "calc(100% - 250px)",
             flex: 1,
             minHeight: "100vh",
             marginLeft: "auto",
+            overflowY: "scroll",
           }}
         >
           <Stack
             component="main"
             sx={{
               minHeight: "calc(100vh - 56px)",
-              // overflowY: "scroll",
               flex: 1,
               position: "relative",
             }}
-          >
+            >
             <Box
               gap={2}
               p={1}
               border="2px solid #ddd"
               borderRadius={2}
-              m="90px 20px 0px"
+              m="100px 20px 0px"
               flex={1}
             >
               <Box p={1}>
-                {/* <Box
-                  sx={{ position: "absolute", left: "29px", top: "60px",cursor: "pointer"}}
-                >
-                  <East />
-                </Box> */}
                 <Outlet />
               </Box>
             </Box>

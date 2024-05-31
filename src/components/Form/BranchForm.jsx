@@ -1,48 +1,45 @@
 import React from "react";
-import MyInput from "../common/UI/MyInput";
+import MyInput from "./Input/MyInput";
 import { Formik } from "formik";
-import {
-  actCreateSupervisor,
-  actUpdateSupervisor,
-} from "../../store/supervisor/supervisorSlice";
 import { useDispatch } from "react-redux";
-import { notifyFailed, notifySuccess } from "../feedback/alerts";
-import supervisorSchema from "../../validations/supervisorSchema";
-import { Button, Stack } from "@mui/material";
-import { Add, Edit } from "@mui/icons-material";
+import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
+ import { Box, Stack } from "@mui/material";
+ import actUpdateBranch from "../../store/branch/act/actUpdateBranch";
+import actCreateBranch from "../../store/branch/act/actCreateBranch";
+import branchSchema from "../../validations/branchSchema";
+import MyButton from "../common/UI/MyButton";
 
 const defaultInitialSupervisor = {
   name: "",
-  phone: "",
+  description: "",
 };
 
-const SupervisorForm = ({
+const BranchForm = ({
   initialValues = defaultInitialSupervisor,
   isUpdate = false,
   handleCloseModal,
 }) => {
   const dispatch = useDispatch();
-
   const handleFormSubmit = (values, { resetForm }) => {
     if (isUpdate) {
-      dispatch(actUpdateSupervisor(values))
+      dispatch(actUpdateBranch(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم تحديث المسؤل بنجاح");
+          notifySuccess("تم تحديث النشاط بنجاح");
           handleCloseModal();
         })
         .catch((err) => {
-          notifyFailed("حدث خطأ أثناء تحديث المسؤل");
+          notifyFailed("حدث خطأ أثناء تحديث النشاط");
         });
     } else {
-      dispatch(actCreateSupervisor(values))
+      dispatch(actCreateBranch(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم اضافة المسؤل بنجاح");
+          notifySuccess("تم اضافة النشاط بنجاح");
           resetForm();
         })
         .catch((err) => {
-          notifyFailed("هذا المسؤل موجود مسبقا");
+          notifyFailed("هذا النشاط موجود مسبقا");
         });
     }
   };
@@ -51,7 +48,7 @@ const SupervisorForm = ({
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValues}
-      validationSchema={supervisorSchema}
+      validationSchema={branchSchema}
     >
       {({
         values,
@@ -63,15 +60,17 @@ const SupervisorForm = ({
       }) => (
         <Stack
           component="form"
+          flexWrap="wrap"
           direction={isUpdate && "column"}
-          gap={2}
+          gap={isUpdate ? 0 : 2}
           marginBlock={isUpdate && "1.25rem"}
           alignItems="center"
           onSubmit={handleSubmit}
         >
           <MyInput
             name="name"
-            label="اسم المسؤل"
+            label="اسم النشاط"
+            placeholder="ادخل الاسم"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -82,31 +81,31 @@ const SupervisorForm = ({
             }
           />
           <MyInput
-            name="phone"
-            label="رقم الهاتف"
-            value={values.phone}
+            name="description"
+            label="الوصف"
+            placeholder="ادخل الوصف"
+            value={values.description}
             onChange={handleChange}
             onBlur={handleBlur}
             width={250}
-            error={!!touched.phone && !!errors.phone}
+            error={!!touched.description && !!errors.description}
             helperText={
-              touched.phone && errors.phone
-                ? touched.phone && errors.phone
+              touched.description && errors.description
+                ? touched.description && errors.description
                 : " "
             }
           />
-          <Button
-            variant="contained"
-            startIcon={isUpdate ? <Edit /> : <Add />}
-            type="submit"
-            sx={{ alignSelf: "flex-start", marginInline: isUpdate && "auto" }}
-          >
-            {isUpdate ? "تعديل" : "اضافة"}
-          </Button>
+          <Box mt={1}>
+            <MyButton
+              type="submit"
+              width={100}
+              label={isUpdate ? "تعديل" : "اضافة"}
+            />
+          </Box>
         </Stack>
       )}
     </Formik>
   );
 };
 
-export default SupervisorForm;
+export default BranchForm;

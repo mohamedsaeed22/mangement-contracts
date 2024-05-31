@@ -25,7 +25,7 @@ export default function MyModal({ open, handleClose, title, children }) {
       left: 0,
       right: 0,
       height: "50px",
-      backgroundColor: "#7266ba",
+      backgroundColor: "#475CA7",
       display: "flex",
       alignItems: "center",
       fontWeight: "bold",

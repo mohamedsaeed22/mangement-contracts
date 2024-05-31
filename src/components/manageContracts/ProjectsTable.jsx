@@ -30,6 +30,7 @@ import { FilterAlt, FilterAltOff } from "@mui/icons-material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -129,7 +130,7 @@ const ProjectsTable = () => {
     <>
       <Heading title="الصفحة الرئيسية" />
       {/* filteration */}
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack direction="row" gap={2} justifyContent="space-between" alignItems="center" flexWrap="wrap">
         <Box position="relative">
           <input
             type="text"
@@ -290,9 +291,8 @@ const ProjectsTable = () => {
           </TableHead>
           <TableBody>
             {projects?.map((row) => (
-              <Tooltip title="اضغط لعرض المشروع" placement="left" arrow>
+              <Tooltip title="اضغط لعرض المشروع" placement="top" arrow key={row.id}>
                 <StyledTableRow
-                  key={row.id}
                   sx={{
                     cursor: "pointer",
                     "&:hover": { backgroundColor: "#ddd !important" },
@@ -315,7 +315,7 @@ const ProjectsTable = () => {
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    {row.percentage}
+                    {row.percentage}%
                     <Box sx={{ width: "100%", marginTop: "2px" }}>
                       <LinearProgress
                         variant="determinate"

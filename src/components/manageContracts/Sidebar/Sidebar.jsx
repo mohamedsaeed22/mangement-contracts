@@ -8,12 +8,12 @@ import MenuBlack from "../../../assets/icon/menu-black.svg";
 import FoeLogo from "../../../assets/imgs/foeLogo.png";
 import ExitIcon from "../../../assets/icon/exit.svg";
 
-import { SweatAlert } from "../../feedback/alerts";
 import { useDispatch, useSelector } from "react-redux";
 import { authLogout } from "../../../store/auth/authSlice";
 import { actGetBranches } from "../../../store/branch/branchSlice";
 import { actGetSupervisors } from "../../../store/supervisor/supervisorSlice";
 import SidebarMenu from "./SidebarMenu";
+import { SweatAlert } from "../../feedback/Alerts/alerts";
 
 const projectSubmenuList = [
   {
@@ -112,7 +112,7 @@ const Sidebar = () => {
           // overflowX: "hidden",
           // transition: "left 0.3s",
           // display: { xs: "block", md: "block" },
-          position: { xs: "fixed", md: "relative" },
+          position: { xs: "fixed", lg: "relative" },
           left: 0,
           top: 0,
           width: "250px",

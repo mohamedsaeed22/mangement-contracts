@@ -23,13 +23,13 @@ import {
   filterSupervisores,
   filterSupervisors,
 } from "../store/supervisor/supervisorSlice";
+
+import SupervisorForm from "../components/Form/SupervisorForm";
 import {
   notifyFailed,
   notifySuccess,
   SweatAlert,
-} from "../components/feedback/alerts";
-
-import SupervisorForm from "../components/manageContracts/SupervisorForm";
+} from "../components/feedback/Alerts/alerts";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -98,7 +98,7 @@ const MangeBranches = () => {
       <MyModal
         open={openModal}
         handleClose={handleCloseModal}
-        title="تعديل بيانات مسؤل"
+        title="تعديل بيانات مشرف"
       >
         <SupervisorForm
           isUpdate={true}
@@ -106,10 +106,10 @@ const MangeBranches = () => {
           handleCloseModal={handleCloseModal}
         />
       </MyModal>
-      <Heading title="ادارة المسؤلين" />
-      <Box p={2} mt={4}>
+      <Heading title="ادارة المشرفين" />
+      <Box>
         {/* add supervisor */}
-        <SupervisorForm isUpdate={false} handleCloseModal={handleCloseModal}/>
+        <SupervisorForm isUpdate={false} handleCloseModal={handleCloseModal} />
         {/* supervisors table */}
         <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
           <Table aria-label="customized table">
@@ -126,20 +126,22 @@ const MangeBranches = () => {
                   <StyledTableCell align="center">{row.name}</StyledTableCell>
                   <StyledTableCell align="center">{row.phone}</StyledTableCell>
                   <StyledTableCell align="center">
-                    <Box>
+                    <Stack direction="row" justifyContent="center">
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         onClick={() => handleUpdateSupervisor(row)}
                       >
                         تعديل
                       </Button>
                       <Button
-                        variant="contained"
+                        variant="outlined"
+                      
                         sx={{
+                          color:'#fff',
                           backgroundColor: "red",
                           "&:hover": {
                             backgroundColor: "red",
-                            color: "#fff",
+                            
                           },
                           marginLeft: "10px",
                         }}
@@ -147,7 +149,7 @@ const MangeBranches = () => {
                       >
                         حذف
                       </Button>
-                    </Box>
+                    </Stack>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
