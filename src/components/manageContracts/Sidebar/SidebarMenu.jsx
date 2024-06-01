@@ -40,10 +40,10 @@ const SidebarMenu = ({
         <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
       </Stack>
       {showSubmenu &&
-        subMenuList?.map(({ nav, title }) => (
-          <Box pl={2} mt={1} key={nav}>
+        subMenuList?.map((el) => (
+          <Box pl={2} mt={1} key={el.id}>
             <NavLink
-              to={`/${nav}`}
+              to={el.nav ? `/${el.nav}` : `/branch/${el.id}`}
               className={({ isActive }) =>
                 `navlink ${isActive ? "active-link" : ""}`
               }
@@ -52,7 +52,7 @@ const SidebarMenu = ({
                 direction="row"
                 justifyContent="space-between"
                 p="4px"
-                bgcolor="inherit" 
+                bgcolor="inherit"
                 sx={{
                   borderTopLeftRadius: "10px",
                   borderBottomLeftRadius: "10px",
@@ -65,7 +65,7 @@ const SidebarMenu = ({
                   fontWeight="bold"
                   sx={{ color: "inherit", fontSize: "12px" }}
                 >
-                  {title}
+                  {el.name}
                 </Typography>
               </Stack>
             </NavLink>

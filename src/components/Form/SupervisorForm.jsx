@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import supervisorSchema from "../../validations/supervisorSchema";
 import { Box, Stack } from "@mui/material";
- import MyButton from "../common/UI/MyButton";
+import MyButton from "../common/UI/MyButton";
 
 const defaultInitialSupervisor = {
   name: "",
@@ -63,6 +63,7 @@ const SupervisorForm = ({
       }) => (
         <Stack
           component="form"
+          id="supervisor-form"
           flexWrap="wrap"
           direction={isUpdate && "column"}
           gap={isUpdate ? 0 : 2}
@@ -76,6 +77,7 @@ const SupervisorForm = ({
             placeholder="ادخل الاسم"
             value={values.name}
             onChange={handleChange}
+            size="small"
             onBlur={handleBlur}
             width={250}
             error={!!touched.name && !!errors.name}
@@ -88,6 +90,7 @@ const SupervisorForm = ({
             label="رقم الهاتف"
             placeholder="ادخل رقم الهاتف"
             value={values.phone}
+            size="small"
             onChange={handleChange}
             onBlur={handleBlur}
             width={250}
@@ -100,9 +103,10 @@ const SupervisorForm = ({
           />
           <Box mt={1}>
             <MyButton
-               type="submit"
+              type="submit"
               width={100}
-               label={isUpdate ? "تعديل" : "اضافة"}
+              height={40}
+              label={isUpdate ? "تعديل" : "اضافة"}
             />
           </Box>
         </Stack>

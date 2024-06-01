@@ -18,8 +18,7 @@ a {
   text-decoration: none !important;
   color: #fff !important;
 }
-a:h
-input,
+a:h input,
 input::placeholder {
   font-family: Cairo, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -48,6 +47,10 @@ form #my-input-userName {
 }
 ::-ms-reveal {
   filter: invert(100%);
+}
+#branch-form input::placeholder,
+#supervisor-form input::placeholder {
+  font-size: 14px;
 }
 form input[type="submit"] {
   background-color: #ffc100;
@@ -78,7 +81,7 @@ form input[type="submit"] {
   font-family: Cairo, BlinkMacSystemFont;
   outline: none;
   border: none;
-  background-color: #f3f3f3;
+  /* background-color: #F3F3F3 ; */
   border-radius: 8px;
   width: 280px;
   padding: 8px 10px;

@@ -1,17 +1,33 @@
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import React from "react";
 
-const MyInputsWrapper = ({ direction = "row", children }) => {
+const MyInputsWrapper = ({ direction = "row", title, children }) => {
   return (
     <Stack
-      direction={direction}
-      justifyContent="space-evenly"
-      alignItems="flex-start"
-      // bgcolor="#ccc"
-      flexWrap="wrap"
-      gap={5}
-      mb={3}
+      mt={1}
+      sx={{
+        border: "1px solid #ddd ",
+        borderRadius: "8px",
+        padding: "20px 18px 10px",
+        position: "relative",
+        gap: 2,
+        flexDirection: "row",
+        flexWrap: "wrap",
+      }}
     >
+      <Typography
+        variant="body1"
+        color="initial"
+        sx={{
+          fontSize: "13px",
+          position: "absolute",
+          top: "-10px",
+          paddingInline: "6px",
+          backgroundColor: "#F5F5F5",
+        }}
+      >
+        {title}
+      </Typography>
       {children}
     </Stack>
   );

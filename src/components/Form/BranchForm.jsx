@@ -3,8 +3,8 @@ import MyInput from "./Input/MyInput";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
- import { Box, Stack } from "@mui/material";
- import actUpdateBranch from "../../store/branch/act/actUpdateBranch";
+import { Box, Stack } from "@mui/material";
+import actUpdateBranch from "../../store/branch/act/actUpdateBranch";
 import actCreateBranch from "../../store/branch/act/actCreateBranch";
 import branchSchema from "../../validations/branchSchema";
 import MyButton from "../common/UI/MyButton";
@@ -60,6 +60,7 @@ const BranchForm = ({
       }) => (
         <Stack
           component="form"
+          id="branch-form"
           flexWrap="wrap"
           direction={isUpdate && "column"}
           gap={isUpdate ? 0 : 2}
@@ -72,6 +73,7 @@ const BranchForm = ({
             label="اسم النشاط"
             placeholder="ادخل الاسم"
             value={values.name}
+            size="small"
             onChange={handleChange}
             onBlur={handleBlur}
             width={250}
@@ -87,6 +89,7 @@ const BranchForm = ({
             value={values.description}
             onChange={handleChange}
             onBlur={handleBlur}
+            size="small"
             width={250}
             error={!!touched.description && !!errors.description}
             helperText={
@@ -99,6 +102,7 @@ const BranchForm = ({
             <MyButton
               type="submit"
               width={100}
+              height={40}
               label={isUpdate ? "تعديل" : "اضافة"}
             />
           </Box>

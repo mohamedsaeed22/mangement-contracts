@@ -27,14 +27,15 @@ const MainLayout = () => {
               minHeight: "calc(100vh - 56px)",
               flex: 1,
               position: "relative",
+              backgroundColor:'#F5F5F5'
             }}
             >
             <Box
               gap={2}
               p={1}
-              border="2px solid #ddd"
+              border="2px solid #000"
               borderRadius={2}
-              m="100px 20px 0px"
+              m="140px 20px 0px"
               flex={1}
             >
               <Box p={1}>

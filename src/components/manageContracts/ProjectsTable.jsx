@@ -30,7 +30,9 @@ import { FilterAlt, FilterAltOff } from "@mui/icons-material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
+import FilterIcon from "../../assets/icon/filter-icon.svg";
 import dayjs from "dayjs";
+import MyBtn from "../common/UI/MyBtn";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -67,8 +69,7 @@ const ProjectsTable = () => {
   const { projects, totalItems, loading, error } = useSelector(
     (state) => state.project
   );
-  console.log(projects);
-  console.log(error);
+
   const { branches } = useSelector((state) => state.branch);
   const { supervisors } = useSelector((state) => state.supervisor);
   const [plannedCost, setPlannedCost] = useState("");
@@ -130,7 +131,13 @@ const ProjectsTable = () => {
     <>
       <Heading title="الصفحة الرئيسية" />
       {/* filteration */}
-      <Stack direction="row" gap={2} justifyContent="space-between" alignItems="center" flexWrap="wrap">
+      <Stack
+        direction="row"
+        gap={2}
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+      >
         <Box position="relative">
           <input
             type="text"
@@ -263,13 +270,8 @@ const ProjectsTable = () => {
               </LocalizationProvider>
             </Stack>
           )}
-          <Button
-            variant="contained"
-            endIcon={toggleFilter ? <FilterAltOff /> : <FilterAlt />}
-            onClick={handleToggleFilter}
-          >
-            تصنيف
-          </Button>
+
+          <MyBtn title="تصنيف" icon={FilterIcon} handleBtnClick={handleToggleFilter}/>
         </Stack>
       </Stack>
 
@@ -291,13 +293,18 @@ const ProjectsTable = () => {
           </TableHead>
           <TableBody>
             {projects?.map((row) => (
-              <Tooltip title="اضغط لعرض المشروع" placement="top" arrow key={row.id}>
+              <Tooltip
+                title="اضغط لعرض المشروع"
+                placement="top"
+                arrow
+                key={row.id}
+              >
                 <StyledTableRow
                   sx={{
                     cursor: "pointer",
                     "&:hover": { backgroundColor: "#ddd !important" },
                   }}
-                  onClick={() => navigate(`/project/edit/${row.id}`)}
+                  onClick={() => navigate(`/project/id/${row.id}`)}
                 >
                   <StyledTableCell align="center">
                     {row.branchName}

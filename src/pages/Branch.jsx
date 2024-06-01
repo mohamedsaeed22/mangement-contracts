@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Heading from "../components/common/Heading/Heading";
 import TopStat from "../components/manageContracts/TopStat";
 import BottomStat from "../components/manageContracts/BottomStat";
@@ -45,6 +45,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Branch = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { projectsByBranch, error } = useSelector((state) => state.project);
   console.log(projectsByBranch);
@@ -54,12 +55,12 @@ const Branch = () => {
   console.log(params.id);
 
   const handleShowProject = (project) => {
-    console.log(project);
+    navigate(`/project/edit/${project.id}`);
   };
   return (
     <>
       <Heading title="تفاصيل النشاط" />
-      <Box p={2} mt={3} bgcolor="" borderRadius={2}>
+      <Box bgcolor="" borderRadius={2}>
         <TopStat />
         <BottomStat />
         <Typography variant="h6" color="initial">
@@ -73,7 +74,7 @@ const Branch = () => {
             {projectsByBranch.length > 0 && projectsByBranch[0].branchName}
           </Typography>
         </Typography>
-        <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
+        <TableContainer sx={{ maxHeight: "80vh", marginTop: "10px" }}>
           <Table aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -95,7 +96,7 @@ const Branch = () => {
               {projectsByBranch?.map((row) => (
                 <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
                   <StyledTableRow
-                    key={row.id}
+                    key={row}
                     sx={{
                       cursor: "pointer",
                       "&:hover": { backgroundColor: "#ddd !important" },

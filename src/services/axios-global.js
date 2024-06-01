@@ -3,6 +3,7 @@ import {
   getAcessToken,
   getRefreshToken,
   setAccessToken,
+  setRefreshToken,
 } from "../utils/accessLocalStorage";
 
 const BASE_URL = "http://172.16.3.230:9433/";
@@ -34,39 +35,40 @@ api.interceptors.response.use(
   (res) => {
     return res;
   },
-  async (err) => {
-    const originalConfig = err.config;
+  // async (err) => {
+  //   const originalConfig = err.config;
+  //   if (err.response) {
+  //     // console.log(err.response);
+  //     // Access Token was expired
+  //     if (err.response.status === 401 && !originalConfig._retry) {
+  //       originalConfig._retry = true;
+  //       try {
+  //         const rs = await refreshMyToken();
+  //         const { accessToken, refreshToken } = rs.data;
+  //         setAccessToken(accessToken);
+  //         setRefreshToken(refreshToken)
+  //         api.defaults.headers.common["x-access-token"] = accessToken;
 
-    if (err.response) {
-      // Access Token was expired
-      if (err.response.status === 401 && !originalConfig._retry) {
-        originalConfig._retry = true;
-        try {
-          const rs = await refreshToken();
-          const { accessToken } = rs.data;
-          setAccessToken(accessToken);
-          api.defaults.headers.common["x-access-token"] = accessToken;
+  //         return api(originalConfig);
+  //       } catch (_error) {
+  //         if (_error.response && _error.response.data) {
+  //           return Promise.reject(_error.response.data);
+  //         }
 
-          return api(originalConfig);
-        } catch (_error) {
-          if (_error.response && _error.response.data) {
-            return Promise.reject(_error.response.data);
-          }
+  //         return Promise.reject(_error);
+  //       }
+  //     }
 
-          return Promise.reject(_error);
-        }
-      }
+  //     if (err.response.status === 403 && err.response.data) {
+  //       return Promise.reject(err.response.data);
+  //     }
+  //   }
 
-      if (err.response.status === 403 && err.response.data) {
-        return Promise.reject(err.response.data);
-      }
-    }
-
-    return Promise.reject(err);
-  }
+  //   return Promise.reject(err);
+  // }
 );
 
-function refreshToken() {
+function refreshMyToken() {
   return api.post(
     `${BASE_URL}api/users/Identity/refresh-token?refreshToken=${getRefreshToken()}&accessToken=${getAcessToken()}`
   );

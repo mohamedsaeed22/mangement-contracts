@@ -11,6 +11,7 @@ import ProjectsTable from "../components/manageContracts/ProjectsTable";
 import Branch from "../pages/Branch";
 import MangeBranches from "../pages/MangeBranches";
 import ManageSupervisors from "../pages/ManageSupervisors";
+import ProjectDetails from "../pages/ProjectDetails";
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "project/edit/:id",
         element: <AddProject />,
+      },
+      {
+        path: "project/id/:id",
+        element: <ProjectDetails />,
       },
       {
         path: "projectsbox",

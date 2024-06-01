@@ -4,10 +4,10 @@ import axiosErrorHandler from "../../../utils/axiosErrorHandler";
 
 const actDeleteProject = createAsyncThunk(
   "project/actDeleteProject",
-  async (project, thunk) => {
+  async (id, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.post("api/Project/delete" + project.id);
+      const res = await api.delete("api/Project/delete/" + id);
       return res.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));

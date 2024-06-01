@@ -1,5 +1,5 @@
 import { DatePicker } from "@mui/x-date-pickers";
-import { Grid, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 const MyDatePicker = ({
   name,
@@ -12,33 +12,31 @@ const MyDatePicker = ({
   disabled,
 }) => {
   return (
-    <Stack justifyContent="center" alignContent="center" alignItems="center">
-      <Stack gap={1} width={width} >
-        <Typography variant="body1" color="initial" fontWeight="600">
-          {title}
-        </Typography>
-        <DatePicker
-        
-          value={value}
-          onChange={onChangeDate}
-          disabled={disabled}
-          format="DD-MM-YYYY"
-          sx={{}}
+     <Stack gap={1} width={width}>
+      <Typography variant="body1" color="initial" fontWeight="600">
+        {title}
+      </Typography>
+      <DatePicker
+        value={value}
+        onChange={onChangeDate}
+         format="DD-MM-YYYY"
+        //  sx={{ backgroundColor: "#fff !important" }}
+
           slotProps={{
-            textField: {
-              error: error,
-              helperText: helperText ? helperText : " ",
-              "& .muiformhelpertext-root": {
-                color: "red",
-                fontSize: "10px !important",
-                margin: "3px 0px 0px !important",
-              },
+          textField: {
+            error: error,
+            helperText: helperText ,
+            "& .muiformhelpertext-root": {
+              color: "red",
+              fontSize: "10px !important",
+              margin: "3px 0px 0px !important",
+              // backgroundColor:'#F5F5F5 !important'
             },
-          }}
-        />
-      </Stack>
+          },
+        }}
+      />
     </Stack>
-  );
+   );
 };
 
 export default MyDatePicker;

@@ -1,15 +1,20 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-const MyButton = ({ label, disabled = false, handleClick, type, width }) => {
+const MyButton = ({
+  height = 56,
+  label,
+  disabled = false,
+  handleClick,
+  type,
+  width,
+}) => {
   return (
     <Button
       variant="contained"
       sx={{
         width: width,
-
-        // minWidth: "100%",
-        height: "56px",
+        height: height,
         backgroundColor: "#475CA7",
         "&:hover": { backgroundColor: "#475CA7", color: "#fff " },
       }}

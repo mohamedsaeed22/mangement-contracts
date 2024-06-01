@@ -18,23 +18,23 @@ import { SweatAlert } from "../../feedback/Alerts/alerts";
 const projectSubmenuList = [
   {
     nav: "projectsbox",
-    title: "صندوق المشاريع",
+    name: "صندوق المشاريع",
   },
   {
     nav: "project/add",
-    title: "اضافه مشروع",
+    name: "اضافه مشروع",
   },
 ];
 const branchSubmenuList = [
   {
     nav: "managebranches",
-    title: "اداره الانشطة",
+    name: "اداره الانشطة",
   },
 ];
 const supervisroSubmenuList = [
   {
     nav: "managesupervisors",
-    title: "اداره المشرفين",
+    name: "اداره المشرفين",
   },
 ];
 const Sidebar = () => {
@@ -45,7 +45,11 @@ const Sidebar = () => {
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const { branches } = useSelector((state) => state.branch);
   const { supervisors } = useSelector((state) => state.supervisor);
-
+  let branchesList = [];
+  if (branches) {
+    branchesList = [...branchSubmenuList, ...branches];
+  }
+  console.log(branchesList);
   const toggleProjectSubmenu = () => {
     setShowProjectsMenu(!showProjectsMenu);
   };
@@ -79,7 +83,7 @@ const Sidebar = () => {
   };
 
   return (
-    <>
+    <Box bgcolor="#F5F5F5">
       <Box>
         <img
           src={MenuBlack}
@@ -90,7 +94,7 @@ const Sidebar = () => {
             margin: "20px",
             cursor: "pointer",
             zIndex: 20,
-            backgroundColor: "#fff",
+            // backgroundColor: "#fff",
             display: { xs: "block", md: toggleSidebar ? "none" : "block" },
           }}
           onClick={handleToggleSidebar}
@@ -98,20 +102,6 @@ const Sidebar = () => {
       </Box>
       <Box
         sx={{
-          // position: { xs: "fixed", },
-          // left: { xs: toggleSidebar ? 0 : "-250px", md: toggleSidebar ? 0 : "-250px" },
-          // top: 0,
-          // width: "250px",
-          // minWidth: "250px",
-          // minHeight: "100vh",
-          // backgroundColor: "#263238",
-          // borderTopRightRadius: "30px",
-          // borderBottomRightRadius: "30px",
-          // zIndex: 10000,
-          // overflowY: "auto",
-          // overflowX: "hidden",
-          // transition: "left 0.3s",
-          // display: { xs: "block", md: "block" },
           position: { xs: "fixed", lg: "relative" },
           left: 0,
           top: 0,
@@ -194,7 +184,7 @@ const Sidebar = () => {
           menuTitle={"الانشطة"}
           toggleSubmenuFun={toggleBranchSubmenu}
           showSubmenu={showBranchesMenu}
-          subMenuList={branchSubmenuList}
+          subMenuList={branchesList}
         />
         {/* supervisors menu  */}
         <SidebarMenu
@@ -234,7 +224,7 @@ const Sidebar = () => {
           <img src={ExitIcon} alt="burger icon" style={{ width: "18px" }} />
         </Stack>
       </Box>
-    </>
+    </Box>
   );
 };
 
