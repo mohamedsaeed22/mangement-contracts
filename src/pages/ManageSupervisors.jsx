@@ -23,6 +23,8 @@ import {
   filterSupervisores,
   filterSupervisors,
 } from "../store/supervisor/supervisorSlice";
+import EditIcon from "../assets/icon/edit-icon.svg";
+import DeleteIcon from "../assets/icon/delete-icon.svg";
 
 import SupervisorForm from "../components/Form/SupervisorForm";
 import {
@@ -30,6 +32,7 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
+import MyBtn from "../components/common/UI/MyBtn";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,7 +51,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#F3F3F3",
+  backgroundColor: "#fff",
   borderRadius: "10px",
 }));
 
@@ -72,7 +75,7 @@ const MangeBranches = () => {
     setOpenModal(true);
   };
 
-  const handleDeleteBranch = async (supervisor) => {
+  const handleDeleteSupervisor = async (supervisor) => {
     console.log(supervisor);
     const willDelete = await SweatAlert({
       title: `هل متاكد من حذف ${supervisor.name}؟`,
@@ -107,62 +110,69 @@ const MangeBranches = () => {
         />
       </MyModal>
       <Heading title="ادارة المشرفين" />
-      <Box>
-        {/* add supervisor */}
-        <SupervisorForm isUpdate={false} handleCloseModal={handleCloseModal} />
-        {/* supervisors table */}
-        <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">اسم المسؤل</StyledTableCell>
-                <StyledTableCell align="center">رقم الهاتف</StyledTableCell>
-                <StyledTableCell align="center">الاجراءات</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {supervisors?.map((row) => (
-                <StyledTableRow key={row.id}>
-                  <StyledTableCell align="center">{row.name}</StyledTableCell>
-                  <StyledTableCell align="center">{row.phone}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Stack direction="row" justifyContent="center">
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleUpdateSupervisor(row)}
-                      >
-                        تعديل
-                      </Button>
-                      <Button
-                        variant="outlined"
-                      
-                        sx={{
-                          color:'#fff',
-                          backgroundColor: "red",
-                          "&:hover": {
-                            backgroundColor: "red",
-                            
-                          },
-                          marginLeft: "10px",
-                        }}
-                        onClick={() => handleDeleteBranch(row)}
-                      >
-                        حذف
-                      </Button>
-                    </Stack>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-              {supervisors?.length === 0 && (
-                <StyledTableRow>
-                  <StyledTableCell align="center" colSpan={3}>
-                    لا يوجد مسؤلين
-                  </StyledTableCell>
-                </StyledTableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      <Box
+        gap={2}
+        p={1}
+        border="2px solid #000"
+        borderRadius={2}
+        m="90px 20px 0px"
+        flex={1}
+      >
+        <Box>
+          {/* add supervisor */}
+          <SupervisorForm
+            isUpdate={false}
+            handleCloseModal={handleCloseModal}
+          />
+          {/* supervisors table */}
+          <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">اسم المسؤل</StyledTableCell>
+                  <StyledTableCell align="center">رقم الهاتف</StyledTableCell>
+                  <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {supervisors?.map((row) => (
+                  <StyledTableRow key={row.id}>
+                    <StyledTableCell align="center">{row.name}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.phone}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Stack direction="row" justifyContent="center" gap={1}>
+                        <MyBtn
+                          width={100}
+                          height={40}
+                          icon={EditIcon}
+                          title={"تعديل"}
+                          handleBtnClick={() => handleUpdateSupervisor(row)}
+                        />
+                        <MyBtn
+                          width={100}
+                          height={40}
+                          bgColor="red"
+                          icon={DeleteIcon}
+                          title={"حذف"}
+                          handleBtnClick={() => handleDeleteSupervisor(row)}
+                        />
+                      </Stack>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+                {supervisors?.length === 0 && (
+                  <StyledTableRow>
+                    <StyledTableCell align="center" colSpan={3}>
+                      لا يوجد مسؤلين
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Box>
     </>
   );

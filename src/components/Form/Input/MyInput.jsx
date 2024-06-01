@@ -17,7 +17,7 @@ const MyInput = ({
   type = "text",
   error,
   helperText,
-  size = "medium",
+  size = "small",
   onBlur,
   onChange,
   name,

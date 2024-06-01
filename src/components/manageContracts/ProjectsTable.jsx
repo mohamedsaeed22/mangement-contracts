@@ -51,7 +51,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#F3F3F3",
+  backgroundColor: "#fff",
   borderRadius: "10px",
 }));
 
@@ -129,244 +129,263 @@ const ProjectsTable = () => {
   };
   return (
     <>
-      <Heading title="الصفحة الرئيسية" />
-      {/* filteration */}
-      <Stack
-        direction="row"
-        gap={2}
-        justifyContent="space-between"
-        alignItems="center"
-        flexWrap="wrap"
+      <Heading title="صندوق المشاريع" />
+      <Box
+        // gap={2}
+        p={1}
+        border="2px solid #000"
+        borderRadius={2}
+        mt="100px"
+        sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
+        flexGrow={1}
       >
-        <Box position="relative">
-          <input
-            type="text"
-            className="search-input"
-            placeholder="بحث عن اسم / وصف مشروع"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <img
-            src={SearchIcon}
-            alt="search icon"
-            style={{
-              position: "absolute",
-              zIndex: 5,
-              left: 12,
-              top: 15,
-              width: "15px",
-            }}
-          />
-        </Box>
+        {/* filteration */}
         <Stack
           direction="row"
-          gap={3}
-          flexWrap="wrap"
-          justifyContent="center"
+          gap={2}
+          justifyContent="space-between"
           alignItems="center"
+          flexWrap="wrap"
         >
-          {toggleFilter && (
-            <Stack
-              direction="row"
-              // justifyContent="space-between"
-              gap={2}
-              alignItems="center"
-            >
-              <FormControl sx={{ minWidth: 150 }} size="small">
-                <InputLabel id="demo-simple-select-branche">النشاط</InputLabel>
-                <Select
-                  labelId="demo-simple-select-branche"
-                  id="demo-simple-selectBranch"
-                  value={branche}
-                  label="النشاط"
-                  onChange={handleChangeBranche}
-                >
-                  {branches?.map((branch) => (
-                    <MenuItem key={branch.id} value={branch.id}>
-                      {branch.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl sx={{ minWidth: 150 }} size="small">
-                <InputLabel id="demo-simple-select-supervisor">
-                  مشرف المشروع
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-supervisor"
-                  id="demo-simple-selectSupervisor"
-                  value={supervisor}
-                  label="مشرف المشروع"
-                  onChange={handleChangeSupervisor}
-                >
-                  {supervisors?.map((supervisor) => (
-                    <MenuItem key={supervisor.id} value={supervisor.id}>
-                      {supervisor.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <TextField
-                size="small"
-                id="planned-cost"
-                type="number"
-                label="التكلفة المخططة"
-                variant="outlined"
-                sx={{ width: "150px" }}
-                value={plannedCost}
-                onChange={(e) => setPlannedCost(e.target.value)}
-              />
-              <FormControl sx={{ minWidth: 150 }} size="small">
-                <InputLabel id="demo-simple-select-projectState">
-                  حالة المشروع
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-projectState"
-                  id="demo-simple-selectProjectState"
-                  value={projectState}
-                  label="حالة المشروع"
-                  onChange={handleChangeProjectState}
-                >
-                  {projectStateOptions.map((option) => (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    // mt: 2,
-                    gap: 3,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <Box sx={{ width: "150px" }}>
-                    <DatePicker
-                      label="بداية المشروع"
-                      slotProps={{ textField: { size: "small" } }}
-                      value={startDate}
-                      onChange={handleStartDateChange}
-                      renderInput={(params) => <TextField {...params} />}
-                      inputFormat="MM/DD/YYYY"
-                    />
-                  </Box>
-                  <Box sx={{ width: "150px" }}>
-                    <DatePicker
-                      label="نهاية المشروع"
-                      value={endDate}
-                      onChange={handleEndDateChange}
-                      renderInput={(params) => <TextField {...params} />}
-                      inputFormat="MM/DD/YYYY"
-                      slotProps={{ textField: { size: "small" } }}
-                    />
-                  </Box>
-                </Box>
-              </LocalizationProvider>
-            </Stack>
-          )}
-
-          <MyBtn title="تصنيف" icon={FilterIcon} handleBtnClick={handleToggleFilter}/>
-        </Stack>
-      </Stack>
-
-      <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
-        <Table aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">النشاط</StyledTableCell>
-              <StyledTableCell align="center">المشرف</StyledTableCell>
-              <StyledTableCell align="center">اسم المشروع</StyledTableCell>
-              <StyledTableCell align="center">الوصف</StyledTableCell>
-              <StyledTableCell align="center">التكلفة المخططة</StyledTableCell>
-              <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
-              <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
-              <StyledTableCell align="center"> حالة المشروع</StyledTableCell>
-              <StyledTableCell align="center">بداية المشروع</StyledTableCell>
-              <StyledTableCell align="center">نهاية المشروع</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {projects?.map((row) => (
-              <Tooltip
-                title="اضغط لعرض المشروع"
-                placement="top"
-                arrow
-                key={row.id}
+          <Box position="relative">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="بحث عن اسم / وصف مشروع"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <img
+              src={SearchIcon}
+              alt="search icon"
+              style={{
+                position: "absolute",
+                zIndex: 5,
+                left: 12,
+                top: 15,
+                width: "15px",
+              }}
+            />
+          </Box>
+          <Stack
+            direction="row"
+            gap={3}
+            flexWrap="wrap"
+            justifyContent="center"
+            alignItems="center"
+          >
+            {toggleFilter && (
+              <Stack
+                direction="row"
+                // justifyContent="space-between"
+                gap={2}
+                alignItems="center"
               >
-                <StyledTableRow
-                  sx={{
-                    cursor: "pointer",
-                    "&:hover": { backgroundColor: "#ddd !important" },
-                  }}
-                  onClick={() => navigate(`/project/id/${row.id}`)}
-                >
-                  <StyledTableCell align="center">
-                    {row.branchName}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.supervisorName}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.name}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.description}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.budget}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.spentBudget}
-                  </StyledTableCell>
+                <FormControl sx={{ minWidth: 150 }} size="small">
+                  <InputLabel id="demo-simple-select-branche">
+                    النشاط
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-branche"
+                    id="demo-simple-selectBranch"
+                    value={branche}
+                    label="النشاط"
+                    onChange={handleChangeBranche}
+                  >
+                    {branches?.map((branch) => (
+                      <MenuItem key={branch.id} value={branch.id}>
+                        {branch.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
-                  <StyledTableCell align="center">
-                    {row.percentage}%
-                    <Box sx={{ width: "100%", marginTop: "2px" }}>
-                      <LinearProgress
-                        variant="determinate"
-                        value={parseInt(row.percentage)}
+                <FormControl sx={{ minWidth: 150 }} size="small">
+                  <InputLabel id="demo-simple-select-supervisor">
+                    مشرف المشروع
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-supervisor"
+                    id="demo-simple-selectSupervisor"
+                    value={supervisor}
+                    label="مشرف المشروع"
+                    onChange={handleChangeSupervisor}
+                  >
+                    {supervisors?.map((supervisor) => (
+                      <MenuItem key={supervisor.id} value={supervisor.id}>
+                        {supervisor.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  size="small"
+                  id="planned-cost"
+                  type="number"
+                  label="التكلفة المخططة"
+                  variant="outlined"
+                  sx={{ width: "150px" }}
+                  value={plannedCost}
+                  onChange={(e) => setPlannedCost(e.target.value)}
+                />
+                <FormControl sx={{ minWidth: 150 }} size="small">
+                  <InputLabel id="demo-simple-select-projectState">
+                    حالة المشروع
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-projectState"
+                    id="demo-simple-selectProjectState"
+                    value={projectState}
+                    label="حالة المشروع"
+                    onChange={handleChangeProjectState}
+                  >
+                    {projectStateOptions.map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      // mt: 2,
+                      gap: 3,
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <Box sx={{ width: "150px" }}>
+                      <DatePicker
+                        label="بداية المشروع"
+                        slotProps={{ textField: { size: "small" } }}
+                        value={startDate}
+                        onChange={handleStartDateChange}
+                        renderInput={(params) => <TextField {...params} />}
+                        inputFormat="MM/DD/YYYY"
                       />
                     </Box>
-                  </StyledTableCell>
-
-                  <StyledTableCell align="center">
-                    <Box sx={{ width: "100%", marginTop: "2px" }}>
-                      <StatusLabel status={row.status} />
+                    <Box sx={{ width: "150px" }}>
+                      <DatePicker
+                        label="نهاية المشروع"
+                        value={endDate}
+                        onChange={handleEndDateChange}
+                        renderInput={(params) => <TextField {...params} />}
+                        inputFormat="MM/DD/YYYY"
+                        slotProps={{ textField: { size: "small" } }}
+                      />
                     </Box>
-                  </StyledTableCell>
+                  </Box>
+                </LocalizationProvider>
+              </Stack>
+            )}
+            <MyBtn
+              title="تصنيف"
+              icon={FilterIcon}
+              handleBtnClick={handleToggleFilter}
+            />
+          </Stack>
+        </Stack>
 
-                  <StyledTableCell align="center">
-                    {row.startDate.split("T")[0]}
-                  </StyledTableCell>
+        <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
+          <Table aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">النشاط</StyledTableCell>
+                <StyledTableCell align="center">المشرف</StyledTableCell>
+                <StyledTableCell align="center">اسم المشروع</StyledTableCell>
+                <StyledTableCell align="center">الوصف</StyledTableCell>
+                <StyledTableCell align="center">
+                  التكلفة المخططة
+                </StyledTableCell>
+                <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
+                <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
+                <StyledTableCell align="center"> حالة المشروع</StyledTableCell>
+                <StyledTableCell align="center">بداية المشروع</StyledTableCell>
+                <StyledTableCell align="center">نهاية المشروع</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {projects?.map((row) => (
+                <Tooltip
+                  title="اضغط لعرض المشروع"
+                  placement="top"
+                  arrow
+                  key={row.id}
+                >
+                  <StyledTableRow
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": { backgroundColor: "#fff !important" },
+                    }}
+                    onClick={() => navigate(`/project/id/${row.id}`)}
+                  >
+                    <StyledTableCell align="center">
+                      {row.branchName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.supervisorName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{row.name}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.description}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.budget}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.spentBudget}
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    {row.endDate.split("T")[0]}
-                  </StyledTableCell>
-                </StyledTableRow>
-              </Tooltip>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Stack
-        justifyContent="center"
-        alignItems="center"
-        marginInline="auto"
-        mt={3}
-      >
-        {error && error.message && error.message}
-        {totalItems > 0 ? (
-          <Pagination
-            count={Math.ceil(totalItems / 10)}
-            page={page}
-            onChange={handleChange}
-          />
-        ) : (
-          "لا يوجد مشاريع"
-        )}
-      </Stack>
+                    <StyledTableCell align="center">
+                      {row.percentage}%
+                      <Box sx={{ width: "100%", marginTop: "2px" }}>
+                        <LinearProgress
+                          variant="determinate"
+                          value={parseInt(row.percentage)}
+                        />
+                      </Box>
+                    </StyledTableCell>
+
+                    <StyledTableCell align="center">
+                      <Box sx={{ width: "100%", marginTop: "2px" }}>
+                        <StatusLabel status={row.status} />
+                      </Box>
+                    </StyledTableCell>
+
+                    <StyledTableCell align="center">
+                      {row.startDate.split("T")[0]}
+                    </StyledTableCell>
+
+                    <StyledTableCell align="center">
+                      {row.endDate.split("T")[0]}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                </Tooltip>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Stack
+          justifyContent="center"
+          alignItems="center"
+          marginInline="auto"
+          mt={3}
+        >
+          {error && error.message && error.message}
+          {totalItems > 0 ? (
+            <Pagination
+              count={Math.ceil(totalItems / 10)}
+              page={page}
+              onChange={handleChange}
+            />
+          ) : (
+            "لا يوجد مشاريع"
+          )}
+        </Stack>
+      </Box>
     </>
   );
 };

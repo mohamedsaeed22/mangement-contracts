@@ -10,6 +10,9 @@ import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import supervisorSchema from "../../validations/supervisorSchema";
 import { Box, Stack } from "@mui/material";
 import MyButton from "../common/UI/MyButton";
+import MyBtn from "../common/UI/MyBtn";
+import AddIcon from "../../assets/icon/add-icon.svg";
+import EditIcon from "../../assets/icon/edit-icon.svg";
 
 const defaultInitialSupervisor = {
   name: "",
@@ -101,12 +104,12 @@ const SupervisorForm = ({
                 : " "
             }
           />
-          <Box mt={1}>
-            <MyButton
+          <Box alignSelf={isUpdate ? "center" : "flex-start"}>
+            <MyBtn
               type="submit"
               width={100}
-              height={40}
-              label={isUpdate ? "تعديل" : "اضافة"}
+              icon={isUpdate ? EditIcon : AddIcon}
+              title={isUpdate ? "تعديل" : "اضافة"}
             />
           </Box>
         </Stack>

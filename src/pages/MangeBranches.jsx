@@ -7,13 +7,11 @@ import {
   TableBody,
   TableContainer,
   TableHead,
-  TextField,
 } from "@mui/material";
 import Heading from "../components/common/Heading/Heading";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
-import { Add, Delete, Edit } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import MyModal from "../components/common/UI/MyModal";
 import {
@@ -28,6 +26,10 @@ import {
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
 import BranchForm from "../components/Form/BranchForm";
+import EditIcon from "../assets/icon/edit-icon.svg";
+import DeleteIcon from "../assets/icon/delete-icon.svg";
+import MyBtn from "../components/common/UI/MyBtn";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,7 +48,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#F3F3F3",
+  backgroundColor: "#fff",
   borderRadius: "10px",
 }));
 
@@ -62,14 +64,11 @@ const MangeBranches = () => {
   const [branch, setbranch] = useState(initialBranch);
   const [updatedBranch, setUpdatedBranch] = useState(initialBranch);
 
-  
   console.log(branch);
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-
- 
 
   const handleUpdateBranch = (branch) => {
     setUpdatedBranch(branch);
@@ -96,7 +95,6 @@ const MangeBranches = () => {
     }
   };
 
-
   return (
     <>
       <MyModal
@@ -111,10 +109,18 @@ const MangeBranches = () => {
         />
       </MyModal>
       <Heading title="ادارة الانشطة" />
-      <Box>
-        <BranchForm isUpdate={false} initialValues={updatedBranch} />
-        {/* add branch */}
-        {/* <Stack direction="row" gap={2} alignItems="center">
+      <Box
+        gap={2}
+        p={1}
+        border="2px solid #000"
+        borderRadius={2}
+        m="90px 20px 0px"
+        flex={1}
+      >
+        <Box>
+          <BranchForm isUpdate={false} initialValues={updatedBranch} />
+          {/* add branch */}
+          {/* <Stack direction="row" gap={2} alignItems="center">
           <TextField
             size="small"
             id="project-name"
@@ -144,59 +150,55 @@ const MangeBranches = () => {
             اضافة
           </Button>
         </Stack> */}
-        {/* branches table */}
-        <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">النشاط</StyledTableCell>
-                <StyledTableCell align="center">الوصف</StyledTableCell>
-                <StyledTableCell align="center">الاجراءات</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {branches?.map((row) => (
-                <StyledTableRow key={row.id}>
-                  <StyledTableCell align="center">{row.name}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.description}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                  <Stack direction="row" justifyContent="center">
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleUpdateBranch(row)}
-                      >
-                        تعديل
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        sx={{
-                          color:'#fff',
-                          backgroundColor: "red",
-                          "&:hover": {
-                            backgroundColor: "red",
-                          },
-                          marginLeft: "10px",
-                        }}
-                        onClick={() => handleDeleteBranch(row)}
-                      >
-                        حذف
-                      </Button>
-                    </Stack>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-              {branches?.length === 0 && (
-                <StyledTableRow>
-                  <StyledTableCell align="center" colSpan={3}>
-                    لا يوجد انشطه
-                  </StyledTableCell>
-                </StyledTableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          {/* branches table */}
+          <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">النشاط</StyledTableCell>
+                  <StyledTableCell align="center">الوصف</StyledTableCell>
+                  <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {branches?.map((row) => (
+                  <StyledTableRow key={row.id}>
+                    <StyledTableCell align="center">{row.name}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.description}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Stack direction="row" justifyContent="center" gap={1}>
+                        <MyBtn
+                          width={100}
+                          height={40}
+                          icon={EditIcon}
+                          title={"تعديل"}
+                          handleBtnClick={() => handleUpdateBranch(row)}
+                        />
+                        <MyBtn
+                          width={100}
+                          height={40}
+                          bgColor="red"
+                          icon={DeleteIcon}
+                          title={"حذف"}
+                          handleBtnClick={() => handleDeleteBranch(row)}
+                        />
+                      </Stack>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+                {branches?.length === 0 && (
+                  <StyledTableRow>
+                    <StyledTableCell align="center" colSpan={3}>
+                      لا يوجد انشطه
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Box>
     </>
   );

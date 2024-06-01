@@ -17,8 +17,8 @@ const MainLayout = () => {
             // maxWidth: "calc(100% - 250px)",
             flex: 1,
             minHeight: "100vh",
-            marginLeft: "auto",
-            overflowY: "scroll",
+            // marginLeft: "auto",
+            overflowY: "auto",
           }}
         >
           <Stack
@@ -27,21 +27,20 @@ const MainLayout = () => {
               minHeight: "calc(100vh - 56px)",
               flex: 1,
               position: "relative",
-              backgroundColor:'#F5F5F5'
+              backgroundColor: "#F5F5F5",
             }}
-            >
-            <Box
+          >
+            {/* <Box
               gap={2}
               p={1}
               border="2px solid #000"
               borderRadius={2}
               m="140px 20px 0px"
               flex={1}
-            >
-              <Box p={1}>
-                <Outlet />
-              </Box>
-            </Box>
+              bgcolor="#ddd"
+            > */}
+              <Outlet />
+            {/* </Box> */}
           </Stack>
           <Footer />
         </Box>

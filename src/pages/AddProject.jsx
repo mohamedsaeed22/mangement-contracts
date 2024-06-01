@@ -101,35 +101,36 @@ const AddProject = () => {
   }, [id, project]);
 
   const handleFormSubmit = (values) => {
-    const projectData = {
-      ...values,
-      endDate: values.endDate,
-      startDate: values.startDate,
-      budget: parseFloat(values.budget),
-      spentBudget: parseFloat(values.spentBudget),
-      percentage: parseFloat(values.percentage),
-    };
-    if (id) {
-      dispatch(actUpdateProject(projectData))
-        .unwrap()
-        .then((res) => {
-          console.log(res);
-          notifySuccess("تم تعديل المشروع بنجاح");
-        })
-        .catch((res) => {
-          console.log(res);
-          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-        });
-    } else {
-      dispatch(actCreateProject(projectData))
-        .unwrap()
-        .then(() => {
-          notifySuccess("تم اضافة المشروع بنجاح");
-        })
-        .catch(() => {
-          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-        });
-    }
+    console.log(values)
+    // const projectData = {
+    //   ...values,
+    //   endDate: values.endDate,
+    //   startDate: values.startDate,
+    //   budget: parseFloat(values.budget),
+    //   spentBudget: parseFloat(values.spentBudget),
+    //   percentage: parseFloat(values.percentage),
+    // };
+    // if (id) {
+    //   dispatch(actUpdateProject(projectData))
+    //     .unwrap()
+    //     .then((res) => {
+    //       console.log(res);
+    //       notifySuccess("تم تعديل المشروع بنجاح");
+    //     })
+    //     .catch((res) => {
+    //       console.log(res);
+    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //     });
+    // } else {
+    //   dispatch(actCreateProject(projectData))
+    //     .unwrap()
+    //     .then(() => {
+    //       notifySuccess("تم اضافة المشروع بنجاح");
+    //     })
+    //     .catch(() => {
+    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //     });
+    // }
   };
 
   return (
@@ -152,34 +153,15 @@ const AddProject = () => {
             handleSubmit,
             setFieldValue,
           }) => (
-            <Stack component="form" gap={1} onSubmit={handleSubmit}>
-              {/* {id && (
-                <Stack
-                  direction="row"
-                  width="95%"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{
-                    position: "absolute",
-                    left: "29px",
-                    top: "50px",
-                  }}
-                >
-                  
-                </Stack>
-              )} */}
-              {/* row 1 */}
-              <Stack
-                direction="row"
-                flexWrap="wrap"
-                gap={2}
-                sx={{
-                  position: "absolute",
-                  right: "22px",
-                  top: "75px",
-                  width:'96%',
-                }}
-              >
+            <Stack
+              component="form"
+              gap={1}
+              onSubmit={handleSubmit}
+              flexGrow={1}
+              mt="80px"
+              sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
+            >
+              <Stack direction="row" flexWrap="wrap" gap={2} mr={1}>
                 <Box flexGrow={1}>
                   <Tooltip title="رجوع" placement="top" arrow>
                     <IconButton onClick={() => navigate(-1)}>
@@ -187,211 +169,222 @@ const AddProject = () => {
                     </IconButton>
                   </Tooltip>
                 </Box>
-
-                <MyInput
-                  width={180}
-                  name="status"
-                  select
-                  label="الحالة"
-                  placeholder="اختر الحالة"
-                  value={values.status}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.status && !!errors.status}
-                  helperText={touched.status && errors.status}
+                <Stack
+                  direction="row"
+                  flexWrap="wrap"
+                  gap={1}
+                  justifyContent="center"
                 >
-                  {projectStateOptions.map((status) => (
-                    <MenuItem key={status.id} value={status.id}>
-                      {status.name}
-                    </MenuItem>
-                  ))}
-                </MyInput>
-
-                <MyInput
-                  width={180}
-                  name="branchId"
-                  select
-                  label="النشاط"
-                  placeholder="اختر النشاط"
-                  value={values.branchId}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.branchId && !!errors.branchId}
-                  helperText={touched.branchId && errors.branchId}
-                >
-                  {branches.length > 0 ? (
-                    branches.map((branch) => (
-                      <MenuItem key={branch.id} value={branch.id}>
-                        {branch.name}
+                  <MyInput
+                    width={180}
+                    name="status"
+                    select
+                    label="الحالة"
+                    placeholder="اختر الحالة"
+                    value={values.status}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!touched.status && !!errors.status}
+                    helperText={touched.status && errors.status}
+                  >
+                    {projectStateOptions.map((status) => (
+                      <MenuItem key={status.id} value={status.id}>
+                        {status.name}
                       </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>لا يوجد انشطة</MenuItem>
+                    ))}
+                  </MyInput>
+                  <MyInput
+                    width={180}
+                    name="branchId"
+                    select
+                    label="النشاط"
+                    placeholder="اختر النشاط"
+                    value={values.branchId}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!touched.branchId && !!errors.branchId}
+                    helperText={touched.branchId && errors.branchId}
+                  >
+                    {branches.length > 0 ? (
+                      branches.map((branch) => (
+                        <MenuItem key={branch.id} value={branch.id}>
+                          {branch.name}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem disabled>لا يوجد انشطة</MenuItem>
+                    )}
+                  </MyInput>
+                  <MyInput
+                    width={180}
+                    name="supervisorId"
+                    select
+                    label="المشرف"
+                    placeholder="اختر المشرف"
+                    value={values.supervisorId}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!touched.supervisorId && !!errors.supervisorId}
+                    helperText={touched.supervisorId && errors.supervisorId}
+                  >
+                    {supervisors.length > 0 ? (
+                      supervisors.map((supervisor) => (
+                        <MenuItem key={supervisor.id} value={supervisor.id}>
+                          {supervisor.name}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem disabled>لا يوجد مشرفين</MenuItem>
+                    )}
+                  </MyInput>
+                  {id && (
+                    <Stack direction="row" alignSelf="flex-start">
+                      <MyBtn title="تعديل" type="submit" handleBtnClick={handleFormSubmit}/>
+                      <Box>
+                        <IconButton
+                          aria-label="more"
+                          id="long-button"
+                          aria-controls={open ? "long-menu" : undefined}
+                          aria-expanded={open ? "true" : undefined}
+                          aria-haspopup="true"
+                          onClick={handleClick}
+                        >
+                          <MoreVert />
+                        </IconButton>
+                        <Menu
+                          id="demo-positioned-menu"
+                          aria-labelledby="demo-positioned-button"
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "left",
+                          }}
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "left",
+                          }}
+                        >
+                          <MenuItem onClick={handleClose}>حذف</MenuItem>
+                        </Menu>
+                      </Box>
+                    </Stack>
                   )}
-                </MyInput>
-                <MyInput
-                  width={180}
-                  name="supervisorId"
-                  select
-                  label="المشرف"
-                  placeholder="اختر المشرف"
-                  value={values.supervisorId}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.supervisorId && !!errors.supervisorId}
-                  helperText={touched.supervisorId && errors.supervisorId}
-                >
-                  {supervisors.length > 0 ? (
-                    supervisors.map((supervisor) => (
-                      <MenuItem key={supervisor.id} value={supervisor.id}>
-                        {supervisor.name}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>لا يوجد مشرفين</MenuItem>
-                  )}
-                </MyInput>
-                {id && (
-                  <Stack direction="row">
-                    <MyBtn title="تعديل" type="submit" />
-                    <div>
-                      <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? "long-menu" : undefined}
-                        aria-expanded={open ? "true" : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                      >
-                        <MoreVert />
-                      </IconButton>
-                      <Menu
-                        id="demo-positioned-menu"
-                        aria-labelledby="demo-positioned-button"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                          vertical: "top",
-                          horizontal: "left",
-                        }}
-                        transformOrigin={{
-                          vertical: "top",
-                          horizontal: "left",
-                        }}
-                      >
-                        <MenuItem onClick={handleClose}>حذف</MenuItem>
-                      </Menu>
-                    </div>
-                  </Stack>
-                )}
+                </Stack>
               </Stack>
-              <MyInputsWrapper direction="column" title="اسم و وصف المشروع">
-                <MyInput
-                  width={myWidth}
-                  name="name"
-                  label="الاسم"
-                  placeholder="ادخل الاسم"
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.name && !!errors.name}
-                  helperText={touched.name && errors.name}
-                />
-                <MyInput
-                  name="description"
-                  label="الوصف"
-                  multiline={true}
-                  fullWidth={true}
-                  rows={3}
-                  placeholder="ادخل الوصف"
-                  value={values.description}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.description && !!errors.description}
-                  helperText={touched.description && errors.description}
-                />
-              </MyInputsWrapper>
+              <Box p={1} border="2px solid #000" borderRadius={2} flex={1}>
+                {/* row 1 */}
 
-              <MyInputsWrapper title="تكلفة المشروع">
-                <MyInput
-                  width={myWidth}
-                  name="budget"
-                  label="التكلفة المخططة"
-                  placeholder="ادخل التكلفة"
-                  type="number"
-                  value={values.budget}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.budget && !!errors.budget}
-                  helperText={touched.budget && errors.budget}
-                />
-                <MyInput
-                  width={myWidth}
-                  name="spentBudget"
-                  label="المنصرف الفعلى"
-                  placeholder="ادخل المنصرف"
-                  type="number"
-                  value={values.spentBudget}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.spentBudget && !!errors.spentBudget}
-                  helperText={touched.spentBudget && errors.spentBudget}
-                />
-              </MyInputsWrapper>
-              <MyInputsWrapper title="ما تم انجازة من المشروع">
-                <MyInput
-                  width={myWidth}
-                  name="percentage"
-                  label="ما تم انجازة"
-                  placeholder="ادخل نسبة مؤية"
-                  type="number"
-                  value={values.percentage}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={!!touched.percentage && !!errors.percentage}
-                  helperText={touched.percentage && errors.percentage}
-                />
-              </MyInputsWrapper>
-              <MyInputsWrapper title="الخطة الزمنية للمشروع">
-                <MyDatePicker
-                  name="startDate"
-                  width={myWidth}
-                  title="تاريخ البداية"
-                  value={dayjs(values.startDate)}
-                  onChangeDate={(value) => {
-                    setFieldValue("startDate", value.toISOString());
-                    setFieldValue("endDate", null);
-                  }}
-                  error={!!touched.startDate && !!errors.startDate}
-                  helperText={touched.startDate && errors.startDate}
-                />
+                <MyInputsWrapper direction="column" title="اسم و وصف المشروع">
+                  <MyInput
+                    width={myWidth}
+                    name="name"
+                    label="الاسم"
+                    placeholder="ادخل الاسم"
+                    value={values.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!touched.name && !!errors.name}
+                    helperText={touched.name && errors.name}
+                  />
+                  <MyInput
+                    name="description"
+                    label="الوصف"
+                    multiline={true}
+                    fullWidth={true}
+                    rows={3}
+                    placeholder="ادخل الوصف"
+                    value={values.description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!touched.description && !!errors.description}
+                    helperText={touched.description && errors.description}
+                  />
+                </MyInputsWrapper>
 
-                <MyDatePicker
-                  name="endDate"
-                  width={myWidth}
-                  title="تاريخ النهاية"
-                  value={dayjs(values.endDate)}
-                  onChangeDate={(value) => {
-                    setFieldValue("endDate", value.toISOString());
-                  }}
-                  error={!!touched.endDate && !!errors.endDate}
-                  helperText={touched.endDate && errors.endDate}
-                />
-              </MyInputsWrapper>
+                <MyInputsWrapper title="تكلفة المشروع">
+                  <MyInput
+                    width={myWidth}
+                    name="budget"
+                    label="التكلفة المخططة"
+                    placeholder="ادخل التكلفة"
+                    type="number"
+                    value={values.budget}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!touched.budget && !!errors.budget}
+                    helperText={touched.budget && errors.budget}
+                  />
+                  <MyInput
+                    width={myWidth}
+                    name="spentBudget"
+                    label="المنصرف الفعلى"
+                    placeholder="ادخل المنصرف"
+                    type="number"
+                    value={values.spentBudget}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!touched.spentBudget && !!errors.spentBudget}
+                    helperText={touched.spentBudget && errors.spentBudget}
+                  />
+                </MyInputsWrapper>
+                <MyInputsWrapper title="ما تم انجازة من المشروع">
+                  <MyInput
+                    width={myWidth}
+                    name="percentage"
+                    label="ما تم انجازة"
+                    placeholder="ادخل نسبة مؤية"
+                    type="number"
+                    value={values.percentage}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!touched.percentage && !!errors.percentage}
+                    helperText={touched.percentage && errors.percentage}
+                  />
+                </MyInputsWrapper>
+                <MyInputsWrapper title="الخطة الزمنية للمشروع">
+                  <MyDatePicker
+                    name="startDate"
+                    width={myWidth}
+                    title="تاريخ البداية"
+                    value={dayjs(values.startDate)}
+                    onChangeDate={(value) => {
+                      setFieldValue("startDate", value.toISOString());
+                      setFieldValue("endDate", null);
+                    }}
+                    error={!!touched.startDate && !!errors.startDate}
+                    helperText={touched.startDate && errors.startDate}
+                  />
 
-              {!id && (
-                <Box
-                  minHeight="100%"
-                  textAlign="center"
-                  alignSelf="center"
-                  mt={4}
-                >
-                  <MyButton label={"اضافة"} type="submit" width={250} />
-                </Box>
-              )}
+                  <MyDatePicker
+                    name="endDate"
+                    width={myWidth}
+                    title="تاريخ النهاية"
+                    value={dayjs(values.endDate)}
+                    onChangeDate={(value) => {
+                      setFieldValue("endDate", value.toISOString());
+                    }}
+                    error={!!touched.endDate && !!errors.endDate}
+                    helperText={touched.endDate && errors.endDate}
+                  />
+                </MyInputsWrapper>
 
-              {/* row 5 */}
+                {!id && (
+                  <Box
+                    minHeight="100%"
+                    textAlign="center"
+                    alignSelf="center"
+                    mt={4}
+                    width={250}
+                    marginInline="auto"
+                  >
+                    <MyBtn title={"اضافة"} type="submit" width={250} />
+                  </Box>
+                )}
+
+                {/* row 5 */}
+              </Box>
             </Stack>
           )}
         </Formik>

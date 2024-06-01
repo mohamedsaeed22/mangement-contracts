@@ -7,7 +7,9 @@ import { Box, Stack } from "@mui/material";
 import actUpdateBranch from "../../store/branch/act/actUpdateBranch";
 import actCreateBranch from "../../store/branch/act/actCreateBranch";
 import branchSchema from "../../validations/branchSchema";
-import MyButton from "../common/UI/MyButton";
+import MyBtn from "../common/UI/MyBtn";
+import AddIcon from "../../assets/icon/add-icon.svg";
+import EditIcon from "../../assets/icon/edit-icon.svg";
 
 const defaultInitialSupervisor = {
   name: "",
@@ -98,12 +100,13 @@ const BranchForm = ({
                 : " "
             }
           />
-          <Box mt={1}>
-            <MyButton
+          <Box alignSelf={isUpdate ? "center" : "flex-start"}>
+            <MyBtn
               type="submit"
               width={100}
               height={40}
-              label={isUpdate ? "تعديل" : "اضافة"}
+              icon={isUpdate ? EditIcon : AddIcon}
+              title={isUpdate ? "تعديل" : "اضافة"}
             />
           </Box>
         </Stack>

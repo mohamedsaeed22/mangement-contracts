@@ -12,20 +12,20 @@ const MyDatePicker = ({
   disabled,
 }) => {
   return (
-     <Stack gap={1} width={width}>
+    <Stack gap={1} width={width}>
       <Typography variant="body1" color="initial" fontWeight="600">
         {title}
       </Typography>
       <DatePicker
         value={value}
         onChange={onChangeDate}
-         format="DD-MM-YYYY"
+        format="DD-MM-YYYY"
         //  sx={{ backgroundColor: "#fff !important" }}
-
-          slotProps={{
+        slotProps={{
           textField: {
+            size:'small',
             error: error,
-            helperText: helperText ,
+            helperText: helperText,
             "& .muiformhelpertext-root": {
               color: "red",
               fontSize: "10px !important",
@@ -36,7 +36,7 @@ const MyDatePicker = ({
         }}
       />
     </Stack>
-   );
+  );
 };
 
 export default MyDatePicker;
