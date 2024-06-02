@@ -21,6 +21,7 @@ import {
 import StatusLabel from "../components/manageContracts/StatusLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { actGetProjectByBranch } from "../store/project/projectSlice";
+import CenterStat from "../components/manageContracts/CenterStat";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,7 +48,9 @@ const Branch = () => {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { projectsByBranch, error } = useSelector((state) => state.project);
+  const { projectsByBranch, projects, error } = useSelector(
+    (state) => state.project
+  );
   console.log(projectsByBranch);
   useEffect(() => {
     dispatch(actGetProjectByBranch(params.id));
@@ -55,7 +58,7 @@ const Branch = () => {
   console.log(params.id);
 
   const handleShowProject = (project) => {
-    navigate(`/project/edit/${project.id}`);
+    navigate(`/project/id/${project.id}`);
   };
 
   return (
@@ -66,13 +69,20 @@ const Branch = () => {
         p={1}
         border="2px solid #000"
         borderRadius={2}
-        m="90px 20px 0px"
-        flex={1}
+        mt="70px"
+        sx={{
+          marginInline: { xs: "5px", sm: "10px", md: "20px" },
+          overflowY: "auto",
+        }}
+        // flex={1}
+        height="calc(100vh - 130px)"
       >
         <Box borderRadius={2}>
           <TopStat />
+          <CenterStat />
+
           <BottomStat />
-          <Typography variant="h6" color="initial">
+          <Typography variant="h6" color="initial" mt={1}>
             المشاريع الخاصة بـ {""}
             <Typography
               component="span"
@@ -83,7 +93,7 @@ const Branch = () => {
               {projectsByBranch.length > 0 && projectsByBranch[0].branchName}
             </Typography>
           </Typography>
-          <TableContainer sx={{ maxHeight: "80vh", marginTop: "10px" }}>
+          <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
@@ -98,9 +108,7 @@ const Branch = () => {
                     المنصرف الفعلى
                   </StyledTableCell>
                   <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
-                  <StyledTableCell align="center">
-                    حالة المشروع
-                  </StyledTableCell>
+                  <StyledTableCell align="center">حالة المشروع</StyledTableCell>
                   <StyledTableCell align="center">
                     بداية المشروع
                   </StyledTableCell>
@@ -110,7 +118,7 @@ const Branch = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {projectsByBranch?.map((row) => (
+                {projects?.map((row) => (
                   <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
                     <StyledTableRow
                       key={row}

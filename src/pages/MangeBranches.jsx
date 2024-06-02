@@ -111,11 +111,14 @@ const MangeBranches = () => {
       <Heading title="ادارة الانشطة" />
       <Box
         gap={2}
-        p={1}
+        p={2}
         border="2px solid #000"
         borderRadius={2}
-        m="90px 20px 0px"
-        flex={1}
+        mt="70px"
+        sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
+        // flex={1}
+        height="calc(100vh - 130px)"
+
       >
         <Box>
           <BranchForm isUpdate={false} initialValues={updatedBranch} />
@@ -151,7 +154,7 @@ const MangeBranches = () => {
           </Button>
         </Stack> */}
           {/* branches table */}
-          <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
+          <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>

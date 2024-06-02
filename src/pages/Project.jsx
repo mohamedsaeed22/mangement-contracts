@@ -5,6 +5,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  Grid,
   IconButton,
   Menu,
   MenuItem,
@@ -43,6 +44,11 @@ const projectStateOptions = [
   { id: 3, name: "اكتمل" },
   { id: 4, name: "معلق" },
 ];
+const risksandDisablesOptions = [
+  { id: 1, name: "نشط" },
+  { id: 2, name: "مؤجل" },
+  { id: 3, name: "مغلق" },
+];
 
 const initialValues = {
   name: "",
@@ -55,6 +61,12 @@ const initialValues = {
   status: "",
   branchId: "",
   supervisorId: "",
+  showRisks: "no",
+  riskStatus: "",
+  risks: "",
+  showDisables: "no",
+  disableStatus: "",
+  disables: "",
 };
 
 const myWidth = 250;
@@ -66,22 +78,18 @@ const Project = () => {
   const { supervisors } = useSelector((state) => state.supervisor);
   const { branches } = useSelector((state) => state.branch);
   const { project, loading } = useSelector((state) => state.project); // Ensure you have a loading state
-  console.log(project);
   const [myProject, setMyProject] = useState(initialValues);
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const [showRisks, setShowRisks] = useState("no");
-
-  const handleChangeRisks = (event) => {
-    setShowRisks(event.target.value);
-  };
-  console.log(setShowRisks);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
     dispatch(actDeleteProject(id))
       .unwrap()
       .then((res) => {
@@ -93,7 +101,7 @@ const Project = () => {
         console.log(res);
         notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
       });
-    setAnchorEl(null);
+    handleClose(); // Close the menu after delete action
   };
 
   useEffect(() => {
@@ -116,40 +124,40 @@ const Project = () => {
 
   const handleFormSubmit = (values) => {
     console.log(values);
-    const projectData = {
-      ...values,
-      endDate: values.endDate,
-      startDate: values.startDate,
-      budget: parseFloat(values.budget),
-      spentBudget: parseFloat(values.spentBudget),
-      percentage: parseFloat(values.percentage),
-    };
-    if (id) {
-      dispatch(actUpdateProject(projectData))
-        .unwrap()
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            notifySuccess("تم تعديل المشروع بنجاح");
-            navigate(-1);
-          } else {
-            notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
-          }
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-    } else {
-      dispatch(actCreateProject(projectData))
-        .unwrap()
-        .then(() => {
-          notifySuccess("تم اضافة المشروع بنجاح");
-          // resetForm()
-        })
-        .catch(() => {
-          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-        });
-    }
+    // const projectData = {
+    //   ...values,
+    //   endDate: values.endDate,
+    //   startDate: values.startDate,
+    //   budget: parseFloat(values.budget),
+    //   spentBudget: parseFloat(values.spentBudget),
+    //   percentage: parseFloat(values.percentage),
+    // };
+    // if (id) {
+    //   dispatch(actUpdateProject(projectData))
+    //     .unwrap()
+    //     .then((res) => {
+    //       console.log(res);
+    //       if (res.status === 200) {
+    //         notifySuccess("تم تعديل المشروع بنجاح");
+    //         navigate(-1);
+    //       } else {
+    //         notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err.message);
+    //     });
+    // } else {
+    //   dispatch(actCreateProject(projectData))
+    //     .unwrap()
+    //     .then(() => {
+    //       notifySuccess("تم اضافة المشروع بنجاح");
+    //       // resetForm()
+    //     })
+    //     .catch(() => {
+    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //     });
+    // }
   };
 
   return (
@@ -181,8 +189,8 @@ const Project = () => {
               component="form"
               gap={1}
               onSubmit={handleSubmit}
-              flexGrow={1}
               mt="60px"
+              height="calc(100vh - 117px)"
               sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
             >
               <Stack direction="row" flexWrap="wrap" gap={2} mr={1}>
@@ -272,8 +280,8 @@ const Project = () => {
                         <IconButton
                           aria-label="more"
                           id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
+                          aria-controls={anchorEl ? "long-menu" : undefined}
+                          aria-expanded={anchorEl ? "true" : undefined}
                           aria-haspopup="true"
                           onClick={handleClick}
                         >
@@ -283,7 +291,7 @@ const Project = () => {
                           id="demo-positioned-menu"
                           aria-labelledby="demo-positioned-button"
                           anchorEl={anchorEl}
-                          open={open}
+                          open={Boolean(anchorEl)}
                           onClose={handleClose}
                           anchorOrigin={{
                             vertical: "top",
@@ -294,147 +302,299 @@ const Project = () => {
                             horizontal: "left",
                           }}
                         >
-                          <MenuItem onClick={handleClose}>حذف</MenuItem>
+                          <MenuItem onClick={handleDelete}>حذف</MenuItem>
                         </Menu>
                       </Box>
                     </Stack>
                   )}
                 </Stack>
               </Stack>
+
               <Box
-                padding="0px 10px 0px"
+                p={3}
                 border="2px solid #000"
                 borderRadius={2}
-                flex={1}
+                flexGrow={1}
+                sx={{ overflowY: "auto" }}
               >
                 {/* row 1 */}
 
-                <MyInputsWrapper direction="column" title="اسم و وصف المشروع">
-                  <MyInput
-                    width={myWidth}
-                    name="name"
-                    label="الاسم"
-                    placeholder="ادخل الاسم"
-                    value={values.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={!!touched.name && !!errors.name}
-                    helperText={touched.name && errors.name}
-                  />
-                  <MyInput
-                    name="description"
-                    label="الوصف"
-                    multiline={true}
-                    fullWidth={true}
-                    rows={3}
-                    placeholder="ادخل الوصف"
-                    value={values.description}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={!!touched.description && !!errors.description}
-                    helperText={touched.description && errors.description}
-                  />
-                </MyInputsWrapper>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={6}>
+                    <MyInputsWrapper
+                      direction="column"
+                      title="اسم و وصف المشروع"
+                    >
+                      <MyInput
+                        width={myWidth}
+                        name="name"
+                        label="الاسم"
+                        placeholder="ادخل الاسم"
+                        value={values.name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!touched.name && !!errors.name}
+                        helperText={touched.name && errors.name}
+                      />
+                      <MyInput
+                        name="description"
+                        label="الوصف"
+                        multiline={true}
+                        fullWidth={true}
+                        rows={2.8}
+                        placeholder="ادخل الوصف"
+                        value={values.description}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!touched.description && !!errors.description}
+                        helperText={touched.description && errors.description}
+                      />
+                    </MyInputsWrapper>
+                  </Grid>
 
-                <MyInputsWrapper title="تكلفة المشروع">
-                  <MyInput
-                    width={myWidth}
-                    name="budget"
-                    label="التكلفة المخططة"
-                    placeholder="ادخل التكلفة"
-                    type="number"
-                    value={values.budget}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={!!touched.budget && !!errors.budget}
-                    helperText={touched.budget && errors.budget}
-                  />
-                  <MyInput
-                    width={myWidth}
-                    name="spentBudget"
-                    label="المنصرف الفعلى"
-                    placeholder="ادخل المنصرف"
-                    type="number"
-                    value={values.spentBudget}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={!!touched.spentBudget && !!errors.spentBudget}
-                    helperText={touched.spentBudget && errors.spentBudget}
-                  />
-                </MyInputsWrapper>
-                <MyInputsWrapper title="ما تم انجازة من المشروع">
-                  <MyInput
-                    width={myWidth}
-                    name="percentage"
-                    label="ادخل نسبة مؤية"
-                    type="number"
-                    value={values.percentage}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={!!touched.percentage && !!errors.percentage}
-                    helperText={touched.percentage && errors.percentage}
-                  />
-                </MyInputsWrapper>
-                <MyInputsWrapper title="الخطة الزمنية للمشروع">
-                  <MyDatePicker
-                    name="startDate"
-                    width={myWidth}
-                    title="تاريخ البداية"
-                    value={dayjs(values.startDate)}
-                    onChangeDate={(value) => {
-                      setFieldValue("startDate", value.toISOString());
-                      setFieldValue("endDate", null);
-                    }}
-                    error={!!touched.startDate && !!errors.startDate}
-                    helperText={touched.startDate && errors.startDate}
-                  />
-
-                  <MyDatePicker
-                    name="endDate"
-                    width={myWidth}
-                    title="تاريخ النهاية"
-                    value={dayjs(values.endDate)}
-                    onChangeDate={(value) => {
-                      setFieldValue("endDate", value.toISOString());
-                    }}
-                    error={!!touched.endDate && !!errors.endDate}
-                    helperText={touched.endDate && errors.endDate}
-                  />
-                </MyInputsWrapper>
-                <MyInputsWrapper title="المخاطر و المعوقات">
-                  <Box>
-                    <Typography variant="body1" color="initial" mt={1}>
-                      هل له مخاطر ؟
-                    </Typography>
-                    <FormControl>
-                      <RadioGroup
-                        row
-                        aria-labelledby="demo-form-control-label-placement"
-                        name="position"
-                        value={showRisks}
-                        onChange={handleChangeRisks}
-                      >
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio size="small" />}
-                          label="لا"
-                          labelPlacement="start"
+                  <Grid item xs={12} md={6}>
+                    <Grid item xs={12}  >
+                      <MyInputsWrapper title="تكلفة المشروع">
+                        <MyInput
+                          width={myWidth}
+                          name="budget"
+                          label="التكلفة المخططة"
+                          placeholder="ادخل التكلفة"
+                          type="number"
+                          value={values.budget}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={!!touched.budget && !!errors.budget}
+                          helperText={touched.budget && errors.budget}
                         />
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio size="small" />}
-                          label="نعم"
-                          labelPlacement="start"
+                        <MyInput
+                          width={myWidth}
+                          name="spentBudget"
+                          label="المنصرف الفعلى"
+                          placeholder="ادخل المنصرف"
+                          type="number"
+                          value={values.spentBudget}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={!!touched.spentBudget && !!errors.spentBudget}
+                          helperText={touched.spentBudget && errors.spentBudget}
                         />
-                      </RadioGroup>
-                    </FormControl>
-                  </Box>
+                      </MyInputsWrapper>
+                    </Grid>
+                    <Grid item xs={12} >
+                      <MyInputsWrapper title="ما تم انجازة من المشروع">
+                        <MyInput
+                          width={myWidth}
+                          name="percentage"
+                          label="ادخل نسبة مؤية"
+                          type="number"
+                          value={values.percentage}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={!!touched.percentage && !!errors.percentage}
+                          helperText={touched.percentage && errors.percentage}
+                        />
+                      </MyInputsWrapper>
+                    </Grid>
+                  </Grid>
 
-                </MyInputsWrapper>
+
+                  <Grid item xs={12} md={6}>
+                    <MyInputsWrapper title="الخطة الزمنية للمشروع">
+                      <MyDatePicker
+                        name="startDate"
+                        width={myWidth}
+                        title="تاريخ البداية"
+                        value={dayjs(values.startDate)}
+                        onChangeDate={(value) => {
+                          setFieldValue("startDate", value.toISOString());
+                          setFieldValue("endDate", null);
+                        }}
+                        error={!!touched.startDate && !!errors.startDate}
+                        helperText={touched.startDate && errors.startDate}
+                      />
+                      <MyDatePicker
+                        name="endDate"
+                        width={myWidth}
+                        title="تاريخ النهاية"
+                        value={dayjs(values.endDate)}
+                        onChangeDate={(value) => {
+                          setFieldValue("endDate", value.toISOString());
+                        }}
+                        error={!!touched.endDate && !!errors.endDate}
+                        helperText={touched.endDate && errors.endDate}
+                      />
+                    </MyInputsWrapper>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <MyInputsWrapper
+                      direction="column"
+                      title="المخاطر و المعوقات"
+                    >
+                      {/* risks */}
+                      <Stack width="100%" gap={2}>
+                        <Box>
+                          <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
+                            <Typography variant="body1" color="initial" mt={1}>
+                              هل له مخاطر ؟
+                            </Typography>
+                            <FormControl>
+                              <RadioGroup
+                                row
+                                aria-labelledby="demo-form-control-label-placement"
+                                name="showRisks"
+                                value={values.showRisks}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                }}
+                              >
+                                <FormControlLabel
+                                  value="no"
+                                  control={<Radio size="small" />}
+                                  label="لا"
+                                  labelPlacement="start"
+                                />
+                                <FormControlLabel
+                                  value="yes"
+                                  control={<Radio size="small" />}
+                                  label="نعم"
+                                  labelPlacement="start"
+                                />
+                              </RadioGroup>
+                            </FormControl>
+                            {values.showRisks === "yes" && (
+                              <Box ml={2}>
+                                <MyInput
+                                  width={180}
+                                  name="riskStatus"
+                                  select
+                                  label="الحالة"
+                                  placeholder="اختر الحالة"
+                                  value={values.riskStatus}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  error={
+                                    !!touched.riskStatus && !!errors.riskStatus
+                                  }
+                                  helperText={
+                                    touched.riskStatus && errors.riskStatus
+                                  }
+                                >
+                                  {risksandDisablesOptions.map((el) => (
+                                    <MenuItem key={el.id} value={el.id}>
+                                      {el.name}
+                                    </MenuItem>
+                                  ))}
+                                </MyInput>
+                              </Box>
+                            )}
+                          </Stack>
+                          {values.showRisks === "yes" && (
+                            <>
+                              <MyInput
+                                name="risks"
+                                label="المخاطر"
+                                multiline={true}
+                                fullWidth={true}
+                                rows={3}
+                                placeholder="ادخل المخاطر"
+                                value={values.risks}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!touched.risks && !!errors.risks}
+                                helperText={touched.risks && errors.risks}
+                              />
+                            </>
+                          )}
+                        </Box>
+                      </Stack>
+                      {/* disables */}
+                      <Stack width="100%" gap={2}>
+                        <Box>
+                          <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
+                            <Typography variant="body1" color="initial" mt={1}>
+                              هل له معوقات ؟
+                            </Typography>
+                            <FormControl>
+                              <RadioGroup
+                                row
+                                aria-labelledby="demo-form-control-label-placement"
+                                name="showDisables"
+                                value={values.showDisables}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                }}
+                              >
+                                <FormControlLabel
+                                  value="no"
+                                  control={<Radio size="small" />}
+                                  label="لا"
+                                  labelPlacement="start"
+                                />
+                                <FormControlLabel
+                                  value="yes"
+                                  control={<Radio size="small" />}
+                                  label="نعم"
+                                  labelPlacement="start"
+                                />
+                              </RadioGroup>
+                            </FormControl>
+                            {values.showDisables === "yes" && (
+                              <Box ml={2}>
+                                <MyInput
+                                  width={180}
+                                  name="disableStatus"
+                                  select
+                                  label="الحالة"
+                                  placeholder="اختر الحالة"
+                                  value={values.disableStatus}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  error={
+                                    !!touched.disableStatus &&
+                                    !!errors.disableStatus
+                                  }
+                                  helperText={
+                                    touched.disableStatus &&
+                                    errors.disableStatus
+                                  }
+                                >
+                                  {risksandDisablesOptions.map((el) => (
+                                    <MenuItem key={el.id} value={el.id}>
+                                      {el.name}
+                                    </MenuItem>
+                                  ))}
+                                </MyInput>
+                              </Box>
+                            )}
+                          </Stack>
+                          {values.showDisables === "yes" && (
+                            <>
+                              <MyInput
+                                name="disables"
+                                label="المعوقات"
+                                multiline={true}
+                                fullWidth={true}
+                                rows={3}
+                                placeholder="ادخل المعوقات"
+                                value={values.disables}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!touched.disables && !!errors.disables}
+                                helperText={touched.disables && errors.disables}
+                              />
+                            </>
+                          )}
+                        </Box>
+                      </Stack>
+                    </MyInputsWrapper>
+                  </Grid>
+                </Grid>
 
                 {!id && (
                   <Box
-                    minHeight="100%"
+                    // minHeight="100%"
                     textAlign="center"
                     alignSelf="center"
                     mt={4}

@@ -139,13 +139,14 @@ const ProjectsBox = () => {
     <>
       <Heading title="صندوق المشاريع" />
       <Box
-        // gap={2}
-        p={1}
-        border="2px solid #000"
-        borderRadius={2}
-        mt="70px"
-        sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
-        flexGrow={1}
+       gap={2}
+       p={2}
+       border="2px solid #000"
+       borderRadius={2}
+       mt="70px"
+       sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
+       // flex={1}
+       height="calc(100vh - 130px)"
       >
         {/* filteration box */}
         <Stack

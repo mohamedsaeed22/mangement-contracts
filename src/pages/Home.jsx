@@ -1,10 +1,8 @@
-import DisableImage from "../assets/imgs/disables.svg";
-import DownsImage from "../assets/imgs/downs.svg";
-
 import Heading from "../components/common/Heading/Heading";
-import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Box} from "@mui/material";
 import TopStat from "../components/manageContracts/TopStat";
 import BottomStat from "../components/manageContracts/BottomStat";
+ import CenterStat from "../components/manageContracts/CenterStat";
 
 const Home = () => {
   return (
@@ -23,8 +21,9 @@ const Home = () => {
       >
         {/* top paper */}
         <TopStat />
-
         {/* center paper */}
+        <CenterStat/>
+        {/* bottom paper */}
         <BottomStat />
       </Box>
     </>
