@@ -10,6 +10,7 @@ const actCreateSupervisor = createAsyncThunk(
       const res = await api.post("api/Supervisor/create", supervisor);
       return res.data;
     } catch (error) {
+      console.log(error)
       return rejectWithValue(axiosErrorHandler(error));
     }
   }

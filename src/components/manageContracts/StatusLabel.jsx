@@ -18,10 +18,6 @@ const StatusLabel = ({ status }) => {
       label = "اكتمل";
       break;
     case 4:
-      bg = "red";
-      label = "مرفوض";
-      break;
-    case 5:
       bg = "#17A2B8";
       label = "معلق";
       break;

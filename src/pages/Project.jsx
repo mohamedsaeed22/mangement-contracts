@@ -2,11 +2,17 @@ import { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   IconButton,
   Menu,
   MenuItem,
+  Radio,
+  RadioGroup,
   Stack,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -35,7 +41,7 @@ const projectStateOptions = [
   { id: 1, name: "لم يتم البدء" },
   { id: 2, name: "جار العمل علية" },
   { id: 3, name: "اكتمل" },
-  { id: 5, name: "معلق" },
+  { id: 4, name: "معلق" },
 ];
 
 const initialValues = {
@@ -53,7 +59,7 @@ const initialValues = {
 
 const myWidth = 250;
 
-const AddProject = () => {
+const Project = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -64,6 +70,12 @@ const AddProject = () => {
   const [myProject, setMyProject] = useState(initialValues);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [showRisks, setShowRisks] = useState("no");
+
+  const handleChangeRisks = (event) => {
+    setShowRisks(event.target.value);
+  };
+  console.log(setShowRisks);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,7 +87,7 @@ const AddProject = () => {
       .then((res) => {
         console.log(res);
         notifySuccess("تم حذف المشروع بنجاح");
-        navigate(-1);
+        navigate("/projectsbox", { replace: true });
       })
       .catch((res) => {
         console.log(res);
@@ -87,6 +99,8 @@ const AddProject = () => {
   useEffect(() => {
     if (id) {
       dispatch(actGetProjectById(id));
+    } else {
+      setMyProject(initialValues);
     }
   }, [dispatch, id]);
 
@@ -101,36 +115,41 @@ const AddProject = () => {
   }, [id, project]);
 
   const handleFormSubmit = (values) => {
-    console.log(values)
-    // const projectData = {
-    //   ...values,
-    //   endDate: values.endDate,
-    //   startDate: values.startDate,
-    //   budget: parseFloat(values.budget),
-    //   spentBudget: parseFloat(values.spentBudget),
-    //   percentage: parseFloat(values.percentage),
-    // };
-    // if (id) {
-    //   dispatch(actUpdateProject(projectData))
-    //     .unwrap()
-    //     .then((res) => {
-    //       console.log(res);
-    //       notifySuccess("تم تعديل المشروع بنجاح");
-    //     })
-    //     .catch((res) => {
-    //       console.log(res);
-    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-    //     });
-    // } else {
-    //   dispatch(actCreateProject(projectData))
-    //     .unwrap()
-    //     .then(() => {
-    //       notifySuccess("تم اضافة المشروع بنجاح");
-    //     })
-    //     .catch(() => {
-    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-    //     });
-    // }
+    console.log(values);
+    const projectData = {
+      ...values,
+      endDate: values.endDate,
+      startDate: values.startDate,
+      budget: parseFloat(values.budget),
+      spentBudget: parseFloat(values.spentBudget),
+      percentage: parseFloat(values.percentage),
+    };
+    if (id) {
+      dispatch(actUpdateProject(projectData))
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            notifySuccess("تم تعديل المشروع بنجاح");
+            navigate(-1);
+          } else {
+            notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      dispatch(actCreateProject(projectData))
+        .unwrap()
+        .then(() => {
+          notifySuccess("تم اضافة المشروع بنجاح");
+          // resetForm()
+        })
+        .catch(() => {
+          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+        });
+    }
   };
 
   return (
@@ -139,7 +158,12 @@ const AddProject = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Formik
           key={JSON.stringify(myProject)}
-          onSubmit={handleFormSubmit}
+          onSubmit={(values, { resetForm }) => {
+            handleFormSubmit(values);
+            if (id) {
+              resetForm();
+            }
+          }}
           initialValues={myProject}
           validationSchema={projectSchema}
           enableReinitialize
@@ -158,7 +182,7 @@ const AddProject = () => {
               gap={1}
               onSubmit={handleSubmit}
               flexGrow={1}
-              mt="80px"
+              mt="60px"
               sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
             >
               <Stack direction="row" flexWrap="wrap" gap={2} mr={1}>
@@ -239,7 +263,11 @@ const AddProject = () => {
                   </MyInput>
                   {id && (
                     <Stack direction="row" alignSelf="flex-start">
-                      <MyBtn title="تعديل" type="submit" handleBtnClick={handleFormSubmit}/>
+                      <MyBtn
+                        title="تعديل"
+                        type="submit"
+                        handleBtnClick={handleFormSubmit}
+                      />
                       <Box>
                         <IconButton
                           aria-label="more"
@@ -273,7 +301,12 @@ const AddProject = () => {
                   )}
                 </Stack>
               </Stack>
-              <Box p={1} border="2px solid #000" borderRadius={2} flex={1}>
+              <Box
+                padding="0px 10px 0px"
+                border="2px solid #000"
+                borderRadius={2}
+                flex={1}
+              >
                 {/* row 1 */}
 
                 <MyInputsWrapper direction="column" title="اسم و وصف المشروع">
@@ -333,8 +366,7 @@ const AddProject = () => {
                   <MyInput
                     width={myWidth}
                     name="percentage"
-                    label="ما تم انجازة"
-                    placeholder="ادخل نسبة مؤية"
+                    label="ادخل نسبة مؤية"
                     type="number"
                     value={values.percentage}
                     onChange={handleChange}
@@ -369,6 +401,36 @@ const AddProject = () => {
                     helperText={touched.endDate && errors.endDate}
                   />
                 </MyInputsWrapper>
+                <MyInputsWrapper title="المخاطر و المعوقات">
+                  <Box>
+                    <Typography variant="body1" color="initial" mt={1}>
+                      هل له مخاطر ؟
+                    </Typography>
+                    <FormControl>
+                      <RadioGroup
+                        row
+                        aria-labelledby="demo-form-control-label-placement"
+                        name="position"
+                        value={showRisks}
+                        onChange={handleChangeRisks}
+                      >
+                        <FormControlLabel
+                          value="no"
+                          control={<Radio size="small" />}
+                          label="لا"
+                          labelPlacement="start"
+                        />
+                        <FormControlLabel
+                          value="yes"
+                          control={<Radio size="small" />}
+                          label="نعم"
+                          labelPlacement="start"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Box>
+
+                </MyInputsWrapper>
 
                 {!id && (
                   <Box
@@ -393,4 +455,4 @@ const AddProject = () => {
   );
 };
 
-export default AddProject;
+export default Project;

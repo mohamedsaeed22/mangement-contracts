@@ -15,9 +15,9 @@ const actGetProjects = createAsyncThunk(
       const { branches } = getState().branch;
 
       const res = await api.get(
-        `api/Project/browse?Search=${params.search}&PageSize=10&Page=${params.page}`
+        `api/Project/browse?Search=${params.search}&PageSize=10&Page=${params.page}&Status=${params.status}&StartDate=${params.startDate}`
       );
-      console.log(res.data);
+
       const enhancedProjects = res.data.data.map((project) => {
         const supervisor = supervisors.find(
           (sup) => sup.id === project.supervisorId

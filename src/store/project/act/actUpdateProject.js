@@ -8,8 +8,10 @@ const actUpdateProject = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.put("api/Project/update/" + project.id, project);
-      return res.data;
+      console.log(res)
+      return res;
     } catch (error) {
+      console.log(error)
       return rejectWithValue(axiosErrorHandler(error));
     }
   }

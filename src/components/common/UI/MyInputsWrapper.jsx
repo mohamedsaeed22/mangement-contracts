@@ -4,7 +4,7 @@ import React from "react";
 const MyInputsWrapper = ({ direction = "row", title, children }) => {
   return (
     <Stack
-      mt={1}
+      mt={3}
       sx={{
         border: "1px solid #ddd ",
         borderRadius: "8px",

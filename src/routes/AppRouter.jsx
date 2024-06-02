@@ -4,13 +4,15 @@ import PageSuspenseFallback from "../components/feedback/PageSuspenseFallback/Pa
 
 import Error from "../pages/Error";
 import Home from "../pages/Home";
-import AddProject from "../pages/AddProject";
 import WithGuard from "../components/common/Auth/WithGuard";
-import ProjectsTable from "../components/manageContracts/ProjectsTable";
 import Branch from "../pages/Branch";
 import MangeBranches from "../pages/MangeBranches";
 import ManageSupervisors from "../pages/ManageSupervisors";
 import ProjectDetails from "../pages/ProjectDetails";
+import Project from "../pages/Project";
+import ProjectsBox from "../pages/ProjectsBox";
+ import ManageCompanies from "../pages/ManageCompanies";
+import ManageItems from "../pages/ManageItems";
 
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
@@ -41,11 +43,11 @@ const router = createBrowserRouter([
       },
       {
         path: "project/add",
-        element: <AddProject />,
+        element: <Project />,
       },
       {
         path: "project/edit/:id",
-        element: <AddProject />,
+        element: <Project />,
       },
       {
         path: "project/id/:id",
@@ -53,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: "projectsbox",
-        element: <ProjectsTable />,
+        element: <ProjectsBox />,
       },
       {
         path: "branch/:id",
@@ -66,6 +68,14 @@ const router = createBrowserRouter([
       {
         path: "managesupervisors",
         element: <ManageSupervisors />,
+      },
+      {
+        path: "manageitems",
+        element: <ManageItems />,
+      },
+      {
+        path: "managecompanies",
+        element: <ManageCompanies />,
       },
     ],
   },

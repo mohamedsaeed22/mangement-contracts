@@ -8,14 +8,15 @@ const TopStat = () => {
       sx={{
         padding: "8px",
         marginBottom: 2,
-        border:'1px solid #ddd'
+        border: "1px solid #ddd",
       }}
       elevation={0}
     >
       <Stack
         flexDirection="row"
         alignItems="center"
-        justifyContent="space-between"
+        // justifyContent="center"
+        sx={{ justifyContent: { xs: "center", md: "space-between" } }}
         gap={4}
         flexWrap="wrap"
         marginRight="40px"

@@ -37,11 +37,22 @@ const supervisroSubmenuList = [
     name: "اداره المشرفين",
   },
 ];
+const ForeignCompanyList = [
+  {
+    nav: "manageitems",
+    name: "اداره الاصناف",
+  },
+  {
+    nav: "managecompanies",
+    name: "اداره الشركات",
+  },
+];
 const Sidebar = () => {
   const dispatch = useDispatch();
   const [showProjectsMenu, setShowProjectsMenu] = useState(false);
   const [showBranchesMenu, setShowBranchesMenu] = useState(false);
   const [showSupervisorsMenu, setShowSupervisorsMenu] = useState(false);
+  const [showForeignCompany, setShowForeignCompany] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const { branches } = useSelector((state) => state.branch);
   const { supervisors } = useSelector((state) => state.supervisor);
@@ -52,6 +63,9 @@ const Sidebar = () => {
   console.log(branchesList);
   const toggleProjectSubmenu = () => {
     setShowProjectsMenu(!showProjectsMenu);
+  };
+  const toggleForeignCompany = () => {
+    setShowForeignCompany(!showForeignCompany);
   };
 
   const toggleBranchSubmenu = () => {
@@ -108,6 +122,7 @@ const Sidebar = () => {
           width: "250px",
           minWidth: "250px",
           minHeight: "100vh",
+          height:'100%',
           backgroundColor: "#263238",
           borderTopRightRadius: "30px",
           borderBottomRightRadius: "30px",
@@ -157,7 +172,7 @@ const Sidebar = () => {
               sx={{
                 borderTopLeftRadius: "10px",
                 borderBottomLeftRadius: "10px",
-                "&:hover": { color: "blue !important" },
+                // "&:hover": { color: "blue !important" },
               }}
             >
               <Typography
@@ -193,6 +208,12 @@ const Sidebar = () => {
           showSubmenu={showSupervisorsMenu}
           subMenuList={supervisroSubmenuList}
         />
+        {/* <SidebarMenu
+          menuTitle={"التعاقدات الخارجيه"}
+          toggleSubmenuFun={toggleForeignCompany}
+          showSubmenu={showForeignCompany}
+          subMenuList={ForeignCompanyList}
+        /> */}
         {/* logout */}
         <Stack
           direction="row"

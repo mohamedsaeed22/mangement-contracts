@@ -4,10 +4,9 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import SearchIcon from "../../assets/icon/search.svg";
+import SearchIcon from "../assets/icon/search.svg";
 import {
   Box,
-  Button,
   FormControl,
   InputLabel,
   LinearProgress,
@@ -21,18 +20,15 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
-import Heading from "../common/Heading/Heading";
-import { actGetBranches } from "../../store/branch/branchSlice";
-import { actGetProjects } from "../../store/project/projectSlice";
-import StatusLabel from "./StatusLabel";
-import { FilterAlt, FilterAltOff } from "@mui/icons-material";
+import Heading from "../components/common/Heading/Heading";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
-import FilterIcon from "../../assets/icon/filter-icon.svg";
+import MyBtn from "../components/common/UI/MyBtn";
+import FilterIcon from "../assets/icon/filter-icon.svg";
+import { actGetProjects } from "../store/project/projectSlice";
+import StatusLabel from "../components/manageContracts/StatusLabel";
 import dayjs from "dayjs";
-import MyBtn from "../common/UI/MyBtn";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -63,18 +59,17 @@ const projectStateOptions = [
   { id: 5, label: "معلق" },
 ];
 
-const ProjectsTable = () => {
+const ProjectsBox = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { projects, totalItems, loading, error } = useSelector(
     (state) => state.project
   );
-
   const { branches } = useSelector((state) => state.branch);
   const { supervisors } = useSelector((state) => state.supervisor);
   const [plannedCost, setPlannedCost] = useState("");
   const [toggleFilter, setToggleFilter] = useState(false);
-
+  const [isoDate, setIsoDate] = useState("");
   const [branche, setBranch] = useState("");
   const [supervisor, setSupervisor] = useState("");
   const [projectState, setProjectState] = useState("");
@@ -90,7 +85,7 @@ const ProjectsTable = () => {
   const handleChange = (event, value) => {
     handleChangePge(value);
   };
-
+  console.log(startDate);
   // useEffect(() => {
   //   dispatch(actGetBranches());
   // }, [dispatch]);
@@ -106,8 +101,15 @@ const ProjectsTable = () => {
   }, [search]);
 
   useEffect(() => {
-    dispatch(actGetProjects({ page, search: debouncedSearch }));
-  }, [dispatch, page, debouncedSearch]);
+    dispatch(
+      actGetProjects({
+        page,
+        search: debouncedSearch,
+        status: projectState,
+        startDate: isoDate,
+      })
+    );
+  }, [dispatch, page, debouncedSearch, projectState, isoDate]);
 
   const handleChangeBranche = (event) => {
     setBranch(event.target.value);
@@ -120,8 +122,14 @@ const ProjectsTable = () => {
   };
 
   const handleStartDateChange = (newValue) => {
+    const { $y, $M, $d } = newValue;
+    // Create a Day.js date object
+    const dayjsDate = dayjs([$y, $M + 1, $d.getDate()]); // Day.js month is 0-indexed, so $M + 1
+    // Convert the Day.js date to ISO 8601 format
+    const isoDate = dayjsDate.toISOString();
+    console.log(isoDate);
+    setIsoDate(isoDate);
     setStartDate(newValue);
-    setEndDate(null);
   };
 
   const handleEndDateChange = (newValue) => {
@@ -135,15 +143,16 @@ const ProjectsTable = () => {
         p={1}
         border="2px solid #000"
         borderRadius={2}
-        mt="100px"
+        mt="70px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         flexGrow={1}
       >
-        {/* filteration */}
+        {/* filteration box */}
         <Stack
           direction="row"
           gap={2}
           justifyContent="space-between"
+          sx={{ justifyContent: { xs: "center", sm: "space-between" } }}
           alignItems="center"
           flexWrap="wrap"
         >
@@ -166,130 +175,131 @@ const ProjectsTable = () => {
               }}
             />
           </Box>
-          <Stack
-            direction="row"
-            gap={3}
-            flexWrap="wrap"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {toggleFilter && (
-              <Stack
-                direction="row"
-                // justifyContent="space-between"
-                gap={2}
-                alignItems="center"
-              >
-                <FormControl sx={{ minWidth: 150 }} size="small">
-                  <InputLabel id="demo-simple-select-branche">
-                    النشاط
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-branche"
-                    id="demo-simple-selectBranch"
-                    value={branche}
-                    label="النشاط"
-                    onChange={handleChangeBranche}
-                  >
-                    {branches?.map((branch) => (
-                      <MenuItem key={branch.id} value={branch.id}>
-                        {branch.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+          <MyBtn
+            title="تصنيف"
+            icon={FilterIcon}
+            handleBtnClick={handleToggleFilter}
+          />
+        </Stack>
+        <Stack
+          direction="row"
+          gap={3}
+          flexWrap="wrap"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {toggleFilter && (
+            <Stack
+              direction="row"
+              mt="10px"
+              justifyContent="center"
+              gap={2}
+              flexWrap="wrap"
+              alignItems="center"
+            >
+              <FormControl sx={{ minWidth: 150 }} size="small">
+                <InputLabel id="demo-simple-select-branche">النشاط</InputLabel>
+                <Select
+                  labelId="demo-simple-select-branche"
+                  id="demo-simple-selectBranch"
+                  value={branche}
+                  label="النشاط"
+                  onChange={handleChangeBranche}
+                >
+                  {branches?.map((branch) => (
+                    <MenuItem key={branch.id} value={branch.id}>
+                      {branch.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
-                <FormControl sx={{ minWidth: 150 }} size="small">
-                  <InputLabel id="demo-simple-select-supervisor">
-                    مشرف المشروع
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-supervisor"
-                    id="demo-simple-selectSupervisor"
-                    value={supervisor}
-                    label="مشرف المشروع"
-                    onChange={handleChangeSupervisor}
-                  >
-                    {supervisors?.map((supervisor) => (
-                      <MenuItem key={supervisor.id} value={supervisor.id}>
-                        {supervisor.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <TextField
-                  size="small"
-                  id="planned-cost"
-                  type="number"
-                  label="التكلفة المخططة"
-                  variant="outlined"
-                  sx={{ width: "150px" }}
-                  value={plannedCost}
-                  onChange={(e) => setPlannedCost(e.target.value)}
-                />
-                <FormControl sx={{ minWidth: 150 }} size="small">
-                  <InputLabel id="demo-simple-select-projectState">
-                    حالة المشروع
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-projectState"
-                    id="demo-simple-selectProjectState"
-                    value={projectState}
-                    label="حالة المشروع"
-                    onChange={handleChangeProjectState}
-                  >
-                    {projectStateOptions.map((option) => (
-                      <MenuItem key={option.id} value={option.id}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              <FormControl sx={{ minWidth: 150 }} size="small">
+                <InputLabel id="demo-simple-select-supervisor">
+                  مشرف المشروع
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-supervisor"
+                  id="demo-simple-selectSupervisor"
+                  value={supervisor}
+                  label="مشرف المشروع"
+                  onChange={handleChangeSupervisor}
+                >
+                  {supervisors?.map((supervisor) => (
+                    <MenuItem key={supervisor.id} value={supervisor.id}>
+                      {supervisor.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                size="small"
+                id="planned-cost"
+                type="number"
+                label="التكلفة المخططة"
+                variant="outlined"
+                sx={{ width: "150px" }}
+                value={plannedCost}
+                onChange={(e) => setPlannedCost(e.target.value)}
+              />
+              <FormControl sx={{ minWidth: 150 }} size="small">
+                <InputLabel id="demo-simple-select-projectState">
+                  حالة المشروع
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-projectState"
+                  id="demo-simple-selectProjectState"
+                  value={projectState}
+                  label="حالة المشروع"
+                  onChange={handleChangeProjectState}
+                >
+                  {projectStateOptions.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      // mt: 2,
-                      gap: 3,
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <Box sx={{ width: "150px" }}>
-                      <DatePicker
-                        label="بداية المشروع"
-                        slotProps={{ textField: { size: "small" } }}
-                        value={startDate}
-                        onChange={handleStartDateChange}
-                        renderInput={(params) => <TextField {...params} />}
-                        inputFormat="MM/DD/YYYY"
-                      />
-                    </Box>
-                    <Box sx={{ width: "150px" }}>
-                      <DatePicker
-                        label="نهاية المشروع"
-                        value={endDate}
-                        onChange={handleEndDateChange}
-                        renderInput={(params) => <TextField {...params} />}
-                        inputFormat="MM/DD/YYYY"
-                        slotProps={{ textField: { size: "small" } }}
-                      />
-                    </Box>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    // mt: 2,
+                    gap: 3,
+                    justifyContent: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <Box sx={{ width: "150px" }}>
+                    <DatePicker
+                      label="بداية المشروع"
+                      slotProps={{ textField: { size: "small" } }}
+                      value={startDate}
+                      onChange={handleStartDateChange}
+                      renderInput={(params) => <TextField {...params} />}
+                      inputFormat="MM/DD/YYYY"
+                    />
                   </Box>
-                </LocalizationProvider>
-              </Stack>
-            )}
-            <MyBtn
-              title="تصنيف"
-              icon={FilterIcon}
-              handleBtnClick={handleToggleFilter}
-            />
-          </Stack>
+                  <Box sx={{ width: "150px" }}>
+                    <DatePicker
+                      label="نهاية المشروع"
+                      value={endDate}
+                      onChange={handleEndDateChange}
+                      renderInput={(params) => <TextField {...params} />}
+                      inputFormat="MM/DD/YYYY"
+                      slotProps={{ textField: { size: "small" } }}
+                    />
+                  </Box>
+                </Box>
+              </LocalizationProvider>
+            </Stack>
+          )}
         </Stack>
 
-        <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
+        <TableContainer sx={{ maxHeight: "80vh", marginTop: "10px" }}>
           <Table aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -390,4 +400,4 @@ const ProjectsTable = () => {
   );
 };
 
-export default ProjectsTable;
+export default ProjectsBox;

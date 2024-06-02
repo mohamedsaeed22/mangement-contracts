@@ -3,6 +3,8 @@ import authReducer from "./auth/authSlice";
 import branchReducer from "./branch/branchSlice";
 import projectReducer from "./project/projectSlice";
 import supervisorReducer from "./supervisor/supervisorSlice";
+import companyReducer from "./company/companySlice";
+import itemReducer from "./item/itemSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ const store = configureStore({
     branch: branchReducer,
     project: projectReducer,
     supervisor: supervisorReducer,
+    company: companyReducer,
+    item: itemReducer,
   },
 });
 

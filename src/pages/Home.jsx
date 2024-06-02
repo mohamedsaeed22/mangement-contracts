@@ -13,10 +13,10 @@ const Home = () => {
 
       <Box
         gap={2}
-        p={1}
+        p={2}
         border="2px solid #000"
         borderRadius={2}
-        mt="100px"
+        mt="90px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         flex={1}
         // bgcolor="#ddd"

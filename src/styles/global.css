@@ -83,7 +83,8 @@ form input[type="submit"] {
   border: none;
   /* background-color: #F3F3F3 ; */
   border-radius: 8px;
-  width: 280px;
+  max-width: 260px;
+  width: 100%;
   padding: 8px 10px;
   font-size: 16px;
 }

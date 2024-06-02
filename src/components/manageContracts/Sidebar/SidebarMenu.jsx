@@ -21,7 +21,7 @@ const SidebarMenu = ({
           borderBottomLeftRadius: "10px",
           cursor: "pointer",
           color: "#fff",
-          "&:hover": { color: "blue !important" },
+          // "&:hover": { color: "blue !important" },
         }}
         onClick={toggleSubmenuFun}
       >

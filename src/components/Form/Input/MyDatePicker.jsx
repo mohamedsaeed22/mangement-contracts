@@ -13,7 +13,7 @@ const MyDatePicker = ({
 }) => {
   return (
     <Stack gap={1} width={width}>
-      <Typography variant="body1" color="initial" fontWeight="600">
+      <Typography variant="body1" color="initial"  >
         {title}
       </Typography>
       <DatePicker
@@ -24,7 +24,7 @@ const MyDatePicker = ({
         slotProps={{
           textField: {
             size:'small',
-            error: error,
+             error: error,
             helperText: helperText,
             "& .muiformhelpertext-root": {
               color: "red",

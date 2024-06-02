@@ -35,18 +35,18 @@ api.interceptors.response.use(
   (res) => {
     return res;
   },
-  // async (err) => {
-  //   const originalConfig = err.config;
+  async (err) => {
+    const originalConfig = err.config;
   //   if (err.response) {
-  //     // console.log(err.response);
+  //     console.log(err.response);
   //     // Access Token was expired
   //     if (err.response.status === 401 && !originalConfig._retry) {
   //       originalConfig._retry = true;
   //       try {
   //         const rs = await refreshMyToken();
-  //         const { accessToken, refreshToken } = rs.data;
+  //         const { accessToken } = rs.data;
   //         setAccessToken(accessToken);
-  //         setRefreshToken(refreshToken)
+  //         // setRefreshToken(refreshToken);
   //         api.defaults.headers.common["x-access-token"] = accessToken;
 
   //         return api(originalConfig);
@@ -65,10 +65,11 @@ api.interceptors.response.use(
   //   }
 
   //   return Promise.reject(err);
-  // }
+  }
 );
 
 function refreshMyToken() {
+  console.log(getAcessToken(),getRefreshToken())
   return api.post(
     `${BASE_URL}api/users/Identity/refresh-token?refreshToken=${getRefreshToken()}&accessToken=${getAcessToken()}`
   );

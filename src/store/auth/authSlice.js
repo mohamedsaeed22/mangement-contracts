@@ -41,6 +41,7 @@ const authSlice = createSlice({
     });
     builder.addCase(actAuthLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
+      console.log(payload)
       // const decodedToken = jwtDecode(payload.accessToken);
       const sevenDaysFromNow = new Date();
       sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);

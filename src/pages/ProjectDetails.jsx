@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Heading from "../components/common/Heading/Heading";
 import MyLabel from "../components/common/UI/MyLabel";
 import { Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
@@ -6,10 +6,22 @@ import MyBtn from "../components/common/UI/MyBtn";
 import EditIcon from "../assets/icon/edit-icon.svg";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { East } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import actGetProjectById from "../store/project/act/actGetProjectById";
 const ProjectDetails = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { project } = useSelector((state) => state.project);
+  console.log(project);
   const { id } = useParams();
   console.log(id);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(actGetProjectById(id));
+    }
+  }, [dispatch, id]);
+
   return (
     <>
       <Heading title="تفاصيل مشروع" />
@@ -21,7 +33,7 @@ const ProjectDetails = () => {
       >
         <Box>
           <Tooltip title="رجوع" placement="top" arrow>
-            <IconButton onClick={() => navigate(-1)}>
+            <IconButton onClick={() => navigate("/projectsbox")}>
               <East style={{ color: "black" }} />
             </IconButton>
           </Tooltip>
@@ -47,9 +59,9 @@ const ProjectDetails = () => {
             gap={2}
             flexWrap="wrap"
           >
-            <MyLabel label="اسم المشروع" value="مشروع محاجر" />
-            <MyLabel label=" تكلفة المشروع" value=" 121,214" />
-            <MyLabel label="المنصرف الفعلى" value=" 85,847" />
+            <MyLabel label="اسم المشروع" value={project.name} />
+            <MyLabel label=" تكلفة المشروع" value={project.budget} />
+            <MyLabel label="المنصرف الفعلى" value={project.spentBudget} />
           </Stack>
           <Stack
             p={1}
@@ -58,9 +70,9 @@ const ProjectDetails = () => {
             gap={2}
             flexWrap="wrap"
           >
-            <MyLabel label="حالة المشروع" value="تم البدء" />
-            <MyLabel label=" النشاط" value="زراعى" />
-            <MyLabel label="المشرف" value="اسامة" />
+            <MyLabel label="حالة المشروع" value={project.status} />
+            <MyLabel label=" النشاط" value={project.branchName} />
+            <MyLabel label="المشرف" value={project.supervisorName} />
           </Stack>
           <Stack
             p={1}
@@ -69,9 +81,15 @@ const ProjectDetails = () => {
             gap={2}
             flexWrap="wrap"
           >
-            <MyLabel label="ما تم انجازة" value="50%" />
-            <MyLabel label="تاريخ البداية" value=" 12-05-2024" />
-            <MyLabel label="تاريخ النهايه" value=" 19-08-2024" />
+            <MyLabel label="ما تم انجازة" value={`%${project.percentage}`} />
+            <MyLabel
+              label="تاريخ البداية"
+              value={project.startDate?.split("T")[0]}
+            />
+            <MyLabel
+              label="تاريخ النهايه"
+              value={project.endDate?.split("T")[0]}
+            />
           </Stack>
           <Box
             sx={{
@@ -98,10 +116,7 @@ const ProjectDetails = () => {
             >
               تفاصيل المشروع
             </Typography>
-            يجب أن يتضمن عقد التشييد والبناء جدولًا زمنيًا دقيقًا يحدد مراحل
-            الإنجاز وتواريخها، وجدول دفعات مرتبط بهذه المراحل لضمان التدفق
-            المالي السلس. كما يجب تحديد الشروط الجزائية بوضوح لمعالجة التأخيرات
-            وضمان الالتزام بالمواصفات الفنية. بالإضافة إلى ذلك.
+            {project.description}
           </Box>
         </Stack>
       </Box>
