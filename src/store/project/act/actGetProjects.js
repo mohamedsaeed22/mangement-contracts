@@ -13,9 +13,8 @@ const actGetProjects = createAsyncThunk(
       await dispatch(actGetBranches()).unwrap();
       const { supervisors } = getState().supervisor;
       const { branches } = getState().branch;
-
       const res = await api.get(
-        `api/Project/browse?Search=${params.search}&PageSize=10&Page=${params.page}&Status=${params.status}&StartDate=${params.startDate}`
+        `api/Project/browse?Search=${params.search}&PageSize=10&Page=${params.page}&Status=${params.status}&StartDate=${params.startDate}&EndDate=${params.endDate}&BranchId=${params.BranchId}&SupervisorId=${params.SupervisorId}&SpentBudget=${params.SpentBudget}`
       );
 
       const enhancedProjects = res.data.data.map((project) => {

@@ -18,8 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { actAuthLogin } from "../store/auth/authSlice";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import Loading from "../components/feedback/Loading/Loading";
-
+import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
+ 
 const validationSchema = Yup.object({
   userHandle: Yup.string().required("اسم المستخدم مطلوب"),
   password: Yup.string().required("كلمة المرور مطلوبة"),
@@ -187,9 +187,9 @@ const Login = () => {
                   {error}
                 </span>
               )}
-              <Loading status={loading}>
+              <LoadingWrapper loading={loading}>
                 <input type="submit" value="تسجيل" />
-              </Loading>
+              </LoadingWrapper>
             </Box>
           </form>
         </Stack>

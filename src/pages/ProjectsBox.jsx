@@ -8,6 +8,7 @@ import SearchIcon from "../assets/icon/search.svg";
 import {
   Box,
   FormControl,
+  IconButton,
   InputLabel,
   LinearProgress,
   MenuItem,
@@ -29,6 +30,7 @@ import FilterIcon from "../assets/icon/filter-icon.svg";
 import { actGetProjects } from "../store/project/projectSlice";
 import StatusLabel from "../components/manageContracts/StatusLabel";
 import dayjs from "dayjs";
+import { RestartAlt } from "@mui/icons-material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,9 +57,10 @@ const projectStateOptions = [
   { id: 1, label: "لم يتم البدء" },
   { id: 2, label: "جار العمل علية" },
   { id: 3, label: "اكتمل" },
-  { id: 4, label: "مرفوض" },
-  { id: 5, label: "معلق" },
+  { id: 4, label: "معلق" },
 ];
+
+const getIsoDate = () => {};
 
 const ProjectsBox = () => {
   const dispatch = useDispatch();
@@ -67,14 +70,15 @@ const ProjectsBox = () => {
   );
   const { branches } = useSelector((state) => state.branch);
   const { supervisors } = useSelector((state) => state.supervisor);
-  const [plannedCost, setPlannedCost] = useState("");
   const [toggleFilter, setToggleFilter] = useState(false);
-  const [isoDate, setIsoDate] = useState("");
+  const [plannedCost, setPlannedCost] = useState("");
   const [branche, setBranch] = useState("");
   const [supervisor, setSupervisor] = useState("");
   const [projectState, setProjectState] = useState("");
   const [startDate, setStartDate] = useState(null);
+  const [isoStartDate, setIsoStartDate] = useState("");
   const [endDate, setEndDate] = useState(null);
+  const [isoEndDate, setIsoEndDate] = useState("");
   const [page, handleChangePge] = useState(1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -82,19 +86,26 @@ const ProjectsBox = () => {
   const handleChangeProjectState = (event) => {
     setProjectState(event.target.value);
   };
+
   const handleChange = (event, value) => {
     handleChangePge(value);
   };
-  console.log(startDate);
-  // useEffect(() => {
-  //   dispatch(actGetBranches());
-  // }, [dispatch]);
+  
+  const handleResetForm = () => {
+    setPlannedCost("");
+    setBranch("");
+    setSupervisor("");
+    setProjectState("");
+    setStartDate(null);
+    setIsoStartDate("");
+    setEndDate(null);
+    setIsoEndDate("");
+  };
 
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
     }, 300);
-
     return () => {
       clearTimeout(handler);
     };
@@ -106,47 +117,70 @@ const ProjectsBox = () => {
         page,
         search: debouncedSearch,
         status: projectState,
-        startDate: isoDate,
+        startDate: isoStartDate,
+        endDate: isoEndDate,
+        BranchId: branche,
+        SupervisorId: supervisor,
+        SpentBudget: plannedCost,
       })
     );
-  }, [dispatch, page, debouncedSearch, projectState, isoDate]);
+  }, [
+    dispatch,
+    page,
+    debouncedSearch,
+    projectState,
+    isoStartDate,
+    isoEndDate,
+    branche,
+    supervisor,
+    plannedCost,
+  ]);
 
   const handleChangeBranche = (event) => {
     setBranch(event.target.value);
   };
+
   const handleChangeSupervisor = (event) => {
     setSupervisor(event.target.value);
   };
+
   const handleToggleFilter = () => {
     setToggleFilter(!toggleFilter);
   };
 
   const handleStartDateChange = (newValue) => {
-    const { $y, $M, $d } = newValue;
-    // Create a Day.js date object
-    const dayjsDate = dayjs([$y, $M + 1, $d.getDate()]); // Day.js month is 0-indexed, so $M + 1
-    // Convert the Day.js date to ISO 8601 format
-    const isoDate = dayjsDate.toISOString();
-    console.log(isoDate);
-    setIsoDate(isoDate);
-    setStartDate(newValue);
+    console.log(newValue);
+    const selectedDate = dayjs(newValue);
+    const previousDay = selectedDate.subtract(1, "day");
+    const isoStartDate = previousDay.toISOString();
+    setIsoStartDate(isoStartDate);
+    setStartDate(previousDay);
   };
 
   const handleEndDateChange = (newValue) => {
+    const { $y, $M, $d } = newValue;
+    const dayjsDate = dayjs([$y, $M + 1, $d.getDate()]);
+    const isoEndDate = dayjsDate.toISOString();
+    setIsoEndDate(isoEndDate);
+    console.log(isoEndDate);
     setEndDate(newValue);
   };
+
   return (
     <>
       <Heading title="صندوق المشاريع" />
       <Box
-       gap={2}
-       p={2}
-       border="2px solid #000"
-       borderRadius={2}
-       mt="70px"
-       sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
-       // flex={1}
-       height="calc(100vh - 130px)"
+        gap={2}
+        p={2}
+        border="2px solid #000"
+        borderRadius={2}
+        mt="70px"
+        sx={{
+          marginInline: { xs: "5px", sm: "10px", md: "20px" },
+          overflowY: "auto",
+        }}
+        // flex={1}
+        height="calc(100vh - 130px)"
       >
         {/* filteration box */}
         <Stack
@@ -294,13 +328,24 @@ const ProjectsBox = () => {
                       slotProps={{ textField: { size: "small" } }}
                     />
                   </Box>
+                  <Box>
+                    <Tooltip title="مسح" placement="top" arrow>
+                      <IconButton onClick={handleResetForm}>
+                        <RestartAlt style={{ color: "black" }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </Box>
               </LocalizationProvider>
             </Stack>
           )}
         </Stack>
 
-        <TableContainer sx={{ maxHeight: "80vh", marginTop: "10px" }}>
+        <TableContainer
+          sx={{
+            marginTop: "10px",
+          }}
+        >
           <Table aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -383,7 +428,7 @@ const ProjectsBox = () => {
           justifyContent="center"
           alignItems="center"
           marginInline="auto"
-          mt={3}
+          mt={2}
         >
           {error && error.message && error.message}
           {totalItems > 0 ? (

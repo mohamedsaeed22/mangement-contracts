@@ -22,6 +22,7 @@ import StatusLabel from "../components/manageContracts/StatusLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { actGetProjectByBranch } from "../store/project/projectSlice";
 import CenterStat from "../components/manageContracts/CenterStat";
+import { actGetStatByProjectId } from "../store/Statistics/statSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,17 +46,35 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const Branch = () => {
-  const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { projectsByBranch, projects, error } = useSelector(
     (state) => state.project
   );
-  console.log(projectsByBranch);
+  const { projectStat } = useSelector((state) => state.stat);
+  const {
+    totalProjects,
+    totalPercentage,
+    totalBudget,
+    totalSpent,
+    totalCompletedProjects,
+    totalInProgressProjects,
+    totalOnHoldProjects,
+    totalNotStartedProjects,
+    totalRisks,
+    totalActiveRisks,
+    totalClosedRisks,
+    totalOnHoldRisks,
+    totalHandicaps,
+    totalActiveHandicaps,
+    totalClosedHandicaps,
+    totalOnHoldHandicaps,
+  } = projectStat;
   useEffect(() => {
-    dispatch(actGetProjectByBranch(params.id));
-  }, [dispatch, params]);
-  console.log(params.id);
+    dispatch(actGetProjectByBranch(id));
+    dispatch(actGetStatByProjectId(id));
+  }, [dispatch, id]);
 
   const handleShowProject = (project) => {
     navigate(`/project/id/${project.id}`);
@@ -78,10 +97,30 @@ const Branch = () => {
         height="calc(100vh - 130px)"
       >
         <Box borderRadius={2}>
-          <TopStat />
-          <CenterStat />
-
-          <BottomStat />
+          <TopStat
+            totalProjects={totalProjects}
+            totalPercentage={totalPercentage}
+            totalBudget={totalBudget}
+            totalSpent={totalSpent}
+          />
+          {/* center paper */}
+          <CenterStat
+            totalCompletedProjects={totalCompletedProjects}
+            totalInProgressProjects={totalInProgressProjects}
+            totalOnHoldProjects={totalOnHoldProjects}
+            totalNotStartedProjects={totalNotStartedProjects}
+          />
+          {/* bottom paper */}
+          <BottomStat
+            totalRisks={totalRisks}
+            totalActiveRisks={totalActiveRisks}
+            totalClosedRisks={totalClosedRisks}
+            totalOnHoldRisks={totalOnHoldRisks}
+            totalHandicaps={totalHandicaps}
+            totalActiveHandicaps={totalActiveHandicaps}
+            totalClosedHandicaps={totalClosedHandicaps}
+            totalOnHoldHandicaps={totalOnHoldHandicaps}
+          />
           <Typography variant="h6" color="initial" mt={1}>
             المشاريع الخاصة بـ {""}
             <Typography
@@ -118,7 +157,7 @@ const Branch = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {projects?.map((row) => (
+                {projectsByBranch?.map((row) => (
                   <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
                     <StyledTableRow
                       key={row}

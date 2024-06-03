@@ -2,20 +2,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import axiosErrorHandler from "../../../utils/axiosErrorHandler";
 
-const actUpdateProject = createAsyncThunk(
-  "project/actUpdateProject",
-  async (project, thunk) => {
-    console.log(project)
+const actCreateHandicap = createAsyncThunk(
+  "handicap/actCreateHandicap",
+  async (handicap, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.put("api/Project/update/" + project.id, project);
-      console.log(res)
-      return res;
+      const res = await api.post("api/Handicap/create", handicap);
+      return res.data;
     } catch (error) {
-      console.log(error)
       return rejectWithValue(axiosErrorHandler(error));
     }
   }
 );
 
-export default actUpdateProject;
+export default actCreateHandicap;

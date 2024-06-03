@@ -8,22 +8,28 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { East } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import actGetProjectById from "../store/project/act/actGetProjectById";
+import actGetRisksByProjectId from "../store/risk/act/actGetRisksByProjectId";
+import { getRisksAndDisablesName } from "../utils/riskHandicapStatus";
+import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByProjectId";
+import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { project } = useSelector((state) => state.project);
-  console.log(project);
+  const { project, loading, error } = useSelector((state) => state.project);
+  const { risks } = useSelector((state) => state.risk);
+  const { handicaps } = useSelector((state) => state.handicap);
   const { id } = useParams();
-  console.log(id);
 
   useEffect(() => {
     if (id) {
       dispatch(actGetProjectById(id));
+      dispatch(actGetRisksByProjectId(id));
+      dispatch(actGetHandicapsByProjectId(id));
     }
   }, [dispatch, id]);
 
   return (
-    <>
+    <LoadingWrapper loading={loading} error={error}>
       <Heading title="تفاصيل مشروع" />
       <Stack
         direction="row"
@@ -91,6 +97,113 @@ const ProjectDetails = () => {
               value={project.endDate?.split("T")[0]}
             />
           </Stack>
+
+          {risks?.description !== "string" && risks ? (
+            <Stack
+              p={1}
+              direction="row"
+              justifyContent="space-between"
+              gap={2}
+              flexWrap="wrap"
+            >
+              <MyLabel
+                label="حالة المخاطر"
+                value={`${getRisksAndDisablesName(risks?.status)}`}
+              />
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "2px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  maxWidth: 700,
+                  // marginTop: 3,
+                  width: 250,
+                  alignSelf: "center",
+                  // flex: 1,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 20,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  تفاصيل المخاطر
+                </Typography>
+                {risks?.description}
+              </Box>
+            </Stack>
+          ) : (
+            <Typography
+              variant="body1"
+              color="initial"
+              fontSize={18}
+              fontWeight={400}
+            >
+              لا يوجد مخاطر
+            </Typography>
+          )}
+
+          {handicaps?.description !== "string" && handicaps ? (
+            <Stack
+              p={1}
+              direction="row"
+              justifyContent="space-between"
+              gap={2}
+              flexWrap="wrap"
+            >
+              <MyLabel
+                label="حالة المعوقات"
+                value={`${getRisksAndDisablesName(handicaps?.status)}`}
+              />
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "2px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  maxWidth: 700,
+                  width: 250,
+                  alignSelf: "center",
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 20,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  تفاصيل المعوقات
+                </Typography>
+                {risks?.description}
+              </Box>
+            </Stack>
+          ) : (
+            <Typography
+              variant="body1"
+              color="initial"
+              fontSize={18}
+              fontWeight={400}
+            >
+              لا يوجد معوقات
+            </Typography>
+          )}
+
           <Box
             sx={{
               backgroundColor: "#F5F5F5 !important",
@@ -99,7 +212,7 @@ const ProjectDetails = () => {
               padding: "15px 10px",
               position: "relative",
               maxWidth: 700,
-              marginTop: 3,
+              marginTop: 2,
             }}
           >
             <Typography
@@ -120,7 +233,7 @@ const ProjectDetails = () => {
           </Box>
         </Stack>
       </Box>
-    </>
+    </LoadingWrapper>
   );
 };
 

@@ -85,11 +85,13 @@ const MangeBranches = () => {
       dispatch(actDeleteBranch(branch.id))
         .unwrap()
         .then((e) => {
+          console.log(e)
           dispatch(filterBranches(branch.id));
           notifySuccess("تم حذف النشاط");
           setOpenModal(false);
         })
         .catch((err) => {
+          console.log(err)
           notifyFailed("هذا النشاط مرتبط بمشاريع,رجاء تعديل المشارع او حذفها");
         });
     }

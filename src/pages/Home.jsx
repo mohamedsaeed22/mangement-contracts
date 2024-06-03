@@ -1,10 +1,38 @@
 import Heading from "../components/common/Heading/Heading";
-import { Box} from "@mui/material";
+import { Box } from "@mui/material";
 import TopStat from "../components/manageContracts/TopStat";
 import BottomStat from "../components/manageContracts/BottomStat";
- import CenterStat from "../components/manageContracts/CenterStat";
+import CenterStat from "../components/manageContracts/CenterStat";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import actGetAllStat from "../store/Statistics/act/actGetAllStat";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { allStat } = useSelector((state) => state.stat);
+
+  const {
+    totalProjects,
+    totalPercentage,
+    totalBudget,
+    totalSpent,
+    totalCompletedProjects,
+    totalInProgressProjects,
+    totalOnHoldProjects,
+    totalNotStartedProjects,
+    totalRisks,
+    totalActiveRisks,
+    totalClosedRisks,
+    totalOnHoldRisks,
+    totalHandicaps,
+    totalActiveHandicaps,
+    totalClosedHandicaps,
+    totalOnHoldHandicaps,
+  } = allStat;
+
+  useEffect(() => {
+    dispatch(actGetAllStat());
+  }, [dispatch]);
   return (
     <>
       <Heading title="الصفحة الرئيسية" />
@@ -20,11 +48,30 @@ const Home = () => {
         // bgcolor="#ddd"
       >
         {/* top paper */}
-        <TopStat />
+        <TopStat
+          totalProjects={totalProjects}
+          totalPercentage={totalPercentage}
+          totalBudget={totalBudget}
+          totalSpent={totalSpent}
+        />
         {/* center paper */}
-        <CenterStat/>
+        <CenterStat
+          totalCompletedProjects={totalCompletedProjects}
+          totalInProgressProjects={totalInProgressProjects}
+          totalOnHoldProjects={totalOnHoldProjects}
+          totalNotStartedProjects={totalNotStartedProjects}
+        />
         {/* bottom paper */}
-        <BottomStat />
+        <BottomStat
+          totalRisks={totalRisks}
+          totalActiveRisks={totalActiveRisks}
+          totalClosedRisks={totalClosedRisks}
+          totalOnHoldRisks={totalOnHoldRisks}
+          totalHandicaps={totalHandicaps}
+          totalActiveHandicaps={totalActiveHandicaps}
+          totalClosedHandicaps={totalClosedHandicaps}
+          totalOnHoldHandicaps={totalOnHoldHandicaps}
+        />
       </Box>
     </>
   );

@@ -5,7 +5,12 @@ import ClosingImage from "./../../assets/imgs/closing.svg";
 
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 
-const CenterStat = () => {
+const CenterStat = ({
+  totalCompletedProjects,
+  totalInProgressProjects,
+  totalOnHoldProjects,
+  totalNotStartedProjects,
+}) => {
   return (
     <Grid container spacing={2} mb={2}>
       <Grid item xs={12} sm={6} lg={3}>
@@ -77,7 +82,7 @@ const CenterStat = () => {
               color="#01204E"
               textAlign="center"
             >
-              0
+              {totalNotStartedProjects}
             </Typography>
             <Typography variant="body1" color="initial">
               مرحلة التخطيط
@@ -97,7 +102,6 @@ const CenterStat = () => {
             border: "1px solid #ddd",
           }}
           elevation={0}
-
         >
           <Box
             sx={{
@@ -115,7 +119,7 @@ const CenterStat = () => {
               color="#01204E"
               textAlign="center"
             >
-              8
+              {totalInProgressProjects}
             </Typography>
             <Typography variant="body1" color="initial">
               مرحلة التنفيذ
@@ -135,7 +139,6 @@ const CenterStat = () => {
             border: "1px solid #ddd",
           }}
           elevation={0}
-
         >
           <Box
             sx={{
@@ -153,7 +156,7 @@ const CenterStat = () => {
               color="#01204E"
               textAlign="center"
             >
-              20
+              {totalCompletedProjects}
             </Typography>
             <Typography variant="body1" color="initial">
               مرحلة الاغلاق

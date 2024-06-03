@@ -37,17 +37,19 @@ import actUpdateProject from "../store/project/act/actUpdateProject";
 import actGetProjectById from "../store/project/act/actGetProjectById";
 import actDeleteProject from "../store/project/act/actDeleteProject";
 import MyBtn from "../components/common/UI/MyBtn";
+import { actCreateRisk } from "../store/risk/riskSlice";
+import { actCreateHandicap } from "../store/handicap/handicapSlice";
+import { risksandDisablesOptions } from "../utils/riskHandicapStatus";
+import actDeleteRisk from "../store/risk/act/actDeleteRisk";
+import actDeleteHandicap from "../store/handicap/act/actDeleteHandicap";
+import actGetRisksByProjectId from "../store/risk/act/actGetRisksByProjectId";
+import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByProjectId";
 
 const projectStateOptions = [
   { id: 1, name: "لم يتم البدء" },
   { id: 2, name: "جار العمل علية" },
   { id: 3, name: "اكتمل" },
   { id: 4, name: "معلق" },
-];
-const risksandDisablesOptions = [
-  { id: 1, name: "نشط" },
-  { id: 2, name: "مؤجل" },
-  { id: 3, name: "مغلق" },
 ];
 
 const initialValues = {
@@ -77,14 +79,17 @@ const Project = () => {
   const dispatch = useDispatch();
   const { supervisors } = useSelector((state) => state.supervisor);
   const { branches } = useSelector((state) => state.branch);
-  const { project, loading } = useSelector((state) => state.project); // Ensure you have a loading state
+  const { project, loading } = useSelector((state) => state.project);
+  const { risks } = useSelector((state) => state.risk);
+  const { handicaps } = useSelector((state) => state.handicap);
   const [myProject, setMyProject] = useState(initialValues);
   const [anchorEl, setAnchorEl] = useState(null);
+  console.log(risks);
+  console.log(handicaps);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -94,6 +99,10 @@ const Project = () => {
       .unwrap()
       .then((res) => {
         console.log(res);
+        if (risks.id || handicaps.id) {
+          dispatch(actDeleteRisk(risks.id));
+          dispatch(actDeleteHandicap(handicaps.id));
+        }
         notifySuccess("تم حذف المشروع بنجاح");
         navigate("/projectsbox", { replace: true });
       })
@@ -101,17 +110,47 @@ const Project = () => {
         console.log(res);
         notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
       });
-    handleClose(); // Close the menu after delete action
+    handleClose();
   };
 
   useEffect(() => {
     if (id) {
       dispatch(actGetProjectById(id));
+      dispatch(actGetRisksByProjectId(id));
+      dispatch(actGetHandicapsByProjectId(id));
     } else {
       setMyProject(initialValues);
     }
+console.log(risks.id)
+    if (risks?.id) {
+      setMyProject({
+        ...initialValues,
+        showRisks: "yes",
+        riskStatus: risks.status,
+        risks: risks.description,
+      });
+    } else {
+      setMyProject({
+        ...initialValues,
+        showRisks: "no",
+      });
+    }
+    if (handicaps?.id) {
+      setMyProject(prev => ({
+        ...prev,
+        showDisables: "yes",
+        disableStatus: handicaps.status,
+        disables: handicaps.description,
+      }));
+      
+    } else {
+      setMyProject({
+        ...initialValues,
+        showDisables: "no",
+      });
+    }
   }, [dispatch, id]);
-
+console.log(myProject)
   useEffect(() => {
     if (id && project) {
       setMyProject({
@@ -124,40 +163,99 @@ const Project = () => {
 
   const handleFormSubmit = (values) => {
     console.log(values);
-    // const projectData = {
-    //   ...values,
-    //   endDate: values.endDate,
-    //   startDate: values.startDate,
-    //   budget: parseFloat(values.budget),
-    //   spentBudget: parseFloat(values.spentBudget),
-    //   percentage: parseFloat(values.percentage),
-    // };
-    // if (id) {
-    //   dispatch(actUpdateProject(projectData))
-    //     .unwrap()
-    //     .then((res) => {
-    //       console.log(res);
-    //       if (res.status === 200) {
-    //         notifySuccess("تم تعديل المشروع بنجاح");
-    //         navigate(-1);
-    //       } else {
-    //         notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err.message);
-    //     });
-    // } else {
-    //   dispatch(actCreateProject(projectData))
-    //     .unwrap()
-    //     .then(() => {
-    //       notifySuccess("تم اضافة المشروع بنجاح");
-    //       // resetForm()
-    //     })
-    //     .catch(() => {
-    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-    //     });
-    // }
+    const projectData = {
+      ...values,
+      endDate: values.endDate,
+      startDate: values.startDate,
+      budget: parseFloat(values.budget),
+      spentBudget: parseFloat(values.spentBudget),
+      percentage: parseFloat(values.percentage),
+    };
+
+    if (id) {
+      dispatch(actUpdateProject(projectData))
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            notifySuccess("تم تعديل المشروع بنجاح");
+            navigate(-1);
+          } else {
+            notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      dispatch(actCreateProject(projectData))
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          if (res.id) {
+            if (values.riskStatus && values.disableStatus) {
+              const riskObj = {
+                description: values.risks,
+                status: values.riskStatus,
+              };
+              const handicapObj = {
+                description: values.disables,
+                status: values.disableStatus,
+              };
+              Promise.all([
+                dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
+                dispatch(
+                  actCreateHandicap({ projectId: res.id, ...handicapObj })
+                ),
+              ])
+                .then(() => {
+                  // All actions dispatched successfully
+                  notifySuccess("تم إنشاء المشروع بنجاح");
+                  navigate(-1);
+                })
+                .catch(() => {
+                  // Error occurred while dispatching actions
+                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+                });
+            } else if (values.riskStatus) {
+              const riskObj = {
+                description: values.risks,
+                status: values.riskStatus,
+              };
+              dispatch(actCreateRisk({ projectId: res.id, ...riskObj }))
+                .unwrap()
+                .then(() => {
+                  notifySuccess("تم إنشاء المشروع بنجاح");
+                  navigate(-1);
+                })
+                .catch(() => {
+                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+                });
+            } else if (values.disableStatus) {
+              const handicapObj = {
+                description: values.disables,
+                status: values.disableStatus,
+              };
+              dispatch(actCreateHandicap({ projectId: res.id, ...handicapObj }))
+                .unwrap()
+                .then(() => {
+                  notifySuccess("تم إنشاء المشروع بنجاح");
+                  navigate(-1);
+                })
+                .catch(() => {
+                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+                });
+            } else {
+              // No status for risk and disables
+              notifySuccess("تم إنشاء المشروع بنجاح");
+              navigate(-1);
+            }
+          }
+        })
+        .catch(() => {
+          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+        });
+    }
   };
 
   return (
@@ -274,7 +372,7 @@ const Project = () => {
                       <MyBtn
                         title="تعديل"
                         type="submit"
-                        handleBtnClick={handleFormSubmit}
+                        handleBtnClick={() => handleFormSubmit(values)}
                       />
                       <Box>
                         <IconButton
@@ -353,7 +451,7 @@ const Project = () => {
                   </Grid>
 
                   <Grid item xs={12} md={6}>
-                    <Grid item xs={12}  >
+                    <Grid item xs={12}>
                       <MyInputsWrapper title="تكلفة المشروع">
                         <MyInput
                           width={myWidth}
@@ -381,7 +479,7 @@ const Project = () => {
                         />
                       </MyInputsWrapper>
                     </Grid>
-                    <Grid item xs={12} >
+                    <Grid item xs={12}>
                       <MyInputsWrapper title="ما تم انجازة من المشروع">
                         <MyInput
                           width={myWidth}
@@ -397,7 +495,6 @@ const Project = () => {
                       </MyInputsWrapper>
                     </Grid>
                   </Grid>
-
 
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="الخطة الزمنية للمشروع">
@@ -526,6 +623,7 @@ const Project = () => {
                                   handleChange(e);
                                 }}
                               >
+                                {values.showDisables }
                                 <FormControlLabel
                                   value="no"
                                   control={<Radio size="small" />}

@@ -3,7 +3,16 @@ import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import DisableImage from "../../assets/imgs/disables.svg";
 import RisksImage from "../../assets/imgs/downs.svg";
 
-const BottomStat = () => {
+const BottomStat = ({
+  totalHandicaps,
+  totalActiveHandicaps,
+  totalClosedHandicaps,
+  totalOnHoldHandicaps,
+  totalRisks,
+  totalActiveRisks,
+  totalClosedRisks,
+  totalOnHoldRisks,
+}) => {
   return (
     <>
       <Grid container spacing={2}>
@@ -30,7 +39,7 @@ const BottomStat = () => {
                   color="#01204E"
                   textAlign="center"
                 >
-                  0
+                  {totalHandicaps}
                 </Typography>
                 <Typography variant="body1" color="initial">
                   المعوقات
@@ -58,7 +67,7 @@ const BottomStat = () => {
                       color="#01204E"
                       textAlign="center"
                     >
-                      0
+                      {totalActiveHandicaps}
                     </Typography>
                     <Typography variant="body1" color="initial">
                       نشط
@@ -85,7 +94,7 @@ const BottomStat = () => {
                       color="#01204E"
                       textAlign="center"
                     >
-                      0
+                      {totalOnHoldHandicaps}
                     </Typography>
                     <Typography variant="body1" color="initial">
                       مؤجل
@@ -112,7 +121,7 @@ const BottomStat = () => {
                       color="#01204E"
                       textAlign="center"
                     >
-                      8
+                      {totalClosedHandicaps}
                     </Typography>
                     <Typography variant="body1" color="initial">
                       مغلق
@@ -146,7 +155,7 @@ const BottomStat = () => {
                   color="#01204E"
                   textAlign="center"
                 >
-                  0
+                  {totalRisks}
                 </Typography>
                 <Typography variant="body1" color="initial">
                   المخاطر
@@ -173,7 +182,7 @@ const BottomStat = () => {
                       color="#01204E"
                       textAlign="center"
                     >
-                      0
+                      {totalActiveRisks}
                     </Typography>
                     <Typography variant="body1" color="initial">
                       نشط
@@ -200,7 +209,7 @@ const BottomStat = () => {
                       color="#01204E"
                       textAlign="center"
                     >
-                      0
+                      {totalOnHoldRisks}
                     </Typography>
                     <Typography variant="body1" color="initial">
                       مؤجل
@@ -227,7 +236,7 @@ const BottomStat = () => {
                       color="#01204E"
                       textAlign="center"
                     >
-                      8
+                      {totalClosedRisks}
                     </Typography>
                     <Typography variant="body1" color="initial">
                       مغلق
