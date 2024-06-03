@@ -19,7 +19,7 @@ import { actAuthLogin } from "../store/auth/authSlice";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
- 
+
 const validationSchema = Yup.object({
   userHandle: Yup.string().required("اسم المستخدم مطلوب"),
   password: Yup.string().required("كلمة المرور مطلوبة"),
@@ -43,8 +43,7 @@ const Login = () => {
         })
         // .unwrap()
         // .then((res) => {
-        //   console.log(res);
-        //   navigate("/");
+        //           //   navigate("/");
         // })
       );
     },
@@ -109,7 +108,9 @@ const Login = () => {
             <Stack
               sx={{ position: "relative", marginTop: "40px", maxWidth: "100%" }}
             >
-              <label id="login-label-username" htmlFor="userHandle">اسم المستخدم</label>
+              <label id="login-label-username" htmlFor="userHandle">
+                اسم المستخدم
+              </label>
               <Stack
                 spacing="3px"
                 direction="row"
@@ -141,7 +142,9 @@ const Login = () => {
             <Stack
               sx={{ position: "relative", marginTop: "30px", maxWidth: "100%" }}
             >
-              <label id="login-label-password" htmlFor="password">كلمة المرور</label>
+              <label id="login-label-password" htmlFor="password">
+                كلمة المرور
+              </label>
               <Stack
                 spacing="3px"
                 direction="row"
@@ -181,7 +184,7 @@ const Login = () => {
                     display: "inline-block",
                     color: "red",
                     marginBottom: "10px",
-                    fontSize:'12px'
+                    fontSize: "12px",
                   }}
                 >
                   {error}

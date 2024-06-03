@@ -23,14 +23,17 @@ import actCreateProject from "../store/project/act/actCreateProject";
 import {
   notifyFailed,
   notifySuccess,
+  SweatAlert,
 } from "../components/feedback/Alerts/alerts";
 import MyInput from "../components/Form/Input/MyInput";
 import MyInputsWrapper from "../components/common/UI/MyInputsWrapper";
 import MyDatePicker from "../components/Form/Input/MyDatePicker";
-import MyButton from "../components/common/UI/MyButton";
 import Heading from "../components/common/Heading/Heading";
 import dayjs from "dayjs";
-import projectSchema from "../validations/projectSchema";
+import {
+  projectSchema,
+  initialProjectValues,
+} from "../validations/projectSchema";
 import { useNavigate, useParams } from "react-router-dom";
 import { East, MoreVert } from "@mui/icons-material";
 import actUpdateProject from "../store/project/act/actUpdateProject";
@@ -38,38 +41,16 @@ import actGetProjectById from "../store/project/act/actGetProjectById";
 import actDeleteProject from "../store/project/act/actDeleteProject";
 import MyBtn from "../components/common/UI/MyBtn";
 import { actCreateRisk } from "../store/risk/riskSlice";
-import { actCreateHandicap } from "../store/handicap/handicapSlice";
+import {
+  actCreateHandicap,
+  actUpdateHandicap,
+} from "../store/handicap/handicapSlice";
 import { risksandDisablesOptions } from "../utils/riskHandicapStatus";
 import actDeleteRisk from "../store/risk/act/actDeleteRisk";
 import actDeleteHandicap from "../store/handicap/act/actDeleteHandicap";
 import actGetRisksByProjectId from "../store/risk/act/actGetRisksByProjectId";
 import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByProjectId";
-
-const projectStateOptions = [
-  { id: 1, name: "لم يتم البدء" },
-  { id: 2, name: "جار العمل علية" },
-  { id: 3, name: "اكتمل" },
-  { id: 4, name: "معلق" },
-];
-
-const initialValues = {
-  name: "",
-  description: "",
-  startDate: dayjs().toISOString(),
-  endDate: dayjs().toISOString(),
-  budget: "",
-  spentBudget: "",
-  percentage: "",
-  status: "",
-  branchId: "",
-  supervisorId: "",
-  showRisks: "no",
-  riskStatus: "",
-  risks: "",
-  showDisables: "no",
-  disableStatus: "",
-  disables: "",
-};
+import { projectStateOptions } from "../utils/statusList";
 
 const myWidth = 250;
 
@@ -82,11 +63,12 @@ const Project = () => {
   const { project, loading } = useSelector((state) => state.project);
   const { risks } = useSelector((state) => state.risk);
   const { handicaps } = useSelector((state) => state.handicap);
-  const [myProject, setMyProject] = useState(initialValues);
+  const [myProject, setMyProject] = useState(initialProjectValues);
   const [anchorEl, setAnchorEl] = useState(null);
+
   console.log(risks);
   console.log(handicaps);
-
+  console.log(myProject);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -94,22 +76,30 @@ const Project = () => {
     setAnchorEl(null);
   };
 
-  const handleDelete = () => {
-    dispatch(actDeleteProject(id))
-      .unwrap()
-      .then((res) => {
-        console.log(res);
-        if (risks.id || handicaps.id) {
-          dispatch(actDeleteRisk(risks.id));
-          dispatch(actDeleteHandicap(handicaps.id));
-        }
-        notifySuccess("تم حذف المشروع بنجاح");
-        navigate("/projectsbox", { replace: true });
-      })
-      .catch((res) => {
-        console.log(res);
-        notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-      });
+  const handleDelete = async () => {
+    const willDelete = await SweatAlert({
+      title: `هل متاكد من حذف هذا المشروع ؟`,
+      icon: "warning",
+      dangerMode: true,
+    });
+    if (willDelete) {
+      console.log("will be deleted");
+      dispatch(actDeleteProject(id))
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          if (risks.id || handicaps.id) {
+            dispatch(actDeleteRisk(risks.id));
+            dispatch(actDeleteHandicap(handicaps.id));
+          }
+          notifySuccess("تم حذف المشروع بنجاح");
+          navigate("/projectsbox", { replace: true });
+        })
+        .catch((res) => {
+          console.log(res);
+          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+        });
+    }
     handleClose();
   };
 
@@ -119,47 +109,29 @@ const Project = () => {
       dispatch(actGetRisksByProjectId(id));
       dispatch(actGetHandicapsByProjectId(id));
     } else {
-      setMyProject(initialValues);
-    }
-console.log(risks.id)
-    if (risks?.id) {
-      setMyProject({
-        ...initialValues,
-        showRisks: "yes",
-        riskStatus: risks.status,
-        risks: risks.description,
-      });
-    } else {
-      setMyProject({
-        ...initialValues,
-        showRisks: "no",
-      });
-    }
-    if (handicaps?.id) {
-      setMyProject(prev => ({
-        ...prev,
-        showDisables: "yes",
-        disableStatus: handicaps.status,
-        disables: handicaps.description,
-      }));
-      
-    } else {
-      setMyProject({
-        ...initialValues,
-        showDisables: "no",
-      });
+      setMyProject(initialProjectValues);
     }
   }, [dispatch, id]);
-console.log(myProject)
+
   useEffect(() => {
-    if (id && project) {
+    if (id && project && risks && handicaps) {
       setMyProject({
         ...project,
         startDate: dayjs(project.startDate).toISOString(),
         endDate: dayjs(project.endDate).toISOString(),
+        showRisks:
+          risks?.description && risks.description !== "string" ? "yes" : "no",
+        riskStatus: risks?.status || "",
+        risks: risks?.description || "",
+        showDisables:
+          handicaps?.description && handicaps.description !== "string"
+            ? "yes"
+            : "no",
+        disableStatus: handicaps?.status || "",
+        disables: handicaps?.description || "",
       });
     }
-  }, [id, project]);
+  }, [id, project, handicaps, risks]);
 
   const handleFormSubmit = (values) => {
     console.log(values);
@@ -173,20 +145,41 @@ console.log(myProject)
     };
 
     if (id) {
-      dispatch(actUpdateProject(projectData))
-        .unwrap()
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            notifySuccess("تم تعديل المشروع بنجاح");
-            navigate(-1);
-          } else {
-            notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
-          }
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
+      if (values.showDisables === "no") {
+        console.log("will delete handicaps");
+        dispatch(actDeleteHandicap(values.projectId));
+      }
+      if (values.showDisables === "yes") {
+        console.log("will update disables");
+        // const obj = {
+        //   projectId: values.projectId,
+        //   status: values.disableStatus,
+        //   description: values.disableDescription,
+        // };
+        // dispatch(actUpdateHandicap(obj));
+      }
+
+      if (values.showRisks === "no") {
+        console.log("will delete risks");
+      }
+      if (values.showRisks === "yes") {
+        console.log("will update risks");
+      }
+      // console.log(values);
+      // dispatch(actUpdateProject(projectData))
+      //   .unwrap()
+      //   .then((res) => {
+      //     console.log(res);
+      //     if (res.status === 200) {
+      //       notifySuccess("تم تعديل المشروع بنجاح");
+      //       navigate(-1);
+      //     } else {
+      //       notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.message);
+      //   });
     } else {
       dispatch(actCreateProject(projectData))
         .unwrap()
@@ -372,7 +365,7 @@ console.log(myProject)
                       <MyBtn
                         title="تعديل"
                         type="submit"
-                        handleBtnClick={() => handleFormSubmit(values)}
+                        // handleBtnClick={() => handleFormSubmit(values)}
                       />
                       <Box>
                         <IconButton
@@ -539,7 +532,7 @@ console.log(myProject)
                             <FormControl>
                               <RadioGroup
                                 row
-                                aria-labelledby="demo-form-control-label-placement"
+                                aria-labelledby="form-control-label-placement"
                                 name="showRisks"
                                 value={values.showRisks}
                                 onChange={(e) => {
@@ -623,7 +616,6 @@ console.log(myProject)
                                   handleChange(e);
                                 }}
                               >
-                                {values.showDisables }
                                 <FormControlLabel
                                   value="no"
                                   control={<Radio size="small" />}

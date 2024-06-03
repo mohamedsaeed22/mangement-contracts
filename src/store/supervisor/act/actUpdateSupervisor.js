@@ -6,7 +6,6 @@ const actUpdateSupervisor = createAsyncThunk(
   "supervisor/actUpdateSupervisor",
   async (supervisor, thunk) => {
     const { rejectWithValue } = thunk;
-    console.log(supervisor);
     try {
       const res = await api.put(
         "api/Supervisor/update/" + supervisor.id,

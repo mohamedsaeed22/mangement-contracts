@@ -5,7 +5,6 @@ const actUpdateItem = createAsyncThunk(
   "item/actUpdateItem",
   async (item, thunk) => {
     const { rejectWithValue } = thunk;
-    console.log(item);
     try {
       const res = await api.put("api/Item/update/" + item.id, item);
       return res;

@@ -90,7 +90,7 @@ const ProjectsBox = () => {
   const handleChange = (event, value) => {
     handleChangePge(value);
   };
-  
+
   const handleResetForm = () => {
     setPlannedCost("");
     setBranch("");
@@ -149,7 +149,6 @@ const ProjectsBox = () => {
   };
 
   const handleStartDateChange = (newValue) => {
-    console.log(newValue);
     const selectedDate = dayjs(newValue);
     const previousDay = selectedDate.subtract(1, "day");
     const isoStartDate = previousDay.toISOString();
@@ -162,7 +161,6 @@ const ProjectsBox = () => {
     const dayjsDate = dayjs([$y, $M + 1, $d.getDate()]);
     const isoEndDate = dayjsDate.toISOString();
     setIsoEndDate(isoEndDate);
-    console.log(isoEndDate);
     setEndDate(newValue);
   };
 

@@ -1,15 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 
-const actUpdateCompany = createAsyncThunk(
-  "company/actUpdateCompany",
-  async (company, thunk) => {
+const actUpdateHandicap = createAsyncThunk(
+  "handicap/actUpdateHandicap",
+  async (handicap, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.put(
-        "api/ForeignCompany/update" + company.id,
-        company
-      );
+      const res = await api.put("api/Handicap/Update" + handicap.projectId, handicap);
       return res;
     } catch (error) {
       return rejectWithValue(error);
@@ -17,4 +14,4 @@ const actUpdateCompany = createAsyncThunk(
   }
 );
 
-export default actUpdateCompany;
+export default actUpdateHandicap;

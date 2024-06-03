@@ -9,7 +9,6 @@ const actGetRisksByProjectId = createAsyncThunk(
       const res = await api.get("api/Risk/browse?projectId=" + projectId);
       return res;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error);
     }
   }

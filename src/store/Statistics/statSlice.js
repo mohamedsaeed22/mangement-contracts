@@ -21,11 +21,11 @@ const supervisorSlice = createSlice({
     });
     builder.addCase(actGetAllStat.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.allStat = payload.data;
+      state.allStat = payload?.data;
     });
     builder.addCase(actGetAllStat.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload) {
         state.error = action.payload;
       }
     });

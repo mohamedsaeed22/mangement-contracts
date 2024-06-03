@@ -60,8 +60,7 @@ const Sidebar = () => {
   if (branches) {
     branchesList = [...branchSubmenuList, ...branches];
   }
-  console.log(branchesList);
-  const toggleProjectSubmenu = () => {
+   const toggleProjectSubmenu = () => {
     setShowProjectsMenu(!showProjectsMenu);
   };
   const toggleForeignCompany = () => {

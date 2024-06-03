@@ -60,7 +60,6 @@ const AddProject = () => {
   const { supervisors } = useSelector((state) => state.supervisor);
   const { branches } = useSelector((state) => state.branch);
   const { project, loading } = useSelector((state) => state.project); // Ensure you have a loading state
-  console.log(project);
   const [myProject, setMyProject] = useState(initialValues);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -73,12 +72,10 @@ const AddProject = () => {
     dispatch(actDeleteProject(id))
       .unwrap()
       .then((res) => {
-        console.log(res);
         notifySuccess("تم حذف المشروع بنجاح");
         navigate(-1);
       })
       .catch((res) => {
-        console.log(res);
         notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
       });
     setAnchorEl(null);
@@ -101,7 +98,7 @@ const AddProject = () => {
   }, [id, project]);
 
   const handleFormSubmit = (values) => {
-    console.log(values)
+    console.log(values);
     // const projectData = {
     //   ...values,
     //   endDate: values.endDate,
@@ -114,12 +111,10 @@ const AddProject = () => {
     //   dispatch(actUpdateProject(projectData))
     //     .unwrap()
     //     .then((res) => {
-    //       console.log(res);
-    //       notifySuccess("تم تعديل المشروع بنجاح");
+    //           //       notifySuccess("تم تعديل المشروع بنجاح");
     //     })
     //     .catch((res) => {
-    //       console.log(res);
-    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //           //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
     //     });
     // } else {
     //   dispatch(actCreateProject(projectData))
@@ -239,7 +234,11 @@ const AddProject = () => {
                   </MyInput>
                   {id && (
                     <Stack direction="row" alignSelf="flex-start">
-                      <MyBtn title="تعديل" type="submit" handleBtnClick={handleFormSubmit}/>
+                      <MyBtn
+                        title="تعديل"
+                        type="submit"
+                        handleBtnClick={handleFormSubmit}
+                      />
                       <Box>
                         <IconButton
                           aria-label="more"
@@ -302,7 +301,7 @@ const AddProject = () => {
                     helperText={touched.description && errors.description}
                   />
                 </MyInputsWrapper>
-{/* 
+                {/* 
                 <MyInputsWrapper title="تكلفة المشروع">
                   <MyInput
                     width={myWidth}

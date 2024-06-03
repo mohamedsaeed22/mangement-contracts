@@ -41,7 +41,7 @@ const authSlice = createSlice({
     });
     builder.addCase(actAuthLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
-      console.log(payload)
+      console.log(payload);
       // const decodedToken = jwtDecode(payload.accessToken);
       const sevenDaysFromNow = new Date();
       sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
@@ -56,7 +56,6 @@ const authSlice = createSlice({
 
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;
-      console.log(action);
       if (action?.payload?.status === 401 || action?.payload?.status === 404) {
         state.error = "خطا فى اسم المستخدم او كلمة المرور";
       } else if (action?.payload?.status === 500) {

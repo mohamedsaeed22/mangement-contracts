@@ -16,7 +16,6 @@ const companySlice = createSlice({
   reducers: {
     filterCompanies: (state, { payload }) => {
       state.companies = state.companies.filter((c) => c.id !== `${payload}`);
-      console.log(state.companies);
     },
   },
   extraReducers: (builder) => {
@@ -27,12 +26,10 @@ const companySlice = createSlice({
     });
     builder.addCase(actGetCompanies.fulfilled, (state, { payload }) => {
       state.loading = false;
-      console.log(payload);
       // state.companies = payload;
     });
     builder.addCase(actGetCompanies.rejected, (state, action) => {
       state.loading = false;
-      console.log(action);
       state.error = action.payload;
     });
 
@@ -43,7 +40,6 @@ const companySlice = createSlice({
     });
     builder.addCase(actCreateCompany.fulfilled, (state, { payload }) => {
       state.loading = false;
-      console.log(payload);
       // const { id, name, description } = payload;
       // state.companies.push({ id, name, description });
     });
@@ -87,7 +83,6 @@ const companySlice = createSlice({
     });
     builder.addCase(actDeleteCompany.rejected, (state, action) => {
       state.loading = false;
-      console.log(action);
       if (action.payload) {
         state.error = action.payload;
       }

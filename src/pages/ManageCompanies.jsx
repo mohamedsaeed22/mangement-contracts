@@ -62,7 +62,6 @@ const ManageCompanies = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-  console.log(items);
 
   useEffect(() => {
     dispatch(actGetItems());

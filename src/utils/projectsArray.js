@@ -55,8 +55,7 @@ const AddProject = () => {
     setEndDate(newValue ? newValue.toDate() : null); // Convert newValue to a Date object
   };
   const handleFormSubmit = (values) => {
-    console.log(values);
-    // const projectData = {
+        // const projectData = {
     //   ...values,
     //   startDate: values.startDate.toISOString(),
     //   endDate: values.endDate.toISOString(),

@@ -62,7 +62,6 @@ const ManageItems = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-  console.log(items);
 
   useEffect(() => {
     dispatch(actGetItems());

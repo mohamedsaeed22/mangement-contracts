@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import * as yup from "yup";
 
 // const projectSchema = yup.object().shape({
@@ -58,6 +59,24 @@ import * as yup from "yup";
 //     then: yup.string().required("المعوقات مطلوبة"),
 //   }),
 // });
+const initialProjectValues = {
+  name: "",
+  description: "",
+  startDate: dayjs().toISOString(),
+  endDate: dayjs().toISOString(),
+  budget: "",
+  spentBudget: "",
+  percentage: "",
+  status: "",
+  branchId: "",
+  supervisorId: "",
+  showRisks: "no",
+  riskStatus: "",
+  risks: "",
+  showDisables: "no",
+  disableStatus: "",
+  disables: "",
+};
 
 const projectSchema = yup.lazy((values) => {
   let schema = yup.object().shape({
@@ -124,4 +143,4 @@ const projectSchema = yup.lazy((values) => {
 
   return schema;
 });
-export default projectSchema;
+export { projectSchema, initialProjectValues };

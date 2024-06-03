@@ -8,8 +8,7 @@ const TopStat = ({
   totalBudget,
   totalSpent,
 }) => {
-  console.log(totalProjects);
-  return (
+   return (
     <Paper
       sx={{
         padding: "8px",

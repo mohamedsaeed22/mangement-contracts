@@ -16,7 +16,6 @@ const itemSlice = createSlice({
   reducers: {
     filterItems: (state, { payload }) => {
       state.items = state.items.filter((i) => i.id !== `${payload}`);
-      console.log(state.items);
     },
   },
   extraReducers: (builder) => {
@@ -31,7 +30,6 @@ const itemSlice = createSlice({
     });
     builder.addCase(actGetItems.rejected, (state, action) => {
       state.loading = false;
-      console.log(action);
       state.error = action.payload;
     });
 
@@ -87,7 +85,6 @@ const itemSlice = createSlice({
     });
     builder.addCase(actDeleteItem.rejected, (state, action) => {
       state.loading = false;
-      console.log(action);
       if (action.payload) {
         state.error = action.payload;
       }

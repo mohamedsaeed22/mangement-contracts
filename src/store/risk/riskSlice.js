@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import actCreateRisk from "./act/actCreateRisk";
 import actGetRisksByProjectId from "./act/actGetRisksByProjectId";
 import actDeleteRisk from "./act/actDeleteRisk";
+import actUpdateRisk from "./act/actUpdateRisk";
 /**
  * {
     id: '3ef23e6c-6b28-4604-3abb-08dc83c0e298',
@@ -16,7 +17,16 @@ import actDeleteRisk from "./act/actDeleteRisk";
  * 
  */
 const initialState = {
-  risks: {},
+  risks: {
+    id: "3ef23e6c-6b28-4604-3abb-08dc83c0e298",
+    description: "SF ASDFASDF",
+    status: 1,
+    projectId: "ccc7338a-4633-48fb-a43f-08dc83ab7ad8",
+    createdAt: "2024-06-03T16:21:29.1619022",
+    updatedAt: null,
+    updatedBy: null,
+    createdBy: "b37b6f4f-c135-46f6-a28c-fcc444e960cb",
+  },
   loading: false,
   error: null,
 };
@@ -69,9 +79,24 @@ const riskSlice = createSlice({
         state.error = action.payload;
       }
     });
+
+    // update risk
+    builder.addCase(actUpdateRisk.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(actUpdateRisk.fulfilled, (state, { payload }) => {
+      //   state.projects = payload.data;
+    });
+    builder.addCase(actUpdateRisk.rejected, (state, action) => {
+      state.loading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      }
+    });
   },
 });
 
-export { actCreateRisk };
+export { actGetRisksByProjectId, actCreateRisk, actDeleteRisk, actUpdateRisk };
 export const { getProjectById } = riskSlice.actions;
 export default riskSlice.reducer;

@@ -7,10 +7,9 @@ const actGetHandicapsByProjectId = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.get("api/Handicap/browse?projectId=" + projectId);
-      console.log(res)
-       return res;
+      console.log(res);
+      return res;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error);
     }
   }

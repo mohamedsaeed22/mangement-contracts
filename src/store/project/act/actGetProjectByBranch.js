@@ -8,7 +8,7 @@ const actGetProjectByBranch = createAsyncThunk(
   "project/actGetProjectByBranch",
   async (branchId, thunkAPI) => {
     const { getState, rejectWithValue, dispatch } = thunkAPI;
-    console.log(branchId)
+    console.log(branchId);
     try {
       await dispatch(actGetSupervisors()).unwrap();
       await dispatch(actGetBranches()).unwrap();
@@ -18,7 +18,6 @@ const actGetProjectByBranch = createAsyncThunk(
       const res = await api.get(
         `api/Project/browse?BranchId=${branchId}&PageSize=10&Page=1`
       );
-      console.log(res);
       const enhancedProjects = res.data.data.map((project) => {
         const supervisor = supervisors.find(
           (sup) => sup.id === project.supervisorId

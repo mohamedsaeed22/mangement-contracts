@@ -30,7 +30,6 @@ import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
 
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -64,8 +63,6 @@ const MangeBranches = () => {
   const [branch, setbranch] = useState(initialBranch);
   const [updatedBranch, setUpdatedBranch] = useState(initialBranch);
 
-  console.log(branch);
-
   const handleCloseModal = () => {
     setOpenModal(false);
   };
@@ -85,13 +82,13 @@ const MangeBranches = () => {
       dispatch(actDeleteBranch(branch.id))
         .unwrap()
         .then((e) => {
-          console.log(e)
+          console.log(e);
           dispatch(filterBranches(branch.id));
           notifySuccess("تم حذف النشاط");
           setOpenModal(false);
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           notifyFailed("هذا النشاط مرتبط بمشاريع,رجاء تعديل المشارع او حذفها");
         });
     }
@@ -120,7 +117,6 @@ const MangeBranches = () => {
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         // flex={1}
         height="calc(100vh - 130px)"
-
       >
         <Box>
           <BranchForm isUpdate={false} initialValues={updatedBranch} />

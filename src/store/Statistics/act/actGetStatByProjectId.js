@@ -9,10 +9,8 @@ const actGetStatByProjectId = createAsyncThunk(
       const res = await api.get(
         "api/ProjectsStatistics/statistics/" + branchId
       );
-      console.log(res);
       return res;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error);
     }
   }
