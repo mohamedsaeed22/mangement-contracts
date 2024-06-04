@@ -25,16 +25,7 @@ const MyInput = ({
   children,
 }) => {
   return (
-    // <Stack justifyContent="center" alignContent="center" alignItems="center">
-    <Stack gap={1} maxWidth="100%" width={fullWidth ? "100%" : width}>
-      {/* <Typography
-          variant="body1"
-          color="initial"
-          fontWeight="600"
-          fontSize={14}
-        >
-          {label}
-        </Typography> */}
+     <Stack gap={1} maxWidth="100%" width={fullWidth ? "100%" : width}>
       <FormControl
         sx={{
           width: fullWidth ? "100%" : width,
@@ -84,7 +75,6 @@ const MyInput = ({
         {helperText ? <FormHelperText>{helperText}</FormHelperText> : " "}
       </FormControl>
     </Stack>
-    // </Stack>
   );
 };
 

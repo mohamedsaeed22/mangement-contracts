@@ -10,7 +10,7 @@ import actGetAllStat from "../store/Statistics/act/actGetAllStat";
 const Home = () => {
   const dispatch = useDispatch();
   const { allStat, error } = useSelector((state) => state.stat);
-
+console.log(error)
   const {
     totalProjects,
     totalPercentage,

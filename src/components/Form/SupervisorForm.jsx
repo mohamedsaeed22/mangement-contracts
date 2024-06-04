@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import supervisorSchema from "../../validations/supervisorSchema";
 import { Box, Stack } from "@mui/material";
-import MyButton from "../common/UI/MyButton";
 import MyBtn from "../common/UI/MyBtn";
 import AddIcon from "../../assets/icon/add-icon.svg";
 import EditIcon from "../../assets/icon/edit-icon.svg";

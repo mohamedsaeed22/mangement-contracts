@@ -31,13 +31,13 @@ api.interceptors.request.use(
   }
 );
 
-api.interceptors.response.use(
-  (res) => {
-    return res;
-  },
-  async (err) => {
-    const originalConfig = err.config;
-    if (err.response) {
+// api.interceptors.response.use(
+//   (res) => {
+//     return res;
+//   },
+//   async (err) => {
+//     const originalConfig = err.config;
+//     if (err.response) {
       // if (err.response.status === 401 && !originalConfig._retry) {
       //   originalConfig._retry = true;
       //   try {
@@ -57,19 +57,19 @@ api.interceptors.response.use(
       //   }
       // }
 
-      if (err.response.status === 403 && err.response.data) {
-        return Promise.reject(err.response.data);
-      }
-    }
+//       if (err.response.status === 403 && err.response.data) {
+//         return Promise.reject(err.response.data);
+//       }
+//     }
 
-    return Promise.reject(err);
-  }
-);
+//     return Promise.reject(err);
+//   }
+// );
 
-function refreshMyToken() {
-  return api.post(
-    `${BASE_URL}api/users/Identity/refresh-token?refreshToken=${getRefreshToken()}&accessToken=${getAcessToken()}`
-  );
-}
+// function refreshMyToken() {
+//   return api.post(
+//     `${BASE_URL}api/users/Identity/refresh-token?refreshToken=${getRefreshToken()}&accessToken=${getAcessToken()}`
+//   );
+// }
 
 export { api };

@@ -1,17 +1,11 @@
 import actAuthLogin from "./act/actAuthLogin";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
-import {
-  setAccessToken,
-  setRefreshToken,
-} from "../../utils/accessLocalStorage";
-const refreshToken = Cookies.get("refreshToken");
-const token = Cookies.get("token");
+import { getAcessToken, setAccessToken } from "../../utils/accessLocalStorage";
 
 const initialState = {
   user: null,
-  accessToken: token || null,
+  accessToken: getAcessToken() || null,
   loading: false,
   error: null,
 };
@@ -20,14 +14,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    resetUI: (state) => {
-      state.loading = false;
-      state.error = null;
-    },
     authLogout: (state) => {
       state.user = null;
       Cookies.remove("token");
-      // Cookies.remove("refreshToken");
       state.accessToken = null;
     },
   },
@@ -39,31 +28,22 @@ const authSlice = createSlice({
     });
     builder.addCase(actAuthLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
-
-      const token = payload.accessToken;
-      const decodedToken = jwtDecode(token);
-      const expirationTime = new Date(decodedToken.exp * 1000);
-      Cookies.set("token", token, { expires: expirationTime });
-      state.accessToken = payload.accessToken;
-      state.user = payload.user;
+      const myToken = payload.data.accessToken;
+      setAccessToken(myToken);
+      state.accessToken = myToken;
+      state.user = payload.data.user;
     });
 
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;
-      if (
-        action?.payload?.response?.status === 401 ||
-        action?.payload?.status === 404
-      ) {
-        state.error = "خطا فى اسم المستخدم او كلمة المرور";
-      } else if (action?.payload?.response?.status === 500) {
-        state.error = "حدث خطا ما فى السيرفر";
-      } else {
-        state.error = "حدث خطا فى الشبكة";
+      console.log(action);
+      if (action?.payload) {
+        state.error = action.payload;
       }
     });
   },
 });
 
 export { actAuthLogin };
-export const { resetUI, authLogout } = authSlice.actions;
+export const { authLogout } = authSlice.actions;
 export default authSlice.reducer;
