@@ -154,6 +154,9 @@ const Branch = () => {
                   <StyledTableCell align="center">
                     نهاية المشروع
                   </StyledTableCell>
+                  <StyledTableCell align="center">
+                  هل له مخاطر/معوقات
+                </StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -209,6 +212,9 @@ const Branch = () => {
                       <StyledTableCell align="center">
                         {row.endDate.split("T")[0]}
                       </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {(row?.risks?.length >0 || row?.handicaps?.length >0) ? "يوجد":"لا يوجد"}
+                    </StyledTableCell>
                     </StyledTableRow>
                   </Tooltip>
                 ))}

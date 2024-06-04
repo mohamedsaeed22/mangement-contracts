@@ -182,7 +182,7 @@ const Login = () => {
                 <span
                   style={{
                     display: "inline-block",
-                    color: "red",
+                    color: "#ffc100",
                     marginBottom: "10px",
                     fontSize: "12px",
                   }}
@@ -190,9 +190,11 @@ const Login = () => {
                   {error}
                 </span>
               )}
-              <LoadingWrapper loading={loading}>
-                <input type="submit" value="تسجيل" />
-              </LoadingWrapper>
+              <Box position="relative" mt={2}>
+                <LoadingWrapper loading={loading}>
+                  <input type="submit" value="تسجيل" id="sumbit-login" />
+                </LoadingWrapper>
+              </Box>
             </Box>
           </form>
         </Stack>

@@ -1,14 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
-
 import { actGetSupervisors } from "../../supervisor/supervisorSlice";
 import { actGetBranches } from "../../branch/branchSlice";
 
 const actGetProjectById = createAsyncThunk(
   "project/actGetProjectById",
   async (id, thunkAPI) => {
-     const { getState, rejectWithValue, dispatch } = thunkAPI;
+    const { getState, rejectWithValue, dispatch } = thunkAPI;
     try {
       await dispatch(actGetSupervisors()).unwrap();
       await dispatch(actGetBranches()).unwrap();
@@ -25,7 +23,6 @@ const actGetProjectById = createAsyncThunk(
       res.data.branchName = branchName;
       return res;
     } catch (error) {
-      console.log(error)
       return rejectWithValue(error);
     }
   }

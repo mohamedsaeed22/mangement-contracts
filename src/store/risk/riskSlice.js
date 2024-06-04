@@ -3,30 +3,8 @@ import actCreateRisk from "./act/actCreateRisk";
 import actGetRisksByProjectId from "./act/actGetRisksByProjectId";
 import actDeleteRisk from "./act/actDeleteRisk";
 import actUpdateRisk from "./act/actUpdateRisk";
-/**
- * {
-    id: '3ef23e6c-6b28-4604-3abb-08dc83c0e298',
-    description: 'SF ASDFASDF',
-    status: 1,
-    projectId: 'ccc7338a-4633-48fb-a43f-08dc83ab7ad8',
-    createdAt: '2024-06-03T16:21:29.1619022',
-    updatedAt: null,
-    updatedBy: null,
-    createdBy: 'b37b6f4f-c135-46f6-a28c-fcc444e960cb'
-  }
- * 
- */
 const initialState = {
-  risks: {
-    id: "3ef23e6c-6b28-4604-3abb-08dc83c0e298",
-    description: "SF ASDFASDF",
-    status: 1,
-    projectId: "ccc7338a-4633-48fb-a43f-08dc83ab7ad8",
-    createdAt: "2024-06-03T16:21:29.1619022",
-    updatedAt: null,
-    updatedBy: null,
-    createdBy: "b37b6f4f-c135-46f6-a28c-fcc444e960cb",
-  },
+  risks: {},
   loading: false,
   error: null,
 };

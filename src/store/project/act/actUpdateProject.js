@@ -5,14 +5,12 @@ import axiosErrorHandler from "../../../utils/axiosErrorHandler";
 const actUpdateProject = createAsyncThunk(
   "project/actUpdateProject",
   async (project, thunk) => {
-    console.log(project)
     const { rejectWithValue } = thunk;
     try {
       const res = await api.put("api/Project/update/" + project.id, project);
-      console.log(res)
+
       return res;
     } catch (error) {
-      console.log(error)
       return rejectWithValue(axiosErrorHandler(error));
     }
   }

@@ -65,159 +65,155 @@ const RisksAndHandicapsForm = ({ risksandDisablesOptions }) => {
           }, {});
         }
       }}
-      onSubmit={(values) => {
-        console.log(values);
-      }}
+      onSubmit={(values) => {}}
     >
       {({ values, handleChange, handleBlur, touched, errors }) => (
         // <Form>
-          <Grid item xs={12}>
-            <MyInputsWrapper direction="column" title="المخاطر و المعوقات">
-              {/* Risks Section */}
-              <Stack width="100%" gap={2}>
-                <Box>
-                  <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
-                    <Typography variant="body1" color="initial" mt={1}>
-                      هل له مخاطر ؟
-                    </Typography>
-                    <FormControl>
-                      <RadioGroup
-                        row
-                        aria-labelledby="demo-form-control-label-placement"
-                        name="showRisks"
-                        value={values.showRisks}
-                        onChange={handleChange}
-                      >
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio size="small" />}
-                          label="لا"
-                          labelPlacement="start"
-                        />
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio size="small" />}
-                          label="نعم"
-                          labelPlacement="start"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                    {values.showRisks === "yes" && (
-                      <Box ml={2}>
-                        <MyInput
-                          width={180}
-                          name="riskStatus"
-                          select
-                          label="الحالة"
-                          placeholder="اختر الحالة"
-                          value={values.riskStatus}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={touched.riskStatus && !!errors.riskStatus}
-                          helperText={touched.riskStatus && errors.riskStatus}
-                        >
-                          {risksandDisablesOptions.map((el) => (
-                            <MenuItem key={el.id} value={el.id}>
-                              {el.name}
-                            </MenuItem>
-                          ))}
-                        </MyInput>
-                      </Box>
-                    )}
-                  </Stack>
+        <Grid item xs={12}>
+          <MyInputsWrapper direction="column" title="المخاطر و المعوقات">
+            {/* Risks Section */}
+            <Stack width="100%" gap={2}>
+              <Box>
+                <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
+                  <Typography variant="body1" color="initial" mt={1}>
+                    هل له مخاطر ؟
+                  </Typography>
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-form-control-label-placement"
+                      name="showRisks"
+                      value={values.showRisks}
+                      onChange={handleChange}
+                    >
+                      <FormControlLabel
+                        value="no"
+                        control={<Radio size="small" />}
+                        label="لا"
+                        labelPlacement="start"
+                      />
+                      <FormControlLabel
+                        value="yes"
+                        control={<Radio size="small" />}
+                        label="نعم"
+                        labelPlacement="start"
+                      />
+                    </RadioGroup>
+                  </FormControl>
                   {values.showRisks === "yes" && (
-                    <MyInput
-                      name="risks"
-                      label="المخاطر"
-                      multiline
-                      fullWidth
-                      rows={3}
-                      placeholder="ادخل المخاطر"
-                      value={values.risks}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.risks && !!errors.risks}
-                      helperText={touched.risks && errors.risks}
-                    />
-                  )}
-                </Box>
-              </Stack>
-
-              {/* Disables Section */}
-              <Stack width="100%" gap={2}>
-                <Box>
-                  <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
-                    <Typography variant="body1" color="initial" mt={1}>
-                      هل له معوقات ؟
-                    </Typography>
-                    <FormControl>
-                      <RadioGroup
-                        row
-                        aria-labelledby="demo-form-control-label-placement"
-                        name="showDisables"
-                        value={values.showDisables}
+                    <Box ml={2}>
+                      <MyInput
+                        width={180}
+                        name="riskStatus"
+                        select
+                        label="الحالة"
+                        placeholder="اختر الحالة"
+                        value={values.riskStatus}
                         onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.riskStatus && !!errors.riskStatus}
+                        helperText={touched.riskStatus && errors.riskStatus}
                       >
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio size="small" />}
-                          label="لا"
-                          labelPlacement="start"
-                        />
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio size="small" />}
-                          label="نعم"
-                          labelPlacement="start"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                    {values.showDisables === "yes" && (
-                      <Box ml={2}>
-                        <MyInput
-                          width={180}
-                          name="disableStatus"
-                          select
-                          label="الحالة"
-                          placeholder="اختر الحالة"
-                          value={values.disableStatus}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={
-                            touched.disableStatus && !!errors.disableStatus
-                          }
-                          helperText={
-                            touched.disableStatus && errors.disableStatus
-                          }
-                        >
-                          {risksandDisablesOptions.map((el) => (
-                            <MenuItem key={el.id} value={el.id}>
-                              {el.name}
-                            </MenuItem>
-                          ))}
-                        </MyInput>
-                      </Box>
-                    )}
-                  </Stack>
-                  {values.showDisables === "yes" && (
-                    <MyInput
-                      name="disables"
-                      label="المعوقات"
-                      multiline
-                      fullWidth
-                      rows={3}
-                      placeholder="ادخل المعوقات"
-                      value={values.disables}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.disables && !!errors.disables}
-                      helperText={touched.disables && errors.disables}
-                    />
+                        {risksandDisablesOptions.map((el) => (
+                          <MenuItem key={el.id} value={el.id}>
+                            {el.name}
+                          </MenuItem>
+                        ))}
+                      </MyInput>
+                    </Box>
                   )}
-                </Box>
-              </Stack>
-            </MyInputsWrapper>
-          </Grid>
+                </Stack>
+                {values.showRisks === "yes" && (
+                  <MyInput
+                    name="risks"
+                    label="المخاطر"
+                    multiline
+                    fullWidth
+                    rows={3}
+                    placeholder="ادخل المخاطر"
+                    value={values.risks}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.risks && !!errors.risks}
+                    helperText={touched.risks && errors.risks}
+                  />
+                )}
+              </Box>
+            </Stack>
+
+            {/* Disables Section */}
+            <Stack width="100%" gap={2}>
+              <Box>
+                <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
+                  <Typography variant="body1" color="initial" mt={1}>
+                    هل له معوقات ؟
+                  </Typography>
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-form-control-label-placement"
+                      name="showDisables"
+                      value={values.showDisables}
+                      onChange={handleChange}
+                    >
+                      <FormControlLabel
+                        value="no"
+                        control={<Radio size="small" />}
+                        label="لا"
+                        labelPlacement="start"
+                      />
+                      <FormControlLabel
+                        value="yes"
+                        control={<Radio size="small" />}
+                        label="نعم"
+                        labelPlacement="start"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  {values.showDisables === "yes" && (
+                    <Box ml={2}>
+                      <MyInput
+                        width={180}
+                        name="disableStatus"
+                        select
+                        label="الحالة"
+                        placeholder="اختر الحالة"
+                        value={values.disableStatus}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.disableStatus && !!errors.disableStatus}
+                        helperText={
+                          touched.disableStatus && errors.disableStatus
+                        }
+                      >
+                        {risksandDisablesOptions.map((el) => (
+                          <MenuItem key={el.id} value={el.id}>
+                            {el.name}
+                          </MenuItem>
+                        ))}
+                      </MyInput>
+                    </Box>
+                  )}
+                </Stack>
+                {values.showDisables === "yes" && (
+                  <MyInput
+                    name="disables"
+                    label="المعوقات"
+                    multiline
+                    fullWidth
+                    rows={3}
+                    placeholder="ادخل المعوقات"
+                    value={values.disables}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.disables && !!errors.disables}
+                    helperText={touched.disables && errors.disables}
+                  />
+                )}
+              </Box>
+            </Stack>
+          </MyInputsWrapper>
+        </Grid>
         // </Form>
       )}
     </Formik>

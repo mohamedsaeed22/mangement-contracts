@@ -67,7 +67,6 @@ api.interceptors.response.use(
 );
 
 function refreshMyToken() {
-  console.log(getAcessToken(), getRefreshToken());
   return api.post(
     `${BASE_URL}api/users/Identity/refresh-token?refreshToken=${getRefreshToken()}&accessToken=${getAcessToken()}`
   );

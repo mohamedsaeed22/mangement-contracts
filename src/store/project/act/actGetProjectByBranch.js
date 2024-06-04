@@ -8,7 +8,7 @@ const actGetProjectByBranch = createAsyncThunk(
   "project/actGetProjectByBranch",
   async (branchId, thunkAPI) => {
     const { getState, rejectWithValue, dispatch } = thunkAPI;
-    console.log(branchId);
+
     try {
       await dispatch(actGetSupervisors()).unwrap();
       await dispatch(actGetBranches()).unwrap();

@@ -6,7 +6,7 @@ const actUpdateRisk = createAsyncThunk(
   async (risk, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.put("api/Risk/Update" + risk.projectId, risk);
+      const res = await api.put("api/Risk/Update/" + risk.id, risk);
       return res;
     } catch (error) {
       return rejectWithValue(error);

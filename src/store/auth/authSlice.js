@@ -11,8 +11,7 @@ const token = Cookies.get("token");
 
 const initialState = {
   user: null,
-  // accessToken: (token && refreshToken) || null,
-  accessToken: true,
+  accessToken: token || null,
   loading: false,
   error: null,
 };
@@ -28,8 +27,7 @@ const authSlice = createSlice({
     authLogout: (state) => {
       state.user = null;
       Cookies.remove("token");
-      Cookies.remove("refreshToken");
-
+      // Cookies.remove("refreshToken");
       state.accessToken = null;
     },
   },
@@ -41,25 +39,26 @@ const authSlice = createSlice({
     });
     builder.addCase(actAuthLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
-      console.log(payload);
-      // const decodedToken = jwtDecode(payload.accessToken);
-      const sevenDaysFromNow = new Date();
-      sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
-      Cookies.set("token", payload.accessToken, {
-        expires: sevenDaysFromNow,
-      });
-      setAccessToken(payload.accessToken);
-      setRefreshToken(payload.refreshToken);
+
+      const token = payload.accessToken;
+      const decodedToken = jwtDecode(token);
+      const expirationTime = new Date(decodedToken.exp * 1000);
+      Cookies.set("token", token, { expires: expirationTime });
       state.accessToken = payload.accessToken;
       state.user = payload.user;
     });
 
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;
-      if (action?.payload?.status === 401 || action?.payload?.status === 404) {
+      if (
+        action?.payload?.response?.status === 401 ||
+        action?.payload?.status === 404
+      ) {
         state.error = "خطا فى اسم المستخدم او كلمة المرور";
-      } else if (action?.payload?.status === 500) {
-        state.error = "حدث خطا ما فى السرفر";
+      } else if (action?.payload?.response?.status === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = "حدث خطا فى الشبكة";
       }
     });
   },

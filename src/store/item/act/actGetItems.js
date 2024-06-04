@@ -5,10 +5,9 @@ const actGetItems = createAsyncThunk("item/actGetItems", async (_, thunk) => {
   const { rejectWithValue } = thunk;
   try {
     const res = await api.get("api/Item/browse");
-    console.log(res)
+
     return res;
   } catch (error) {
-    console.log(error)
     return rejectWithValue(error);
   }
 });

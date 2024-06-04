@@ -6,7 +6,7 @@ const actUpdateHandicap = createAsyncThunk(
   async (handicap, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.put("api/Handicap/Update" + handicap.projectId, handicap);
+      const res = await api.put("api/Handicap/Update/" + handicap.id, handicap);
       return res;
     } catch (error) {
       return rejectWithValue(error);

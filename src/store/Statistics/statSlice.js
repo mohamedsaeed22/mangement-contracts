@@ -40,6 +40,7 @@ const supervisorSlice = createSlice({
     });
     builder.addCase(actGetStatByProjectId.rejected, (state, action) => {
       state.loading = false;
+
       if (action.payload) {
         state.error = action.payload;
       }
@@ -49,4 +50,4 @@ const supervisorSlice = createSlice({
 
 export { actGetAllStat, actGetStatByProjectId };
 
- export default supervisorSlice.reducer;
+export default supervisorSlice.reducer;

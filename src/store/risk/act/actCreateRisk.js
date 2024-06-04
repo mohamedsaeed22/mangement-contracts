@@ -6,10 +6,10 @@ const actCreateRisk = createAsyncThunk(
   "risk/actCreateRisk",
   async (risk, thunk) => {
     const { rejectWithValue } = thunk;
-    console.log(risk)
+
     try {
       const res = await api.post("api/Risk/create", risk);
-      console.log(res)
+
       return res.data;
     } catch (error) {
       return rejectWithValue(axiosErrorHandler(error));

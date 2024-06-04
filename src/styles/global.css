@@ -52,7 +52,10 @@ form #my-input-userName {
 #supervisor-form input::placeholder {
   font-size: 14px;
 }
-form input[type="submit"] {
+#sumbit-login {
+  font-family: Cairo, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif !important;
   background-color: #ffc100;
   color: #000;
   outline: none;

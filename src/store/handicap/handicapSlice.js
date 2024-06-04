@@ -17,16 +17,7 @@ import actUpdateHandicap from "./act/actUpdateHandicap";
   }
  */
 const initialState = {
-  handicaps: {
-    id: "ddb8be5c-279f-4685-c033-08dc83d02c03",
-    description: "str s ffdsisfsfng",
-    status: 1,
-    projectId: "ccc7338a-4633-48fb-a43f-08dc83ab7ad8",
-    createdAt: "2024-06-03T16:22:09.4592685",
-    updatedAt: null,
-    updatedBy: null,
-    createdBy: "b37b6f4f-c135-46f6-a28c-fcc444e960cb",
-  },
+  handicaps: {},
   loading: false,
   error: null,
 };

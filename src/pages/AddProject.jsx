@@ -98,7 +98,6 @@ const AddProject = () => {
   }, [id, project]);
 
   const handleFormSubmit = (values) => {
-    console.log(values);
     // const projectData = {
     //   ...values,
     //   endDate: values.endDate,

@@ -40,7 +40,7 @@ import actUpdateProject from "../store/project/act/actUpdateProject";
 import actGetProjectById from "../store/project/act/actGetProjectById";
 import actDeleteProject from "../store/project/act/actDeleteProject";
 import MyBtn from "../components/common/UI/MyBtn";
-import { actCreateRisk } from "../store/risk/riskSlice";
+import { actCreateRisk, actUpdateRisk } from "../store/risk/riskSlice";
 import {
   actCreateHandicap,
   actUpdateHandicap,
@@ -48,12 +48,27 @@ import {
 import { risksandDisablesOptions } from "../utils/riskHandicapStatus";
 import actDeleteRisk from "../store/risk/act/actDeleteRisk";
 import actDeleteHandicap from "../store/handicap/act/actDeleteHandicap";
-import actGetRisksByProjectId from "../store/risk/act/actGetRisksByProjectId";
-import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByProjectId";
 import { projectStateOptions } from "../utils/statusList";
 
 const myWidth = 250;
-
+// const initialProjectValues = {
+//   name: "",
+//   description: "",
+//   startDate: dayjs().toISOString(),
+//   endDate: dayjs().toISOString(),
+//   budget: "",
+//   spentBudget: "",
+//   percentage: "",
+//   status: "",
+//   branchId: "",
+//   supervisorId: "",
+//   showRisks: "no",
+//   riskStatus: "",
+//   riskDescription: "",
+//   showHandicaps: "no",
+//   handicapStatus: "",
+//   handicapDescription: "",
+// };
 const Project = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -61,14 +76,13 @@ const Project = () => {
   const { supervisors } = useSelector((state) => state.supervisor);
   const { branches } = useSelector((state) => state.branch);
   const { project, loading } = useSelector((state) => state.project);
-  const { risks } = useSelector((state) => state.risk);
-  const { handicaps } = useSelector((state) => state.handicap);
   const [myProject, setMyProject] = useState(initialProjectValues);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  console.log(risks);
-  console.log(handicaps);
-  console.log(myProject);
+  const { risks: r, handicaps: h } = project && project;
+  const riskObj = r?.length > 0 ? r[0] : null;
+  const handicapObj = h?.length > 0 ? h[0] : null;
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -83,20 +97,17 @@ const Project = () => {
       dangerMode: true,
     });
     if (willDelete) {
-      console.log("will be deleted");
       dispatch(actDeleteProject(id))
         .unwrap()
         .then((res) => {
-          console.log(res);
-          if (risks.id || handicaps.id) {
-            dispatch(actDeleteRisk(risks.id));
-            dispatch(actDeleteHandicap(handicaps.id));
-          }
+          // if (riskObj.id || handicapObj.id) {
+          //   dispatch(actDeleteRisk(riskObj.id));
+          //   dispatch(actDeleteHandicap(handicapObj.id));
+          // }
           notifySuccess("تم حذف المشروع بنجاح");
           navigate("/projectsbox", { replace: true });
         })
         .catch((res) => {
-          console.log(res);
           notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
         });
     }
@@ -106,35 +117,27 @@ const Project = () => {
   useEffect(() => {
     if (id) {
       dispatch(actGetProjectById(id));
-      dispatch(actGetRisksByProjectId(id));
-      dispatch(actGetHandicapsByProjectId(id));
     } else {
       setMyProject(initialProjectValues);
     }
   }, [dispatch, id]);
-
   useEffect(() => {
-    if (id && project && risks && handicaps) {
+    if (id && project) {
       setMyProject({
         ...project,
         startDate: dayjs(project.startDate).toISOString(),
         endDate: dayjs(project.endDate).toISOString(),
-        showRisks:
-          risks?.description && risks.description !== "string" ? "yes" : "no",
-        riskStatus: risks?.status || "",
-        risks: risks?.description || "",
-        showDisables:
-          handicaps?.description && handicaps.description !== "string"
-            ? "yes"
-            : "no",
-        disableStatus: handicaps?.status || "",
-        disables: handicaps?.description || "",
+        showRisks: riskObj?.id ? "yes" : "no",
+        riskStatus: riskObj?.status || "",
+        riskDescription: riskObj?.description || "",
+        showHandicaps: handicapObj?.id ? "yes" : "no",
+        handicapStatus: handicapObj?.status || "",
+        handicapDescription: handicapObj?.description || "",
       });
     }
-  }, [id, project, handicaps, risks]);
+  }, [id, project, handicapObj, riskObj]);
 
   const handleFormSubmit = (values) => {
-    console.log(values);
     const projectData = {
       ...values,
       endDate: values.endDate,
@@ -145,55 +148,82 @@ const Project = () => {
     };
 
     if (id) {
-      if (values.showDisables === "no") {
-        console.log("will delete handicaps");
-        dispatch(actDeleteHandicap(values.projectId));
+      if (values.showHandicaps === "yes") {
+        if (handicapObj?.id) {
+          dispatch(
+            actUpdateHandicap({
+              id: handicapObj.id,
+              projectId: id,
+              status: values.handicapStatus,
+              description: values.handicapDescription,
+            })
+          );
+        } else {
+          dispatch(
+            actCreateHandicap({
+              projectId: id,
+              status: values.handicapStatus,
+              description: values.handicapDescription,
+            })
+          );
+        }
       }
-      if (values.showDisables === "yes") {
-        console.log("will update disables");
-        // const obj = {
-        //   projectId: values.projectId,
-        //   status: values.disableStatus,
-        //   description: values.disableDescription,
-        // };
-        // dispatch(actUpdateHandicap(obj));
+      if (values.showHandicaps === "no") {
+        if (handicapObj?.id) {
+          dispatch(actDeleteHandicap(handicapObj.id));
+        }
+      }
+      if (values.showRisks === "no") {
+        if (riskObj?.id) {
+          dispatch(actDeleteRisk(riskObj.id));
+        } else {
+        }
       }
 
-      if (values.showRisks === "no") {
-        console.log("will delete risks");
-      }
       if (values.showRisks === "yes") {
-        console.log("will update risks");
+        if (riskObj?.id) {
+          dispatch(
+            actUpdateRisk({
+              id: riskObj.id,
+              projectId: id,
+              status: values.riskStatus,
+              description: values.riskDescription,
+            })
+          );
+        } else {
+          dispatch(
+            actCreateRisk({
+              projectId: id,
+              status: values.riskStatus,
+              description: values.riskDescription,
+            })
+          );
+        }
       }
-      // console.log(values);
-      // dispatch(actUpdateProject(projectData))
-      //   .unwrap()
-      //   .then((res) => {
-      //     console.log(res);
-      //     if (res.status === 200) {
-      //       notifySuccess("تم تعديل المشروع بنجاح");
-      //       navigate(-1);
-      //     } else {
-      //       notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.message);
-      //   });
+      dispatch(actUpdateProject(projectData))
+        .unwrap()
+        .then((res) => {
+          if (res.status === 200) {
+            notifySuccess("تم تعديل المشروع بنجاح");
+            navigate(-1);
+          } else {
+            notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
+          }
+        })
+        .catch((err) => {});
     } else {
       dispatch(actCreateProject(projectData))
         .unwrap()
         .then((res) => {
-          console.log(res);
           if (res.id) {
-            if (values.riskStatus && values.disableStatus) {
+            if (values.riskStatus && values.handicapStatus) {
               const riskObj = {
-                description: values.risks,
+                description: values.riskDescription,
                 status: values.riskStatus,
               };
               const handicapObj = {
-                description: values.disables,
-                status: values.disableStatus,
+                description: values.handicapDescription,
+                status: values.handicapStatus,
               };
               Promise.all([
                 dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
@@ -204,7 +234,7 @@ const Project = () => {
                 .then(() => {
                   // All actions dispatched successfully
                   notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate(-1);
+                  navigate("/projectsbox");
                 })
                 .catch(() => {
                   // Error occurred while dispatching actions
@@ -212,28 +242,28 @@ const Project = () => {
                 });
             } else if (values.riskStatus) {
               const riskObj = {
-                description: values.risks,
+                description: values.riskDescription,
                 status: values.riskStatus,
               };
               dispatch(actCreateRisk({ projectId: res.id, ...riskObj }))
                 .unwrap()
                 .then(() => {
                   notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate(-1);
+                  navigate("/projectsbox");
                 })
                 .catch(() => {
                   notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
                 });
-            } else if (values.disableStatus) {
+            } else if (values.handicapStatus) {
               const handicapObj = {
-                description: values.disables,
-                status: values.disableStatus,
+                description: values.handicapDescription,
+                status: values.handicapStatus,
               };
               dispatch(actCreateHandicap({ projectId: res.id, ...handicapObj }))
                 .unwrap()
                 .then(() => {
                   notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate(-1);
+                  navigate("/projectsbox");
                 })
                 .catch(() => {
                   notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
@@ -241,7 +271,7 @@ const Project = () => {
             } else {
               // No status for risk and disables
               notifySuccess("تم إنشاء المشروع بنجاح");
-              navigate(-1);
+              navigate("/projectsbox");
             }
           }
         })
@@ -257,12 +287,7 @@ const Project = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Formik
           key={JSON.stringify(myProject)}
-          onSubmit={(values, { resetForm }) => {
-            handleFormSubmit(values);
-            if (id) {
-              resetForm();
-            }
-          }}
+          onSubmit={handleFormSubmit}
           initialValues={myProject}
           validationSchema={projectSchema}
           enableReinitialize
@@ -522,7 +547,7 @@ const Project = () => {
                       direction="column"
                       title="المخاطر و المعوقات"
                     >
-                      {/* risks */}
+                      {/* riskObj */}
                       <Stack width="100%" gap={2}>
                         <Box>
                           <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
@@ -583,17 +608,23 @@ const Project = () => {
                           {values.showRisks === "yes" && (
                             <>
                               <MyInput
-                                name="risks"
+                                name="riskDescription"
                                 label="المخاطر"
                                 multiline={true}
                                 fullWidth={true}
                                 rows={3}
                                 placeholder="ادخل المخاطر"
-                                value={values.risks}
+                                value={values.riskDescription}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={!!touched.risks && !!errors.risks}
-                                helperText={touched.risks && errors.risks}
+                                error={
+                                  !!touched.riskDescription &&
+                                  !!errors.riskDescription
+                                }
+                                helperText={
+                                  touched.riskDescription &&
+                                  errors.riskDescription
+                                }
                               />
                             </>
                           )}
@@ -610,8 +641,8 @@ const Project = () => {
                               <RadioGroup
                                 row
                                 aria-labelledby="demo-form-control-label-placement"
-                                name="showDisables"
-                                value={values.showDisables}
+                                name="showHandicaps"
+                                value={values.showHandicaps}
                                 onChange={(e) => {
                                   handleChange(e);
                                 }}
@@ -630,24 +661,24 @@ const Project = () => {
                                 />
                               </RadioGroup>
                             </FormControl>
-                            {values.showDisables === "yes" && (
+                            {values.showHandicaps === "yes" && (
                               <Box ml={2}>
                                 <MyInput
                                   width={180}
-                                  name="disableStatus"
+                                  name="handicapStatus"
                                   select
                                   label="الحالة"
                                   placeholder="اختر الحالة"
-                                  value={values.disableStatus}
+                                  value={values.handicapStatus}
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   error={
-                                    !!touched.disableStatus &&
-                                    !!errors.disableStatus
+                                    !!touched.handicapStatus &&
+                                    !!errors.handicapStatus
                                   }
                                   helperText={
-                                    touched.disableStatus &&
-                                    errors.disableStatus
+                                    touched.handicapStatus &&
+                                    errors.handicapStatus
                                   }
                                 >
                                   {risksandDisablesOptions.map((el) => (
@@ -659,20 +690,26 @@ const Project = () => {
                               </Box>
                             )}
                           </Stack>
-                          {values.showDisables === "yes" && (
+                          {values.showHandicaps === "yes" && (
                             <>
                               <MyInput
-                                name="disables"
+                                name="handicapDescription"
                                 label="المعوقات"
                                 multiline={true}
                                 fullWidth={true}
                                 rows={3}
                                 placeholder="ادخل المعوقات"
-                                value={values.disables}
+                                value={values.handicapDescription}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={!!touched.disables && !!errors.disables}
-                                helperText={touched.disables && errors.disables}
+                                error={
+                                  !!touched.handicapDescription &&
+                                  !!errors.handicapDescription
+                                }
+                                helperText={
+                                  touched.handicapDescription &&
+                                  errors.handicapDescription
+                                }
                               />
                             </>
                           )}

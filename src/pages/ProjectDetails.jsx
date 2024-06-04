@@ -12,19 +12,17 @@ import actGetRisksByProjectId from "../store/risk/act/actGetRisksByProjectId";
 import { getRisksAndDisablesName } from "../utils/riskHandicapStatus";
 import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByProjectId";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
+import { getProjectStateName } from "../utils/statusList";
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { project, loading, error } = useSelector((state) => state.project);
-  const { risks } = useSelector((state) => state.risk);
-  const { handicaps } = useSelector((state) => state.handicap);
   const { id } = useParams();
+  const { risks, handicaps } = project;
 
   useEffect(() => {
     if (id) {
       dispatch(actGetProjectById(id));
-      dispatch(actGetRisksByProjectId(id));
-      dispatch(actGetHandicapsByProjectId(id));
     }
   }, [dispatch, id]);
 
@@ -39,7 +37,7 @@ const ProjectDetails = () => {
       >
         <Box>
           <Tooltip title="رجوع" placement="top" arrow>
-            <IconButton onClick={() => navigate("/projectsbox")}>
+            <IconButton onClick={() => navigate(-1)}>
               <East style={{ color: "black" }} />
             </IconButton>
           </Tooltip>
@@ -76,7 +74,10 @@ const ProjectDetails = () => {
             gap={2}
             flexWrap="wrap"
           >
-            <MyLabel label="حالة المشروع" value={project.status} />
+            <MyLabel
+              label="حالة المشروع"
+              value={getProjectStateName(project.status)}
+            />
             <MyLabel label=" النشاط" value={project.branchName} />
             <MyLabel label="المشرف" value={project.supervisorName} />
           </Stack>
@@ -97,25 +98,24 @@ const ProjectDetails = () => {
               value={project.endDate?.split("T")[0]}
             />
           </Stack>
-
-          {risks?.description !== "string" && risks ? (
+          {risks && risks.length > 0 ? (
             <Stack
               p={1}
               direction="row"
-              justifyContent="space-between"
+              // justifyContent="space-around"
               gap={2}
               flexWrap="wrap"
             >
               <MyLabel
                 label="حالة المخاطر"
-                value={`${getRisksAndDisablesName(risks?.status)}`}
+                value={`${getRisksAndDisablesName(risks[0].status)}`}
               />
               <Box
                 sx={{
                   backgroundColor: "#F5F5F5 !important",
                   border: "2px solid #000",
                   borderRadius: "6px",
-                  padding: "15px 10px",
+                  padding: "10px",
                   position: "relative",
                   maxWidth: 700,
                   // marginTop: 3,
@@ -138,7 +138,7 @@ const ProjectDetails = () => {
                 >
                   تفاصيل المخاطر
                 </Typography>
-                {risks?.description}
+                {risks[0]?.description}
               </Box>
             </Stack>
           ) : (
@@ -152,17 +152,19 @@ const ProjectDetails = () => {
             </Typography>
           )}
 
-          {handicaps?.description !== "string" && handicaps ? (
+          {handicaps && handicaps.length > 0 ? (
             <Stack
               p={1}
               direction="row"
-              justifyContent="space-between"
+              // justifyContent="space-between"
               gap={2}
               flexWrap="wrap"
             >
               <MyLabel
                 label="حالة المعوقات"
-                value={`${getRisksAndDisablesName(handicaps?.status)}`}
+                value={`${getRisksAndDisablesName(
+                  project.handicaps[0].status
+                )}`}
               />
               <Box
                 sx={{
@@ -190,7 +192,7 @@ const ProjectDetails = () => {
                 >
                   تفاصيل المعوقات
                 </Typography>
-                {risks?.description}
+                {handicaps[0].description}
               </Box>
             </Stack>
           ) : (

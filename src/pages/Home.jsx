@@ -9,7 +9,7 @@ import actGetAllStat from "../store/Statistics/act/actGetAllStat";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { allStat } = useSelector((state) => state.stat);
+  const { allStat, error } = useSelector((state) => state.stat);
 
   const {
     totalProjects,
@@ -33,6 +33,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(actGetAllStat());
   }, [dispatch]);
+
   return (
     <>
       <Heading title="الصفحة الرئيسية" />

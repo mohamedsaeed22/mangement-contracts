@@ -9,7 +9,6 @@ const actCreateItem = createAsyncThunk(
       const res = await api.post("api/Item/create", item);
       return res;
     } catch (error) {
-      console.log(error)
       return rejectWithValue(error);
     }
   }
