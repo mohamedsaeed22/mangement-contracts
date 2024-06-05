@@ -30,21 +30,21 @@ const SupervisorForm = ({
       dispatch(actUpdateSupervisor(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم تحديث المسؤل بنجاح");
+          notifySuccess("تم تحديث الاستشارى بنجاح");
           handleCloseModal();
         })
         .catch((err) => {
-          notifyFailed("حدث خطأ أثناء تحديث المسؤل");
+          notifyFailed("حدث خطأ أثناء تحديث الاستشارى");
         });
     } else {
       dispatch(actCreateSupervisor(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم اضافة المسؤل بنجاح");
+          notifySuccess("تم اضافة الاستشارى بنجاح");
           resetForm();
         })
         .catch((err) => {
-          notifyFailed("هذا المسؤل موجود مسبقا");
+          notifyFailed("هذا الاستشارى موجود مسبقا");
         });
     }
   };
@@ -75,7 +75,7 @@ const SupervisorForm = ({
         >
           <MyInput
             name="name"
-            label="اسم المشرف"
+            label="اسم الاستشارى"
             placeholder="ادخل الاسم"
             value={values.name}
             onChange={handleChange}

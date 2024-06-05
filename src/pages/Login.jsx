@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Stack,
-  Typography,
-  Button,
-  TextField,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Stack, Typography, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import FoeLogo from "../assets/imgs/foeLogo.png";
@@ -17,7 +10,6 @@ import Footer from "../components/common/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { actAuthLogin } from "../store/auth/authSlice";
 import { Navigate, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 
 const validationSchema = Yup.object({
@@ -27,7 +19,15 @@ const validationSchema = Yup.object({
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { error, loading, accessToken } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { error, loading, accessToken, roles } = useSelector(
+    (state) => state.auth
+  );
+  // if (accessToken && roles.includes("DefaultUserBranch")) {
+  //   navigate("/projectsbox");
+  // } else {
+  //   navigate("/");
+  // }
 
   const formik = useFormik({
     initialValues: {
@@ -35,16 +35,12 @@ const Login = () => {
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       dispatch(
         actAuthLogin({
           userHandle: values.userHandle,
           password: values.password,
         })
-        // .unwrap()
-        // .then((res) => {
-        //           //   navigate("/");
-        // })
       );
     },
   });

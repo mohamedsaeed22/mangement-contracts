@@ -31,7 +31,10 @@ import { actGetProjects } from "../store/project/projectSlice";
 import StatusLabel from "../components/manageContracts/StatusLabel";
 import dayjs from "dayjs";
 import { RestartAlt } from "@mui/icons-material";
-
+import AddIcon from "../assets/icon/add-icon.svg";
+import { actGetSupervisors } from "../store/supervisor/supervisorSlice";
+import { actGetBranches } from "../store/branch/branchSlice";
+import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -86,7 +89,6 @@ const ProjectsBox = () => {
   const handleChangeProjectState = (event) => {
     setProjectState(event.target.value);
   };
-
   const handleChange = (event, value) => {
     handleChangePge(value);
   };
@@ -112,6 +114,8 @@ const ProjectsBox = () => {
   }, [search]);
 
   useEffect(() => {
+    // dispatch(actGetSupervisors());
+    // dispatch(actGetBranches());
     dispatch(
       actGetProjects({
         page,
@@ -208,11 +212,21 @@ const ProjectsBox = () => {
               }}
             />
           </Box>
-          <MyBtn
-            title="تصنيف"
-            icon={FilterIcon}
-            handleBtnClick={handleToggleFilter}
-          />
+          <Stack direction="row" gap={1}>
+            <MyBtn
+              title="تصنيف"
+              icon={FilterIcon}
+              handleBtnClick={handleToggleFilter}
+            />
+            <MyBtn
+              type="submit"
+              width={100}
+              height={40}
+              icon={AddIcon}
+              handleBtnClick={() => navigate("/project/add")}
+              title={"اضافة"}
+            />
+          </Stack>
         </Stack>
         <Stack
           direction="row"
@@ -269,7 +283,7 @@ const ProjectsBox = () => {
                 size="small"
                 id="planned-cost"
                 type="number"
-                label="التكلفة المخططة"
+                label="المنصرف الفعلى"
                 variant="outlined"
                 sx={{ width: "150px" }}
                 value={plannedCost}
@@ -348,7 +362,7 @@ const ProjectsBox = () => {
             <TableHead>
               <TableRow>
                 <StyledTableCell align="center">النشاط</StyledTableCell>
-                <StyledTableCell align="center">المشرف</StyledTableCell>
+                <StyledTableCell align="center">الاستشارى</StyledTableCell>
                 <StyledTableCell align="center">اسم المشروع</StyledTableCell>
                 <StyledTableCell align="center">الوصف</StyledTableCell>
                 <StyledTableCell align="center">
@@ -385,10 +399,17 @@ const ProjectsBox = () => {
                     <StyledTableCell align="center">
                       {row.supervisorName}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.description}
+                      {row.name.length > 20
+                        ? row.name.substring(0, 20) + "..."
+                        : row.name}
                     </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.description.length > 20
+                        ? row.description.substring(0, 20) + "..."
+                        : row.description}
+                    </StyledTableCell>
+
                     <StyledTableCell align="center">
                       {row.budget}
                     </StyledTableCell>
@@ -420,7 +441,9 @@ const ProjectsBox = () => {
                       {row.endDate.split("T")[0]}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {(row?.risks?.length >0 || row?.handicaps?.length >0) ? "يوجد":"لا يوجد"}
+                      {row?.risks?.length > 0 || row?.handicaps?.length > 0
+                        ? "يوجد"
+                        : "لا يوجد"}
                     </StyledTableCell>
                   </StyledTableRow>
                 </Tooltip>
@@ -446,6 +469,9 @@ const ProjectsBox = () => {
           )}
         </Stack>
       </Box>
+      {/* <LoadingWrapper loading={loading} error={error}>
+
+      </LoadingWrapper> */}
     </>
   );
 };

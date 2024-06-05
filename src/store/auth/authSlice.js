@@ -1,11 +1,15 @@
 import actAuthLogin from "./act/actAuthLogin";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import { getAcessToken, setAccessToken } from "../../utils/accessLocalStorage";
+import {
+  getAcessToken,
+  getUserRoles,
+  setAccessToken,
+} from "../../utils/accessLocalStorage";
 
 const initialState = {
-  user: null,
   accessToken: getAcessToken() || null,
+  roles: getUserRoles() || [],
   loading: false,
   error: null,
 };
@@ -28,16 +32,30 @@ const authSlice = createSlice({
     });
     builder.addCase(actAuthLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const myToken = payload.data.accessToken;
+      console.log(payload);
+      const myToken = payload.accessToken;
       setAccessToken(myToken);
+      console.log(getUserRoles());
+      if (Array.isArray(getUserRoles())) {
+        // If it's an array, assign it to the state directly
+        state.roles = getUserRoles();
+      } else {
+        // If it's a string, put it into an array and then assign it to the state
+        state.roles = [getUserRoles()];
+      }
+      console.log(state.roles);
       state.accessToken = myToken;
-      state.user = payload.data.user;
     });
 
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;
       console.log(action);
-      if (action?.payload) {
+      console.log(action);
+      if (action?.payload === 401) {
+        state.error = "خطا فى اسم المستخدم او كلمة المرور";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });

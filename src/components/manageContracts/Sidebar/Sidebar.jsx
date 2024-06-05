@@ -15,34 +15,40 @@ import { actGetSupervisors } from "../../../store/supervisor/supervisorSlice";
 import SidebarMenu from "./SidebarMenu";
 import { SweatAlert } from "../../feedback/Alerts/alerts";
 
-const projectSubmenuList = [
+let projectSubmenuList = [
   {
+    id: 1,
     nav: "projectsbox",
     name: "صندوق المشاريع",
   },
   {
+    id: 2,
     nav: "project/add",
     name: "اضافه مشروع",
   },
 ];
-const branchSubmenuList = [
+let branchSubmenuList = [
   {
+    id: 3,
     nav: "managebranches",
     name: "اداره الانشطة",
   },
 ];
-const supervisroSubmenuList = [
+let supervisroSubmenuList = [
   {
+    id: 4,
     nav: "managesupervisors",
-    name: "اداره المشرفين",
+    name: "اداره الاستشاريين",
   },
 ];
-const ForeignCompanyList = [
+let ForeignCompanyList = [
   {
+    id: 5,
     nav: "manageitems",
     name: "اداره الاصناف",
   },
   {
+    id: 6,
     nav: "managecompanies",
     name: "اداره الشركات",
   },
@@ -55,12 +61,14 @@ const Sidebar = () => {
   const [showForeignCompany, setShowForeignCompany] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const { branches } = useSelector((state) => state.branch);
+  const { roles } = useSelector((state) => state.auth);
+
   const { supervisors } = useSelector((state) => state.supervisor);
   let branchesList = [];
   if (branches) {
     branchesList = [...branchSubmenuList, ...branches];
   }
-   const toggleProjectSubmenu = () => {
+  const toggleProjectSubmenu = () => {
     setShowProjectsMenu(!showProjectsMenu);
   };
   const toggleForeignCompany = () => {
@@ -121,7 +129,7 @@ const Sidebar = () => {
           width: "250px",
           minWidth: "250px",
           minHeight: "100vh",
-          height:'100%',
+          height: "100%",
           backgroundColor: "#263238",
           borderTopRightRadius: "30px",
           borderBottomRightRadius: "30px",
@@ -154,65 +162,87 @@ const Sidebar = () => {
             marginTop: "40px",
           }}
         />
-        {/* home menu */}
         <Box mt={6}>
-          <NavLink
-            to="/"
-            exact="true"
-            className={({ isActive }) =>
-              `navlink ${isActive ? "active-link" : ""}`
-            }
-          >
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              p={1}
-              bgcolor="inherit"
-              sx={{
-                borderTopLeftRadius: "10px",
-                borderBottomLeftRadius: "10px",
-                // "&:hover": { color: "blue !important" },
-              }}
-            >
-              <Typography
-                variant="h6"
-                color="initial"
-                ml={1}
-                fontWeight="bold"
-                sx={{ color: "inherit", fontSize: "14px" }}
+          {/* home menu */}
+          {(roles.includes("ProjectManagement.ReadOnly") ||
+            roles.includes("SuperAdmin")) && (
+            <Box>
+              <NavLink
+                to="/"
+                exact="true"
+                className={({ isActive }) =>
+                  `navlink ${isActive ? "active-link" : ""}`
+                }
               >
-                الصفحة الرئيسية
-              </Typography>
-            </Stack>
-          </NavLink>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  p={1}
+                  bgcolor="inherit"
+                  sx={{
+                    borderTopLeftRadius: "10px",
+                    borderBottomLeftRadius: "10px",
+                    // "&:hover": { color: "blue !important" },
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    color="initial"
+                    ml={1}
+                    fontWeight="bold"
+                    sx={{ color: "inherit", fontSize: "14px" }}
+                  >
+                    الصفحة الرئيسية
+                  </Typography>
+                </Stack>
+              </NavLink>
+            </Box>
+          )}
+
+          {/* projects menu  */}
+          <SidebarMenu
+            menuTitle={"المشروعات"}
+            toggleSubmenuFun={toggleProjectSubmenu}
+            showSubmenu={showProjectsMenu}
+            subMenuList={
+              roles.includes("Admin") ||
+              roles.includes("DefaultUserBranch") ||
+              roles.includes("SuperAdmin")
+                ? projectSubmenuList
+                : [projectSubmenuList[0]]
+            }
+          />
+          {/* branches menu  */}
+          <SidebarMenu
+            menuTitle={"الانشطة"}
+            toggleSubmenuFun={toggleBranchSubmenu}
+            showSubmenu={showBranchesMenu}
+            subMenuList={
+              roles.includes("Admin") ||
+              roles.includes("DefaultUserBranch") ||
+              roles.includes("SuperAdmin")
+                ? branchesList
+                : [...branches]
+            }
+          />
+          {/* supervisors menu  */}
+          {(roles.includes("Admin") || roles.includes("SuperAdmin")) && (
+            <>
+              <SidebarMenu
+                menuTitle={"الاستشاريين"}
+                toggleSubmenuFun={toggleSupervisorSubmenu}
+                showSubmenu={showSupervisorsMenu}
+                subMenuList={supervisroSubmenuList}
+              />
+              <SidebarMenu
+                menuTitle={"التعاقدات الخارجيه"}
+                toggleSubmenuFun={toggleForeignCompany}
+                showSubmenu={showForeignCompany}
+                subMenuList={ForeignCompanyList}
+              />
+            </>
+          )}
         </Box>
-        {/* projects menu  */}
-        <SidebarMenu
-          menuTitle={"المشروعات"}
-          toggleSubmenuFun={toggleProjectSubmenu}
-          showSubmenu={showProjectsMenu}
-          subMenuList={projectSubmenuList}
-        />
-        {/* branches menu  */}
-        <SidebarMenu
-          menuTitle={"الانشطة"}
-          toggleSubmenuFun={toggleBranchSubmenu}
-          showSubmenu={showBranchesMenu}
-          subMenuList={branchesList}
-        />
-        {/* supervisors menu  */}
-        <SidebarMenu
-          menuTitle={"المشرفين"}
-          toggleSubmenuFun={toggleSupervisorSubmenu}
-          showSubmenu={showSupervisorsMenu}
-          subMenuList={supervisroSubmenuList}
-        />
-        {/* <SidebarMenu
-          menuTitle={"التعاقدات الخارجيه"}
-          toggleSubmenuFun={toggleForeignCompany}
-          showSubmenu={showForeignCompany}
-          subMenuList={ForeignCompanyList}
-        /> */}
         {/* logout */}
         <Stack
           direction="row"

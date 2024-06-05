@@ -22,7 +22,10 @@ import StatusLabel from "../components/manageContracts/StatusLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { actGetProjectByBranch } from "../store/project/projectSlice";
 import CenterStat from "../components/manageContracts/CenterStat";
-import { actGetStatByProjectId } from "../store/Statistics/statSlice";
+import {
+  actGetStatByProjectId,
+  resetStat,
+} from "../store/Statistics/statSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -74,6 +77,9 @@ const Branch = () => {
   useEffect(() => {
     dispatch(actGetProjectByBranch(id));
     dispatch(actGetStatByProjectId(id));
+    return () => {
+      dispatch(resetStat());
+    };
   }, [dispatch, id]);
 
   const handleShowProject = (project) => {
@@ -137,7 +143,7 @@ const Branch = () => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center">النشاط</StyledTableCell>
-                  <StyledTableCell align="center">المشرف</StyledTableCell>
+                  <StyledTableCell align="center">الاستشارى</StyledTableCell>
                   <StyledTableCell align="center">اسم المشروع</StyledTableCell>
                   <StyledTableCell align="center">الوصف</StyledTableCell>
                   <StyledTableCell align="center">
@@ -155,8 +161,8 @@ const Branch = () => {
                     نهاية المشروع
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                  هل له مخاطر/معوقات
-                </StyledTableCell>
+                    هل له مخاطر/معوقات
+                  </StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -177,10 +183,14 @@ const Branch = () => {
                         {row.supervisorName}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {row.name}
+                      {row.name.length > 20
+                          ? row.name.substring(0, 20) + "..."
+                          : row.name}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {row.description}
+                        {row.description.length > 20
+                          ? row.description.substring(0, 20) + "..."
+                          : row.description}
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         {row.budget}
@@ -212,9 +222,11 @@ const Branch = () => {
                       <StyledTableCell align="center">
                         {row.endDate.split("T")[0]}
                       </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {(row?.risks?.length >0 || row?.handicaps?.length >0) ? "يوجد":"لا يوجد"}
-                    </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {row?.risks?.length > 0 || row?.handicaps?.length > 0
+                          ? "يوجد"
+                          : "لا يوجد"}
+                      </StyledTableCell>
                     </StyledTableRow>
                   </Tooltip>
                 ))}

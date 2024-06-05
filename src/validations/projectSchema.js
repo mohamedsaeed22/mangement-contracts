@@ -62,7 +62,7 @@ const projectSchema = yup.lazy((values) => {
     showHandicaps: yup.string().required(),
     status: yup.string().required("حالة المشروع مطلوبة"),
     branchId: yup.string().required("النشاط مطلوب"),
-    supervisorId: yup.string().required("اسم المشرف مطلوب"),
+    supervisorId: yup.string().required("اسم الاستشارى مطلوب"),
   });
 
   if (values.showRisks === "yes") {

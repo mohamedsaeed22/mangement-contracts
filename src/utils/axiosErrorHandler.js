@@ -1,14 +1,9 @@
-// const axiosErrorHandler = (action) => {
-//   if (
-//     action?.payload?.response?.status === 401 ||
-//     action?.payload?.status === 404
-//   ) {
-//     return "خطا فى اسم المستخدم او كلمة المرور";
-//   } else if (action?.payload?.response?.status === 500) {
-//     return "حدث خطا ما فى السيرفر";
+// import axios from "axios";
+
+// const isAxiosError = (error) => {
+//   if (axios.isAxiosError(error)) {
+//     return rejectWithValue(error.response?.status || error.message);
 //   } else {
-//     return "حدث خطا فى الشبكة";
+//     return rejectWithValue("خطا غير معروف");
 //   }
 // };
-
-// export default axiosErrorHandler;

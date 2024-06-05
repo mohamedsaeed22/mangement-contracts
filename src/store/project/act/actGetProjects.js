@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
 import { actGetSupervisors } from "../../supervisor/supervisorSlice";
 import { actGetBranches } from "../../branch/branchSlice";
+import axios from "axios";
 
 const actGetProjects = createAsyncThunk(
   "project/actGetProjects",
@@ -16,24 +16,31 @@ const actGetProjects = createAsyncThunk(
       const res = await api.get(
         `api/Project/browse?Search=${params.search}&PageSize=10&Page=${params.page}&Status=${params.status}&StartDate=${params.startDate}&EndDate=${params.endDate}&BranchId=${params.BranchId}&SupervisorId=${params.SupervisorId}&SpentBudget=${params.SpentBudget}`
       );
-
-      const enhancedProjects = res.data.data.map((project) => {
+       const enhancedProjects = res.data.data.map((project) => {
         const supervisor = supervisors.find(
           (sup) => sup.id === project.supervisorId
         );
-        const branch = branches.find((br) => br.id === project.branchId);
+         const branch = branches.find((br) => br.id === project.branchId);
         return {
           ...project,
           supervisorName: supervisor.name,
           branchName: branch.name,
         };
       });
+       enhancedProjects.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
       return {
         ...res.data,
         data: enhancedProjects,
       };
     } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.status || error.message);
+      } else {
+        return rejectWithValue("خطا غير معروف");
+      }
     }
   }
 );

@@ -1,10 +1,21 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 
-const MyLabel = ({label,value}) => {
+const MyLabel = ({ label, value }) => {
   return (
-    <Stack direction="row" alignItems="center" color="#000" width={300} justifyContent="space-between">
-      <Typography variant="body1" color="initial" fontSize={18} fontWeight={400}>
+    <Stack
+      direction="row"
+      alignItems="center"
+      color="#000"
+      width={300}
+      justifyContent="space-between"
+    >
+      <Typography
+        variant="body1"
+        color="initial"
+        fontSize={18}
+        fontWeight={400}
+      >
         {label}
       </Typography>
       <Box
@@ -19,7 +30,7 @@ const MyLabel = ({label,value}) => {
         }}
       >
         <Typography variant="body1" color="inherit">
-        {value}
+          {value && value.length > 20 ? value.substring(0, 20) + "..." : value}
         </Typography>
       </Box>
     </Stack>

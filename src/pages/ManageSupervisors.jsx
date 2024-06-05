@@ -86,11 +86,11 @@ const MangeBranches = () => {
         .unwrap()
         .then((e) => {
           dispatch(filterSupervisors(supervisor.id));
-          notifySuccess("تم حذف المسؤل");
+          notifySuccess("تم حذف الاستشارى");
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed("هذا المسؤل لدية مشاريع,رجاء تعديل المشارع او حذفها");
+          notifyFailed("هذا الاستشارى لدية مشاريع,رجاء تعديل المشارع او حذفها");
         });
     }
   };
@@ -108,7 +108,7 @@ const MangeBranches = () => {
           handleCloseModal={handleCloseModal}
         />
       </MyModal>
-      <Heading title="ادارة المشرفين" />
+      <Heading title="ادارة الاستشارىين" />
       <Box
         gap={2}
         p={2}
@@ -130,7 +130,9 @@ const MangeBranches = () => {
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">اسم المسؤل</StyledTableCell>
+                  <StyledTableCell align="center">
+                    اسم الاستشارى
+                  </StyledTableCell>
                   <StyledTableCell align="center">رقم الهاتف</StyledTableCell>
                   <StyledTableCell align="center">الاجراءات</StyledTableCell>
                 </TableRow>

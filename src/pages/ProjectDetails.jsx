@@ -79,7 +79,7 @@ const ProjectDetails = () => {
               value={getProjectStateName(project.status)}
             />
             <MyLabel label=" النشاط" value={project.branchName} />
-            <MyLabel label="المشرف" value={project.supervisorName} />
+            <MyLabel label="الاستشارى" value={project.supervisorName} />
           </Stack>
           <Stack
             p={1}
@@ -113,15 +113,15 @@ const ProjectDetails = () => {
               <Box
                 sx={{
                   backgroundColor: "#F5F5F5 !important",
-                  border: "2px solid #000",
+                  border: "1px solid #000",
                   borderRadius: "6px",
                   padding: "10px",
                   position: "relative",
-                  maxWidth: 700,
+                  // maxWidth: 700,
                   // marginTop: 3,
-                  width: 250,
+                  // width: 250,
                   alignSelf: "center",
-                  // flex: 1,
+                  flex: 1,
                 }}
               >
                 <Typography
@@ -134,6 +134,7 @@ const ProjectDetails = () => {
                     left: 20,
                     zIndex: 10,
                     paddingInline: "6px",
+                    maxWidth: "100%",
                   }}
                 >
                   تفاصيل المخاطر
@@ -169,12 +170,13 @@ const ProjectDetails = () => {
               <Box
                 sx={{
                   backgroundColor: "#F5F5F5 !important",
-                  border: "2px solid #000",
+                  border: "1px solid #000",
                   borderRadius: "6px",
                   padding: "15px 10px",
                   position: "relative",
-                  maxWidth: 700,
-                  width: 250,
+                  // maxWidth: 700,
+                  // width: 250,
+                  flex: 1,
                   alignSelf: "center",
                 }}
               >
@@ -209,11 +211,12 @@ const ProjectDetails = () => {
           <Box
             sx={{
               backgroundColor: "#F5F5F5 !important",
-              border: "2px solid #000",
+              border: "1px solid #000",
               borderRadius: "6px",
               padding: "15px 10px",
               position: "relative",
-              maxWidth: 700,
+              // maxWidth: 700,
+
               marginTop: 2,
             }}
           >
@@ -231,7 +234,9 @@ const ProjectDetails = () => {
             >
               تفاصيل المشروع
             </Typography>
-            {project.description}
+            {project.description && project.description.length > 40
+              ? project.description.substring(0, 40) + "..."
+              : project.description}
           </Box>
         </Stack>
       </Box>

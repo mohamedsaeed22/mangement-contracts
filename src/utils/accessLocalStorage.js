@@ -24,11 +24,24 @@ const removeAllCookies = () => {
   Cookies.remove("token");
   Cookies.remove("refreshToken");
 };
-
+const getUserRoles = () => {
+  if (!getAcessToken()) {
+    return null;
+  }
+  const decoded = jwtDecode(getAcessToken());
+  if (decoded) {
+    return decoded[
+      "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+    ];
+  } else {
+    return null;
+  }
+};
 export {
   getAcessToken,
   setAccessToken,
   getRefreshToken,
+  getUserRoles,
   removeAllCookies,
   setRefreshToken,
 };

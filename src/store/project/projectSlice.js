@@ -28,16 +28,21 @@ const projectSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actGetProjects.fulfilled, (state, { payload }) => {
+      state.loading = false;
       state.projects = payload.data;
       state.totalItems = payload.totalItems;
     });
     builder.addCase(actGetProjects.rejected, (state, action) => {
       state.loading = false;
-      //
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
+
     // get projects by branch
     builder.addCase(actGetProjectByBranch.pending, (state) => {
       state.loading = true;

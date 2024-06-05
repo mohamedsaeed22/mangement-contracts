@@ -131,7 +131,9 @@ const ManageItems = () => {
                   <StyledTableRow key={row.id}>
                     <StyledTableCell align="center">{row.name}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.description}
+                      {row.description.length > 30
+                        ? row.description.substring(0, 30) + "..."
+                        : row.description}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <Stack direction="row" justifyContent="center" gap={1}>

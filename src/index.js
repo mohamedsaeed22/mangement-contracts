@@ -8,7 +8,6 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import createCache from "@emotion/cache";
 // styles
-
 import "./styles/global.css";
 import { CssBaseline } from "@mui/material";
 import { CacheProvider } from "@emotion/react";

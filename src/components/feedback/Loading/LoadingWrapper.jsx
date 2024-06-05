@@ -1,7 +1,7 @@
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import React from "react";
-
-const LoadingWrapper = ({ loading, error, children }) => {
+import LottieWrapper from "../Lottie/LottieWrapper";
+const LoadingWrapper = ({ loading, error, children, icon }) => {
   if (loading) {
     return (
       <div
@@ -19,9 +19,19 @@ const LoadingWrapper = ({ loading, error, children }) => {
 
   if (error) {
     return (
-      <div style={{ textAlign: "center", marginTop: "20px", color: "red" }}>
-        {error}
-      </div>
+      <Box>
+        <Typography
+          sx={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        >
+          {icon && <LottieWrapper MyLottieIcon={icon} />}
+          {error}
+        </Typography>
+      </Box>
     );
   }
 

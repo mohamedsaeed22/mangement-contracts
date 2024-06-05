@@ -367,8 +367,8 @@ const Project = () => {
                     width={180}
                     name="supervisorId"
                     select
-                    label="المشرف"
-                    placeholder="اختر المشرف"
+                    label="الاستشارى"
+                    placeholder="اختر الاستشارى"
                     value={values.supervisorId}
                     onChange={handleChange}
                     onBlur={handleBlur}

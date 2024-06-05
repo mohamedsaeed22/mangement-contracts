@@ -28,21 +28,21 @@ const BranchForm = ({
       dispatch(actUpdateSupervisor(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم تحديث المسؤل بنجاح");
+          notifySuccess("تم تحديث الاستشارى بنجاح");
           handleCloseModal();
         })
         .catch((err) => {
-          notifyFailed("حدث خطأ أثناء تحديث المسؤل");
+          notifyFailed("حدث خطأ أثناء تحديث الاستشارى");
         });
     } else {
       dispatch(actCreateSupervisor(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم اضافة المسؤل بنجاح");
+          notifySuccess("تم اضافة الاستشارى بنجاح");
           resetForm();
         })
         .catch((err) => {
-          notifyFailed("هذا المسؤل موجود مسبقا");
+          notifyFailed("هذا الاستشارى موجود مسبقا");
         });
     }
   };
@@ -71,7 +71,7 @@ const BranchForm = ({
         >
           <MyInput
             name="name"
-            label="اسم المسؤل"
+            label="اسم الاستشارى"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
