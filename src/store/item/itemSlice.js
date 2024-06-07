@@ -26,7 +26,7 @@ const itemSlice = createSlice({
     });
     builder.addCase(actGetItems.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.items = payload.data;
+      state.items = payload;
     });
     builder.addCase(actGetItems.rejected, (state, action) => {
       state.loading = false;
@@ -40,7 +40,7 @@ const itemSlice = createSlice({
     });
     builder.addCase(actCreateItem.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const { id, name, description } = payload.data;
+      const { id, name, description } = payload;
       state.items.push({ id, name, description });
     });
     builder.addCase(actCreateItem.rejected, (state, { payload }) => {
@@ -59,11 +59,9 @@ const itemSlice = createSlice({
     });
     builder.addCase(actUpdateItem.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const index = state.items.findIndex(
-        (items) => items.id === payload.data.id
-      );
+      const index = state.items.findIndex((items) => items.id === payload.id);
       if (index !== -1) {
-        state.items[index] = payload.data;
+        state.items[index] = payload;
       } else {
         console.error("Branch not found");
       }

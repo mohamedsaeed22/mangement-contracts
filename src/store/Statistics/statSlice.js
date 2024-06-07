@@ -47,7 +47,7 @@ const supervisorSlice = createSlice({
     });
     builder.addCase(actGetStatByProjectId.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.projectStat = payload.data;
+      state.projectStat = payload;
     });
     builder.addCase(actGetStatByProjectId.rejected, (state, action) => {
       state.loading = false;

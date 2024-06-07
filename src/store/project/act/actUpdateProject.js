@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actUpdateProject = createAsyncThunk(
   "project/actUpdateProject",
@@ -9,9 +9,9 @@ const actUpdateProject = createAsyncThunk(
     try {
       const res = await api.put("api/Project/update/" + project.id, project);
 
-      return res;
+      return res.data;
     } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

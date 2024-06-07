@@ -1,5 +1,10 @@
 import { lazy, Suspense } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  createRoutesFromElements,
+  Route,
+} from "react-router-dom";
 import PageSuspenseFallback from "../components/feedback/PageSuspenseFallback/PageSuspenseFallback";
 
 import Error from "../pages/Error";
@@ -11,76 +16,48 @@ import ManageSupervisors from "../pages/ManageSupervisors";
 import ProjectDetails from "../pages/ProjectDetails";
 import Project from "../pages/Project";
 import ProjectsBox from "../pages/ProjectsBox";
- import ManageCompanies from "../pages/ManageCompanies";
+import ManageCompanies from "../pages/ManageCompanies";
 import ManageItems from "../pages/ManageItems";
 
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
-// const { roles } = useSelector((state) => state.auth);
 
-const router = createBrowserRouter([
-  {
-    path: "login",
-    element: (
-      <Suspense fallback={<PageSuspenseFallback />}>
-        <Login />
-      </Suspense>
-    ),
-  },
-  {
-    path: "/",
-    element: (
-      <Suspense fallback={<PageSuspenseFallback />}>
-        <WithGuard>
-          <MainLayout />
-        </WithGuard>
-      </Suspense>
-    ),
-    errorElement: <Error />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "project/add",
-        element: <Project />,
-      },
-      {
-        path: "project/edit/:id",
-        element: <Project />,
-      },
-      {
-        path: "project/id/:id",
-        element: <ProjectDetails />,
-      },
-      {
-        path: "projectsbox",
-        element: <ProjectsBox />,
-      },
-      {
-        path: "branch/:id",
-        element: <Branch />,
-      },
-      {
-        path: "managebranches",
-        element: <MangeBranches />,
-      },
-      {
-        path: "managesupervisors",
-        element: <ManageSupervisors />,
-      },
-      {
-        path: "manageitems",
-        element: <ManageItems />,
-      },
-      {
-        path: "managecompanies",
-        element: <ManageCompanies />,
-      },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route
+        path="login"
+        element={
+          <Suspense fallback={<PageSuspenseFallback />}>
+            <Login />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/"
+        element={
+          <Suspense fallback={<PageSuspenseFallback />}>
+            <WithGuard>
+              <MainLayout />
+            </WithGuard>
+          </Suspense>
+        }
+        errorElement={<Error />}
+      >
+        <Route index element={<Home />} />
+        <Route path="project/add" element={<Project />} />
+        <Route path="project/edit/:id" element={<Project />} />
+        <Route path="project/id/:id" element={<ProjectDetails />} />
+        <Route path="projectsbox" element={<ProjectsBox />} />
+        <Route path="branch/:id" element={<Branch />} />
+        <Route path="managebranches" element={<MangeBranches />} />
+        <Route path="managesupervisors" element={<ManageSupervisors />} />
+        <Route path="manageitems" element={<ManageItems />} />
+        <Route path="managecompanies" element={<ManageCompanies />} />
+      </Route>
+    </>
+  )
+);
 
 const AppRouter = () => {
   return <RouterProvider router={router} />;

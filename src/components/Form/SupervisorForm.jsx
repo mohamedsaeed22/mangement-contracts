@@ -44,7 +44,8 @@ const SupervisorForm = ({
           resetForm();
         })
         .catch((err) => {
-          notifyFailed("هذا الاستشارى موجود مسبقا");
+          console.log(err);
+          notifyFailed(err + "هذا الاستشارى موجود مسبقا");
         });
     }
   };

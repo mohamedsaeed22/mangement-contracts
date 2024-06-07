@@ -1,7 +1,8 @@
+import { Box } from "@mui/material";
 import React from "react";
 import Lottie from "react-lottie";
- 
-const LottieWrapper = ({ MyLottieIcon, error }) => {
+
+const LottieWrapper = ({ MyLottieIcon }) => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -11,7 +12,11 @@ const LottieWrapper = ({ MyLottieIcon, error }) => {
     },
   };
 
-  return <Lottie options={defaultOptions} height={150} width={150} />;
+  return (
+    <Box maxWidth="100%">
+      <Lottie options={defaultOptions} />
+    </Box>
+  );
 };
 
 export default LottieWrapper;

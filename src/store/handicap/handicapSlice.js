@@ -51,7 +51,7 @@ const handicapSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actCreateHandicap.fulfilled, (state, { payload }) => {
-      state.projects = payload.data;
+      state.projects = payload;
     });
     builder.addCase(actCreateHandicap.rejected, (state, action) => {
       state.loading = false;
@@ -66,7 +66,7 @@ const handicapSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actDeleteHandicap.fulfilled, (state, { payload }) => {
-      //   state.projects = payload.data;
+      //   state.projects = payload;
     });
     builder.addCase(actDeleteHandicap.rejected, (state, action) => {
       state.loading = false;
@@ -81,7 +81,7 @@ const handicapSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actUpdateHandicap.fulfilled, (state, { payload }) => {
-      //   state.projects = payload.data;
+      //   state.projects = payload;
     });
     builder.addCase(actUpdateHandicap.rejected, (state, action) => {
       state.loading = false;

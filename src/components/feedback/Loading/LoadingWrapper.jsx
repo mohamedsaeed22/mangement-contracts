@@ -1,7 +1,8 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
 import LottieWrapper from "../Lottie/LottieWrapper";
-const LoadingWrapper = ({ loading, error, children, icon }) => {
+import ErrorIcon from "../../../assets/lottie/error.json";
+const LoadingWrapper = ({ loading, error, children, icon = ErrorIcon }) => {
   if (loading) {
     return (
       <div
@@ -19,19 +20,18 @@ const LoadingWrapper = ({ loading, error, children, icon }) => {
 
   if (error) {
     return (
-      <Box>
-        <Typography
-          sx={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%,-50%)",
-          }}
-        >
-          {icon && <LottieWrapper MyLottieIcon={icon} />}
-          {error}
-        </Typography>
-      </Box>
+      <Stack
+        sx={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%,-50%)",
+          width: 300,
+        }}
+      >
+        {icon && <LottieWrapper MyLottieIcon={icon} />}
+        <Typography textAlign="center">{error}</Typography>
+      </Stack>
     );
   }
 

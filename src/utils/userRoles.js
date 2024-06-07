@@ -27,11 +27,11 @@ const roles = [
   },
 ];
 
-function findRoleName(userRoleName) {
-  for (let i = 0; i < roles.length; i++) {
-    if (roles[i].roleName === userRoleName) {
-      return roles[i].roleName;
-    }
-  }
-  return null;
-}
+// function findRoleName(userRoleName) {
+//   for (let i = 0; i < roles.length; i++) {
+//     if (roles[i].roleName === userRoleName) {
+//       return roles[i].roleName;
+//     }
+//   }
+//   return null;
+// }

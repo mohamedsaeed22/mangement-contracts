@@ -34,7 +34,7 @@ const riskSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actCreateRisk.fulfilled, (state, { payload }) => {
-      //   state.projects = payload.data;
+      //   state.projects = payload;
     });
     builder.addCase(actCreateRisk.rejected, (state, action) => {
       state.loading = false;
@@ -49,7 +49,7 @@ const riskSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actDeleteRisk.fulfilled, (state, { payload }) => {
-      //   state.projects = payload.data;
+      //   state.projects = payload;
     });
     builder.addCase(actDeleteRisk.rejected, (state, action) => {
       state.loading = false;
@@ -64,7 +64,7 @@ const riskSlice = createSlice({
       state.error = null;
     });
     builder.addCase(actUpdateRisk.fulfilled, (state, { payload }) => {
-      //   state.projects = payload.data;
+      //   state.projects = payload;
     });
     builder.addCase(actUpdateRisk.rejected, (state, action) => {
       state.loading = false;

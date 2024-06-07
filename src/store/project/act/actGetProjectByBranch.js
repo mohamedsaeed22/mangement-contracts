@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
-import { actGetSupervisors } from "../../supervisor/supervisorSlice";
+ import { actGetSupervisors } from "../../supervisor/supervisorSlice";
 import { actGetBranches } from "../../branch/branchSlice";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actGetProjectByBranch = createAsyncThunk(
   "project/actGetProjectByBranch",
@@ -34,7 +34,7 @@ const actGetProjectByBranch = createAsyncThunk(
         data: enhancedProjects,
       };
     } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

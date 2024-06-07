@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actUpdateCompany = createAsyncThunk(
   "company/actUpdateCompany",
@@ -10,9 +11,9 @@ const actUpdateCompany = createAsyncThunk(
         "api/ForeignCompany/update" + company.id,
         company
       );
-      return res;
+      return res.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

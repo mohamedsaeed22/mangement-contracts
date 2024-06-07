@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actDeleteSupervisor = createAsyncThunk(
   "supervisor/actDeleteSupervisor",
@@ -8,9 +8,9 @@ const actDeleteSupervisor = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.delete("api/Supervisor/delete/" + id);
-      return res;
+      return res.data;
     } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

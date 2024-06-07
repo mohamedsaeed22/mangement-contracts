@@ -31,7 +31,7 @@ const BranchForm = ({
           handleCloseModal();
         })
         .catch((err) => {
-          notifyFailed("حدث خطأ أثناء تحديث النشاط");
+          notifyFailed(err + "حدث خطأ أثناء تحديث النشاط");
         });
     } else {
       dispatch(actCreateBranch(values))
@@ -41,7 +41,8 @@ const BranchForm = ({
           resetForm();
         })
         .catch((err) => {
-          notifyFailed("هذا النشاط موجود مسبقا");
+          console.log(err);
+          notifyFailed(err);
         });
     }
   };

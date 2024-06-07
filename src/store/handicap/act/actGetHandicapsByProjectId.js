@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actGetHandicapsByProjectId = createAsyncThunk(
   "handicap/actGetHandicapsByProjectId",
@@ -8,9 +9,9 @@ const actGetHandicapsByProjectId = createAsyncThunk(
     try {
       const res = await api.get("api/Handicap/browse?projectId=" + projectId);
 
-      return res;
+      return res.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

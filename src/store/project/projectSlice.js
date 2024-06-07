@@ -29,7 +29,7 @@ const projectSlice = createSlice({
     });
     builder.addCase(actGetProjects.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.projects = payload.data;
+      state.projects = payload;
       state.totalItems = payload.totalItems;
     });
     builder.addCase(actGetProjects.rejected, (state, action) => {
@@ -50,7 +50,7 @@ const projectSlice = createSlice({
     });
     builder.addCase(actGetProjectByBranch.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.projectsByBranch = payload.data;
+      state.projectsByBranch = payload;
       state.totalItems = payload.totalItems;
     });
     builder.addCase(actGetProjectByBranch.rejected, (state, action) => {
@@ -68,7 +68,7 @@ const projectSlice = createSlice({
     });
     builder.addCase(actGetProjectById.fulfilled, (state, action) => {
       state.loading = false;
-      state.project = action.payload.data;
+      state.project = action.payload;
     });
     builder.addCase(actGetProjectById.rejected, (state, action) => {
       state.loading = false;

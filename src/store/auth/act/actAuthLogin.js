@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axios from "axios";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actAuthLogin = createAsyncThunk(
   "auth/actAuthLogin",
@@ -10,12 +10,7 @@ const actAuthLogin = createAsyncThunk(
       const res = await api.post("api/users/Identity/auth", formData);
       return res.data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error)
-        return rejectWithValue(error.response?.status|| error.message);
-      } else {
-        return rejectWithValue("خطا غير معروف");
-      }
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

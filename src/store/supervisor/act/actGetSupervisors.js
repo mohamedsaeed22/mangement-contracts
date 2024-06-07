@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actGetSupervisors = createAsyncThunk(
   "supervisor/actGetSupervisors",
@@ -10,7 +10,7 @@ const actGetSupervisors = createAsyncThunk(
       const res = await api.get("api/Supervisor/browse");
       return res.data;
     } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

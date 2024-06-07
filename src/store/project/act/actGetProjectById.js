@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import { actGetSupervisors } from "../../supervisor/supervisorSlice";
 import { actGetBranches } from "../../branch/branchSlice";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actGetProjectById = createAsyncThunk(
   "project/actGetProjectById",
@@ -21,9 +22,9 @@ const actGetProjectById = createAsyncThunk(
       const branchName = branch ? branch.name : "";
       res.data.supervisorName = supervisorName;
       res.data.branchName = branchName;
-      return res;
+      return res.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

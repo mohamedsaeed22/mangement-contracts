@@ -7,9 +7,16 @@ import {
   setAccessToken,
 } from "../../utils/accessLocalStorage";
 
+const roles = [
+  "Admin",
+  // "ProjectManagement.ReadOnly",
+  // "DefaultUserBranch",
+  "SuperAdmin",
+];
 const initialState = {
-  accessToken: getAcessToken() || null,
-  roles: getUserRoles() || [],
+  // accessToken: getAcessToken() || null,
+  accessToken: true || null,
+  roles: getUserRoles() || roles,
   loading: false,
   error: null,
 };
@@ -37,11 +44,9 @@ const authSlice = createSlice({
       setAccessToken(myToken);
       console.log(getUserRoles());
       if (Array.isArray(getUserRoles())) {
-        // If it's an array, assign it to the state directly
-        state.roles = getUserRoles();
+         state.roles = getUserRoles();
       } else {
-        // If it's a string, put it into an array and then assign it to the state
-        state.roles = [getUserRoles()];
+         state.roles = [getUserRoles()];
       }
       console.log(state.roles);
       state.accessToken = myToken;
@@ -56,7 +61,7 @@ const authSlice = createSlice({
       } else if (action?.payload === 500) {
         state.error = "حدث خطا ما فى السيرفر";
       } else {
-        state.error = action.payload;
+        state.error = "حدث خطا ما فى الشبكة";
       }
     });
   },

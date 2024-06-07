@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
+import axiosErrorHandler from "../../../utils/handleAxiosError";
 
 const actCreateHandicap = createAsyncThunk(
   "handicap/actCreateHandicap",
@@ -10,7 +10,7 @@ const actCreateHandicap = createAsyncThunk(
       const res = await api.post("api/Handicap/create", handicap);
       return res.data;
     } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

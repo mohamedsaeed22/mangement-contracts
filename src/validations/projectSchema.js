@@ -1,11 +1,10 @@
-import dayjs from "dayjs";
 import * as yup from "yup";
 
 const initialProjectValues = {
   name: "",
   description: "",
-  startDate: dayjs().toISOString(),
-  endDate: dayjs().toISOString(),
+  startDate: null,
+  endDate: null,
   budget: "",
   spentBudget: "",
   percentage: "",
@@ -29,12 +28,12 @@ const projectSchema = yup.lazy((values) => {
     description: yup.string().required("الوصف مطلوب"),
     startDate: yup
       .date()
-      .nullable()
+      // .nullable()
       .required("تاريخ البداية مطلوب")
       .typeError("التاريخ غير صحيح"),
     endDate: yup
       .date()
-      .nullable()
+      // .nullable()
       .required("تاريخ النهاية مطلوب")
       .typeError("التاريخ غير صحيح")
       .when(
@@ -56,6 +55,7 @@ const projectSchema = yup.lazy((values) => {
       .number()
       .required("النسبة مطلوبة")
       .typeError("النسبة لابد أن تكون رقم")
+      .integer("النسبة لابد أن تكون عدد صحيح")
       .min(0, "النسبة لابد أن تكون بين 0 و 100")
       .max(100, "النسبة لابد أن تكون بين 0 و 100"),
     showRisks: yup.string().required(),

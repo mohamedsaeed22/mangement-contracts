@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
   IconButton,
   Menu,
@@ -12,10 +10,11 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
@@ -51,24 +50,7 @@ import actDeleteHandicap from "../store/handicap/act/actDeleteHandicap";
 import { projectStateOptions } from "../utils/statusList";
 
 const myWidth = 250;
-// const initialProjectValues = {
-//   name: "",
-//   description: "",
-//   startDate: dayjs().toISOString(),
-//   endDate: dayjs().toISOString(),
-//   budget: "",
-//   spentBudget: "",
-//   percentage: "",
-//   status: "",
-//   branchId: "",
-//   supervisorId: "",
-//   showRisks: "no",
-//   riskStatus: "",
-//   riskDescription: "",
-//   showHandicaps: "no",
-//   handicapStatus: "",
-//   handicapDescription: "",
-// };
+
 const Project = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -100,10 +82,6 @@ const Project = () => {
       dispatch(actDeleteProject(id))
         .unwrap()
         .then((res) => {
-          // if (riskObj.id || handicapObj.id) {
-          //   dispatch(actDeleteRisk(riskObj.id));
-          //   dispatch(actDeleteHandicap(handicapObj.id));
-          // }
           notifySuccess("تم حذف المشروع بنجاح");
           navigate("/projectsbox", { replace: true });
         })
@@ -138,147 +116,148 @@ const Project = () => {
   }, [id, project, handicapObj, riskObj]);
 
   const handleFormSubmit = (values) => {
+    console.table(values);
     const projectData = {
       ...values,
       endDate: values.endDate,
       startDate: values.startDate,
-      budget: parseFloat(values.budget),
-      spentBudget: parseFloat(values.spentBudget),
-      percentage: parseFloat(values.percentage),
+      budget: values.budget,
+      spentBudget: values.spentBudget,
+      percentage: values.percentage,
     };
 
-    if (id) {
-      if (values.showHandicaps === "yes") {
-        if (handicapObj?.id) {
-          dispatch(
-            actUpdateHandicap({
-              id: handicapObj.id,
-              projectId: id,
-              status: values.handicapStatus,
-              description: values.handicapDescription,
-            })
-          );
-        } else {
-          dispatch(
-            actCreateHandicap({
-              projectId: id,
-              status: values.handicapStatus,
-              description: values.handicapDescription,
-            })
-          );
-        }
-      }
-      if (values.showHandicaps === "no") {
-        if (handicapObj?.id) {
-          dispatch(actDeleteHandicap(handicapObj.id));
-        }
-      }
-      if (values.showRisks === "no") {
-        if (riskObj?.id) {
-          dispatch(actDeleteRisk(riskObj.id));
-        } else {
-        }
-      }
+    // if (id) {
+    //   if (values.showHandicaps === "yes") {
+    //     if (handicapObj?.id) {
+    //       dispatch(
+    //         actUpdateHandicap({
+    //           id: handicapObj.id,
+    //           projectId: id,
+    //           status: values.handicapStatus,
+    //           description: values.handicapDescription,
+    //         })
+    //       );
+    //     } else {
+    //       dispatch(
+    //         actCreateHandicap({
+    //           projectId: id,
+    //           status: values.handicapStatus,
+    //           description: values.handicapDescription,
+    //         })
+    //       );
+    //     }
+    //   }
+    //   if (values.showHandicaps === "no") {
+    //     if (handicapObj?.id) {
+    //       dispatch(actDeleteHandicap(handicapObj.id));
+    //     }
+    //   }
+    //   if (values.showRisks === "no") {
+    //     if (riskObj?.id) {
+    //       dispatch(actDeleteRisk(riskObj.id));
+    //     } else {
+    //     }
+    //   }
 
-      if (values.showRisks === "yes") {
-        if (riskObj?.id) {
-          dispatch(
-            actUpdateRisk({
-              id: riskObj.id,
-              projectId: id,
-              status: values.riskStatus,
-              description: values.riskDescription,
-            })
-          );
-        } else {
-          dispatch(
-            actCreateRisk({
-              projectId: id,
-              status: values.riskStatus,
-              description: values.riskDescription,
-            })
-          );
-        }
-      }
-      dispatch(actUpdateProject(projectData))
-        .unwrap()
-        .then((res) => {
-          if (res.status === 200) {
-            notifySuccess("تم تعديل المشروع بنجاح");
-            navigate(-1);
-          } else {
-            notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
-          }
-        })
-        .catch((err) => {});
-    } else {
-      dispatch(actCreateProject(projectData))
-        .unwrap()
-        .then((res) => {
-          if (res.id) {
-            if (values.riskStatus && values.handicapStatus) {
-              const riskObj = {
-                description: values.riskDescription,
-                status: values.riskStatus,
-              };
-              const handicapObj = {
-                description: values.handicapDescription,
-                status: values.handicapStatus,
-              };
-              Promise.all([
-                dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
-                dispatch(
-                  actCreateHandicap({ projectId: res.id, ...handicapObj })
-                ),
-              ])
-                .then(() => {
-                  // All actions dispatched successfully
-                  notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate("/projectsbox");
-                })
-                .catch(() => {
-                  // Error occurred while dispatching actions
-                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-                });
-            } else if (values.riskStatus) {
-              const riskObj = {
-                description: values.riskDescription,
-                status: values.riskStatus,
-              };
-              dispatch(actCreateRisk({ projectId: res.id, ...riskObj }))
-                .unwrap()
-                .then(() => {
-                  notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate("/projectsbox");
-                })
-                .catch(() => {
-                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-                });
-            } else if (values.handicapStatus) {
-              const handicapObj = {
-                description: values.handicapDescription,
-                status: values.handicapStatus,
-              };
-              dispatch(actCreateHandicap({ projectId: res.id, ...handicapObj }))
-                .unwrap()
-                .then(() => {
-                  notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate("/projectsbox");
-                })
-                .catch(() => {
-                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-                });
-            } else {
-              // No status for risk and disables
-              notifySuccess("تم إنشاء المشروع بنجاح");
-              navigate("/projectsbox");
-            }
-          }
-        })
-        .catch(() => {
-          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-        });
-    }
+    //   if (values.showRisks === "yes") {
+    //     if (riskObj?.id) {
+    //       dispatch(
+    //         actUpdateRisk({
+    //           id: riskObj.id,
+    //           projectId: id,
+    //           status: values.riskStatus,
+    //           description: values.riskDescription,
+    //         })
+    //       );
+    //     } else {
+    //       dispatch(
+    //         actCreateRisk({
+    //           projectId: id,
+    //           status: values.riskStatus,
+    //           description: values.riskDescription,
+    //         })
+    //       );
+    //     }
+    //   }
+    //   dispatch(actUpdateProject(projectData))
+    //     .unwrap()
+    //     .then((res) => {
+    //       if (res.status === 200) {
+    //         notifySuccess("تم تعديل المشروع بنجاح");
+    //         navigate(-1);
+    //       } else {
+    //         notifyFailed(" خطا ما..الرجاء المحاولة مره اخرى");
+    //       }
+    //     })
+    //     .catch((err) => {});
+    // } else {
+    //   dispatch(actCreateProject(projectData))
+    //     .unwrap()
+    //     .then((res) => {
+    //       if (res.id) {
+    //         if (values.riskStatus && values.handicapStatus) {
+    //           const riskObj = {
+    //             description: values.riskDescription,
+    //             status: values.riskStatus,
+    //           };
+    //           const handicapObj = {
+    //             description: values.handicapDescription,
+    //             status: values.handicapStatus,
+    //           };
+    //           Promise.all([
+    //             dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
+    //             dispatch(
+    //               actCreateHandicap({ projectId: res.id, ...handicapObj })
+    //             ),
+    //           ])
+    //             .then(() => {
+    //               // All actions dispatched successfully
+    //               notifySuccess("تم إنشاء المشروع بنجاح");
+    //               navigate("/projectsbox");
+    //             })
+    //             .catch(() => {
+    //               // Error occurred while dispatching actions
+    //               notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //             });
+    //         } else if (values.riskStatus) {
+    //           const riskObj = {
+    //             description: values.riskDescription,
+    //             status: values.riskStatus,
+    //           };
+    //           dispatch(actCreateRisk({ projectId: res.id, ...riskObj }))
+    //             .unwrap()
+    //             .then(() => {
+    //               notifySuccess("تم إنشاء المشروع بنجاح");
+    //               navigate("/projectsbox");
+    //             })
+    //             .catch(() => {
+    //               notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //             });
+    //         } else if (values.handicapStatus) {
+    //           const handicapObj = {
+    //             description: values.handicapDescription,
+    //             status: values.handicapStatus,
+    //           };
+    //           dispatch(actCreateHandicap({ projectId: res.id, ...handicapObj }))
+    //             .unwrap()
+    //             .then(() => {
+    //               notifySuccess("تم إنشاء المشروع بنجاح");
+    //               navigate("/projectsbox");
+    //             })
+    //             .catch(() => {
+    //               notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //             });
+    //         } else {
+    //           // No status for risk and disables
+    //           notifySuccess("تم إنشاء المشروع بنجاح");
+    //           navigate("/projectsbox");
+    //         }
+    //       }
+    //     })
+    //     .catch(() => {
+    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //     });
+    // }
   };
 
   return (
@@ -516,7 +495,7 @@ const Project = () => {
 
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="الخطة الزمنية للمشروع">
-                      <MyDatePicker
+                      {/* <MyDatePicker
                         name="startDate"
                         width={myWidth}
                         title="تاريخ البداية"
@@ -527,8 +506,59 @@ const Project = () => {
                         }}
                         error={!!touched.startDate && !!errors.startDate}
                         helperText={touched.startDate && errors.startDate}
+                      /> */}
+                      <DatePicker
+                        label="تاريخ البداية"
+                        slotProps={{ textField: { size: "small" } }}
+                        name="startDate"
+                        value={dayjs(values.startDate)}
+                        onChange={(value) => {
+                          setFieldValue("startDate", value.toISOString());
+                        }}
+                        // renderInput={(params) => <TextField {...params} />}
+                        inputFormat="MM/DD/YYYY"
                       />
-                      <MyDatePicker
+
+                      <DatePicker
+                        label="تاريخ النهاية"
+                        // slotProps={{ textField: { size: "small" } }}
+                        name="endDate"
+                        // value={values.endDate}
+                        value={dayjs(values.endDate)}
+                        onChange={(value) => {
+                          setFieldValue("endDate", value.toISOString());
+                        }}
+                        inputFormat="DD/MM/YYYY"
+                        slotProps={{
+                          textField: {
+                            size: "small",
+                            error: touched.endDate && Boolean(errors.endDate),
+                            helperText: touched.endDate && errors.endDate,
+                            "& .muiformhelpertext-root": {
+                              color: "red",
+                              fontSize: "10px !important",
+                              margin: "3px 0px 0px !important",
+                              // backgroundColor:'#F5F5F5 !important'
+                            },
+                          },
+                        }}
+
+                        // slotProps={{
+                        //   textField: {
+                        //     size: "small",
+                        //     error: touched.date && Boolean(errors.date),
+                        //     helperText: touched.date && errors.date,
+                        //     "& .muiformhelpertext-root": {
+                        //       color: "red",
+                        //       fontSize: "10px !important",
+                        //       margin: "3px 0px 0px !important",
+                        //       // backgroundColor:'#F5F5F5 !important'
+                        //     },
+                        //   },
+                        // }}
+                      />
+
+                      {/* <MyDatePicker
                         name="endDate"
                         width={myWidth}
                         title="تاريخ النهاية"
@@ -538,7 +568,7 @@ const Project = () => {
                         }}
                         error={!!touched.endDate && !!errors.endDate}
                         helperText={touched.endDate && errors.endDate}
-                      />
+                      /> */}
                     </MyInputsWrapper>
                   </Grid>
 

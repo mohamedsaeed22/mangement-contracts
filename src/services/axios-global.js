@@ -14,6 +14,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 5000,
 });
 
 // Request middleware
@@ -33,29 +34,29 @@ api.interceptors.request.use(
 
 // api.interceptors.response.use(
 //   (res) => {
-//     return res;
+//     return res.data
 //   },
 //   async (err) => {
 //     const originalConfig = err.config;
 //     if (err.response) {
-      // if (err.response.status === 401 && !originalConfig._retry) {
-      //   originalConfig._retry = true;
-      //   try {
-      //     const rs = await refreshMyToken();
-      //     const { accessToken } = rs.data;
-      //     setAccessToken(accessToken);
-      //     // setRefreshToken(refreshToken);
-      //     api.defaults.headers.common["x-access-token"] = accessToken;
+// if (err.response.status === 401 && !originalConfig._retry) {
+//   originalConfig._retry = true;
+//   try {
+//     const rs = await refreshMyToken();
+//     const { accessToken } = rs.data;
+//     setAccessToken(accessToken);
+//     // setRefreshToken(refreshToken);
+//     api.defaults.headers.common["x-access-token"] = accessToken;
 
-      //     return api(originalConfig);
-      //   } catch (_error) {
-      //     if (_error.response && _error.response.data) {
-      //       return Promise.reject(_error.response.data);
-      //     }
+//     return api(originalConfig);
+//   } catch (_error) {
+//     if (_error.response && _error.response.data) {
+//       return Promise.reject(_error.response.data);
+//     }
 
-      //     return Promise.reject(_error);
-      //   }
-      // }
+//     return Promise.reject(_error);
+//   }
+// }
 
 //       if (err.response.status === 403 && err.response.data) {
 //         return Promise.reject(err.response.data);

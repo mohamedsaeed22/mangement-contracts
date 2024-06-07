@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actDeleteHandicap = createAsyncThunk(
   "handicap/actDeleteHandicap",
@@ -7,9 +8,9 @@ const actDeleteHandicap = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.delete("api/Handicap/delete/" + handId);
-      return res;
+      return res.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

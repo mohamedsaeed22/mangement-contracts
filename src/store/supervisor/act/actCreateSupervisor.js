@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import axiosErrorHandler from "../../../utils/axiosErrorHandler";
+import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actCreateSupervisor = createAsyncThunk(
   "supervisor/actCreateSupervisor",
@@ -10,7 +10,7 @@ const actCreateSupervisor = createAsyncThunk(
       const res = await api.post("api/Supervisor/create", supervisor);
       return res.data;
     } catch (error) {
-      return rejectWithValue(axiosErrorHandler(error));
+      return rejectWithValue(handleAxiosError(error));
     }
   }
 );

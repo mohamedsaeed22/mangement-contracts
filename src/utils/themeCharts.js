@@ -7,6 +7,68 @@ const loadTheme = (args) => {
 };
 export { loadTheme };
 
+
+  // const [plannedCost, setPlannedCost] = useState("");
+  // const [branche, setBranch] = useState("");
+  // const [supervisor, setSupervisor] = useState("");
+  // const [projectState, setProjectState] = useState("");
+  // const [startDate, setStartDate] = useState(null);
+  // const [isoStartDate, setIsoStartDate] = useState("");
+  // const [endDate, setEndDate] = useState(null);
+  // const [isoEndDate, setIsoEndDate] = useState("");
+
+  // const handleChangeProjectState = (event) => {
+  //   setProjectState(event.target.value);
+  // };
+  // const handleResetForm = () => {
+  //   setPlannedCost("");
+  //   setBranch("");
+  //   setSupervisor("");
+  //   setProjectState("");
+  //   setStartDate(null);
+  //   setIsoStartDate("");
+  //   setEndDate(null);
+  //   setIsoEndDate("");
+  // };
+
+  // useEffect(() => {
+  //   const handler = setTimeout(() => {
+  //     setDebouncedSearch(search);
+  //   }, 300);
+  //   return () => {
+  //     clearTimeout(handler);
+  //   };
+  // }, [search]);
+
+  // useEffect(() => {
+  //   // dispatch(actGetSupervisors());
+  //   // dispatch(actGetBranches());
+  //   dispatch(
+  //     actGetProjects({
+  //       page,
+  //       search: debouncedSearch,
+  //       status: projectState,
+  //       startDate: isoStartDate,
+  //       endDate: isoEndDate,
+  //       BranchId: branche,
+  //       SupervisorId: supervisor,
+  //       SpentBudget: plannedCost,
+  //     })
+  //   );
+  // }, [
+  //   dispatch,
+  //   page,
+  //   debouncedSearch,
+  //   projectState,
+  //   isoStartDate,
+  //   isoEndDate,
+  //   branche,
+  //   supervisor,
+  //   plannedCost,
+  // ]);
+
+
+
 /**
  * 
  * [

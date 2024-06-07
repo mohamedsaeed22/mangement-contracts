@@ -5,7 +5,26 @@ import actDeleteSupervisor from "./act/actDeleteSupervisor";
 import actCreateSupervisor from "./act/actCreateSupervisor";
 
 const initialState = {
-  supervisors: [],
+  supervisors: [
+    {
+      id: "191c407f-d8ac-4f11-21bc-08dc7ee246ad",
+      name: "mostafa",
+      phone: "01018205801",
+      createdAt: "2024-05-28T09:49:09.3182009",
+      updatedAt: "2024-05-29T12:01:09.9385081",
+      updatedBy: "b37b6f4f-c135-46f6-a28c-fcc444e960cb",
+      createdBy: "b37b6f4f-c135-46f6-a28c-fcc444e960cb",
+    },
+    {
+      id: "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
+      name: "ali ",
+      phone: "01018205801",
+      createdAt: "2024-05-28T12:15:19.5268637",
+      updatedAt: "2024-05-28T12:23:24.8224803",
+      updatedBy: "b37b6f4f-c135-46f6-a28c-fcc444e960cb",
+      createdBy: "b37b6f4f-c135-46f6-a28c-fcc444e960cb",
+    },
+  ],
   loading: false,
   error: null,
 };
