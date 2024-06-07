@@ -13,6 +13,7 @@ import { getRisksAndDisablesName } from "../utils/riskHandicapStatus";
 import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByProjectId";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { getProjectStateName } from "../utils/statusList";
+
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();

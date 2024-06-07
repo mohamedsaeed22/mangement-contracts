@@ -18,6 +18,7 @@ import Project from "../pages/Project";
 import ProjectsBox from "../pages/ProjectsBox";
 import ManageCompanies from "../pages/ManageCompanies";
 import ManageItems from "../pages/ManageItems";
+import RoleGuard from "../components/common/Auth/RoleGuard";
 
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
@@ -44,15 +45,59 @@ const router = createBrowserRouter(
         }
         errorElement={<Error />}
       >
-        <Route index element={<Home />} />
-        <Route path="project/add" element={<Project />} />
-        <Route path="project/edit/:id" element={<Project />} />
+        <Route
+          index
+          element={
+            <RoleGuard
+              roles={["Admin", "SuperAdmin", "ProjectManagement.ReadOnly"]}
+            >
+              <Home />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="project/add"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserBranch"]}>
+              <Project />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="project/edit/:id"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserBranch"]}>
+              <Project />
+            </RoleGuard>
+          }
+        />
         <Route path="project/id/:id" element={<ProjectDetails />} />
         <Route path="projectsbox" element={<ProjectsBox />} />
+        <Route
+          path="managebranches"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserBranch"]}>
+              <MangeBranches />
+            </RoleGuard>
+          }
+        />
         <Route path="branch/:id" element={<Branch />} />
-        <Route path="managebranches" element={<MangeBranches />} />
-        <Route path="managesupervisors" element={<ManageSupervisors />} />
-        <Route path="manageitems" element={<ManageItems />} />
+        <Route
+          path="managesupervisors"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin"]}>
+              <ManageSupervisors />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="manageitems"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin"]}>
+              <ManageItems />
+            </RoleGuard>
+          }
+        />
         <Route path="managecompanies" element={<ManageCompanies />} />
       </Route>
     </>

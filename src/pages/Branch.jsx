@@ -26,6 +26,7 @@ import {
   actGetStatByProjectId,
   resetStat,
 } from "../store/Statistics/statSlice";
+import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,10 +53,16 @@ const Branch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { projectsByBranch, projects, error } = useSelector(
-    (state) => state.project
-  );
-  const { projectStat } = useSelector((state) => state.stat);
+  const {
+    projectsByBranch,
+    error: projectError,
+    loading: projectLoading,
+  } = useSelector((state) => state.project);
+  const {
+    projectStat,
+    error: statError,
+    loading: statLoading,
+  } = useSelector((state) => state.stat);
   const {
     totalProjects,
     totalPercentage,
@@ -74,6 +81,7 @@ const Branch = () => {
     totalClosedHandicaps,
     totalOnHoldHandicaps,
   } = projectStat;
+
   useEffect(() => {
     dispatch(actGetProjectByBranch(id));
     dispatch(actGetStatByProjectId(id));
@@ -103,153 +111,144 @@ const Branch = () => {
         height="calc(100vh - 130px)"
       >
         <Box borderRadius={2}>
-          <TopStat
-            totalProjects={totalProjects}
-            totalPercentage={totalPercentage}
-            totalBudget={totalBudget}
-            totalSpent={totalSpent}
-          />
-          {/* center paper */}
-          <CenterStat
-            totalCompletedProjects={totalCompletedProjects}
-            totalInProgressProjects={totalInProgressProjects}
-            totalOnHoldProjects={totalOnHoldProjects}
-            totalNotStartedProjects={totalNotStartedProjects}
-          />
-          {/* bottom paper */}
-          <BottomStat
-            totalRisks={totalRisks}
-            totalActiveRisks={totalActiveRisks}
-            totalClosedRisks={totalClosedRisks}
-            totalOnHoldRisks={totalOnHoldRisks}
-            totalHandicaps={totalHandicaps}
-            totalActiveHandicaps={totalActiveHandicaps}
-            totalClosedHandicaps={totalClosedHandicaps}
-            totalOnHoldHandicaps={totalOnHoldHandicaps}
-          />
-          <Typography variant="h6" color="initial" mt={1}>
-            المشاريع الخاصة بـ {""}
-            <Typography
-              component="span"
-              variant="span"
-              color="initial"
-              fontWeight="bold"
-            >
-              {projectsByBranch.length > 0 && projectsByBranch[0].branchName}
+          <LoadingWrapper loading={statLoading&&projectLoading} error={statError}>
+            <TopStat
+              totalProjects={totalProjects}
+              totalPercentage={totalPercentage}
+              totalBudget={totalBudget}
+              totalSpent={totalSpent}
+            />
+            {/* center paper */}
+            <CenterStat
+              totalCompletedProjects={totalCompletedProjects}
+              totalInProgressProjects={totalInProgressProjects}
+              totalOnHoldProjects={totalOnHoldProjects}
+              totalNotStartedProjects={totalNotStartedProjects}
+            />
+            {/* bottom paper */}
+            <BottomStat
+              totalRisks={totalRisks}
+              totalActiveRisks={totalActiveRisks}
+              totalClosedRisks={totalClosedRisks}
+              totalOnHoldRisks={totalOnHoldRisks}
+              totalHandicaps={totalHandicaps}
+              totalActiveHandicaps={totalActiveHandicaps}
+              totalClosedHandicaps={totalClosedHandicaps}
+              totalOnHoldHandicaps={totalOnHoldHandicaps}
+            />
+            <Typography variant="h6" color="initial" mt={1}>
+              المشاريع الخاصة بـ {""}
+              <Typography
+                component="span"
+                variant="span"
+                color="initial"
+                fontWeight="bold"
+              >
+                {projectsByBranch.length > 0 && projectsByBranch[0].branchName}
+              </Typography>
             </Typography>
-          </Typography>
-          <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
-            <Table aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center">النشاط</StyledTableCell>
-                  <StyledTableCell align="center">الاستشارى</StyledTableCell>
-                  <StyledTableCell align="center">اسم المشروع</StyledTableCell>
-                  <StyledTableCell align="center">الوصف</StyledTableCell>
-                  <StyledTableCell align="center">
-                    التكلفة المخططة
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    المنصرف الفعلى
-                  </StyledTableCell>
-                  <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
-                  <StyledTableCell align="center">حالة المشروع</StyledTableCell>
-                  <StyledTableCell align="center">
-                    بداية المشروع
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    نهاية المشروع
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    هل له مخاطر/معوقات
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {projectsByBranch?.map((row) => (
-                  <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
-                    <StyledTableRow
-                      key={row}
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { backgroundColor: "#ddd !important" },
-                      }}
-                      onClick={() => handleShowProject(row)}
-                    >
-                      <StyledTableCell align="center">
-                        {row.branchName}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.supervisorName}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                      {row.name.length > 20
-                          ? row.name.substring(0, 20) + "..."
-                          : row.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.description.length > 20
-                          ? row.description.substring(0, 20) + "..."
-                          : row.description}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.budget}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.spentBudget}
-                      </StyledTableCell>
+            <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
+              <Table aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center">النشاط</StyledTableCell>
+                    <StyledTableCell align="center">الاستشارى</StyledTableCell>
+                    <StyledTableCell align="center">
+                      اسم المشروع
+                    </StyledTableCell>
+                    <StyledTableCell align="center">الوصف</StyledTableCell>
+                    <StyledTableCell align="center">
+                      التكلفة المخططة
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      المنصرف الفعلى
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      نسبة الانجاز
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      حالة المشروع
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      بداية المشروع
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      نهاية المشروع
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      هل له مخاطر/معوقات
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {projectsByBranch?.map((row) => (
+                    <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
+                      <StyledTableRow
+                        key={row}
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#ddd !important" },
+                        }}
+                        onClick={() => handleShowProject(row)}
+                      >
+                        <StyledTableCell align="center">
+                          {row.branchName}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.supervisorName}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.name.length > 20
+                            ? row.name.substring(0, 20) + "..."
+                            : row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.description.length > 20
+                            ? row.description.substring(0, 20) + "..."
+                            : row.description}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.budget}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.spentBudget}
+                        </StyledTableCell>
 
-                      <StyledTableCell align="center">
-                        {row.percentage}
-                        <Box sx={{ width: "100%", marginTop: "2px" }}>
-                          <LinearProgress
-                            variant="determinate"
-                            value={parseInt(row.percentage)}
-                          />
-                        </Box>
-                      </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.percentage}
+                          <Box sx={{ width: "100%", marginTop: "2px" }}>
+                            <LinearProgress
+                              variant="determinate"
+                              value={parseInt(row.percentage)}
+                            />
+                          </Box>
+                        </StyledTableCell>
 
-                      <StyledTableCell align="center">
-                        <Box sx={{ width: "100%", marginTop: "2px" }}>
-                          <StatusLabel status={row.status} />
-                        </Box>
-                      </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <Box sx={{ width: "100%", marginTop: "2px" }}>
+                            <StatusLabel status={row.status} />
+                          </Box>
+                        </StyledTableCell>
 
-                      <StyledTableCell align="center">
-                        {row.startDate.split("T")[0]}
-                      </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.startDate.split("T")[0]}
+                        </StyledTableCell>
 
-                      <StyledTableCell align="center">
-                        {row.endDate.split("T")[0]}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row?.risks?.length > 0 || row?.handicaps?.length > 0
-                          ? "يوجد"
-                          : "لا يوجد"}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  </Tooltip>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Stack
-            justifyContent="center"
-            alignItems="center"
-            marginInline="auto"
-            mt={3}
-          >
-            {error && error.message && error.message}
-            {/* {totalItems > 0 ? (
-          <Pagination
-            count={Math.ceil(totalItems / 10)}
-            page={page}
-            onChange={handleChange}
-          />
-        ) : (
-          "لا يوجد مشاريع"
-        )} */}
-          </Stack>
+                        <StyledTableCell align="center">
+                          {row.endDate.split("T")[0]}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row?.risks?.length > 0 || row?.handicaps?.length > 0
+                            ? "يوجد"
+                            : "لا يوجد"}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    </Tooltip>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </LoadingWrapper>
         </Box>
       </Box>
     </>

@@ -14,8 +14,9 @@ import { actGetBranches } from "../../../store/branch/branchSlice";
 import { actGetSupervisors } from "../../../store/supervisor/supervisorSlice";
 import SidebarMenu from "./SidebarMenu";
 import { SweatAlert } from "../../feedback/Alerts/alerts";
+import { filterRoles } from "../../../utils/filterRoles";
 
-let projectSubmenuList = [
+const projectSubmenuList = [
   {
     id: 1,
     nav: "projectsbox",
@@ -34,14 +35,14 @@ let branchSubmenuList = [
     name: "اداره الانشطة",
   },
 ];
-let supervisroSubmenuList = [
+const supervisroSubmenuList = [
   {
     id: 4,
     nav: "managesupervisors",
     name: "اداره الاستشاريين",
   },
 ];
-let ForeignCompanyList = [
+const ForeignCompanyList = [
   {
     id: 5,
     nav: "manageitems",
@@ -53,6 +54,7 @@ let ForeignCompanyList = [
     name: "اداره الشركات",
   },
 ];
+
 const Sidebar = () => {
   const dispatch = useDispatch();
   const [showProjectsMenu, setShowProjectsMenu] = useState(false);
@@ -164,8 +166,11 @@ const Sidebar = () => {
         />
         <Box mt={6}>
           {/* home menu */}
-          {(roles.includes("ProjectManagement.ReadOnly") ||
-            roles.includes("SuperAdmin")) && (
+          {filterRoles([
+            "Admin",
+            "SuperAdmin",
+            "ProjectManagement.ReadOnly",
+          ]) && (
             <Box>
               <NavLink
                 to="/"
@@ -205,9 +210,7 @@ const Sidebar = () => {
             toggleSubmenuFun={toggleProjectSubmenu}
             showSubmenu={showProjectsMenu}
             subMenuList={
-              roles.includes("Admin") ||
-              roles.includes("DefaultUserBranch") ||
-              roles.includes("SuperAdmin")
+              filterRoles(["Admin", "SuperAdmin", "DefaultUserBranch"])
                 ? projectSubmenuList
                 : [projectSubmenuList[0]]
             }
@@ -218,15 +221,13 @@ const Sidebar = () => {
             toggleSubmenuFun={toggleBranchSubmenu}
             showSubmenu={showBranchesMenu}
             subMenuList={
-              roles.includes("Admin") ||
-              roles.includes("DefaultUserBranch") ||
-              roles.includes("SuperAdmin")
+              filterRoles(["Admin", "SuperAdmin", "DefaultUserBranch"])
                 ? branchesList
                 : [...branches]
             }
           />
           {/* supervisors menu  */}
-          {(roles.includes("Admin") || roles.includes("SuperAdmin")) && (
+          {filterRoles(["Admin", "SuperAdmin"]) && (
             <>
               <SidebarMenu
                 menuTitle={"الاستشاريين"}

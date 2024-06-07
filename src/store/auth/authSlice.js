@@ -8,15 +8,15 @@ import {
 } from "../../utils/accessLocalStorage";
 
 const roles = [
-  "Admin",
-  // "ProjectManagement.ReadOnly",
+  // "Admin",
+  "ProjectManagement.ReadOnly",
   // "DefaultUserBranch",
-  "SuperAdmin",
+  // "SuperAdmin",
 ];
 const initialState = {
   // accessToken: getAcessToken() || null,
   accessToken: true || null,
-  roles: getUserRoles() || roles,
+  // roles: getUserRoles() || roles,
   loading: false,
   error: null,
 };
@@ -42,13 +42,13 @@ const authSlice = createSlice({
       console.log(payload);
       const myToken = payload.accessToken;
       setAccessToken(myToken);
-      console.log(getUserRoles());
-      if (Array.isArray(getUserRoles())) {
-         state.roles = getUserRoles();
-      } else {
-         state.roles = [getUserRoles()];
-      }
-      console.log(state.roles);
+      // console.log(getUserRoles());
+      // if (Array.isArray(getUserRoles())) {
+      //    state.roles = getUserRoles();
+      // } else {
+      //    state.roles = [getUserRoles()];
+      // }
+      // console.log(state.roles);
       state.accessToken = myToken;
     });
 
