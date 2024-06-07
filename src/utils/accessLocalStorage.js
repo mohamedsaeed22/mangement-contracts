@@ -26,8 +26,8 @@ const removeAllCookies = () => {
 };
 const getUserRoles = () => {
   return [
-    // "Admin",
-    "ProjectManagement.ReadOnly",
+    "Admin",
+    // "ProjectManagement.ReadOnly",
     // "DefaultUserBranch",
     // "SuperAdmin",
   ];

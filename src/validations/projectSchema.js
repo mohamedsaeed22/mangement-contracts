@@ -29,20 +29,25 @@ const projectSchema = yup.lazy((values) => {
     startDate: yup
       .date()
       // .nullable()
+      // .transform((value, originalValue) =>
+      //   originalValue === null ? null : new Date(originalValue)
+      // )
       .required("تاريخ البداية مطلوب")
       .typeError("التاريخ غير صحيح"),
     endDate: yup
       .date()
       // .nullable()
-      .required("تاريخ النهاية مطلوب")
-      .typeError("التاريخ غير صحيح")
-      .when(
-        "startDate",
-        (started, yup) =>
-          started &&
-          yup.min(started, "تاريخ النهاية يجب أن يكون بعد تاريخ البداية")
-      ),
-    // .min(yup.ref("startDate"), "تاريخ النهاية يجب أن يكون بعد تاريخ البداية"),
+      // .transform((value, originalValue) =>
+      //   originalValue === null ? null : new Date(originalValue)
+      // )
+      .required("تاريخ النهاية مطلوب"),
+    //   .typeError("التاريخ غير صحيح")
+    //   .when(
+    //     "startDate",
+    //     (startDate, schema) =>
+    //       startDate &&
+    //       schema.min(startDate, "تاريخ النهاية يجب أن يكون بعد تاريخ البداية")
+    //   ),
     budget: yup
       .number()
       .required("التكلفة مطلوبة")
@@ -81,7 +86,7 @@ const projectSchema = yup.lazy((values) => {
     schema = schema.concat(
       yup.object().shape({
         handicapStatus: yup.string().required("حالة المعوقات مطلوبة"),
-        riskDescription: yup
+        handicapDescription: yup
           .string()
           .required("المعوقات مطلوبة")
           .min(6, "يجب أن تحتوي المعوقات على 6 أحرف على الأقل"),
@@ -90,4 +95,5 @@ const projectSchema = yup.lazy((values) => {
   }
   return schema;
 });
+
 export { projectSchema, initialProjectValues };

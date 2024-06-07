@@ -48,6 +48,7 @@ import { risksandDisablesOptions } from "../utils/riskHandicapStatus";
 import actDeleteRisk from "../store/risk/act/actDeleteRisk";
 import actDeleteHandicap from "../store/handicap/act/actDeleteHandicap";
 import { projectStateOptions } from "../utils/statusList";
+import { convertDateToIso } from "../utils/convertDateToIso";
 
 const myWidth = 250;
 
@@ -119,13 +120,12 @@ const Project = () => {
     console.table(values);
     const projectData = {
       ...values,
-      endDate: values.endDate,
-      startDate: values.startDate,
+      endDate: convertDateToIso(values.endDate),
+      startDate: convertDateToIso(values.startDate),
       budget: values.budget,
       spentBudget: values.spentBudget,
       percentage: values.percentage,
     };
-
     // if (id) {
     //   if (values.showHandicaps === "yes") {
     //     if (handicapObj?.id) {
@@ -508,56 +508,46 @@ const Project = () => {
                         helperText={touched.startDate && errors.startDate}
                       /> */}
                       <DatePicker
-                        label="تاريخ البداية"
+                        label="بداية المشروع"
                         slotProps={{ textField: { size: "small" } }}
                         name="startDate"
-                        value={dayjs(values.startDate)}
-                        onChange={(value) => {
-                          setFieldValue("startDate", value.toISOString());
-                        }}
-                        // renderInput={(params) => <TextField {...params} />}
-                        inputFormat="MM/DD/YYYY"
+                        value={values.startDate}
+                        onChange={(value) => setFieldValue("startDate", value)}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            error={
+                              values.touched.startDate &&
+                              Boolean(values.errors.startDate)
+                            }
+                            helperText={
+                              values.touched.startDate &&
+                              values.errors.startDate
+                            }
+                          />
+                        )}
+                        inputFormat="MM/dd/yyyy"
                       />
-
                       <DatePicker
-                        label="تاريخ النهاية"
-                        // slotProps={{ textField: { size: "small" } }}
+                        label="نهاية المشروع"
+                        slotProps={{ textField: { size: "small" } }}
                         name="endDate"
-                        // value={values.endDate}
-                        value={dayjs(values.endDate)}
-                        onChange={(value) => {
-                          setFieldValue("endDate", value.toISOString());
-                        }}
-                        inputFormat="DD/MM/YYYY"
-                        slotProps={{
-                          textField: {
-                            size: "small",
-                            error: touched.endDate && Boolean(errors.endDate),
-                            helperText: touched.endDate && errors.endDate,
-                            "& .muiformhelpertext-root": {
-                              color: "red",
-                              fontSize: "10px !important",
-                              margin: "3px 0px 0px !important",
-                              // backgroundColor:'#F5F5F5 !important'
-                            },
-                          },
-                        }}
-
-                        // slotProps={{
-                        //   textField: {
-                        //     size: "small",
-                        //     error: touched.date && Boolean(errors.date),
-                        //     helperText: touched.date && errors.date,
-                        //     "& .muiformhelpertext-root": {
-                        //       color: "red",
-                        //       fontSize: "10px !important",
-                        //       margin: "3px 0px 0px !important",
-                        //       // backgroundColor:'#F5F5F5 !important'
-                        //     },
-                        //   },
-                        // }}
+                        value={values.endDate}
+                        onChange={(value) => setFieldValue("endDate", value)}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            error={
+                              values.touched.endDate &&
+                              Boolean(values.errors.endDate)
+                            }
+                            helperText={
+                              values.touched.endDate && values.errors.endDate
+                            }
+                          />
+                        )}
+                        inputFormat="MM/dd/yyyy"
                       />
-
                       {/* <MyDatePicker
                         name="endDate"
                         width={myWidth}
