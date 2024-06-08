@@ -26,7 +26,7 @@ const companySlice = createSlice({
     });
     builder.addCase(actGetCompanies.fulfilled, (state, { payload }) => {
       state.loading = false;
-      // state.companies = payload;
+      state.companies = payload;
     });
     builder.addCase(actGetCompanies.rejected, (state, action) => {
       state.loading = false;
@@ -40,12 +40,16 @@ const companySlice = createSlice({
     });
     builder.addCase(actCreateCompany.fulfilled, (state, { payload }) => {
       state.loading = false;
-      // const { id, name, description } = payload;
-      // state.companies.push({ id, name, description });
+      const { id, companyName, investorName, country, phone } = payload;
+      state.companies.push({ id, companyName, investorName, country, phone });
     });
     builder.addCase(actCreateCompany.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -68,7 +72,11 @@ const companySlice = createSlice({
     });
     builder.addCase(actUpdateCompany.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -83,7 +91,11 @@ const companySlice = createSlice({
     });
     builder.addCase(actDeleteCompany.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });

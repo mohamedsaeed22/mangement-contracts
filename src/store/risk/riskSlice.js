@@ -24,7 +24,11 @@ const riskSlice = createSlice({
     });
     builder.addCase(actGetRisksByProjectId.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -38,7 +42,11 @@ const riskSlice = createSlice({
     });
     builder.addCase(actCreateRisk.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -53,7 +61,11 @@ const riskSlice = createSlice({
     });
     builder.addCase(actDeleteRisk.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -68,7 +80,11 @@ const riskSlice = createSlice({
     });
     builder.addCase(actUpdateRisk.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });

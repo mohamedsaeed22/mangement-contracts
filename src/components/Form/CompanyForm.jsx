@@ -3,47 +3,48 @@ import MyInput from "./Input/MyInput";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
-import { Box, Stack } from "@mui/material";
-import actUpdateBranch from "../../store/branch/act/actUpdateBranch";
-import actCreateBranch from "../../store/branch/act/actCreateBranch";
-import branchSchema from "../../validations/branchSchema";
+import { Autocomplete, Box, Stack, TextField } from "@mui/material";
 import MyBtn from "../common/UI/MyBtn";
 import AddIcon from "../../assets/icon/add-icon.svg";
 import EditIcon from "../../assets/icon/edit-icon.svg";
 import itemSchema from "../../validations/itemSchema";
 import { actCreateItem, actUpdateItem } from "../../store/item/itemSlice";
-
-const initialItem = {
-  name: "",
-  description: "",
-};
+import {
+  companySchema,
+  countries,
+  initialCompany,
+} from "../../validations/companySchema";
+import {
+  actCreateCompany,
+  actUpdateCompany,
+} from "../../store/company/companySlice";
 
 const CompanyForm = ({
-  initialValues = initialItem,
+  initialValues = initialCompany,
   isUpdate = false,
   handleCloseModal,
 }) => {
   const dispatch = useDispatch();
   const handleFormSubmit = (values, { resetForm }) => {
     if (isUpdate) {
-      dispatch(actUpdateItem(values))
+      dispatch(actUpdateCompany(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم تحديث الصنف بنجاح");
+          notifySuccess("تم تحديث الشركة بنجاح");
           handleCloseModal();
         })
         .catch((err) => {
-          notifyFailed("حدث خطأ أثناء تحديث الصنف");
+          notifyFailed("حدث خطأ أثناء تحديث الشركة");
         });
     } else {
-      dispatch(actCreateItem(values))
+      dispatch(actCreateCompany(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم اضافة الوصف بنجاح");
+          notifySuccess("تم اضافة الشركة بنجاح");
           resetForm();
         })
         .catch((err) => {
-          notifyFailed("هذا الوصف موجود مسبقا");
+          notifyFailed(err + "حدث خطا ما ");
         });
     }
   };
@@ -52,7 +53,7 @@ const CompanyForm = ({
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValues}
-      validationSchema={itemSchema}
+      validationSchema={companySchema}
     >
       {({
         values,
@@ -61,6 +62,7 @@ const CompanyForm = ({
         handleBlur,
         handleChange,
         handleSubmit,
+        setFieldValue,
       }) => (
         <Stack
           component="form"
@@ -73,35 +75,91 @@ const CompanyForm = ({
           onSubmit={handleSubmit}
         >
           <MyInput
-            name="name"
-            label="اسم الصنف"
+            name="companyName"
+            label="اسم الشركة"
             placeholder="ادخل الاسم"
-            value={values.name}
+            value={values.companyName}
             size="small"
             onChange={handleChange}
             onBlur={handleBlur}
             width={250}
-            error={!!touched.name && !!errors.name}
+            error={!!touched.companyName && !!errors.companyName}
             helperText={
-              touched.name && errors.name ? touched.name && errors.name : " "
-            }
-          />
-          <MyInput
-            name="description"
-            label="الوصف"
-            placeholder="ادخل الوصف"
-            value={values.description}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            size="small"
-            width={250}
-            error={!!touched.description && !!errors.description}
-            helperText={
-              touched.description && errors.description
-                ? touched.description && errors.description
+              touched.companyName && errors.companyName
+                ? touched.companyName && errors.companyName
                 : " "
             }
           />
+          <MyInput
+            name="investorName"
+            label="اسم المستثمر"
+            placeholder="ادخل الاسم"
+            value={values.investorName}
+            size="small"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            width={250}
+            error={!!touched.investorName && !!errors.investorName}
+            helperText={
+              touched.investorName && errors.investorName
+                ? touched.investorName && errors.investorName
+                : " "
+            }
+          />
+          <MyInput
+            name="phone"
+            label="رقم الهاتف"
+            placeholder="ادخل رقم الهاتف"
+            value={values.phone}
+            size="small"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            width={250}
+            error={!!touched.phone && !!errors.phone}
+            helperText={
+              touched.phone && errors.phone
+                ? touched.phone && errors.phone
+                : " "
+            }
+          />
+            <Autocomplete
+              id="country-select-demo"
+              sx={{ width: 250 ,alignSelf:'flex-start'}}
+              size="small"
+              options={countries.map((option) => option.lable)}
+              autoHighlight
+              // value={values.country}
+              getOptionLabel={(option) => option ? option.label : ""}
+              renderOption={(props, option) => (
+                <Box
+                   component="li"
+                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                  {...props}
+                >
+                  {/* <img
+                    loading="lazy"
+                    width="20"
+                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                    alt=""
+                  /> */}
+                  {option.label} ({option.code}) +{option.phone}
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="اختر الدولة"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: "new-password",
+                  }}
+                />
+              )}
+            />
+          <Box alignSelf="flex-start">
+          </Box>
+
           <Box alignSelf={isUpdate ? "center" : "flex-start"}>
             <MyBtn
               type="submit"

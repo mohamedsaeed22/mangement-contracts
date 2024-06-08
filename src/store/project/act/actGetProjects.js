@@ -8,7 +8,8 @@ import { convertDateToIso } from "../../../utils/convertDateToIso";
 const actGetProjects = createAsyncThunk(
   "project/actGetProjects",
   async (params, thunkAPI) => {
-     const { getState, rejectWithValue, dispatch } = thunkAPI;
+    console.log(params);
+    const { getState, rejectWithValue, dispatch } = thunkAPI;
     try {
       await dispatch(actGetSupervisors()).unwrap();
       await dispatch(actGetBranches()).unwrap();
@@ -23,6 +24,7 @@ const actGetProjects = createAsyncThunk(
           params.BranchId
         }&SupervisorId=${params.SupervisorId}&SpentBudget=${params.SpentBudget}`
       );
+      console.log(res);
       const enhancedProjects = res.data.data.map((project) => {
         const supervisor = supervisors.find(
           (sup) => sup.id === project.supervisorId

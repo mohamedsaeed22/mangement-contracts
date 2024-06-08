@@ -19,6 +19,7 @@ import ProjectsBox from "../pages/ProjectsBox";
 import ManageCompanies from "../pages/ManageCompanies";
 import ManageItems from "../pages/ManageItems";
 import RoleGuard from "../components/common/Auth/RoleGuard";
+import ManageSectors from "../pages/ManageSectors";
 
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
@@ -52,6 +53,14 @@ const router = createBrowserRouter(
               roles={["Admin", "SuperAdmin", "ProjectManagement.ReadOnly"]}
             >
               <Home />
+            </RoleGuard>
+          }
+        />
+         <Route
+          path="managesectors"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin"]}>
+              <ManageSectors />
             </RoleGuard>
           }
         />
@@ -90,6 +99,7 @@ const router = createBrowserRouter(
             </RoleGuard>
           }
         />
+
         <Route
           path="manageitems"
           element={

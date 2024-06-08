@@ -40,7 +40,11 @@ const handicapSlice = createSlice({
     );
     builder.addCase(actGetHandicapsByProjectId.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -55,7 +59,11 @@ const handicapSlice = createSlice({
     });
     builder.addCase(actCreateHandicap.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -70,7 +78,11 @@ const handicapSlice = createSlice({
     });
     builder.addCase(actDeleteHandicap.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -85,7 +97,11 @@ const handicapSlice = createSlice({
     });
     builder.addCase(actUpdateHandicap.rejected, (state, action) => {
       state.loading = false;
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });

@@ -28,6 +28,14 @@ const projectSubmenuList = [
     name: "اضافه مشروع",
   },
 ];
+const sectorSubmenuList = [
+  {
+    id: 1,
+    nav: "managesectors",
+    name: "اداره القطاعات",
+  },
+];
+
 let branchSubmenuList = [
   {
     id: 3,
@@ -35,6 +43,7 @@ let branchSubmenuList = [
     name: "اداره الانشطة",
   },
 ];
+
 const supervisroSubmenuList = [
   {
     id: 4,
@@ -42,25 +51,13 @@ const supervisroSubmenuList = [
     name: "اداره الاستشاريين",
   },
 ];
-const ForeignCompanyList = [
-  {
-    id: 5,
-    nav: "manageitems",
-    name: "اداره الاصناف",
-  },
-  {
-    id: 6,
-    nav: "managecompanies",
-    name: "اداره الشركات",
-  },
-];
 
 const Sidebar = () => {
   const dispatch = useDispatch();
   const [showProjectsMenu, setShowProjectsMenu] = useState(false);
+  const [showSectormenu, setShowSectormenu] = useState(false);
   const [showBranchesMenu, setShowBranchesMenu] = useState(false);
   const [showSupervisorsMenu, setShowSupervisorsMenu] = useState(false);
-  const [showForeignCompany, setShowForeignCompany] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const { branches } = useSelector((state) => state.branch);
   const { roles } = useSelector((state) => state.auth);
@@ -70,21 +67,19 @@ const Sidebar = () => {
   if (branches) {
     branchesList = [...branchSubmenuList, ...branches];
   }
+
   const toggleProjectSubmenu = () => {
     setShowProjectsMenu(!showProjectsMenu);
   };
-  const toggleForeignCompany = () => {
-    setShowForeignCompany(!showForeignCompany);
+  const toggleSectorSubmenu = () => {
+    setShowSectormenu(!showSectormenu);
   };
-
   const toggleBranchSubmenu = () => {
     setShowBranchesMenu(!showBranchesMenu);
   };
-
   const toggleSupervisorSubmenu = () => {
     setShowSupervisorsMenu(!showSupervisorsMenu);
   };
-
   useEffect(() => {
     dispatch(actGetBranches());
     dispatch(actGetSupervisors());
@@ -204,6 +199,17 @@ const Sidebar = () => {
             </Box>
           )}
 
+          <SidebarMenu
+            menuTitle={"القطاعات"}
+            toggleSubmenuFun={toggleSectorSubmenu}
+            showSubmenu={showSectormenu}
+            subMenuList={
+              filterRoles(["Admin", "SuperAdmin"])
+                ? sectorSubmenuList
+                : [...branches]
+            }
+          />
+
           {/* projects menu  */}
           <SidebarMenu
             menuTitle={"المشروعات"}
@@ -221,27 +227,19 @@ const Sidebar = () => {
             toggleSubmenuFun={toggleBranchSubmenu}
             showSubmenu={showBranchesMenu}
             subMenuList={
-              filterRoles(["Admin", "SuperAdmin", "DefaultUserBranch"])
+              filterRoles(["Admin", "SuperAdmin"])
                 ? branchesList
                 : [...branches]
             }
           />
           {/* supervisors menu  */}
           {filterRoles(["Admin", "SuperAdmin"]) && (
-            <>
-              <SidebarMenu
-                menuTitle={"الاستشاريين"}
-                toggleSubmenuFun={toggleSupervisorSubmenu}
-                showSubmenu={showSupervisorsMenu}
-                subMenuList={supervisroSubmenuList}
-              />
-              <SidebarMenu
-                menuTitle={"التعاقدات الخارجيه"}
-                toggleSubmenuFun={toggleForeignCompany}
-                showSubmenu={showForeignCompany}
-                subMenuList={ForeignCompanyList}
-              />
-            </>
+            <SidebarMenu
+              menuTitle={"الاستشاريين"}
+              toggleSubmenuFun={toggleSupervisorSubmenu}
+              showSubmenu={showSupervisorsMenu}
+              subMenuList={supervisroSubmenuList}
+            />
           )}
         </Box>
         {/* logout */}

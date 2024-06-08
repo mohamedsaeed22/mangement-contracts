@@ -7,16 +7,9 @@ import {
   setAccessToken,
 } from "../../utils/accessLocalStorage";
 
-const roles = [
-  // "Admin",
-  "ProjectManagement.ReadOnly",
-  // "DefaultUserBranch",
-  // "SuperAdmin",
-];
 const initialState = {
-  // accessToken: getAcessToken() || null,
-  accessToken: true || null,
-  // roles: getUserRoles() || roles,
+  accessToken: getAcessToken() || null,
+  roles: getUserRoles() || [],
   loading: false,
   error: null,
 };

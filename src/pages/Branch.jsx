@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Heading from "../components/common/Heading/Heading";
 import TopStat from "../components/manageContracts/TopStat";
@@ -57,6 +57,7 @@ const Branch = () => {
     projectsByBranch,
     error: projectError,
     loading: projectLoading,
+    totalItems,
   } = useSelector((state) => state.project);
   const {
     projectStat,
@@ -81,14 +82,19 @@ const Branch = () => {
     totalClosedHandicaps,
     totalOnHoldHandicaps,
   } = projectStat;
+  const [page, handleChangePge] = useState(1);
+
+  const handleChangePage = (event, value) => {
+    handleChangePge(value);
+  };
 
   useEffect(() => {
-    dispatch(actGetProjectByBranch(id));
+    dispatch(actGetProjectByBranch({ id, page }));
     dispatch(actGetStatByProjectId(id));
     return () => {
       dispatch(resetStat());
     };
-  }, [dispatch, id]);
+  }, [dispatch, id, page]);
 
   const handleShowProject = (project) => {
     navigate(`/project/id/${project.id}`);
@@ -111,7 +117,7 @@ const Branch = () => {
         height="calc(100vh - 130px)"
       >
         <Box borderRadius={2}>
-          <LoadingWrapper loading={statLoading&&projectLoading} error={statError}>
+          <LoadingWrapper loading={projectLoading} error={statError}>
             <TopStat
               totalProjects={totalProjects}
               totalPercentage={totalPercentage}
@@ -248,6 +254,18 @@ const Branch = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            <Stack
+              justifyContent="center"
+              alignItems="center"
+              marginInline="auto"
+              mt={2}
+            >
+              <Pagination
+                count={Math.ceil(totalItems / 10)}
+                page={page}
+                onChange={handleChangePage}
+              />
+            </Stack>
           </LoadingWrapper>
         </Box>
       </Box>

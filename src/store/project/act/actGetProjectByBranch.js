@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
- import { actGetSupervisors } from "../../supervisor/supervisorSlice";
+import { actGetSupervisors } from "../../supervisor/supervisorSlice";
 import { actGetBranches } from "../../branch/branchSlice";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
 
 const actGetProjectByBranch = createAsyncThunk(
   "project/actGetProjectByBranch",
-  async (branchId, thunkAPI) => {
+  async (params, thunkAPI) => {
+    console.log(params);
     const { getState, rejectWithValue, dispatch } = thunkAPI;
 
     try {
@@ -16,7 +17,7 @@ const actGetProjectByBranch = createAsyncThunk(
       const { branches } = getState().branch;
 
       const res = await api.get(
-        `api/Project/browse?BranchId=${branchId}&PageSize=10&Page=1`
+        `api/Project/browse?BranchId=${params.id}&PageSize=10&Page=${params.page}`
       );
       const enhancedProjects = res.data.data.map((project) => {
         const supervisor = supervisors.find(

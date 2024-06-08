@@ -29,7 +29,7 @@ const projectSlice = createSlice({
     });
     builder.addCase(actGetProjects.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.projects = payload;
+      state.projects = payload.data;
       state.totalItems = payload.totalItems;
     });
     builder.addCase(actGetProjects.rejected, (state, action) => {
@@ -50,13 +50,17 @@ const projectSlice = createSlice({
     });
     builder.addCase(actGetProjectByBranch.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.projectsByBranch = payload;
+      state.projectsByBranch = payload.data;
       state.totalItems = payload.totalItems;
     });
     builder.addCase(actGetProjectByBranch.rejected, (state, action) => {
       state.loading = false;
       //
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });
@@ -84,19 +88,23 @@ const projectSlice = createSlice({
     });
     builder.addCase(actUpdateProject.fulfilled, (state, action) => {
       state.loading = false;
-      //  const index = state.projects.data.findIndex(
-      //   (project) => project.id === payload.id
-      // );
-      // if (index !== -1) {
-      //   state.projects.data[index] = payload;
-      // } else {
-      //   console.error("project not found");
-      // }
+      console.log(action);
+      if (action?.payload?.id) {
+        state.error = "تم تعديل المشروع بنجاح";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = action.payload;
+      }
     });
     builder.addCase(actUpdateProject.rejected, (state, action) => {
       state.loading = false;
       //
-      if (action.payload) {
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
         state.error = action.payload;
       }
     });

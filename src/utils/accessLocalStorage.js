@@ -25,23 +25,17 @@ const removeAllCookies = () => {
   Cookies.remove("refreshToken");
 };
 const getUserRoles = () => {
-  return [
-    "Admin",
-    // "ProjectManagement.ReadOnly",
-    // "DefaultUserBranch",
-    // "SuperAdmin",
-  ];
-  // if (!getAcessToken()) {
-  //   return null;
-  // }
-  // const decoded = jwtDecode(getAcessToken());
-  // if (decoded) {
-  //   return decoded[
-  //     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-  //   ];
-  // } else {
-  //   return null;
-  // }
+  if (!getAcessToken()) {
+    return null;
+  }
+  const decoded = jwtDecode(getAcessToken());
+  if (decoded) {
+    return decoded[
+      "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+    ];
+  } else {
+    return null;
+  }
 };
 export {
   getAcessToken,

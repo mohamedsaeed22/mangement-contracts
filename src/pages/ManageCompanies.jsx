@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Stack,
   Table,
   TableBody,
@@ -19,13 +18,13 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
-import BranchForm from "../components/Form/BranchForm";
 import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
 import ItemForm from "../components/Form/ItemForm";
-import actDeleteItem from "../store/item/act/actDeleteItem";
-import { actGetItems, filterItems } from "../store/item/itemSlice";
+import { actDeleteCompany, actGetCompanies, filterCompanies } from "../store/company/companySlice";
+import CompanyForm from "../components/Form/CompanyForm";
+import { initialCompany } from "../validations/companySchema";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,43 +46,38 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   backgroundColor: "#fff",
   borderRadius: "10px",
 }));
-
-const initialItem = {
-  name: "",
-  description: "",
-};
-
+ 
 const ManageCompanies = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
-  const { items } = useSelector((state) => state.item);
-  const [updatedItem, setUpdatedItem] = useState(initialItem);
-
+  const { companies } = useSelector((state) => state.company);
+  const [updateCompany, setUpdateCompany] = useState(initialCompany);
+  console.log(companies);
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
   useEffect(() => {
-    dispatch(actGetItems());
+    dispatch(actGetCompanies());
   }, [dispatch]);
 
-  const handleUpdateItem = (item) => {
-    setUpdatedItem(item);
+  const handleUpdateBranch = (company) => {
+    setUpdateCompany(company);
     setOpenModal(true);
   };
 
-  const handleDeleteItem = async (item) => {
+  const handleDeleteItem = async (company) => {
     const willDelete = await SweatAlert({
-      title: `هل متاكد من حذف ${item.name}؟`,
+      title: `هل متاكد من حذف ${company.name}؟`,
       icon: "warning",
       dangerMode: true,
     });
     if (willDelete) {
-      dispatch(actDeleteItem(item.id))
+      dispatch(actDeleteCompany(company.id))
         .unwrap()
         .then((e) => {
-          dispatch(filterItems(item.id));
-          notifySuccess("تم حذف الصنف");
+          dispatch(filterCompanies(company.id));
+          notifySuccess("تم حذف الشركة");
           setOpenModal(false);
         })
         .catch((err) => {
@@ -97,11 +91,11 @@ const ManageCompanies = () => {
       <MyModal
         open={openModal}
         handleClose={handleCloseModal}
-        title="تعديل بيانات صنف"
+        title="تعديل بيانات شركة"
       >
         <ItemForm
           isUpdate={true}
-          initialValues={updatedItem}
+          initialValues={updateCompany}
           handleCloseModal={handleCloseModal}
         />
       </MyModal>
@@ -115,25 +109,33 @@ const ManageCompanies = () => {
         flex={1}
       >
         <Box>
-          <ItemForm isUpdate={false} initialValues={updatedItem} />
+          <CompanyForm isUpdate={false} initialValues={updateCompany} />
           {/* items table */}
           <TableContainer sx={{ maxHeight: "80vh", marginTop: "20px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">الصنف</StyledTableCell>
-                  <StyledTableCell align="center">الوصف</StyledTableCell>
+                  <StyledTableCell align="center">الشركة</StyledTableCell>
+                  <StyledTableCell align="center">اسم المستثمر</StyledTableCell>
+                  <StyledTableCell align="center"> رقم الهاتف</StyledTableCell>
+                  <StyledTableCell align="center">الدولة</StyledTableCell>
                   <StyledTableCell align="center">الاجراءات</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {items?.map((row) => (
+                {companies?.map((row) => (
                   <StyledTableRow key={row.id}>
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.description.length > 30
-                        ? row.description.substring(0, 30) + "..."
-                        : row.description}
+                      {row.companyName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.investorName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.phone}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.country}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <Stack direction="row" justifyContent="center" gap={1}>
@@ -142,7 +144,7 @@ const ManageCompanies = () => {
                           height={40}
                           icon={EditIcon}
                           title={"تعديل"}
-                          handleBtnClick={() => handleUpdateItem(row)}
+                          handleBtnClick={() => handleUpdateBranch(row)}
                         />
                         <MyBtn
                           width={100}
@@ -156,7 +158,7 @@ const ManageCompanies = () => {
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
-                {items?.length === 0 && (
+                {companies?.length === 0 && (
                   <StyledTableRow>
                     <StyledTableCell align="center" colSpan={3}>
                       لا يوجد اصناف
