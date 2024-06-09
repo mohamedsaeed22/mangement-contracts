@@ -1,34 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
-import actGetBranches from "./act/actGetBranches";
-import actCreateBranch from "./act/actCreateBranch";
-import actDeleteBranch from "./act/actDeleteBranch";
-import actUpdateBranch from "./act/actUpdateBranch";
+import actGetActivities from "./act/actGetActivities";
+import actCreateActivity from "./act/actCreateActivity";
+import actUpdateActivity from "./act/actUpdateActivity";
+import actDeleteActivity from "./act/actDeleteActivity";
 
 const initialState = {
-  branches: [],
+  activities: [],
   loading: false,
   error: null,
 };
 
-const branchSlice = createSlice({
-  name: "branch",
+const ActivitySlice = createSlice({
+  name: "Activity",
   initialState,
   reducers: {
-    filterBranches: (state, { payload }) => {
-      state.branches = state.branches.filter((b) => b.id !== `${payload}`);
+    filteractivities: (state, { payload }) => {
+      state.activities = state.activities.filter((b) => b.id !== `${payload}`);
     },
   },
   extraReducers: (builder) => {
-    // get all branches
-    builder.addCase(actGetBranches.pending, (state) => {
+    // get all activities
+    builder.addCase(actGetActivities.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actGetBranches.fulfilled, (state, { payload }) => {
+    builder.addCase(actGetActivities.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.branches = payload;
+      state.activities = payload;
     });
-    builder.addCase(actGetBranches.rejected, (state, action) => {
+    builder.addCase(actGetActivities.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -39,17 +39,17 @@ const branchSlice = createSlice({
       }
     });
 
-    // create branche
-    builder.addCase(actCreateBranch.pending, (state) => {
+    // create Activitye
+    builder.addCase(actCreateActivity.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actCreateBranch.fulfilled, (state, { payload }) => {
+    builder.addCase(actCreateActivity.fulfilled, (state, { payload }) => {
       state.loading = false;
       const { id, name, description } = payload;
-      state.branches.push({ id, name, description });
+      state.activities.push({ id, name, description });
     });
-    builder.addCase(actCreateBranch.rejected, (state, action) => {
+    builder.addCase(actCreateActivity.rejected, (state, action) => {
       state.loading = false;
       console.log(action);
       if (action?.payload === 403) {
@@ -61,23 +61,23 @@ const branchSlice = createSlice({
       }
     });
 
-    // update branche
-    builder.addCase(actUpdateBranch.pending, (state) => {
+    // update Activitye
+    builder.addCase(actUpdateActivity.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actUpdateBranch.fulfilled, (state, { payload }) => {
+    builder.addCase(actUpdateActivity.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const index = state.branches.findIndex(
-        (branch) => branch.id === payload.id
+      const index = state.activities.findIndex(
+        (Activity) => Activity.id === payload.id
       );
       if (index !== -1) {
-        state.branches[index] = payload;
+        state.activities[index] = payload;
       } else {
-        console.error("Branch not found");
+        console.error("Activity not found");
       }
     });
-    builder.addCase(actUpdateBranch.rejected, (state, action) => {
+    builder.addCase(actUpdateActivity.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -88,15 +88,15 @@ const branchSlice = createSlice({
       }
     });
 
-    // delete branche
-    builder.addCase(actDeleteBranch.pending, (state) => {
+    // delete Activitye
+    builder.addCase(actDeleteActivity.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actDeleteBranch.fulfilled, (state, { payload }) => {
+    builder.addCase(actDeleteActivity.fulfilled, (state, { payload }) => {
       state.loading = false;
     });
-    builder.addCase(actDeleteBranch.rejected, (state, action) => {
+    builder.addCase(actDeleteActivity.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -109,6 +109,11 @@ const branchSlice = createSlice({
   },
 });
 
-export { actCreateBranch, actDeleteBranch, actGetBranches, actUpdateBranch };
-export const { filterBranches } = branchSlice.actions;
-export default branchSlice.reducer;
+export {
+  actCreateActivity,
+  actDeleteActivity,
+  actGetActivities,
+  actUpdateActivity,
+};
+export const { filteractivities } = ActivitySlice.actions;
+export default ActivitySlice.reducer;

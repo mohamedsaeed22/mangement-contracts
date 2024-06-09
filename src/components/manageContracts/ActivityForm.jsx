@@ -16,7 +16,7 @@ const defaultInitialSupervisor = {
   phone: "",
 };
 
-const BranchForm = ({
+const ActivityForm = ({
   initialValues = defaultInitialSupervisor,
   isUpdate = false,
   handleCloseModal,
@@ -103,4 +103,4 @@ const BranchForm = ({
   );
 };
 
-export default BranchForm;
+export default ActivityForm;

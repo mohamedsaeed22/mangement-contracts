@@ -23,7 +23,7 @@ const Login = () => {
   const { error, loading, accessToken, roles } = useSelector(
     (state) => state.auth
   );
-  // if (accessToken && roles.includes("DefaultUserBranch")) {
+  // if (accessToken && roles.includes("DefaultUserActivity")) {
   //   navigate("/projectsbox");
   // } else {
   //   navigate("/");
@@ -48,7 +48,6 @@ const Login = () => {
   if (accessToken) {
     return <Navigate to="/" replace={true} />;
   }
-
 
   return (
     <Stack

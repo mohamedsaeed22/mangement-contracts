@@ -2,13 +2,9 @@ import OverviewImage from "./../../assets/imgs/overview.svg";
 
 import { Box, Paper, Stack, Typography } from "@mui/material";
 
-const TopStat = ({
-  totalProjects,
-  totalPercentage,
-  totalBudget,
-  totalSpent,
-}) => {
-   return (
+const TopStat = ({ stats }) => {
+  const { totalProjects, totalPercentage, totalBudget, totalSpent } = stats;
+  return (
     <Paper
       sx={{
         padding: "8px",
@@ -54,7 +50,7 @@ const TopStat = ({
         </Stack>
         <Stack textAlign="center">
           <Typography variant="h4" fontWeight="bold" color="#01204E">
-            {totalSpent}
+            {totalBudget}
           </Typography>
           <Typography variant="body1" color="initial">
             التكلفة المخططة
@@ -62,7 +58,7 @@ const TopStat = ({
         </Stack>
         <Stack textAlign="center">
           <Typography variant="h4" fontWeight="bold" color="#01204E">
-          {totalSpent}
+            {totalSpent}
           </Typography>
           <Typography variant="body1" color="initial">
             المنصرف الفعلى

@@ -26,7 +26,7 @@ export { loadTheme };
             "spentBudget": 16.6540,
             "percentage": 0,
             "status": 1,
-            "branchId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
+            "ActivityId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
             "supervisorId": "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
             "createdAt": "2024-06-06T12:46:21.0433953",
             "updatedAt": "2024-06-08T15:03:33.5053946",
@@ -56,7 +56,7 @@ export { loadTheme };
             "spentBudget": 0.0000,
             "percentage": 0,
             "status": 1,
-            "branchId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
+            "ActivityId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
             "supervisorId": "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
             "createdAt": "2024-06-02T14:36:49.4900121",
             "updatedAt": "2024-06-08T15:07:58.0196418",
@@ -86,7 +86,7 @@ export { loadTheme };
             "spentBudget": 200.0000,
             "percentage": 10,
             "status": 3,
-            "branchId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
+            "ActivityId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
             "supervisorId": "191c407f-d8ac-4f11-21bc-08dc7ee246ad",
             "createdAt": "2024-06-05T13:44:29.9658332",
             "updatedAt": "2024-06-08T15:09:15.36033",
@@ -116,7 +116,7 @@ export { loadTheme };
             "spentBudget": 322.0000,
             "percentage": 33,
             "status": 2,
-            "branchId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
+            "ActivityId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
             "supervisorId": "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
             "createdAt": "2024-06-05T09:45:52.5282395",
             "updatedAt": "2024-06-05T10:44:13.8156026",
@@ -157,7 +157,7 @@ export { loadTheme };
             "spentBudget": 2.0000,
             "percentage": 1,
             "status": 3,
-            "branchId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
+            "ActivityId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
             "supervisorId": "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
             "createdAt": "2024-06-05T12:17:22.7007406",
             "updatedAt": "2024-06-05T13:37:42.8199797",
@@ -176,7 +176,7 @@ export { loadTheme };
             "spentBudget": 33.0000,
             "percentage": 33,
             "status": 2,
-            "branchId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
+            "ActivityId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
             "supervisorId": "7c491c54-4106-43c5-ba79-08dc7f08e15f",
             "createdAt": "2024-06-04T15:17:09.6803654",
             "updatedAt": "2024-06-04T15:52:08.1052285",
@@ -195,7 +195,7 @@ export { loadTheme };
             "spentBudget": 2635.0000,
             "percentage": 0,
             "status": 1,
-            "branchId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
+            "ActivityId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
             "supervisorId": "7c491c54-4106-43c5-ba79-08dc7f08e15f",
             "createdAt": "2024-06-04T13:32:17.6752356",
             "updatedAt": "2024-06-04T16:50:28.3129941",
@@ -225,7 +225,7 @@ export { loadTheme };
             "spentBudget": 33233.0000,
             "percentage": 33,
             "status": 4,
-            "branchId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
+            "ActivityId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
             "supervisorId": "7c491c54-4106-43c5-ba79-08dc7f08e15f",
             "createdAt": "2024-06-04T13:35:39.0813573",
             "updatedAt": "2024-06-04T14:32:43.1537426",
@@ -244,7 +244,7 @@ export { loadTheme };
             "spentBudget": 43.0000,
             "percentage": 33,
             "status": 2,
-            "branchId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
+            "ActivityId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
             "supervisorId": "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
             "createdAt": "2024-06-03T12:27:08.2112007",
             "updatedAt": "0001-01-01T00:00:00",
@@ -263,7 +263,7 @@ export { loadTheme };
             "spentBudget": 33.0000,
             "percentage": 33,
             "status": 2,
-            "branchId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
+            "ActivityId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
             "supervisorId": "191c407f-d8ac-4f11-21bc-08dc7ee246ad",
             "createdAt": "2024-06-03T12:25:08.0635092",
             "updatedAt": "0001-01-01T00:00:00",
@@ -275,66 +275,64 @@ export { loadTheme };
     ]
 }
  */
-  // const [plannedCost, setPlannedCost] = useState("");
-  // const [branche, setBranch] = useState("");
-  // const [supervisor, setSupervisor] = useState("");
-  // const [projectState, setProjectState] = useState("");
-  // const [startDate, setStartDate] = useState(null);
-  // const [isoStartDate, setIsoStartDate] = useState("");
-  // const [endDate, setEndDate] = useState(null);
-  // const [isoEndDate, setIsoEndDate] = useState("");
+// const [plannedCost, setPlannedCost] = useState("");
+// const [Activitye, setActivity] = useState("");
+// const [supervisor, setSupervisor] = useState("");
+// const [projectState, setProjectState] = useState("");
+// const [startDate, setStartDate] = useState(null);
+// const [isoStartDate, setIsoStartDate] = useState("");
+// const [endDate, setEndDate] = useState(null);
+// const [isoEndDate, setIsoEndDate] = useState("");
 
-  // const handleChangeProjectState = (event) => {
-  //   setProjectState(event.target.value);
-  // };
-  // const handleResetForm = () => {
-  //   setPlannedCost("");
-  //   setBranch("");
-  //   setSupervisor("");
-  //   setProjectState("");
-  //   setStartDate(null);
-  //   setIsoStartDate("");
-  //   setEndDate(null);
-  //   setIsoEndDate("");
-  // };
+// const handleChangeProjectState = (event) => {
+//   setProjectState(event.target.value);
+// };
+// const handleResetForm = () => {
+//   setPlannedCost("");
+//   setActivity("");
+//   setSupervisor("");
+//   setProjectState("");
+//   setStartDate(null);
+//   setIsoStartDate("");
+//   setEndDate(null);
+//   setIsoEndDate("");
+// };
 
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setDebouncedSearch(search);
-  //   }, 300);
-  //   return () => {
-  //     clearTimeout(handler);
-  //   };
-  // }, [search]);
+// useEffect(() => {
+//   const handler = setTimeout(() => {
+//     setDebouncedSearch(search);
+//   }, 300);
+//   return () => {
+//     clearTimeout(handler);
+//   };
+// }, [search]);
 
-  // useEffect(() => {
-  //   // dispatch(actGetSupervisors());
-  //   // dispatch(actGetBranches());
-  //   dispatch(
-  //     actGetProjects({
-  //       page,
-  //       search: debouncedSearch,
-  //       status: projectState,
-  //       startDate: isoStartDate,
-  //       endDate: isoEndDate,
-  //       BranchId: branche,
-  //       SupervisorId: supervisor,
-  //       SpentBudget: plannedCost,
-  //     })
-  //   );
-  // }, [
-  //   dispatch,
-  //   page,
-  //   debouncedSearch,
-  //   projectState,
-  //   isoStartDate,
-  //   isoEndDate,
-  //   branche,
-  //   supervisor,
-  //   plannedCost,
-  // ]);
-
-
+// useEffect(() => {
+//   // dispatch(actGetSupervisors());
+//   // dispatch(actGetactivities());
+//   dispatch(
+//     actGetProjects({
+//       page,
+//       search: debouncedSearch,
+//       status: projectState,
+//       startDate: isoStartDate,
+//       endDate: isoEndDate,
+//       ActivityId: Activitye,
+//       SupervisorId: supervisor,
+//       SpentBudget: plannedCost,
+//     })
+//   );
+// }, [
+//   dispatch,
+//   page,
+//   debouncedSearch,
+//   projectState,
+//   isoStartDate,
+//   isoEndDate,
+//   Activitye,
+//   supervisor,
+//   plannedCost,
+// ]);
 
 /**
  * 
@@ -419,7 +417,7 @@ export { loadTheme };
             "spentBudget": 3433.0000,
             "percentage": 20,
             "status": 4,
-            "branchId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
+            "ActivityId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
             "supervisorId": "191c407f-d8ac-4f11-21bc-08dc7ee246ad",
             "createdAt": "2024-05-28T09:49:39.6672683",
             "updatedAt": "0001-01-01T00:00:00",
@@ -436,7 +434,7 @@ export { loadTheme };
             "spentBudget": 433.0000,
             "percentage": 33,
             "status": 2,
-            "branchId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
+            "ActivityId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
             "supervisorId": "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
             "createdAt": "2024-05-29T13:40:51.1539863",
             "updatedAt": "0001-01-01T00:00:00",
@@ -453,7 +451,7 @@ export { loadTheme };
             "spentBudget": 12.0000,
             "percentage": 34,
             "status": 3,
-            "branchId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
+            "ActivityId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
             "supervisorId": "7c491c54-4106-43c5-ba79-08dc7f08e15f",
             "createdAt": "2024-05-29T13:41:20.3696879",
             "updatedAt": "0001-01-01T00:00:00",
@@ -470,7 +468,7 @@ export { loadTheme };
             "spentBudget": 12.0000,
             "percentage": 34,
             "status": 2,
-            "branchId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
+            "ActivityId": "2b03afc6-b5d0-4e71-8e9d-08dc7f075dfe",
             "supervisorId": "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
             "createdAt": "2024-05-29T13:41:27.1398059",
             "updatedAt": "0001-01-01T00:00:00",
@@ -487,7 +485,7 @@ export { loadTheme };
             "spentBudget": 12.0000,
             "percentage": 34,
             "status": 2,
-            "branchId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
+            "ActivityId": "cd3215dd-4dc8-441c-005f-08dc7ee21558",
             "supervisorId": "14c4cb7e-f0b4-4dbe-f1d3-08dc7ef69b34",
             "createdAt": "2024-05-29T13:41:38.3815755",
             "updatedAt": "0001-01-01T00:00:00",
@@ -501,4 +499,3 @@ export { loadTheme };
 
 
  */
-

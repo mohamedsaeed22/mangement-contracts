@@ -57,7 +57,7 @@ const Project = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { supervisors } = useSelector((state) => state.supervisor);
-  const { branches } = useSelector((state) => state.branch);
+  const { activities } = useSelector((state) => state.activity);
   const { project, loading } = useSelector((state) => state.project);
   const [myProject, setMyProject] = useState(initialProjectValues);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -122,8 +122,8 @@ const Project = () => {
     console.table(values);
     const projectData = {
       ...values,
-      endDate: values.endDate,
       startDate: values.startDate,
+      endDate: values.endDate,
       budget: values.budget,
       spentBudget: values.spentBudget,
       percentage: values.percentage,
@@ -218,9 +218,9 @@ const Project = () => {
                   notifySuccess("تم إنشاء المشروع بنجاح");
                   navigate("/projectsbox");
                 })
-                .catch(() => {
+                .catch((err) => {
                   // Error occurred while dispatching actions
-                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+                  notifyFailed(err + "حدث خطا ما..الرجاء المحاولة مره اخرى");
                 });
             } else if (values.riskStatus) {
               const riskObj = {
@@ -233,8 +233,8 @@ const Project = () => {
                   notifySuccess("تم إنشاء المشروع بنجاح");
                   navigate("/projectsbox");
                 })
-                .catch(() => {
-                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+                .catch((err) => {
+                  notifyFailed(err + "حدث خطا ما..الرجاء المحاولة مره اخرى");
                 });
             } else if (values.handicapStatus) {
               const handicapObj = {
@@ -247,8 +247,8 @@ const Project = () => {
                   notifySuccess("تم إنشاء المشروع بنجاح");
                   navigate("/projectsbox");
                 })
-                .catch(() => {
-                  notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+                .catch((err) => {
+                  notifyFailed(err + "حدث خطا ما..الرجاء المحاولة مره اخرى");
                 });
             } else {
               // No status for risk and disables
@@ -325,20 +325,20 @@ const Project = () => {
                   </MyInput>
                   <MyInput
                     width={180}
-                    name="branchId"
+                    name="ActivityId"
                     select
                     label="النشاط"
                     placeholder="اختر النشاط"
-                    value={values.branchId}
+                    value={values.ActivityId}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={!!touched.branchId && !!errors.branchId}
-                    helperText={touched.branchId && errors.branchId}
+                    error={!!touched.ActivityId && !!errors.ActivityId}
+                    helperText={touched.ActivityId && errors.ActivityId}
                   >
-                    {branches.length > 0 ? (
-                      branches.map((branch) => (
-                        <MenuItem key={branch.id} value={branch.id}>
-                          {branch.name}
+                    {activities.length > 0 ? (
+                      activities.map((Activity) => (
+                        <MenuItem key={Activity.id} value={Activity.id}>
+                          {Activity.name}
                         </MenuItem>
                       ))
                     ) : (
@@ -364,7 +364,7 @@ const Project = () => {
                         </MenuItem>
                       ))
                     ) : (
-                      <MenuItem disabled>لا يوجد مشرفين</MenuItem>
+                      <MenuItem disabled>لا يوجد استشارين</MenuItem>
                     )}
                   </MyInput>
                   {id && (
@@ -372,8 +372,7 @@ const Project = () => {
                       <MyBtn
                         title="تعديل"
                         type="submit"
-                        // handleBtnClick={() => handleFormSubmit(values)}
-                      />
+                       />
                       <Box>
                         <IconButton
                           aria-label="more"
@@ -499,7 +498,7 @@ const Project = () => {
 
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="الخطة الزمنية للمشروع">
-                      {/* <MyDatePicker
+                      <MyDatePicker
                         name="startDate"
                         width={myWidth}
                         title="تاريخ البداية"
@@ -510,98 +509,9 @@ const Project = () => {
                         }}
                         error={!!touched.startDate && !!errors.startDate}
                         helperText={touched.startDate && errors.startDate}
-                      /> */}
-                      <DatePicker
-                        label="بداية المشروع"
-                        // slotProps={{ textField: { size: "small" } }}
-                        name="startDate"
-                        value={dayjs(values.startDate)}
-                        format="DD-MM-YYYY"
-                        onChange={(value) => {
-                          setFieldValue("startDate", value.toISOString());
-                        }}
-                        slotProps={{
-                          textField: {
-                            size: "small",
-                            error:
-                              values?.touched?.startDate &&
-                              Boolean(values.errors.startDate),
-                            helperText:
-                              values?.touched?.startDate &&
-                              values?.errors?.startDate,
-                            "& .muiformhelpertext-root": {
-                              color: "red",
-                              fontSize: "10px !important",
-                              margin: "3px 0px 0px !important",
-                              // backgroundColor:'#F5F5F5 !important'
-                            },
-                          },
-                        }}
                       />
 
-                      <DatePicker
-                        label="نهاية المشروع"
-                        // slotProps={{ textField: { size: "small" } }}
-                        name="endDate"
-                        value={dayjs(values.endDate)}
-                        format="DD-MM-YYYY"
-                        onChange={(value) => {
-                          setFieldValue("endDate", value.toISOString());
-                        }}
-                        slotProps={{
-                          textField: {
-                            size: "small",
-                            error:
-                              values?.touched?.endDate &&
-                              Boolean(values.errors.endDate),
-                            helperText:
-                              values?.touched?.endDate &&
-                              values?.errors?.endDate,
-                            "& .muiformhelpertext-root": {
-                              color: "red",
-                              fontSize: "10px !important",
-                              margin: "3px 0px 0px !important",
-                              // backgroundColor:'#F5F5F5 !important'
-                            },
-                          },
-                        }}
-                      />
-                      {/* // renderInput={(params) => (
-                        //   <TextField
-                        //     {...params}
-                        //     error={
-                        //       values.touched.startDate &&
-                        //       Boolean(values.errors.startDate)
-                        //     }
-                        //     helperText={
-                        //       values.touched.startDate &&
-                        //       values.errors.startDate
-                        //     }
-                        //   />
-                        // )} */}
-                      {/* <DatePicker
-                        label="نهاية المشروع"
-                        slotProps={{ textField: { size: "small" } }}
-                        name="endDate"
-                        value={dayjs(values.endDate)}
-                        onChange={(value) =>
-                          setFieldValue("endDate", value.toISOString())
-                        }
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            error={
-                              values.touched.endDate &&
-                              Boolean(values.errors.endDate)
-                            }
-                            helperText={
-                              values.touched.endDate && values.errors.endDate
-                            }
-                          />
-                        )}
-                        inputFormat="MM/dd/yyyy"
-                      /> */}
-                      {/* <MyDatePicker
+                      <MyDatePicker
                         name="endDate"
                         width={myWidth}
                         title="تاريخ النهاية"
@@ -611,7 +521,7 @@ const Project = () => {
                         }}
                         error={!!touched.endDate && !!errors.endDate}
                         helperText={touched.endDate && errors.endDate}
-                      /> */}
+                      />
                     </MyInputsWrapper>
                   </Grid>
 
@@ -804,7 +714,6 @@ const Project = () => {
                     <MyBtn title={"اضافة"} type="submit" width={250} />
                   </Box>
                 )}
-
                 {/* row 5 */}
               </Box>
             </Stack>

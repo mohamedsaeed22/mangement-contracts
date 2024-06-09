@@ -8,6 +8,7 @@ const SidebarMenu = ({
   toggleSubmenuFun,
   showSubmenu,
   subMenuList,
+  navLink,
 }) => {
   return (
     <Box mt={1}>
@@ -39,21 +40,39 @@ const SidebarMenu = ({
         </Typography>
         <img src={BurgerIcon} alt="burger icon" style={{ width: "18px" }} />
       </Stack>
-      {showSubmenu &&
-        subMenuList?.map((el) => (
-          <Box pl={2} mt={1} key={el.id}>
+      {showSubmenu && (
+        <Box
+          pl={2}
+          // mt={1}
+          sx={{
+            direction: "rtl",
+            maxHeight: "150px", // Set your desired max height here
+            overflowY: "auto", // Enable vertical scrolling if content overflows
+            "&::-webkit-scrollbar": {
+              width: "4px", // Set the width of the scrollbar thumb
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#ccc", // Set the color of the scrollbar thumb
+              borderRadius: "4px", // Set border-radius to make it look rounded
+            },
+          }}
+        >
+          {subMenuList?.map((el) => (
             <NavLink
-              to={el.nav ? `/${el.nav}` : `/branch/${el.id}`}
+              to={el.nav ? `/${el.nav}` : `/${navLink}/${el.id}`}
               className={({ isActive }) =>
                 `navlink ${isActive ? "active-link" : ""}`
               }
+              key={el.id}
             >
               <Stack
                 direction="row"
                 justifyContent="space-between"
-                p="4px"
+                p="4px 2px"
+                mt={1}
                 bgcolor="inherit"
                 sx={{
+                  direction: "ltr",
                   borderTopLeftRadius: "10px",
                   borderBottomLeftRadius: "10px",
                 }}
@@ -63,14 +82,19 @@ const SidebarMenu = ({
                   color="initial"
                   ml={1}
                   fontWeight="bold"
-                  sx={{ color: "inherit", fontSize: "12px" }}
+                  sx={{
+                    color: "inherit",
+                    fontSize: "12px",
+                    // borderBottom: "1px solid #ccc",
+                  }}
                 >
                   {el.name}
                 </Typography>
               </Stack>
             </NavLink>
-          </Box>
-        ))}
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };

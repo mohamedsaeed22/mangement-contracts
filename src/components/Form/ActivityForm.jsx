@@ -4,9 +4,9 @@ import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import { Box, Stack } from "@mui/material";
-import actUpdateBranch from "../../store/branch/act/actUpdateBranch";
-import actCreateBranch from "../../store/branch/act/actCreateBranch";
-import branchSchema from "../../validations/branchSchema";
+import actUpdateActivity from "../../store/Activity/act/actUpdateActivity";
+import actCreateActivity from "../../store/Activity/act/actCreateActivity";
+import ActivitySchema from "../../validations/ActivitySchema";
 import MyBtn from "../common/UI/MyBtn";
 import AddIcon from "../../assets/icon/add-icon.svg";
 import EditIcon from "../../assets/icon/edit-icon.svg";
@@ -16,7 +16,7 @@ const defaultInitialSupervisor = {
   description: "",
 };
 
-const BranchForm = ({
+const ActivityForm = ({
   initialValues = defaultInitialSupervisor,
   isUpdate = false,
   handleCloseModal,
@@ -24,7 +24,7 @@ const BranchForm = ({
   const dispatch = useDispatch();
   const handleFormSubmit = (values, { resetForm }) => {
     if (isUpdate) {
-      dispatch(actUpdateBranch(values))
+      dispatch(actUpdateActivity(values))
         .unwrap()
         .then((e) => {
           notifySuccess("تم تحديث النشاط بنجاح");
@@ -34,7 +34,7 @@ const BranchForm = ({
           notifyFailed(err + "حدث خطأ أثناء تحديث النشاط");
         });
     } else {
-      dispatch(actCreateBranch(values))
+      dispatch(actCreateActivity(values))
         .unwrap()
         .then((e) => {
           notifySuccess("تم اضافة النشاط بنجاح");
@@ -51,7 +51,7 @@ const BranchForm = ({
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValues}
-      validationSchema={branchSchema}
+      validationSchema={ActivitySchema}
     >
       {({
         values,
@@ -63,7 +63,7 @@ const BranchForm = ({
       }) => (
         <Stack
           component="form"
-          id="branch-form"
+          id="Activity-form"
           flexWrap="wrap"
           direction={isUpdate && "column"}
           gap={isUpdate ? 0 : 2}
@@ -116,4 +116,4 @@ const BranchForm = ({
   );
 };
 
-export default BranchForm;
+export default ActivityForm;

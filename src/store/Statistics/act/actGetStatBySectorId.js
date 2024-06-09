@@ -1,12 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
-const actCreateBranch = createAsyncThunk(
-  "branch/actCreateBranch",
-  async (branch, thunk) => {
+
+const actGetStatBySectorId = createAsyncThunk(
+  "statistics/actGetStatBySectorId",
+  async (sectorId, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.post("api/Branch/create", branch);
+      const res = await api.get(
+        "api/ProjectsStatistics/statistics/sectorId/" + sectorId
+      );
       return res.data;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
@@ -14,4 +17,4 @@ const actCreateBranch = createAsyncThunk(
   }
 );
 
-export default actCreateBranch;
+export default actGetStatBySectorId;

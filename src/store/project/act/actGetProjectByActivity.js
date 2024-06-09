@@ -1,33 +1,33 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import { actGetSupervisors } from "../../supervisor/supervisorSlice";
-import { actGetBranches } from "../../branch/branchSlice";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
+import { actGetActivities } from "../../Activity/activitySlice";
 
-const actGetProjectByBranch = createAsyncThunk(
-  "project/actGetProjectByBranch",
+const actGetProjectByActivity = createAsyncThunk(
+  "project/actGetProjectByActivity",
   async (params, thunkAPI) => {
     console.log(params);
     const { getState, rejectWithValue, dispatch } = thunkAPI;
 
     try {
       await dispatch(actGetSupervisors()).unwrap();
-      await dispatch(actGetBranches()).unwrap();
+      await dispatch(actGetActivities()).unwrap();
       const { supervisors } = getState().supervisor;
-      const { branches } = getState().branch;
+      const { activities } = getState().Activity;
 
       const res = await api.get(
-        `api/Project/browse?BranchId=${params.id}&PageSize=10&Page=${params.page}`
+        `api/Project/browse?ActivityId=${params.id}&PageSize=10&Page=${params.page}`
       );
       const enhancedProjects = res.data.data.map((project) => {
         const supervisor = supervisors.find(
           (sup) => sup.id === project.supervisorId
         );
-        const branch = branches.find((br) => br.id === project.branchId);
+        const Activity = activities.find((br) => br.id === project.ActivityId);
         return {
           ...project,
           supervisorName: supervisor.name,
-          branchName: branch.name,
+          ActivityName: Activity.name,
         };
       });
       return {
@@ -40,4 +40,4 @@ const actGetProjectByBranch = createAsyncThunk(
   }
 );
 
-export default actGetProjectByBranch;
+export default actGetProjectByActivity;

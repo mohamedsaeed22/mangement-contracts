@@ -46,7 +46,7 @@ const initialValues = {
   spentBudget: "",
   percentage: "",
   status: "",
-  branchId: "",
+  ActivityId: "",
   supervisorId: "",
 };
 
@@ -57,7 +57,7 @@ const AddProject = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { supervisors } = useSelector((state) => state.supervisor);
-  const { branches } = useSelector((state) => state.branch);
+  const { activities } = useSelector((state) => state.activity);
   const { project, loading } = useSelector((state) => state.project); // Ensure you have a loading state
   const [myProject, setMyProject] = useState(initialValues);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -188,20 +188,20 @@ const AddProject = () => {
                   </MyInput>
                   <MyInput
                     width={180}
-                    name="branchId"
+                    name="ActivityId"
                     select
                     label="النشاط"
                     placeholder="اختر النشاط"
-                    value={values.branchId}
+                    value={values.ActivityId}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={!!touched.branchId && !!errors.branchId}
-                    helperText={touched.branchId && errors.branchId}
+                    error={!!touched.ActivityId && !!errors.ActivityId}
+                    helperText={touched.ActivityId && errors.ActivityId}
                   >
-                    {branches.length > 0 ? (
-                      branches.map((branch) => (
-                        <MenuItem key={branch.id} value={branch.id}>
-                          {branch.name}
+                    {activities.length > 0 ? (
+                      activities.map((Activity) => (
+                        <MenuItem key={Activity.id} value={Activity.id}>
+                          {Activity.name}
                         </MenuItem>
                       ))
                     ) : (

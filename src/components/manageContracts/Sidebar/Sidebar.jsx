@@ -10,11 +10,11 @@ import ExitIcon from "../../../assets/icon/exit.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { authLogout } from "../../../store/auth/authSlice";
-import { actGetBranches } from "../../../store/branch/branchSlice";
 import { actGetSupervisors } from "../../../store/supervisor/supervisorSlice";
 import SidebarMenu from "./SidebarMenu";
 import { SweatAlert } from "../../feedback/Alerts/alerts";
 import { filterRoles } from "../../../utils/filterRoles";
+import { actGetActivities } from "../../../store/Activity/activitySlice";
 
 const projectSubmenuList = [
   {
@@ -36,11 +36,19 @@ const sectorSubmenuList = [
   },
 ];
 
-let branchSubmenuList = [
+let activitySubmenuList = [
   {
     id: 3,
-    nav: "managebranches",
+    nav: "manageactivities",
     name: "اداره الانشطة",
+  },
+];
+
+let contractorSubmenuList = [
+  {
+    id: 4,
+    nav: "managecontractors",
+    name: "اداره المقاولين",
   },
 ];
 
@@ -56,16 +64,18 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const [showProjectsMenu, setShowProjectsMenu] = useState(false);
   const [showSectormenu, setShowSectormenu] = useState(false);
-  const [showBranchesMenu, setShowBranchesMenu] = useState(false);
+  const [showactivitiesMenu, setShowactivitiesMenu] = useState(false);
   const [showSupervisorsMenu, setShowSupervisorsMenu] = useState(false);
+  const [showContractorMenu, setShowContractorMenu] = useState(false);
+
   const [toggleSidebar, setToggleSidebar] = useState(true);
-  const { branches } = useSelector((state) => state.branch);
+  const { activities } = useSelector((state) => state.activity);
   const { roles } = useSelector((state) => state.auth);
 
   const { supervisors } = useSelector((state) => state.supervisor);
-  let branchesList = [];
-  if (branches) {
-    branchesList = [...branchSubmenuList, ...branches];
+  let activitiesList = [];
+  if (activities) {
+    activitiesList = [...activitySubmenuList, ...activities];
   }
 
   const toggleProjectSubmenu = () => {
@@ -74,14 +84,17 @@ const Sidebar = () => {
   const toggleSectorSubmenu = () => {
     setShowSectormenu(!showSectormenu);
   };
-  const toggleBranchSubmenu = () => {
-    setShowBranchesMenu(!showBranchesMenu);
+  const toggleActivitySubmenu = () => {
+    setShowactivitiesMenu(!showactivitiesMenu);
   };
   const toggleSupervisorSubmenu = () => {
     setShowSupervisorsMenu(!showSupervisorsMenu);
   };
+  const toggleContractorSubmenu = () => {
+    setShowContractorMenu(!showContractorMenu);
+  };
   useEffect(() => {
-    dispatch(actGetBranches());
+    dispatch(actGetActivities());
     dispatch(actGetSupervisors());
   }, [dispatch]);
 
@@ -206,41 +219,53 @@ const Sidebar = () => {
             subMenuList={
               filterRoles(["Admin", "SuperAdmin"])
                 ? sectorSubmenuList
-                : [...branches]
+                : [...activities]
             }
+            navLink="sector"
           />
-
+          {/* activities menu  */}
+          <SidebarMenu
+            menuTitle={"الانشطة"}
+            toggleSubmenuFun={toggleActivitySubmenu}
+            showSubmenu={showactivitiesMenu}
+            subMenuList={
+              filterRoles(["Admin", "SuperAdmin"])
+                ? activitySubmenuList
+                : [...activities]
+            }
+            navLink="activity"
+          />
           {/* projects menu  */}
           <SidebarMenu
             menuTitle={"المشروعات"}
             toggleSubmenuFun={toggleProjectSubmenu}
             showSubmenu={showProjectsMenu}
             subMenuList={
-              filterRoles(["Admin", "SuperAdmin", "DefaultUserBranch"])
+              filterRoles(["Admin", "SuperAdmin", "DefaultUserActivity"])
                 ? projectSubmenuList
                 : [projectSubmenuList[0]]
             }
           />
-          {/* branches menu  */}
-          <SidebarMenu
-            menuTitle={"الانشطة"}
-            toggleSubmenuFun={toggleBranchSubmenu}
-            showSubmenu={showBranchesMenu}
-            subMenuList={
-              filterRoles(["Admin", "SuperAdmin"])
-                ? branchesList
-                : [...branches]
-            }
-          />
+
           {/* supervisors menu  */}
-          {filterRoles(["Admin", "SuperAdmin"]) && (
-            <SidebarMenu
-              menuTitle={"الاستشاريين"}
-              toggleSubmenuFun={toggleSupervisorSubmenu}
-              showSubmenu={showSupervisorsMenu}
-              subMenuList={supervisroSubmenuList}
-            />
-          )}
+          {/* <Box sx={{ position: "absolute", width: "100%", bottom: 109 }}> */}
+            {filterRoles(["Admin", "SuperAdmin"]) && (
+              <SidebarMenu
+                menuTitle={"الاستشاريين"}
+                toggleSubmenuFun={toggleSupervisorSubmenu}
+                showSubmenu={showSupervisorsMenu}
+                subMenuList={supervisroSubmenuList}
+              />
+            )}
+            {filterRoles(["Admin", "SuperAdmin"]) && (
+              <SidebarMenu
+                menuTitle={"المقاولين"}
+                toggleSubmenuFun={toggleContractorSubmenu}
+                showSubmenu={showContractorMenu}
+                subMenuList={contractorSubmenuList}
+              />
+            )}
+          {/* </Box> */}
         </Box>
         {/* logout */}
         <Stack

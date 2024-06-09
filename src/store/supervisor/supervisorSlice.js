@@ -75,7 +75,7 @@ const supervisorSlice = createSlice({
       if (index !== -1) {
         state.supervisors[index] = payload;
       } else {
-        console.error("Branch not found");
+        console.error("Activity not found");
       }
     });
     builder.addCase(actUpdateSupervisor.rejected, (state, action) => {

@@ -20,10 +20,14 @@ import {
 } from "@mui/material";
 import StatusLabel from "../components/manageContracts/StatusLabel";
 import { useDispatch, useSelector } from "react-redux";
-import { actGetProjectByBranch } from "../store/project/projectSlice";
+import {
+  actGetProjectByActivity,
+  actGetProjects,
+} from "../store/project/projectSlice";
 import CenterStat from "../components/manageContracts/CenterStat";
 import {
   actGetStatByProjectId,
+  actGetStatBySectorId,
   resetStat,
 } from "../store/Statistics/statSlice";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
@@ -49,18 +53,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   borderRadius: "10px",
 }));
 
-const Branch = () => {
+const Sector = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
-    projectsByBranch,
+    projectsByActivity,
     error: projectError,
     loading: projectLoading,
     totalItems,
   } = useSelector((state) => state.project);
   const {
-    projectStat,
+    stats,
     error: statError,
     loading: statLoading,
   } = useSelector((state) => state.stat);
@@ -81,7 +85,7 @@ const Branch = () => {
     totalActiveHandicaps,
     totalClosedHandicaps,
     totalOnHoldHandicaps,
-  } = projectStat;
+  } = stats;
   const [page, handleChangePge] = useState(1);
 
   const handleChangePage = (event, value) => {
@@ -89,8 +93,8 @@ const Branch = () => {
   };
 
   useEffect(() => {
-    dispatch(actGetProjectByBranch({ id, page }));
-    dispatch(actGetStatByProjectId(id));
+    dispatch(actGetProjects({ sectorId: id, page }));
+    dispatch(actGetStatBySectorId(id));
     return () => {
       dispatch(resetStat());
     };
@@ -102,7 +106,7 @@ const Branch = () => {
 
   return (
     <>
-      <Heading title="تفاصيل النشاط" />
+      <Heading title="تفاصيل القطاع" />
       <Box
         gap={2}
         p={1}
@@ -150,14 +154,15 @@ const Branch = () => {
                 color="initial"
                 fontWeight="bold"
               >
-                {projectsByBranch.length > 0 && projectsByBranch[0].branchName}
+                {projectsByActivity.length > 0 &&
+                  projectsByActivity[0].ActivityName}
               </Typography>
             </Typography>
             <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
               <Table aria-label="customized table">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="center">النشاط</StyledTableCell>
+                    <StyledTableCell align="center">القطاع</StyledTableCell>
                     <StyledTableCell align="center">الاستشارى</StyledTableCell>
                     <StyledTableCell align="center">
                       اسم المشروع
@@ -187,7 +192,7 @@ const Branch = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {projectsByBranch?.map((row) => (
+                  {projectsByActivity?.map((row) => (
                     <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
                       <StyledTableRow
                         key={row}
@@ -198,7 +203,7 @@ const Branch = () => {
                         onClick={() => handleShowProject(row)}
                       >
                         <StyledTableCell align="center">
-                          {row.branchName}
+                          {row.ActivityName}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {row.supervisorName}
@@ -273,4 +278,4 @@ const Branch = () => {
   );
 };
 
-export default Branch;
+export default Sector;

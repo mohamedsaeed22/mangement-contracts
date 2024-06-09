@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import actGetProjects from "./act/actGetProjects";
-import actGetProjectByBranch from "./act/actGetProjectByBranch";
+import actGetProjectByActivity from "./act/actGetProjectByActivity";
 import actUpdateProject from "./act/actUpdateProject";
 import actGetProjectById from "./act/actGetProjectById";
 
 const initialState = {
   projects: [],
-  projectsByBranch: [],
   project: {},
   totalItems: 0,
   loading: false,
@@ -43,17 +42,17 @@ const projectSlice = createSlice({
       }
     });
 
-    // get projects by branch
-    builder.addCase(actGetProjectByBranch.pending, (state) => {
+    // get projects by Activity
+    builder.addCase(actGetProjectByActivity.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actGetProjectByBranch.fulfilled, (state, { payload }) => {
+    builder.addCase(actGetProjectByActivity.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.projectsByBranch = payload.data;
+      state.projects = payload.data;
       state.totalItems = payload.totalItems;
     });
-    builder.addCase(actGetProjectByBranch.rejected, (state, action) => {
+    builder.addCase(actGetProjectByActivity.rejected, (state, action) => {
       state.loading = false;
       //
       if (action?.payload === 403) {
@@ -111,6 +110,6 @@ const projectSlice = createSlice({
   },
 });
 
-export { actGetProjects, actGetProjectByBranch };
+export { actGetProjects, actGetProjectByActivity };
 export const { getProjectById } = projectSlice.actions;
 export default projectSlice.reducer;

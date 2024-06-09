@@ -34,7 +34,7 @@ const SupervisorForm = ({
           handleCloseModal();
         })
         .catch((err) => {
-          notifyFailed("حدث خطأ أثناء تحديث الاستشارى");
+          notifyFailed(err + "حدث خطأ أثناء تحديث الاستشارى");
         });
     } else {
       dispatch(actCreateSupervisor(values))
@@ -45,7 +45,7 @@ const SupervisorForm = ({
         })
         .catch((err) => {
           console.log(err);
-          notifyFailed(err + "هذا الاستشارى موجود مسبقا");
+          notifyFailed(err + " حدث خطا ما عند الاضافة");
         });
     }
   };
@@ -69,7 +69,7 @@ const SupervisorForm = ({
           id="supervisor-form"
           flexWrap="wrap"
           direction={isUpdate && "column"}
-          gap={isUpdate ? 0 : 2}
+          gap={2}
           marginBlock={isUpdate && "1.25rem"}
           alignItems="center"
           onSubmit={handleSubmit}

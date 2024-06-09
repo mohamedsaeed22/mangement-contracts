@@ -28,6 +28,7 @@ const defaultTheme = createTheme({
   },
 });
 
+
 const cacheRtl = createCache({
   key: "muirtl",
   stylisPlugins: [prefixer, rtlPlugin],

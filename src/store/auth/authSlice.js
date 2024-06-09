@@ -5,6 +5,7 @@ import {
   getAcessToken,
   getUserRoles,
   setAccessToken,
+  setRefreshToken,
 } from "../../utils/accessLocalStorage";
 
 const initialState = {
@@ -33,8 +34,13 @@ const authSlice = createSlice({
     builder.addCase(actAuthLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
       console.log(payload);
-      const myToken = payload.accessToken;
+      const myToken = payload?.accessToken;
+      const myRefreshToken = payload?.refreshToken;
+      const myRefreshTokenExp = payload?.expires;
+
+      console.log(myRefreshToken);
       setAccessToken(myToken);
+      setRefreshToken(myRefreshToken, myRefreshTokenExp);
       // console.log(getUserRoles());
       // if (Array.isArray(getUserRoles())) {
       //    state.roles = getUserRoles();

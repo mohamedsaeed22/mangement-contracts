@@ -19,7 +19,7 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
-import BranchForm from "../components/Form/BranchForm";
+import ActivityForm from "../components/Form/ActivityForm";
 import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";

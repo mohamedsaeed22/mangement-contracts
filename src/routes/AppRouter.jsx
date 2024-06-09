@@ -10,8 +10,7 @@ import PageSuspenseFallback from "../components/feedback/PageSuspenseFallback/Pa
 import Error from "../pages/Error";
 import Home from "../pages/Home";
 import WithGuard from "../components/common/Auth/WithGuard";
-import Branch from "../pages/Branch";
-import MangeBranches from "../pages/MangeBranches";
+import Activity from "../pages/Activity";
 import ManageSupervisors from "../pages/ManageSupervisors";
 import ProjectDetails from "../pages/ProjectDetails";
 import Project from "../pages/Project";
@@ -20,7 +19,9 @@ import ManageCompanies from "../pages/ManageCompanies";
 import ManageItems from "../pages/ManageItems";
 import RoleGuard from "../components/common/Auth/RoleGuard";
 import ManageSectors from "../pages/ManageSectors";
-
+import ManageActivities from "../pages/ManageActivities";
+import ManageContractors from "../pages/ManageContractors";
+import Sector from "../pages/Sector";
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 
@@ -56,7 +57,7 @@ const router = createBrowserRouter(
             </RoleGuard>
           }
         />
-         <Route
+        <Route
           path="managesectors"
           element={
             <RoleGuard roles={["Admin", "SuperAdmin"]}>
@@ -67,7 +68,7 @@ const router = createBrowserRouter(
         <Route
           path="project/add"
           element={
-            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserBranch"]}>
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
               <Project />
             </RoleGuard>
           }
@@ -75,7 +76,7 @@ const router = createBrowserRouter(
         <Route
           path="project/edit/:id"
           element={
-            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserBranch"]}>
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
               <Project />
             </RoleGuard>
           }
@@ -83,14 +84,24 @@ const router = createBrowserRouter(
         <Route path="project/id/:id" element={<ProjectDetails />} />
         <Route path="projectsbox" element={<ProjectsBox />} />
         <Route
-          path="managebranches"
+          path="manageactivities"
           element={
-            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserBranch"]}>
-              <MangeBranches />
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
+              <ManageActivities />
             </RoleGuard>
           }
         />
-        <Route path="branch/:id" element={<Branch />} />
+        <Route
+          path="managecontractors"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
+              <ManageContractors />
+            </RoleGuard>
+          }
+        />
+        <Route path="activity/:id" element={<Activity />} />
+        <Route path="sector/:id" element={<Sector />} />
+
         <Route
           path="managesupervisors"
           element={

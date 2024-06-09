@@ -48,7 +48,7 @@ form #my-input-userName {
 ::-ms-reveal {
   filter: invert(100%);
 }
-#branch-form input::placeholder,
+#Activity-form input::placeholder,
 #supervisor-form input::placeholder {
   font-size: 14px;
 }

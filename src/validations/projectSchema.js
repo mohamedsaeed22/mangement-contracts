@@ -1,15 +1,16 @@
+import dayjs from "dayjs";
 import * as yup from "yup";
 
 const initialProjectValues = {
   name: "",
   description: "",
-  startDate: null,
-  endDate: null,
+  startDate: dayjs().toISOString(), // Set initial date to current date
+  endDate: dayjs().toISOString(),
   budget: "",
   spentBudget: "",
   percentage: "",
   status: "",
-  branchId: "",
+  ActivityId: "",
   supervisorId: "",
   showRisks: "no",
   riskStatus: "",
@@ -28,26 +29,21 @@ const projectSchema = yup.lazy((values) => {
     description: yup.string().required("الوصف مطلوب"),
     startDate: yup
       .date()
-      // .nullable()
-      // .transform((value, originalValue) =>
-      //   originalValue === null ? null : new Date(originalValue)
-      // )
+      .nullable()
       .required("تاريخ البداية مطلوب")
       .typeError("التاريخ غير صحيح"),
     endDate: yup
       .date()
-      // .nullable()
-      // .transform((value, originalValue) =>
-      //   originalValue === null ? null : new Date(originalValue)
-      // )
-      .required("تاريخ النهاية مطلوب"),
-    //   .typeError("التاريخ غير صحيح")
-    //   .when(
-    //     "startDate",
-    //     (startDate, schema) =>
-    //       startDate &&
-    //       schema.min(startDate, "تاريخ النهاية يجب أن يكون بعد تاريخ البداية")
-    //   ),
+      .nullable()
+      .required("تاريخ النهاية مطلوب")
+      .typeError("التاريخ غير صحيح")
+      .when(
+        "startDate",
+        (started, yup) =>
+          started &&
+          yup.min(started, "تاريخ النهاية يجب أن يكون بعد تاريخ البداية")
+      )
+      ,
     budget: yup
       .number()
       .required("التكلفة مطلوبة")
@@ -66,7 +62,7 @@ const projectSchema = yup.lazy((values) => {
     showRisks: yup.string().required(),
     showHandicaps: yup.string().required(),
     status: yup.string().required("حالة المشروع مطلوبة"),
-    branchId: yup.string().required("النشاط مطلوب"),
+    ActivityId: yup.string().required("النشاط مطلوب"),
     supervisorId: yup.string().required("اسم الاستشارى مطلوب"),
   });
 

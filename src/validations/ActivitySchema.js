@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-const branchSchema = yup.object().shape({
+const ActivitySchema = yup.object().shape({
   name: yup
     .string()
     .matches(
@@ -19,4 +19,4 @@ const branchSchema = yup.object().shape({
     .required("وصف النشاط مطلوب"),
 });
 
-export default branchSchema;
+export default ActivitySchema;

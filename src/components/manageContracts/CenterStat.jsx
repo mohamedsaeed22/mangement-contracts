@@ -5,12 +5,13 @@ import ClosingImage from "./../../assets/imgs/closing.svg";
 
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 
-const CenterStat = ({
-  totalCompletedProjects,
-  totalInProgressProjects,
-  totalOnHoldProjects,
-  totalNotStartedProjects,
-}) => {
+const CenterStat = ({ stats }) => {
+  const {
+    totalCompletedProjects,
+    totalInProgressProjects,
+    totalOnHoldProjects,
+    totalNotStartedProjects,
+  } = stats;
   return (
     <Grid container spacing={2} mb={2}>
       <Grid item xs={12} sm={6} lg={3}>
@@ -45,7 +46,7 @@ const CenterStat = ({
               color="#01204E"
               textAlign="center"
             >
-              0
+              {totalOnHoldProjects}
             </Typography>
             <Typography variant="body1" color="initial">
               مرحلة البدء

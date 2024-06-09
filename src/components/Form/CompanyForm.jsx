@@ -66,7 +66,7 @@ const CompanyForm = ({
       }) => (
         <Stack
           component="form"
-          id="branch-form"
+          id="Activity-form"
           flexWrap="wrap"
           direction={isUpdate && "column"}
           gap={isUpdate ? 0 : 2}
@@ -122,43 +122,42 @@ const CompanyForm = ({
                 : " "
             }
           />
-            <Autocomplete
-              id="country-select-demo"
-              sx={{ width: 250 ,alignSelf:'flex-start'}}
-              size="small"
-              options={countries.map((option) => option.lable)}
-              autoHighlight
-              // value={values.country}
-              getOptionLabel={(option) => option ? option.label : ""}
-              renderOption={(props, option) => (
-                <Box
-                   component="li"
-                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                  {...props}
-                >
-                  {/* <img
+          <Autocomplete
+            id="country-select-demo"
+            sx={{ width: 250, alignSelf: "flex-start" }}
+            size="small"
+            options={countries.map((option) => option.lable)}
+            autoHighlight
+            // value={values.country}
+            getOptionLabel={(option) => (option ? option.label : "")}
+            renderOption={(props, option) => (
+              <Box
+                component="li"
+                sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                {...props}
+              >
+                {/* <img
                     loading="lazy"
                     width="20"
                     srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
                     src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
                     alt=""
                   /> */}
-                  {option.label} ({option.code}) +{option.phone}
-                </Box>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="اختر الدولة"
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: "new-password",
-                  }}
-                />
-              )}
-            />
-          <Box alignSelf="flex-start">
-          </Box>
+                {option.label} ({option.code}) +{option.phone}
+              </Box>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="اختر الدولة"
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: "new-password",
+                }}
+              />
+            )}
+          />
+          <Box alignSelf="flex-start"></Box>
 
           <Box alignSelf={isUpdate ? "center" : "flex-start"}>
             <MyBtn

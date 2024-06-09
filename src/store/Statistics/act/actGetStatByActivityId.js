@@ -1,13 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
-const actDeleteBranch = createAsyncThunk(
-  "branch/actDeleteBranch",
-  async (id, thunk) => {
+
+const actGetStatByActivityId = createAsyncThunk(
+  "statistics/actGetStatByActivityId",
+  async (activityId, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.delete("api/Branch/delete/" + id);
-
+      const res = await api.get(
+        "api/ProjectsStatistics/statistics/activityId/" + activityId
+      );
       return res.data;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
@@ -15,4 +17,4 @@ const actDeleteBranch = createAsyncThunk(
   }
 );
 
-export default actDeleteBranch;
+export default actGetStatByActivityId;

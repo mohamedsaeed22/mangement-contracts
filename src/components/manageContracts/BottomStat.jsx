@@ -3,16 +3,17 @@ import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import DisableImage from "../../assets/imgs/disables.svg";
 import RisksImage from "../../assets/imgs/downs.svg";
 
-const BottomStat = ({
-  totalHandicaps,
-  totalActiveHandicaps,
-  totalClosedHandicaps,
-  totalOnHoldHandicaps,
-  totalRisks,
-  totalActiveRisks,
-  totalClosedRisks,
-  totalOnHoldRisks,
-}) => {
+const BottomStat = ({ stats }) => {
+  const {
+    totalHandicaps,
+    totalActiveHandicaps,
+    totalClosedHandicaps,
+    totalOnHoldHandicaps,
+    totalRisks,
+    totalActiveRisks,
+    totalClosedRisks,
+    totalOnHoldRisks,
+  } = stats;
   return (
     <>
       <Grid container spacing={2}>

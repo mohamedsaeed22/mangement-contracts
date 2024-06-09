@@ -14,10 +14,8 @@ const setAccessToken = (accessToken) => {
 const getRefreshToken = () => {
   return Cookies.get("refreshToken");
 };
-const setRefreshToken = (refreshToken) => {
-  const decodedToken = jwtDecode(refreshToken);
-  const expirationTime = new Date(decodedToken.exp * 1000);
-  Cookies.set("refreshToken", refreshToken, { expires: expirationTime });
+const setRefreshToken = (refreshToken, exp) => {
+  Cookies.set("refreshToken", refreshToken, { expires: new Date(exp) });
 };
 
 const removeAllCookies = () => {

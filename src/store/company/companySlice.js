@@ -62,12 +62,12 @@ const companySlice = createSlice({
     builder.addCase(actUpdateCompany.fulfilled, (state, { payload }) => {
       state.loading = false;
       const index = state.companies.findIndex(
-        (branch) => branch.id === payload.id
+        (Activity) => Activity.id === payload.id
       );
       if (index !== -1) {
         state.companies[index] = payload;
       } else {
-        console.error("Branch not found");
+        console.error("Activity not found");
       }
     });
     builder.addCase(actUpdateCompany.rejected, (state, action) => {

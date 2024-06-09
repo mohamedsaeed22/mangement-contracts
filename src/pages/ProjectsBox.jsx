@@ -32,7 +32,6 @@ import StatusLabel from "../components/manageContracts/StatusLabel";
 import { RestartAlt } from "@mui/icons-material";
 import AddIcon from "../assets/icon/add-icon.svg";
 import { actGetSupervisors } from "../store/supervisor/supervisorSlice";
-import { actGetBranches } from "../store/branch/branchSlice";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { projectStateOptions } from "../utils/statusList";
 
@@ -59,19 +58,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 // const getIsoDate = () => {};
 const initialFormData = {
-  BranchId: "",
-  Status: "",
-  SupervisorId: "",
-  SpentBudget: "",
-  StartDate: null,
-  EndDate: null,
+  activityId: "",
+  status: "",
+  supervisorId: "",
+  spentBudget: "",
+  startDate: null,
+  endDate: null,
 };
 
 const ProjectsBox = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { projects, totalItems } = useSelector((state) => state.project);
-  const { branches, loading, error } = useSelector((state) => state.branch);
+  const { activities, loading, error } = useSelector((state) => state.activity);
   const { supervisors } = useSelector((state) => state.supervisor);
   const [toggleFilter, setToggleFilter] = useState(false);
   const [page, handleChangePge] = useState(1);
@@ -81,8 +80,7 @@ const ProjectsBox = () => {
   const handleChangePage = (event, value) => {
     handleChangePge(value);
   };
-  console.log(projects);
-console.log(totalItems)
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
@@ -93,23 +91,16 @@ console.log(totalItems)
   }, [search]);
 
   useEffect(() => {
-     handleChangePage(1);
-  }, [formData]);
-
-   useEffect(() => {
-    console.log(page)
-    // dispatch(actGetSupervisors());
-    // dispatch(actGetBranches());
     dispatch(
       actGetProjects({
         page,
         search: debouncedSearch,
-        status: formData.Status,
-        startDate: formData.StartDate,
-        endDate: formData.EndDate,
-        BranchId: formData.BranchId,
-        SupervisorId: formData.SupervisorId,
-        SpentBudget: formData.SpentBudget,
+        status: formData.status,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        activityId: formData.activityId,
+        supervisorId: formData.supervisorId,
+        spentBudget: formData.spentBudget,
       })
     );
   }, [dispatch, page, search, formData, debouncedSearch]);
@@ -206,18 +197,20 @@ console.log(totalItems)
               alignItems="center"
             >
               <FormControl sx={{ minWidth: 150 }} size="small">
-                <InputLabel id="demo-simple-select-branche">النشاط</InputLabel>
+                <InputLabel id="demo-simple-select-Activitye">
+                  النشاط
+                </InputLabel>
                 <Select
-                  labelId="demo-simple-select-branche"
-                  id="demo-simple-selectBranch"
-                  value={formData.BranchId}
+                  labelId="demo-simple-select-Activitye"
+                  id="demo-simple-selectActivity"
+                  value={formData.activityId}
                   label="النشاط"
-                  name="BranchId"
-                  onChange={(e) => handleChange("BranchId", e.target.value)}
+                  name="activityId"
+                  onChange={(e) => handleChange("activityId", e.target.value)}
                 >
-                  {branches?.map((branch) => (
-                    <MenuItem key={branch.id} value={branch.id}>
-                      {branch.name}
+                  {activities?.map((Activity) => (
+                    <MenuItem key={Activity.id} value={Activity.id}>
+                      {Activity.name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -230,10 +223,10 @@ console.log(totalItems)
                 <Select
                   labelId="demo-simple-select-supervisor"
                   id="demo-simple-selectSupervisor"
-                  value={formData.SupervisorId}
-                  name="SupervisorId"
+                  value={formData.supervisorId}
+                  name="supervisorId"
                   label="مشرف المشروع"
-                  onChange={(e) => handleChange("SupervisorId", e.target.value)}
+                  onChange={(e) => handleChange("supervisorId", e.target.value)}
                 >
                   {supervisors?.map((supervisor) => (
                     <MenuItem key={supervisor.id} value={supervisor.id}>
@@ -249,9 +242,9 @@ console.log(totalItems)
                 label="المنصرف الفعلى"
                 variant="outlined"
                 sx={{ width: "150px" }}
-                value={formData.SpentBudget}
-                name="SpentBudget"
-                onChange={(e) => handleChange("SpentBudget", e.target.value)}
+                value={formData.spentBudget}
+                name="spentBudget"
+                onChange={(e) => handleChange("spentBudget", e.target.value)}
               />
               <FormControl sx={{ minWidth: 150 }} size="small">
                 <InputLabel id="demo-simple-select-projectState">
@@ -260,10 +253,10 @@ console.log(totalItems)
                 <Select
                   labelId="demo-simple-select-projectState"
                   id="demo-simple-selectProjectState"
-                  value={formData.Status}
+                  value={formData.status}
                   label="حالة المشروع"
-                  name="Status"
-                  onChange={(e) => handleChange("Status", e.target.value)}
+                  name="status"
+                  onChange={(e) => handleChange("status", e.target.value)}
                 >
                   {projectStateOptions.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
@@ -289,9 +282,9 @@ console.log(totalItems)
                     <DatePicker
                       label="بداية المشروع"
                       slotProps={{ textField: { size: "small" } }}
-                      name="StartDate"
-                      value={formData.StartDate}
-                      onChange={(value) => handleChange("StartDate", value)}
+                      name="startDate"
+                      value={formData.startDate}
+                      onChange={(value) => handleChange("startDate", value)}
                       renderInput={(params) => <TextField {...params} />}
                       inputFormat="MM/DD/YYYY"
                     />
@@ -299,9 +292,9 @@ console.log(totalItems)
                   <Box sx={{ width: "150px" }}>
                     <DatePicker
                       label="نهاية المشروع"
-                      value={formData.EndDate}
-                      name="EndDate"
-                      onChange={(value) => handleChange("EndDate", value)}
+                      value={formData.endDate}
+                      name="endDate"
+                      onChange={(value) => handleChange("endDate", value)}
                       renderInput={(params) => <TextField {...params} />}
                       inputFormat="MM/DD/YYYY"
                       slotProps={{ textField: { size: "small" } }}
@@ -361,7 +354,7 @@ console.log(totalItems)
                     onClick={() => navigate(`/project/id/${row.id}`)}
                   >
                     <StyledTableCell align="center">
-                      {row.branchName}
+                      {row.ActivityName}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {row.supervisorName}
@@ -424,15 +417,15 @@ console.log(totalItems)
           marginInline="auto"
           mt={2}
         >
-          <Pagination
-            count={Math.ceil(totalItems / 10)}
-            page={page ? page :1}
-            onChange={handleChangePage}
-          />
-          {/* {totalItems > 0 ? (
+          {totalItems > 0 ? (
+            <Pagination
+              count={Math.ceil(totalItems / 10)}
+              page={page ? page : 1}
+              onChange={handleChangePage}
+            />
           ) : (
             "لا يوجد مشاريع"
-          )} */}
+          )}
         </Stack>
         {/* </LoadingWrapper> */}
       </Box>

@@ -4,44 +4,41 @@ import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import { Box, Stack } from "@mui/material";
- import MyBtn from "../common/UI/MyBtn";
+import MyBtn from "../common/UI/MyBtn";
 import AddIcon from "../../assets/icon/add-icon.svg";
 import EditIcon from "../../assets/icon/edit-icon.svg";
-import itemSchema from "../../validations/itemSchema";
-import { actCreateItem, actUpdateItem } from "../../store/item/itemSlice";
- 
+import {
+  actCreateSector,
+  actUpdateSector,
+} from "../../store/sector/sectorSlice";
+import { sectorSchema, initialSector } from "../../validations/sectorSchema";
 
-const initialItem = {
-  name: "",
-  description: "",
-};
-
-const ItemForm = ({
-  initialValues = initialItem,
+const SectorForm = ({
+  initialValues = initialSector,
   isUpdate = false,
   handleCloseModal,
 }) => {
   const dispatch = useDispatch();
   const handleFormSubmit = (values, { resetForm }) => {
     if (isUpdate) {
-      dispatch(actUpdateItem(values))
+      dispatch(actUpdateSector(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم تحديث الصنف بنجاح");
+          notifySuccess("تم تحديث القطاع بنجاح");
           handleCloseModal();
         })
         .catch((err) => {
-          notifyFailed("حدث خطأ أثناء تحديث الصنف");
+          notifyFailed(err + " حدث خطأ أثناء تحديث القطاع");
         });
     } else {
-      dispatch(actCreateItem(values))
+      dispatch(actCreateSector(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم اضافة الوصف بنجاح");
+          notifySuccess("تم اضافة القطاع بنجاح");
           resetForm();
         })
         .catch((err) => {
-          notifyFailed("هذا الوصف موجود مسبقا");
+          notifyFailed(err + " حدث خطا ما عند الاضافة");
         });
     }
   };
@@ -50,7 +47,7 @@ const ItemForm = ({
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValues}
-      validationSchema={itemSchema}
+      validationSchema={sectorSchema}
     >
       {({
         values,
@@ -72,7 +69,7 @@ const ItemForm = ({
         >
           <MyInput
             name="name"
-            label="اسم الصنف"
+            label="اسم القطاع"
             placeholder="ادخل الاسم"
             value={values.name}
             size="small"
@@ -82,22 +79,6 @@ const ItemForm = ({
             error={!!touched.name && !!errors.name}
             helperText={
               touched.name && errors.name ? touched.name && errors.name : " "
-            }
-          />
-          <MyInput
-            name="description"
-            label="الوصف"
-            placeholder="ادخل الوصف"
-            value={values.description}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            size="small"
-            width={250}
-            error={!!touched.description && !!errors.description}
-            helperText={
-              touched.description && errors.description
-                ? touched.description && errors.description
-                : " "
             }
           />
           <Box alignSelf={isUpdate ? "center" : "flex-start"}>
@@ -115,4 +96,4 @@ const ItemForm = ({
   );
 };
 
-export default ItemForm;
+export default SectorForm;

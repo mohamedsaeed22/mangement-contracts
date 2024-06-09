@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice";
-import branchReducer from "./branch/branchSlice";
+import ActivityReducer from "./Activity/activitySlice";
 import projectReducer from "./project/projectSlice";
 import supervisorReducer from "./supervisor/supervisorSlice";
 import companyReducer from "./company/companySlice";
@@ -8,11 +8,12 @@ import itemReducer from "./item/itemSlice";
 import statReducer from "./Statistics/statSlice";
 import riskReducer from "./risk/riskSlice";
 import handicapReducer from "./handicap/handicapSlice";
+import sectorReducer from "./sector/sectorSlice";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    branch: branchReducer,
+    activity: ActivityReducer,
     project: projectReducer,
     supervisor: supervisorReducer,
     company: companyReducer,
@@ -20,6 +21,7 @@ const store = configureStore({
     stat: statReducer,
     risk: riskReducer,
     handicap: handicapReducer,
+    sector: sectorReducer,
   },
 });
 

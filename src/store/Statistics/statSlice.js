@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import actGetAllStat from "./act/actGetAllStat";
-import actGetStatByProjectId from "./act/actGetStatByProjectId";
+import actGetStatByActivityId from "./act/actGetStatByActivityId";
+import actGetStatBySectorId from "./act/actGetStatBySectorId";
 
 const initialState = {
-  allStat: {},
-  projectStat: {},
+  stats: {},
   loading: false,
   error: null,
 };
@@ -14,8 +14,7 @@ const supervisorSlice = createSlice({
   initialState,
   reducers: {
     resetStat: (state, action) => {
-      state.allStat = {};
-      state.projectStat = {};
+      state.stats = {};
     },
   },
   extraReducers: (builder) => {
@@ -26,13 +25,15 @@ const supervisorSlice = createSlice({
     });
     builder.addCase(actGetAllStat.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.allStat = payload;
+      state.stats = payload;
     });
     builder.addCase(actGetAllStat.rejected, (state, action) => {
       state.loading = false;
       console.log(action);
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 404) {
+        state.error = "هذه الصفحة غير موجوده";
       } else if (action?.payload === 500) {
         state.error = "حدث خطا ما فى السيرفر";
       } else {
@@ -40,20 +41,43 @@ const supervisorSlice = createSlice({
       }
     });
 
-    // get  stat by projectid
-    builder.addCase(actGetStatByProjectId.pending, (state) => {
+    // get  stat by activityId
+    builder.addCase(actGetStatByActivityId.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actGetStatByProjectId.fulfilled, (state, { payload }) => {
+    builder.addCase(actGetStatByActivityId.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.projectStat = payload;
+      state.stats = payload;
     });
-    builder.addCase(actGetStatByProjectId.rejected, (state, action) => {
+    builder.addCase(actGetStatByActivityId.rejected, (state, action) => {
       state.loading = false;
 
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 404) {
+        state.error = "هذه الصفحة غير موجوده";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = action.payload;
+      }
+    });
+    // get stat by sectorId
+    builder.addCase(actGetStatBySectorId.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(actGetStatBySectorId.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.stats = payload;
+    });
+    builder.addCase(actGetStatBySectorId.rejected, (state, action) => {
+      state.loading = false;
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 404) {
+        state.error = "هذه الصفحة غير موجوده";
       } else if (action?.payload === 500) {
         state.error = "حدث خطا ما فى السيرفر";
       } else {
@@ -63,6 +87,6 @@ const supervisorSlice = createSlice({
   },
 });
 
-export { actGetAllStat, actGetStatByProjectId };
+export { actGetAllStat, actGetStatByActivityId ,actGetStatBySectorId};
 export const { resetStat } = supervisorSlice.actions;
 export default supervisorSlice.reducer;

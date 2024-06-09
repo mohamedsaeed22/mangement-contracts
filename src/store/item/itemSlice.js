@@ -63,7 +63,7 @@ const itemSlice = createSlice({
       if (index !== -1) {
         state.items[index] = payload;
       } else {
-        console.error("Branch not found");
+        console.error("Activity not found");
       }
     });
     builder.addCase(actUpdateItem.rejected, (state, action) => {

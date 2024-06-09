@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import { actGetSupervisors } from "../../supervisor/supervisorSlice";
-import { actGetBranches } from "../../branch/branchSlice";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
+import { actGetActivities } from "../../Activity/activitySlice";
 
 const actGetProjectById = createAsyncThunk(
   "project/actGetProjectById",
@@ -10,18 +10,20 @@ const actGetProjectById = createAsyncThunk(
     const { getState, rejectWithValue, dispatch } = thunkAPI;
     try {
       await dispatch(actGetSupervisors()).unwrap();
-      await dispatch(actGetBranches()).unwrap();
+      await dispatch(actGetActivities()).unwrap();
       const { supervisors } = getState().supervisor;
-      const { branches } = getState().branch;
+      const { activities } = getState().Activity;
       const res = await api.get("api/Project/" + id);
       const supervisor = supervisors.find(
         (sup) => sup.id === res.data.supervisorId
       );
       const supervisorName = supervisor ? supervisor.name : "";
-      const branch = branches.find((branch) => branch.id === res.data.branchId);
-      const branchName = branch ? branch.name : "";
+      const Activity = activities.find(
+        (Activity) => Activity.id === res.data.ActivityId
+      );
+      const ActivityName = Activity ? Activity.name : "";
       res.data.supervisorName = supervisorName;
-      res.data.branchName = branchName;
+      res.data.ActivityName = ActivityName;
       return res.data;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
