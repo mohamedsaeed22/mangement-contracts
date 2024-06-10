@@ -8,7 +8,7 @@ const actDeleteHandicap = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.delete("api/Handicap/delete/" + handId);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

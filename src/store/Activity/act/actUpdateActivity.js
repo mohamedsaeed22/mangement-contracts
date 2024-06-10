@@ -8,7 +8,7 @@ const actUpdateActivity = createAsyncThunk(
 
     try {
       const res = await api.put("api/Activity/update/" + Activity.id, Activity);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

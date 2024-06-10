@@ -7,7 +7,7 @@ const actUpdateSector = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.put("api/Sector/update/" + sector.id, sector);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

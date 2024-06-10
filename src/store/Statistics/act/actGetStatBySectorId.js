@@ -10,7 +10,7 @@ const actGetStatBySectorId = createAsyncThunk(
       const res = await api.get(
         "api/ProjectsStatistics/statistics/sectorId/" + sectorId
       );
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

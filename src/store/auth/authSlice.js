@@ -22,6 +22,7 @@ const authSlice = createSlice({
     authLogout: (state) => {
       state.user = null;
       Cookies.remove("token");
+      Cookies.remove("refreshToken");
       state.accessToken = null;
     },
   },
@@ -37,25 +38,14 @@ const authSlice = createSlice({
       const myToken = payload?.accessToken;
       const myRefreshToken = payload?.refreshToken;
       const myRefreshTokenExp = payload?.expires;
-
-      console.log(myRefreshToken);
       setAccessToken(myToken);
       setRefreshToken(myRefreshToken, myRefreshTokenExp);
-      // console.log(getUserRoles());
-      // if (Array.isArray(getUserRoles())) {
-      //    state.roles = getUserRoles();
-      // } else {
-      //    state.roles = [getUserRoles()];
-      // }
-      // console.log(state.roles);
       state.accessToken = myToken;
     });
 
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;
-      console.log(action);
-      console.log(action);
-      if (action?.payload === 401) {
+      if (action?.payload === 400) {
         state.error = "خطا فى اسم المستخدم او كلمة المرور";
       } else if (action?.payload === 500) {
         state.error = "حدث خطا ما فى السيرفر";

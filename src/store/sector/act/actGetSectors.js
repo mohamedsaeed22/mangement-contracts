@@ -8,8 +8,8 @@ const actGetSectors = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.get("api/Sector/browse");
-
-      return res.data;
+        console.log(res)
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

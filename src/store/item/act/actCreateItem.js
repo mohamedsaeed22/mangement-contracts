@@ -8,7 +8,7 @@ const actCreateItem = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.post("api/Item/create", item);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

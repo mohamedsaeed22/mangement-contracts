@@ -8,7 +8,7 @@ const actDeleteActivity = createAsyncThunk(
     try {
       const res = await api.delete("api/Activity/delete/" + id);
 
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

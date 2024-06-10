@@ -9,7 +9,7 @@ const actGetHandicapsByProjectId = createAsyncThunk(
     try {
       const res = await api.get("api/Handicap/browse?projectId=" + projectId);
 
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

@@ -10,7 +10,7 @@ const actCreateRisk = createAsyncThunk(
     try {
       const res = await api.post("api/Risk/create", risk);
 
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

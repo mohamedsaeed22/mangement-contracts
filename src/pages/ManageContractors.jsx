@@ -27,8 +27,8 @@ import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
-import { initialContractor } from "../validations/contractorSchema";
-
+import { initialConsultant } from "../validations/consultantSchema";
+ 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -54,7 +54,7 @@ const ManageContractors = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const { activities, error, loading } = useSelector((state) => state.activity);
-  const [updatedActivity, setUpdateContractor] = useState(initialContractor);
+  const [updatedActivity, setUpdateContractor] = useState(initialConsultant);
 
   const handleCloseModal = () => {
     setOpenModal(false);

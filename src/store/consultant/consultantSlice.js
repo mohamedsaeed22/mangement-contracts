@@ -1,36 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
-import actGetSupervisors from "./act/actGetSupervisors";
-import actUpdateSupervisor from "./act/actUpdateSupervisor";
-import actDeleteSupervisor from "./act/actDeleteSupervisor";
-import actCreateSupervisor from "./act/actCreateSupervisor";
+import actCreateConsultant from "./act/actCreateConsultant";
+import actGetConsultantByProjectId from "./act/actGetConsultants";
+import actDeleteConsultant from "./act/actDeleteConsultant";
+import actGetConsultants from "./act/actGetConsultants";
+import actUpdateConsultant from "./act/actUpdateConsultant";
 
 const initialState = {
-  supervisors: [],
+  consultants: [],
   loading: false,
   error: null,
 };
 
-const supervisorSlice = createSlice({
-  name: "supervisor",
+const consultantSlice = createSlice({
+  name: "consultant",
   initialState,
   reducers: {
-    filterSupervisors: (state, { payload }) => {
-      state.supervisors = state.supervisors.filter(
-        (s) => s.id !== `${payload}`
+    filterConsultants: (state, { payload }) => {
+      state.consultants = state.consultants.filter(
+        (el) => el.id !== `${payload}`
       );
     },
   },
   extraReducers: (builder) => {
-    // get all supervisors
-    builder.addCase(actGetSupervisors.pending, (state) => {
+    // get all consultants
+    builder.addCase(actGetConsultants.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actGetSupervisors.fulfilled, (state, { payload }) => {
+    builder.addCase(actGetConsultants.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.supervisors = payload;
+      state.consultants = payload;
     });
-    builder.addCase(actGetSupervisors.rejected, (state, action) => {
+    builder.addCase(actGetConsultants.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -41,17 +42,17 @@ const supervisorSlice = createSlice({
       }
     });
 
-    // create supervisor
-    builder.addCase(actCreateSupervisor.pending, (state) => {
+    // create consultant
+    builder.addCase(actCreateConsultant.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actCreateSupervisor.fulfilled, (state, { payload }) => {
+    builder.addCase(actCreateConsultant.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const { id, name, phone } = payload;
-      state.supervisors.push({ id, name, phone });
+      console.log(payload);
+      state.consultants.push(payload);
     });
-    builder.addCase(actCreateSupervisor.rejected, (state, action) => {
+    builder.addCase(actCreateConsultant.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -61,24 +62,22 @@ const supervisorSlice = createSlice({
         state.error = action.payload;
       }
     });
-
-    // update supervisor
-    builder.addCase(actUpdateSupervisor.pending, (state) => {
+    builder.addCase(actUpdateConsultant.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actUpdateSupervisor.fulfilled, (state, { payload }) => {
+    builder.addCase(actUpdateConsultant.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const index = state.supervisors.findIndex(
-        (supervisor) => supervisor.id === payload.id
+      const index = state.consultants.findIndex(
+        (consultant) => consultant.id === payload.id
       );
       if (index !== -1) {
-        state.supervisors[index] = payload;
+        state.consultants[index] = payload;
       } else {
         console.error("Activity not found");
       }
     });
-    builder.addCase(actUpdateSupervisor.rejected, (state, action) => {
+    builder.addCase(actUpdateConsultant.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -89,15 +88,15 @@ const supervisorSlice = createSlice({
       }
     });
 
-    // delete supervisor
-    builder.addCase(actDeleteSupervisor.pending, (state) => {
+    // delete consultant
+    builder.addCase(actDeleteConsultant.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actDeleteSupervisor.fulfilled, (state, { payload }) => {
+    builder.addCase(actDeleteConsultant.fulfilled, (state, { payload }) => {
       state.loading = false;
     });
-    builder.addCase(actDeleteSupervisor.rejected, (state, action) => {
+    builder.addCase(actDeleteConsultant.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -111,11 +110,10 @@ const supervisorSlice = createSlice({
 });
 
 export {
-  actGetSupervisors,
-  actDeleteSupervisor,
-  actCreateSupervisor,
-  actUpdateSupervisor,
+  actCreateConsultant,
+  actGetConsultantByProjectId,
+  actDeleteConsultant,
 };
 
-export const { filterSupervisors } = supervisorSlice.actions;
-export default supervisorSlice.reducer;
+export const { filterConsultants } = consultantSlice.actions;
+export default consultantSlice.reducer;

@@ -10,7 +10,7 @@ const actGetStatByActivityId = createAsyncThunk(
       const res = await api.get(
         "api/ProjectsStatistics/statistics/activityId/" + activityId
       );
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

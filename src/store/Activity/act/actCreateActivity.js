@@ -7,7 +7,7 @@ const actCreateActivity = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.post("api/Activity/create", Activity);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

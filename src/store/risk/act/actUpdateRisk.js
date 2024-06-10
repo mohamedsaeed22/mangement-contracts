@@ -8,7 +8,7 @@ const actUpdateRisk = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.put("api/Risk/Update/" + risk.id, risk);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

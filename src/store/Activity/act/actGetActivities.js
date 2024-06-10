@@ -7,7 +7,7 @@ const actGetActivities = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.get("api/Activity/browse");
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

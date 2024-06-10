@@ -2,20 +2,26 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function MyModal({ open, handleClose, title, children }) {
+export default function MyModal({
+  open,
+  width = 500,
+  handleClose,
+  title,
+  children,
+}) {
   const style = {
     position: "absolute",
     top: "40px",
     left: "50%",
     transform: "translateX(-50%)",
     width: "100%",
-    maxWidth: "500px",
+    maxWidth: { width },
     bgcolor: "background.paper",
     boxShadow: 24,
     borderRadius: "6px",
     overflow: "hidden",
     paddingTop: "50px",
-    // paddingBottom: "20px",
+     // paddingBottom: "20px",
     paddingLeft: "10px",
     paddingRight: "10px",
     "::before": {

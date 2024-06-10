@@ -8,7 +8,7 @@ const actDeleteRisk = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.delete("api/Risk/delete/" + riskId);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

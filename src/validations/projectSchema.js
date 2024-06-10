@@ -11,7 +11,7 @@ const initialProjectValues = {
   percentage: "",
   status: "",
   ActivityId: "",
-  supervisorId: "",
+  sectorId: "",
   showRisks: "no",
   riskStatus: "",
   riskDescription: "",
@@ -42,8 +42,7 @@ const projectSchema = yup.lazy((values) => {
         (started, yup) =>
           started &&
           yup.min(started, "تاريخ النهاية يجب أن يكون بعد تاريخ البداية")
-      )
-      ,
+      ),
     budget: yup
       .number()
       .required("التكلفة مطلوبة")
@@ -63,7 +62,7 @@ const projectSchema = yup.lazy((values) => {
     showHandicaps: yup.string().required(),
     status: yup.string().required("حالة المشروع مطلوبة"),
     ActivityId: yup.string().required("النشاط مطلوب"),
-    supervisorId: yup.string().required("اسم الاستشارى مطلوب"),
+    sectorId: yup.string().required("القطاع مطلوب"),
   });
 
   if (values.showRisks === "yes") {

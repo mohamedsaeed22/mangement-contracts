@@ -10,11 +10,11 @@ import ExitIcon from "../../../assets/icon/exit.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { authLogout } from "../../../store/auth/authSlice";
-import { actGetSupervisors } from "../../../store/supervisor/supervisorSlice";
 import SidebarMenu from "./SidebarMenu";
 import { SweatAlert } from "../../feedback/Alerts/alerts";
 import { filterRoles } from "../../../utils/filterRoles";
 import { actGetActivities } from "../../../store/Activity/activitySlice";
+import { actGetSectors } from "../../../store/sector/sectorSlice";
 
 const projectSubmenuList = [
   {
@@ -52,14 +52,16 @@ let contractorSubmenuList = [
   },
 ];
 
-const supervisroSubmenuList = [
+const consultantSubmenuList = [
   {
     id: 4,
-    nav: "managesupervisors",
+    nav: "manageconsultants",
     name: "اداره الاستشاريين",
   },
 ];
 
+let activitiesList = [];
+let sectorList = [];
 const Sidebar = () => {
   const dispatch = useDispatch();
   const [showProjectsMenu, setShowProjectsMenu] = useState(false);
@@ -70,14 +72,18 @@ const Sidebar = () => {
 
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const { activities } = useSelector((state) => state.activity);
+  const { sectors } = useSelector((state) => state.sector);
   const { roles } = useSelector((state) => state.auth);
 
-  const { supervisors } = useSelector((state) => state.supervisor);
-  let activitiesList = [];
+  const { consultants } = useSelector((state) => state.consultant);
+
   if (activities) {
     activitiesList = [...activitySubmenuList, ...activities];
   }
-
+  console.log(sectors);
+  if (sectors) {
+    sectorList = [...sectorSubmenuList, ...sectors];
+  }
   const toggleProjectSubmenu = () => {
     setShowProjectsMenu(!showProjectsMenu);
   };
@@ -95,7 +101,8 @@ const Sidebar = () => {
   };
   useEffect(() => {
     dispatch(actGetActivities());
-    dispatch(actGetSupervisors());
+    // dispatch(actGetSupervisors());
+    dispatch(actGetSectors());
   }, [dispatch]);
 
   const handleToggleSidebar = () => {
@@ -218,7 +225,7 @@ const Sidebar = () => {
             showSubmenu={showSectormenu}
             subMenuList={
               filterRoles(["Admin", "SuperAdmin"])
-                ? sectorSubmenuList
+                ? sectorList
                 : [...activities]
             }
             navLink="sector"
@@ -247,24 +254,24 @@ const Sidebar = () => {
             }
           />
 
-          {/* supervisors menu  */}
+          {/* consultants menu  */}
           {/* <Box sx={{ position: "absolute", width: "100%", bottom: 109 }}> */}
-            {filterRoles(["Admin", "SuperAdmin"]) && (
-              <SidebarMenu
-                menuTitle={"الاستشاريين"}
-                toggleSubmenuFun={toggleSupervisorSubmenu}
-                showSubmenu={showSupervisorsMenu}
-                subMenuList={supervisroSubmenuList}
-              />
-            )}
-            {filterRoles(["Admin", "SuperAdmin"]) && (
-              <SidebarMenu
-                menuTitle={"المقاولين"}
-                toggleSubmenuFun={toggleContractorSubmenu}
-                showSubmenu={showContractorMenu}
-                subMenuList={contractorSubmenuList}
-              />
-            )}
+          {filterRoles(["Admin", "SuperAdmin"]) && (
+            <SidebarMenu
+              menuTitle={"الاستشاريين"}
+              toggleSubmenuFun={toggleSupervisorSubmenu}
+              showSubmenu={showSupervisorsMenu}
+              subMenuList={consultantSubmenuList}
+            />
+          )}
+          {filterRoles(["Admin", "SuperAdmin"]) && (
+            <SidebarMenu
+              menuTitle={"المقاولين"}
+              toggleSubmenuFun={toggleContractorSubmenu}
+              showSubmenu={showContractorMenu}
+              subMenuList={contractorSubmenuList}
+            />
+          )}
           {/* </Box> */}
         </Box>
         {/* logout */}

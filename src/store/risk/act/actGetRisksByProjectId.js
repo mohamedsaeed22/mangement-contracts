@@ -8,7 +8,7 @@ const actGetRisksByProjectId = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.get("api/Risk/browse?projectId=" + projectId);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

@@ -58,7 +58,7 @@ const Sector = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
-    projectsByActivity,
+    projects,
     error: projectError,
     loading: projectLoading,
     totalItems,
@@ -68,24 +68,7 @@ const Sector = () => {
     error: statError,
     loading: statLoading,
   } = useSelector((state) => state.stat);
-  const {
-    totalProjects,
-    totalPercentage,
-    totalBudget,
-    totalSpent,
-    totalCompletedProjects,
-    totalInProgressProjects,
-    totalOnHoldProjects,
-    totalNotStartedProjects,
-    totalRisks,
-    totalActiveRisks,
-    totalClosedRisks,
-    totalOnHoldRisks,
-    totalHandicaps,
-    totalActiveHandicaps,
-    totalClosedHandicaps,
-    totalOnHoldHandicaps,
-  } = stats;
+console.log(stats)
   const [page, handleChangePge] = useState(1);
 
   const handleChangePage = (event, value) => {
@@ -122,30 +105,11 @@ const Sector = () => {
       >
         <Box borderRadius={2}>
           <LoadingWrapper loading={projectLoading} error={statError}>
-            <TopStat
-              totalProjects={totalProjects}
-              totalPercentage={totalPercentage}
-              totalBudget={totalBudget}
-              totalSpent={totalSpent}
-            />
+            <TopStat stats={stats} />
             {/* center paper */}
-            <CenterStat
-              totalCompletedProjects={totalCompletedProjects}
-              totalInProgressProjects={totalInProgressProjects}
-              totalOnHoldProjects={totalOnHoldProjects}
-              totalNotStartedProjects={totalNotStartedProjects}
-            />
+            <CenterStat stats={stats} />
             {/* bottom paper */}
-            <BottomStat
-              totalRisks={totalRisks}
-              totalActiveRisks={totalActiveRisks}
-              totalClosedRisks={totalClosedRisks}
-              totalOnHoldRisks={totalOnHoldRisks}
-              totalHandicaps={totalHandicaps}
-              totalActiveHandicaps={totalActiveHandicaps}
-              totalClosedHandicaps={totalClosedHandicaps}
-              totalOnHoldHandicaps={totalOnHoldHandicaps}
-            />
+            <BottomStat stats={stats} />
             <Typography variant="h6" color="initial" mt={1}>
               المشاريع الخاصة بـ {""}
               <Typography
@@ -154,8 +118,8 @@ const Sector = () => {
                 color="initial"
                 fontWeight="bold"
               >
-                {projectsByActivity.length > 0 &&
-                  projectsByActivity[0].ActivityName}
+                {projects.length > 0 &&
+                  projects[0].ActivityName}
               </Typography>
             </Typography>
             <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
@@ -192,7 +156,7 @@ const Sector = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {projectsByActivity?.map((row) => (
+                  {projects?.map((row) => (
                     <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
                       <StyledTableRow
                         key={row}

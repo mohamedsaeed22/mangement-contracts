@@ -3,8 +3,7 @@ import MyInput from "../common/UI/MyInput";
 import { Formik } from "formik";
 import {
   actCreateSupervisor,
-  actUpdateSupervisor,
-} from "../../store/supervisor/supervisorSlice";
+ } from "../../store/consultant/consultantSlice";
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/alerts";
 import supervisorSchema from "../../validations/supervisorSchema";
@@ -25,15 +24,15 @@ const ActivityForm = ({
 
   const handleFormSubmit = (values, { resetForm }) => {
     if (isUpdate) {
-      dispatch(actUpdateSupervisor(values))
-        .unwrap()
-        .then((e) => {
-          notifySuccess("تم تحديث الاستشارى بنجاح");
-          handleCloseModal();
-        })
-        .catch((err) => {
-          notifyFailed("حدث خطأ أثناء تحديث الاستشارى");
-        });
+      // dispatch(actUpdateSupervisor(values))
+      //   .unwrap()
+      //   .then((e) => {
+      //     notifySuccess("تم تحديث الاستشارى بنجاح");
+      //     handleCloseModal();
+      //   })
+      //   .catch((err) => {
+      //     notifyFailed("حدث خطأ أثناء تحديث الاستشارى");
+      //   });
     } else {
       dispatch(actCreateSupervisor(values))
         .unwrap()

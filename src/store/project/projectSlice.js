@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import actGetProjects from "./act/actGetProjects";
-import actGetProjectByActivity from "./act/actGetProjectByActivity";
-import actUpdateProject from "./act/actUpdateProject";
+ import actUpdateProject from "./act/actUpdateProject";
 import actGetProjectById from "./act/actGetProjectById";
 
 const initialState = {
@@ -43,26 +42,26 @@ const projectSlice = createSlice({
     });
 
     // get projects by Activity
-    builder.addCase(actGetProjectByActivity.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(actGetProjectByActivity.fulfilled, (state, { payload }) => {
-      state.loading = false;
-      state.projects = payload.data;
-      state.totalItems = payload.totalItems;
-    });
-    builder.addCase(actGetProjectByActivity.rejected, (state, action) => {
-      state.loading = false;
-      //
-      if (action?.payload === 403) {
-        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
-      } else if (action?.payload === 500) {
-        state.error = "حدث خطا ما فى السيرفر";
-      } else {
-        state.error = action.payload;
-      }
-    });
+    // builder.addCase(actGetProjectByActivity.pending, (state) => {
+    //   state.loading = true;
+    //   state.error = null;
+    // });
+    // builder.addCase(actGetProjectByActivity.fulfilled, (state, { payload }) => {
+    //   state.loading = false;
+    //   state.projects = payload.data;
+    //   state.totalItems = payload.totalItems;
+    // });
+    // builder.addCase(actGetProjectByActivity.rejected, (state, action) => {
+    //   state.loading = false;
+    //   //
+    //   if (action?.payload === 403) {
+    //     state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+    //   } else if (action?.payload === 500) {
+    //     state.error = "حدث خطا ما فى السيرفر";
+    //   } else {
+    //     state.error = action.payload;
+    //   }
+    // });
 
     // get project by id
     builder.addCase(actGetProjectById.pending, (state) => {
@@ -110,6 +109,6 @@ const projectSlice = createSlice({
   },
 });
 
-export { actGetProjects, actGetProjectByActivity };
+export { actGetProjects };
 export const { getProjectById } = projectSlice.actions;
 export default projectSlice.reducer;

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import { actGetSupervisors } from "../../supervisor/supervisorSlice";
+import { actGetSupervisors } from "../../consultant/consultantSlice";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
 import { actGetActivities } from "../../Activity/activitySlice";
 
@@ -13,15 +13,15 @@ const actGetProjectByActivity = createAsyncThunk(
     try {
       await dispatch(actGetSupervisors()).unwrap();
       await dispatch(actGetActivities()).unwrap();
-      const { supervisors } = getState().supervisor;
+      const { consultants } = getState().consultant;
       const { activities } = getState().Activity;
 
       const res = await api.get(
         `api/Project/browse?ActivityId=${params.id}&PageSize=10&Page=${params.page}`
       );
       const enhancedProjects = res.data.data.map((project) => {
-        const supervisor = supervisors.find(
-          (sup) => sup.id === project.supervisorId
+        const supervisor = consultants.find(
+          (sup) => sup.id === project.consultantId
         );
         const Activity = activities.find((br) => br.id === project.ActivityId);
         return {

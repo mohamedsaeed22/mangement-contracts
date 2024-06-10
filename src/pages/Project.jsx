@@ -56,16 +56,15 @@ const Project = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { supervisors } = useSelector((state) => state.supervisor);
+  const { sectors } = useSelector((state) => state.sector);
   const { activities } = useSelector((state) => state.activity);
+
   const { project, loading } = useSelector((state) => state.project);
   const [myProject, setMyProject] = useState(initialProjectValues);
   const [anchorEl, setAnchorEl] = useState(null);
-  console.log(project);
   const { risks: r, handicaps: h } = project && project;
   const riskObj = r?.length > 0 ? r[0] : null;
   const handicapObj = h?.length > 0 ? h[0] : null;
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -347,32 +346,29 @@ const Project = () => {
                   </MyInput>
                   <MyInput
                     width={180}
-                    name="supervisorId"
+                    name="sectorId"
                     select
-                    label="الاستشارى"
-                    placeholder="اختر الاستشارى"
-                    value={values.supervisorId}
+                    label="القطاع"
+                    placeholder="اختر القطاع"
+                    value={values.sectorId}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={!!touched.supervisorId && !!errors.supervisorId}
-                    helperText={touched.supervisorId && errors.supervisorId}
+                    error={!!touched.sectorId && !!errors.sectorId}
+                    helperText={touched.sectorId && errors.sectorId}
                   >
-                    {supervisors.length > 0 ? (
-                      supervisors.map((supervisor) => (
+                    {sectors.length > 0 ? (
+                      sectors.map((supervisor) => (
                         <MenuItem key={supervisor.id} value={supervisor.id}>
                           {supervisor.name}
                         </MenuItem>
                       ))
                     ) : (
-                      <MenuItem disabled>لا يوجد استشارين</MenuItem>
+                      <MenuItem disabled>لا يوجد قطاعات</MenuItem>
                     )}
                   </MyInput>
                   {id && (
                     <Stack direction="row" alignSelf="flex-start">
-                      <MyBtn
-                        title="تعديل"
-                        type="submit"
-                       />
+                      <MyBtn title="تعديل" type="submit" />
                       <Box>
                         <IconButton
                           aria-label="more"

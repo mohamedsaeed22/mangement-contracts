@@ -7,7 +7,7 @@ const actCreateCompany = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.post("api/ForeignCompany/create", company);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

@@ -7,7 +7,7 @@ const actDeleteCompany = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.delete("api/ForeignCompany/delete/" + id);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

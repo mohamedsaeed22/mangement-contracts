@@ -15,13 +15,9 @@ import { styled } from "@mui/material/styles";
 import { Add } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import MyModal from "../components/common/UI/MyModal";
-import {
-  actDeleteSupervisor,
-  filterSupervisors,
-} from "../store/supervisor/supervisorSlice";
 import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
-import SupervisorForm from "../components/Form/SupervisorForm";
+import SupervisorForm from "../components/Form/ConsultantForm";
 import {
   notifyFailed,
   notifySuccess,
@@ -59,10 +55,10 @@ const initialSupervisor = {
 const ManageActivities = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
-  const { supervisors, error, loading } = useSelector(
-    (state) => state.supervisor
-  );
+  const { consultants } = useSelector((state) => state.consultant);
   const [updatedSupervisor, setUpdatedSupervisor] = useState(initialSupervisor);
+
+  console.log(consultants);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -80,17 +76,17 @@ const ManageActivities = () => {
       dangerMode: true,
     });
     if (willDelete) {
-      dispatch(actDeleteSupervisor(supervisor.id))
-        .unwrap()
-        .then((e) => {
-          dispatch(filterSupervisors(supervisor.id));
-          notifySuccess("تم حذف الاستشارى");
-          setOpenModal(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          notifyFailed(err + "حدث خطا ما عند حذف الاستشارى");
-        });
+      // dispatch(actDeleteSupervisor(supervisor.id))
+      //   .unwrap()
+      //   .then((e) => {
+      //     dispatch(filterSupervisors(supervisor.id));
+      //     notifySuccess("تم حذف الاستشارى");
+      //     setOpenModal(false);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     notifyFailed(err + "حدث خطا ما عند حذف الاستشارى");
+      //   });
     }
   };
 
@@ -138,7 +134,7 @@ const ManageActivities = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {supervisors?.map((row) => (
+                {[]?.map((row) => (
                   <StyledTableRow key={row.id}>
                     <StyledTableCell align="center">{row.name}</StyledTableCell>
                     <StyledTableCell align="center">
@@ -165,7 +161,7 @@ const ManageActivities = () => {
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
-                {supervisors?.length === 0 && (
+                {[]?.length === 0 && (
                   <StyledTableRow>
                     <StyledTableCell align="center" colSpan={3}>
                       لا يوجد استشاريين

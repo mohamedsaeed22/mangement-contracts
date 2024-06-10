@@ -8,7 +8,7 @@ const actCreateProject = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.post("api/Project/create", project);
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

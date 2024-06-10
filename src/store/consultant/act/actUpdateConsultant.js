@@ -2,20 +2,20 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
 
-const actUpdateSupervisor = createAsyncThunk(
-  "supervisor/actUpdateSupervisor",
-  async (supervisor, thunk) => {
+const actUpdateConsultant = createAsyncThunk(
+  "consultant/actUpdateConsultant",
+  async (consultant, thunk) => {
     const { rejectWithValue } = thunk;
     try {
       const res = await api.put(
-        "api/Supervisor/update/" + supervisor.id,
-        supervisor
+        "api/Consultant/update/" + consultant.id,
+        consultant
       );
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }
   }
 );
 
-export default actUpdateSupervisor;
+export default actUpdateConsultant;

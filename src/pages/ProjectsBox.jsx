@@ -31,8 +31,7 @@ import { actGetProjects } from "../store/project/projectSlice";
 import StatusLabel from "../components/manageContracts/StatusLabel";
 import { RestartAlt } from "@mui/icons-material";
 import AddIcon from "../assets/icon/add-icon.svg";
-import { actGetSupervisors } from "../store/supervisor/supervisorSlice";
-import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
+ import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { projectStateOptions } from "../utils/statusList";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -71,7 +70,6 @@ const ProjectsBox = () => {
   const navigate = useNavigate();
   const { projects, totalItems } = useSelector((state) => state.project);
   const { activities, loading, error } = useSelector((state) => state.activity);
-  const { supervisors } = useSelector((state) => state.supervisor);
   const [toggleFilter, setToggleFilter] = useState(false);
   const [page, handleChangePge] = useState(1);
   const [search, setSearch] = useState("");
@@ -80,7 +78,7 @@ const ProjectsBox = () => {
   const handleChangePage = (event, value) => {
     handleChangePge(value);
   };
-
+  console.log(projects);
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);

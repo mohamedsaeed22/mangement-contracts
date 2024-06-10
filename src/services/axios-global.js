@@ -31,25 +31,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-// function checkToken() {
-//   // Check if token exists in local storage
-//   const token = getAcessToken();
-//   console.log(token)
-
-//   // if (!token) {
-//   //     // If token doesn't exist, logout user
-//   //     logoutUser();
-//   // }
-// }
-
-// function logoutUser() {
-//   // // Perform logout actions here, such as clearing local storage, redirecting to login page, etc.
-//   // localStorage.removeItem('token');
-//   // window.location.href = '/login'; // Redirect to login page
-// }
-
-// Set interval to check token every 2 seconds
-// setInterval(checkToken, 2000);
 
 api.interceptors.response.use(
   (res) => {
@@ -63,7 +44,8 @@ api.interceptors.response.use(
         originalConfig._retry = true;
         try {
           const rs = await refreshMyToken();
-          const { accessToken } = rs.data;
+          console.log(rs)
+          const { accessToken } = rs;
           setAccessToken(accessToken);
           // setRefreshToken(refreshToken);
           api.defaults.headers.common["x-access-token"] = accessToken;

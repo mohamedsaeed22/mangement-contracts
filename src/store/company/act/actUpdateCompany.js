@@ -11,7 +11,7 @@ const actUpdateCompany = createAsyncThunk(
         "api/ForeignCompany/update" + company.id,
         company
       );
-      return res.data;
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

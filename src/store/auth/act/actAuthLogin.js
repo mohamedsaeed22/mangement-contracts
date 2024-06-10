@@ -8,7 +8,6 @@ const actAuthLogin = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.post("api/users/Identity/auth", formData);
-      console.log(res)
       return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
