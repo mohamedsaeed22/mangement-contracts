@@ -110,6 +110,7 @@ const ManageConsultants = () => {
         mt="70px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         height="calc(100vh - 130px)"
+        overflow="auto"
       >
         {/* <LoadingWrapper error={error} loading={loading}> */}
         <Box>

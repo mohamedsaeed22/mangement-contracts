@@ -22,11 +22,10 @@ import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
 import ConsultantForm from "../components/Form/ConsultantForm";
-import actDeleteSector from "../store/sector/act/actDeleteSector";
-import actGetSectors from "../store/sector/act/actGetSectors";
-import SectorForm from "../components/Form/SectorForm";
-import { initialSector } from "../validations/sectorSchema";
-import { filterSectors } from "../store/sector/sectorSlice";
+import { initialConsultant } from "../validations/consultantSchema";
+import actGetConsultants from "../store/consultant/act/actGetConsultants";
+import actDeleteConsultant from "../store/consultant/act/actDeleteConsultant";
+import { filterConsultants } from "../store/consultant/consultantSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,41 +47,42 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   backgroundColor: "#fff",
   borderRadius: "10px",
 }));
-const ManageSectors = () => {
+
+const AddConsultant = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
-  const { sectors } = useSelector((state) => state.sector);
-  const [updateSector, setUpdateSector] = useState(initialSector);
+  const { consultants } = useSelector((state) => state.consultant);
+  const [updateConsultant, setUpdateConsultant] = useState(initialConsultant);
 
   useEffect(() => {
-    dispatch(actGetSectors());
+    dispatch(actGetConsultants());
   }, [dispatch]);
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
-  const handleUpdateSector = (sector) => {
-    setUpdateSector(sector);
+  const handleUpdateConsultant = (consultant) => {
+    setUpdateConsultant(consultant);
     setOpenModal(true);
   };
 
-  const handleDeleteSector = async (sector) => {
+  const handleDeleteConsultant = async (consultant) => {
     const willDelete = await SweatAlert({
-      title: `هل متاكد من حذف ${sector.name}؟`,
+      title: `هل متاكد من حذف ${consultant.name}؟`,
       icon: "warning",
       dangerMode: true,
     });
     if (willDelete) {
-      dispatch(actDeleteSector(sector.id))
+      dispatch(actDeleteConsultant(consultant.id))
         .unwrap()
         .then((e) => {
-          dispatch(filterSectors(sector.id));
-          notifySuccess("تم حذف القطاع");
+          dispatch(filterConsultants(consultant.id));
+          notifySuccess("تم حذف الاستشارى");
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed(err);
+          notifyFailed(err + "حدث خطا ما");
         });
     }
   };
@@ -90,17 +90,18 @@ const ManageSectors = () => {
   return (
     <>
       <MyModal
+        width={540}
         open={openModal}
         handleClose={handleCloseModal}
-        title="تعديل بيانات قطاع"
+        title="تعديل بيانات استشارى"
       >
-        <SectorForm
+        <ConsultantForm
           isUpdate={true}
-          initialValues={updateSector}
+          initialValues={updateConsultant}
           handleCloseModal={handleCloseModal}
         />
       </MyModal>
-      <Heading title="ادارة القطاعات" />
+      <Heading title="اضافه استشارى" />
       <Box
         gap={2}
         p={2}
@@ -108,29 +109,35 @@ const ManageSectors = () => {
         borderRadius={2}
         mt="70px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
+        height="calc(100vh - 130px)"
         overflow="auto"
       >
         {/* <LoadingWrapper error={error} loading={loading}> */}
         <Box>
-          <SectorForm isUpdate={false} handleCloseModal={handleCloseModal} />
+          <ConsultantForm
+            isUpdate={false}
+            initialValues={updateConsultant}
+            handleCloseModal={handleCloseModal}
+          />
           {/* activities table */}
           <TableContainer sx={{ maxHeight: "75vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">اسم القطاع</StyledTableCell>
+                  <StyledTableCell align="center">
+                    اسم الاستشارى
+                  </StyledTableCell>
                   <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
-                  <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                  <StyledTableCell align="center">الإجراءات</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sectors?.map((row) => (
+                {consultants?.map((row) => (
                   <StyledTableRow key={row.id}>
                     <StyledTableCell align="center">{row.name}</StyledTableCell>
                     <StyledTableCell align="center">
                       {row.totalProjects}
                     </StyledTableCell>
-
                     <StyledTableCell align="center">
                       <Stack direction="row" justifyContent="center" gap={1}>
                         <MyBtn
@@ -138,7 +145,7 @@ const ManageSectors = () => {
                           height={40}
                           icon={EditIcon}
                           title={"تعديل"}
-                          handleBtnClick={() => handleUpdateSector(row)}
+                          handleBtnClick={() => handleUpdateConsultant(row)}
                         />
                         <MyBtn
                           width={100}
@@ -146,7 +153,7 @@ const ManageSectors = () => {
                           bgColor="red"
                           icon={DeleteIcon}
                           title={"حذف"}
-                          handleBtnClick={() => handleDeleteSector(row)}
+                          handleBtnClick={() => handleDeleteConsultant(row)}
                         />
                       </Stack>
                     </StyledTableCell>
@@ -155,9 +162,9 @@ const ManageSectors = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          {sectors?.length === 0 && (
+          {consultants?.length === 0 && (
             <Box textAlign="center" mt={3}>
-              لا يوجد قطاعات
+              لا يوجد استشاريين
             </Box>
           )}
         </Box>
@@ -167,4 +174,4 @@ const ManageSectors = () => {
   );
 };
 
-export default ManageSectors;
+export default AddConsultant;

@@ -31,7 +31,7 @@ import { actGetProjects } from "../store/project/projectSlice";
 import StatusLabel from "../components/manageContracts/StatusLabel";
 import { RestartAlt } from "@mui/icons-material";
 import AddIcon from "../assets/icon/add-icon.svg";
- import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
+import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { projectStateOptions } from "../utils/statusList";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -59,7 +59,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const initialFormData = {
   activityId: "",
   status: "",
-  supervisorId: "",
+  sectorId: "",
   spentBudget: "",
   startDate: null,
   endDate: null,
@@ -69,7 +69,9 @@ const ProjectsBox = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { projects, totalItems } = useSelector((state) => state.project);
-  const { activities, loading, error } = useSelector((state) => state.activity);
+  const { activities } = useSelector((state) => state.activity);
+  const { sectors } = useSelector((state) => state.sector);
+
   const [toggleFilter, setToggleFilter] = useState(false);
   const [page, handleChangePge] = useState(1);
   const [search, setSearch] = useState("");
@@ -78,7 +80,7 @@ const ProjectsBox = () => {
   const handleChangePage = (event, value) => {
     handleChangePge(value);
   };
-  console.log(projects);
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
@@ -97,7 +99,7 @@ const ProjectsBox = () => {
         startDate: formData.startDate,
         endDate: formData.endDate,
         activityId: formData.activityId,
-        supervisorId: formData.supervisorId,
+        sectorId: formData.sectorId,
         spentBudget: formData.spentBudget,
       })
     );
@@ -216,17 +218,17 @@ const ProjectsBox = () => {
 
               <FormControl sx={{ minWidth: 150 }} size="small">
                 <InputLabel id="demo-simple-select-supervisor">
-                  مشرف المشروع
+                  القطاع
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-supervisor"
                   id="demo-simple-selectSupervisor"
-                  value={formData.supervisorId}
-                  name="supervisorId"
-                  label="مشرف المشروع"
-                  onChange={(e) => handleChange("supervisorId", e.target.value)}
+                  value={formData.sectorId}
+                  name="sectorId"
+                  label="القطاع"
+                  onChange={(e) => handleChange("sectorId", e.target.value)}
                 >
-                  {supervisors?.map((supervisor) => (
+                  {sectors?.map((supervisor) => (
                     <MenuItem key={supervisor.id} value={supervisor.id}>
                       {supervisor.name}
                     </MenuItem>
@@ -319,8 +321,8 @@ const ProjectsBox = () => {
           <Table aria-label="customized table">
             <TableHead>
               <TableRow>
+                <StyledTableCell align="center">القطاع</StyledTableCell>
                 <StyledTableCell align="center">النشاط</StyledTableCell>
-                <StyledTableCell align="center">الاستشارى</StyledTableCell>
                 <StyledTableCell align="center">اسم المشروع</StyledTableCell>
                 <StyledTableCell align="center">الوصف</StyledTableCell>
                 <StyledTableCell align="center">
@@ -352,10 +354,10 @@ const ProjectsBox = () => {
                     onClick={() => navigate(`/project/id/${row.id}`)}
                   >
                     <StyledTableCell align="center">
-                      {row.ActivityName}
+                      {row.sectorName}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.supervisorName}
+                      {row.activityName}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {row.name.length > 20

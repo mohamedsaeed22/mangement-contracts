@@ -2,7 +2,6 @@ const convertDateToIso = (newValue) => {
   if (newValue === null) {
     return "";
   } else {
-    console.log(newValue);
     const year = newValue.$y;
     const month = newValue.$M + 1;
     const day = newValue.$D;

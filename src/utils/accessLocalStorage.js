@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
 const getAcessToken = () => {
-  return Cookies.get("token");
+  return Cookies.get("token") ? Cookies.get("token") : "";
 };
 
 const setAccessToken = (accessToken) => {

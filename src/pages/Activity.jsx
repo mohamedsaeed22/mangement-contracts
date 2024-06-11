@@ -74,9 +74,8 @@ const Activity = () => {
   const handleChangePage = (event, value) => {
     handleChangePge(value);
   };
-
   useEffect(() => {
-    dispatch(actGetProjects({ activityId: id, page }));
+    dispatch(actGetProjectByActivity({ id, page }));
     dispatch(actGetStatByActivityId(id));
     return () => {
       dispatch(resetStat());
@@ -133,10 +132,8 @@ const Activity = () => {
                   <Table aria-label="customized table">
                     <TableHead>
                       <TableRow>
-                        <StyledTableCell align="center">النشاط</StyledTableCell>
-                        <StyledTableCell align="center">
-                          الاستشارى
-                        </StyledTableCell>
+                        <StyledTableCell align="center">القطاع</StyledTableCell>
+
                         <StyledTableCell align="center">
                           اسم المشروع
                         </StyledTableCell>
@@ -180,11 +177,9 @@ const Activity = () => {
                             onClick={() => handleShowProject(row)}
                           >
                             <StyledTableCell align="center">
-                              {row.ActivityName}
+                              {row.sectorName}
                             </StyledTableCell>
-                            <StyledTableCell align="center">
-                              {row.supervisorName}
-                            </StyledTableCell>
+
                             <StyledTableCell align="center">
                               {row.name.length > 20
                                 ? row.name.substring(0, 20) + "..."

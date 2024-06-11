@@ -29,7 +29,7 @@ const supervisorSlice = createSlice({
     });
     builder.addCase(actGetAllStat.rejected, (state, action) => {
       state.loading = false;
-      console.log(action);
+
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
       } else if (action?.payload === 404) {
@@ -87,6 +87,6 @@ const supervisorSlice = createSlice({
   },
 });
 
-export { actGetAllStat, actGetStatByActivityId ,actGetStatBySectorId};
+export { actGetAllStat, actGetStatByActivityId, actGetStatBySectorId };
 export const { resetStat } = supervisorSlice.actions;
 export default supervisorSlice.reducer;

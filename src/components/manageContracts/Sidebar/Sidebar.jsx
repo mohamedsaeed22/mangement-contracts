@@ -30,7 +30,7 @@ const projectSubmenuList = [
 ];
 const sectorSubmenuList = [
   {
-    id: 1,
+    id: 3,
     nav: "managesectors",
     name: "اداره القطاعات",
   },
@@ -38,7 +38,7 @@ const sectorSubmenuList = [
 
 let activitySubmenuList = [
   {
-    id: 3,
+    id: 4,
     nav: "manageactivities",
     name: "اداره الانشطة",
   },
@@ -46,7 +46,12 @@ let activitySubmenuList = [
 
 let contractorSubmenuList = [
   {
-    id: 4,
+    id: 5,
+    nav: "contractor/add",
+    name: "اضافه مقاول",
+  },
+  {
+    id: 6,
     nav: "managecontractors",
     name: "اداره المقاولين",
   },
@@ -54,7 +59,12 @@ let contractorSubmenuList = [
 
 const consultantSubmenuList = [
   {
-    id: 4,
+    id: 7,
+    nav: "consultant/add",
+    name: "اضافه استشارى",
+  },
+  {
+    id: 8,
     nav: "manageconsultants",
     name: "اداره الاستشاريين",
   },
@@ -75,15 +85,13 @@ const Sidebar = () => {
   const { sectors } = useSelector((state) => state.sector);
   const { roles } = useSelector((state) => state.auth);
 
-  const { consultants } = useSelector((state) => state.consultant);
-
   if (activities) {
     activitiesList = [...activitySubmenuList, ...activities];
   }
-  console.log(sectors);
   if (sectors) {
     sectorList = [...sectorSubmenuList, ...sectors];
   }
+  console.log(sectors)
   const toggleProjectSubmenu = () => {
     setShowProjectsMenu(!showProjectsMenu);
   };
@@ -162,7 +170,7 @@ const Sidebar = () => {
           style={{
             width: "30px",
             display: "block",
-            marginTop: "20px",
+            marginTop: "10px",
             marginRight: "auto",
             marginLeft: "20px",
             cursor: "pointer",
@@ -179,7 +187,7 @@ const Sidebar = () => {
             marginTop: "40px",
           }}
         />
-        <Box mt={6}>
+        <Box mt={2}>
           {/* home menu */}
           {filterRoles([
             "Admin",
@@ -237,7 +245,7 @@ const Sidebar = () => {
             showSubmenu={showactivitiesMenu}
             subMenuList={
               filterRoles(["Admin", "SuperAdmin"])
-                ? activitySubmenuList
+                ? activitiesList
                 : [...activities]
             }
             navLink="activity"

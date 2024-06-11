@@ -7,7 +7,7 @@ const actGetAllStat = createAsyncThunk(
     const { rejectWithValue } = thunk;
     try {
       const res = await api.get("api/ProjectsStatistics/statistics");
-      console.log(res)
+
       return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));

@@ -10,7 +10,6 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -49,6 +48,13 @@ import actDeleteRisk from "../store/risk/act/actDeleteRisk";
 import actDeleteHandicap from "../store/handicap/act/actDeleteHandicap";
 import { projectStateOptions } from "../utils/statusList";
 import { convertDateToIso } from "../utils/convertDateToIso";
+import actGetConsultants from "../store/consultant/act/actGetConsultants";
+import {
+  actCreateContractor,
+  actGetContractors,
+} from "../store/contractor/contractorSlice";
+import actCreateProjectContractor from "../store/projectContractor/act/actCreateProjectContractor";
+import { actCreateProjectConsultant } from "../store/projectConsultant/projectConsultantSlice";
 
 const myWidth = 250;
 
@@ -58,13 +64,22 @@ const Project = () => {
   const dispatch = useDispatch();
   const { sectors } = useSelector((state) => state.sector);
   const { activities } = useSelector((state) => state.activity);
-
+  const { contractors } = useSelector((state) => state.contractor);
+  const { consultants } = useSelector((state) => state.consultant);
   const { project, loading } = useSelector((state) => state.project);
   const [myProject, setMyProject] = useState(initialProjectValues);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { risks: r, handicaps: h } = project && project;
+  const {
+    risks: r,
+    handicaps: h,
+    contractors: ctr,
+    consultants: con,
+  } = project && project;
   const riskObj = r?.length > 0 ? r[0] : null;
   const handicapObj = h?.length > 0 ? h[0] : null;
+  const contractorObj = ctr?.length > 0 ? ctr[0] : null;
+  const consultantObj = con?.length > 0 ? con[0] : null;
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -86,14 +101,16 @@ const Project = () => {
           notifySuccess("تم حذف المشروع بنجاح");
           navigate(-2);
         })
-        .catch((res) => {
-          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+        .catch((err) => {
+          notifyFailed(err + "حدث خطا ما..الرجاء المحاولة مره اخرى");
         });
     }
     handleClose();
   };
 
   useEffect(() => {
+    dispatch(actGetConsultants());
+    dispatch(actGetContractors());
     if (id) {
       dispatch(actGetProjectById(id));
     } else {
@@ -113,9 +130,11 @@ const Project = () => {
         showHandicaps: handicapObj?.id ? "yes" : "no",
         handicapStatus: handicapObj?.status || "",
         handicapDescription: handicapObj?.description || "",
+        contractorId: contractorObj?.id || "",
+        consultantId: consultantObj?.id || "",
       });
     }
-  }, [id, project, handicapObj, riskObj]);
+  }, [id, project, handicapObj, riskObj, contractorObj, consultantObj]);
 
   const handleFormSubmit = (values) => {
     console.table(values);
@@ -189,7 +208,6 @@ const Project = () => {
           }
         })
         .catch((err) => {
-          console.log(err);
           notifyFailed(err + " خطا ما..الرجاء المحاولة مره اخرى");
         });
     } else {
@@ -254,6 +272,18 @@ const Project = () => {
               notifySuccess("تم إنشاء المشروع بنجاح");
               navigate("/projectsbox");
             }
+            dispatch(
+              actCreateProjectContractor({
+                contractorId: values.contractorId,
+                projectId: res.id,
+              })
+            );
+            dispatch(
+              actCreateProjectConsultant({
+                consultantId: values.consultantId,
+                projectId: res.id,
+              })
+            );
           }
         })
         .catch(() => {
@@ -322,17 +352,18 @@ const Project = () => {
                       </MenuItem>
                     ))}
                   </MyInput>
+
                   <MyInput
                     width={180}
-                    name="ActivityId"
+                    name="activityId"
                     select
                     label="النشاط"
                     placeholder="اختر النشاط"
-                    value={values.ActivityId}
+                    value={values.activityId}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={!!touched.ActivityId && !!errors.ActivityId}
-                    helperText={touched.ActivityId && errors.ActivityId}
+                    error={!!touched.activityId && !!errors.activityId}
+                    helperText={touched.activityId && errors.activityId}
                   >
                     {activities.length > 0 ? (
                       activities.map((Activity) => (
@@ -521,6 +552,49 @@ const Project = () => {
                     </MyInputsWrapper>
                   </Grid>
 
+                  <Grid item xs={12} md={6}>
+                    <MyInputsWrapper title="المقاولين والاستشارين">
+                      <MyInput
+                        width={180}
+                        name="contractorId"
+                        select
+                        disabled={id && true}
+                        label="المقاول"
+                        placeholder="اختر المقاول"
+                        value={values.contractorId}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!touched.contractorId && !!errors.contractorId}
+                        helperText={touched.contractorId && errors.contractorId}
+                      >
+                        {contractors.map((el) => (
+                          <MenuItem key={el.id} value={el.id}>
+                            {el.name}
+                          </MenuItem>
+                        ))}
+                      </MyInput>
+
+                      <MyInput
+                        width={180}
+                        name="consultantId"
+                        select
+                        disabled={id && true}
+                        label="الاستشارى"
+                        placeholder="اختر الاستشارى"
+                        value={values.consultantId}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!touched.consultantId && !!errors.consultantId}
+                        helperText={touched.consultantId && errors.consultantId}
+                      >
+                        {consultants.map((el) => (
+                          <MenuItem key={el.id} value={el.id}>
+                            {el.name}
+                          </MenuItem>
+                        ))}
+                      </MyInput>
+                    </MyInputsWrapper>
+                  </Grid>
                   <Grid item xs={12}>
                     <MyInputsWrapper
                       direction="column"

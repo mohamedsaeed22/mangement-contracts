@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import actGetProjects from "./act/actGetProjects";
- import actUpdateProject from "./act/actUpdateProject";
+import actUpdateProject from "./act/actUpdateProject";
 import actGetProjectById from "./act/actGetProjectById";
+import actGetProjectByActivity from "./act/actGetProjectByActivity";
+import actGetProjectsBySector from "./act/actGetProjectsBySector";
 
 const initialState = {
   projects: [],
@@ -27,6 +29,7 @@ const projectSlice = createSlice({
     });
     builder.addCase(actGetProjects.fulfilled, (state, { payload }) => {
       state.loading = false;
+
       state.projects = payload.data;
       state.totalItems = payload.totalItems;
     });
@@ -42,35 +45,60 @@ const projectSlice = createSlice({
     });
 
     // get projects by Activity
-    // builder.addCase(actGetProjectByActivity.pending, (state) => {
-    //   state.loading = true;
-    //   state.error = null;
-    // });
-    // builder.addCase(actGetProjectByActivity.fulfilled, (state, { payload }) => {
-    //   state.loading = false;
-    //   state.projects = payload.data;
-    //   state.totalItems = payload.totalItems;
-    // });
-    // builder.addCase(actGetProjectByActivity.rejected, (state, action) => {
-    //   state.loading = false;
-    //   //
-    //   if (action?.payload === 403) {
-    //     state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
-    //   } else if (action?.payload === 500) {
-    //     state.error = "حدث خطا ما فى السيرفر";
-    //   } else {
-    //     state.error = action.payload;
-    //   }
-    // });
+    builder.addCase(actGetProjectByActivity.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(actGetProjectByActivity.fulfilled, (state, { payload }) => {
+      state.loading = false;
+
+      state.projects = payload.data;
+      state.totalItems = payload.totalItems;
+    });
+    builder.addCase(actGetProjectByActivity.rejected, (state, action) => {
+      state.loading = false;
+      //
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = action.payload;
+      }
+    });
+
+    // get projects by sector
+    builder.addCase(actGetProjectsBySector.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(actGetProjectsBySector.fulfilled, (state, { payload }) => {
+      state.loading = false;
+
+      state.projects = payload.data;
+      state.totalItems = payload.totalItems;
+    });
+    builder.addCase(actGetProjectsBySector.rejected, (state, action) => {
+      state.loading = false;
+      //
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = action.payload;
+      }
+    });
 
     // get project by id
     builder.addCase(actGetProjectById.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actGetProjectById.fulfilled, (state, action) => {
+    builder.addCase(actGetProjectById.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.project = action.payload;
+      state.project = payload;
+      state.totalItems = payload.totalItems;
     });
     builder.addCase(actGetProjectById.rejected, (state, action) => {
       state.loading = false;
@@ -86,7 +114,7 @@ const projectSlice = createSlice({
     });
     builder.addCase(actUpdateProject.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action);
+
       if (action?.payload?.id) {
         state.error = "تم تعديل المشروع بنجاح";
       } else if (action?.payload === 500) {
@@ -109,6 +137,6 @@ const projectSlice = createSlice({
   },
 });
 
-export { actGetProjects };
+export { actGetProjects, actGetProjectByActivity, actGetProjectsBySector };
 export const { getProjectById } = projectSlice.actions;
 export default projectSlice.reducer;

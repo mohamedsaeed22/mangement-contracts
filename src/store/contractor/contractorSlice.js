@@ -1,34 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
-import actGetActivities from "./act/actGetActivities";
-import actCreateActivity from "./act/actCreateActivity";
-import actUpdateActivity from "./act/actUpdateActivity";
-import actDeleteActivity from "./act/actDeleteActivity";
+import actCreateContractor from "./act/actCreateContractor";
+import actGetContractors from "./act/actGetContractors";
+import actUpdateContractor from "./act/actUpdateContractor";
+import actDeleteContractor from "./act/actDeleteContractor";
 
 const initialState = {
-  activities: [],
+  contractors: [],
   loading: false,
   error: null,
 };
 
-const ActivitySlice = createSlice({
-  name: "Activity",
+const contractorSlice = createSlice({
+  name: "contractor",
   initialState,
   reducers: {
-    filteractivities: (state, { payload }) => {
-      state.activities = state.activities.filter((b) => b.id !== `${payload}`);
+    filterContractors: (state, { payload }) => {
+      state.contractors = state.contractors.filter(
+        (el) => el.id !== `${payload}`
+      );
     },
   },
   extraReducers: (builder) => {
-    // get all activities
-    builder.addCase(actGetActivities.pending, (state) => {
+    // get all contractor
+    builder.addCase(actGetContractors.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actGetActivities.fulfilled, (state, { payload }) => {
+    builder.addCase(actGetContractors.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.activities = payload;
+      state.contractors = payload;
     });
-    builder.addCase(actGetActivities.rejected, (state, action) => {
+    builder.addCase(actGetContractors.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -39,45 +41,42 @@ const ActivitySlice = createSlice({
       }
     });
 
-    // create Activitye
-    builder.addCase(actCreateActivity.pending, (state) => {
+    // create contractor
+    builder.addCase(actCreateContractor.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actCreateActivity.fulfilled, (state, { payload }) => {
-      state.loading = false;
-      const { id, name, description } = payload;
-      state.activities.push({ id, name, description });
-    });
-    builder.addCase(actCreateActivity.rejected, (state, action) => {
+    builder.addCase(actCreateContractor.fulfilled, (state, { payload }) => {
       state.loading = false;
 
+      state.contractors.push(payload);
+    });
+    builder.addCase(actCreateContractor.rejected, (state, action) => {
+      state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
       } else if (action?.payload === 500) {
         state.error = "حدث خطا ما فى السيرفر";
       } else {
-        state.error = "حدث خطا ما فى الشبكة";
+        state.error = action.payload;
       }
     });
-
-    // update Activitye
-    builder.addCase(actUpdateActivity.pending, (state) => {
+    builder.addCase(actUpdateContractor.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actUpdateActivity.fulfilled, (state, { payload }) => {
+    builder.addCase(actUpdateContractor.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const index = state.activities.findIndex(
-        (Activity) => Activity.id === payload.id
+      const index = state.contractors.findIndex(
+        (consultant) => consultant.id === payload.id
       );
       if (index !== -1) {
-        state.activities[index] = payload;
+        state.contractors[index] = payload;
       } else {
         console.error("Activity not found");
       }
     });
-    builder.addCase(actUpdateActivity.rejected, (state, action) => {
+    builder.addCase(actUpdateContractor.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -88,15 +87,15 @@ const ActivitySlice = createSlice({
       }
     });
 
-    // delete Activitye
-    builder.addCase(actDeleteActivity.pending, (state) => {
+    // delete contractor
+    builder.addCase(actDeleteContractor.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actDeleteActivity.fulfilled, (state, { payload }) => {
+    builder.addCase(actDeleteContractor.fulfilled, (state, { payload }) => {
       state.loading = false;
     });
-    builder.addCase(actDeleteActivity.rejected, (state, action) => {
+    builder.addCase(actDeleteContractor.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -110,10 +109,11 @@ const ActivitySlice = createSlice({
 });
 
 export {
-  actCreateActivity,
-  actDeleteActivity,
-  actGetActivities,
-  actUpdateActivity,
+  actCreateContractor,
+  actDeleteContractor,
+  actUpdateContractor,
+  actGetContractors,
 };
-export const { filteractivities } = ActivitySlice.actions;
-export default ActivitySlice.reducer;
+
+export const { filterContractors } = contractorSlice.actions;
+export default contractorSlice.reducer;

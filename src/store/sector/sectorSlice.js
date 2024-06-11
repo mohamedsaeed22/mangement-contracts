@@ -40,8 +40,8 @@ const sectorSlice = createSlice({
     });
     builder.addCase(actCreateSector.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const { id, name } = payload;
-      state.sectors.push({ id, name });
+      const { id, name, totalProjects } = payload;
+      state.sectors.push({ id, name, totalProjects: 0 });
     });
     builder.addCase(actCreateSector.rejected, (state, { payload }) => {
       state.loading = false;

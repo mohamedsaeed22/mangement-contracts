@@ -41,7 +41,6 @@ const ActivityForm = ({
           resetForm();
         })
         .catch((err) => {
-          console.log(err);
           notifyFailed(err);
         });
     }

@@ -44,7 +44,8 @@ const SidebarMenu = ({
         <Box
           pl={2}
           // mt={1}
-          bgcolor="#333"
+          bgcolor="#1A2130"
+          paddingBottom={1}
           sx={{
             direction: "rtl",
             maxHeight: "150px", // Set your desired max height here

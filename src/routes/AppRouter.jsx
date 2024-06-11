@@ -20,6 +20,8 @@ import Sector from "../pages/Sector";
 import ManageActivities from "../pages/ManageActivities";
 import ManageConsultants from "../pages/ManageConsultants";
 import ManageSectors from "../pages/ManageSectors";
+import AddContractor from "../pages/AddContractor";
+import AddConsultant from "../pages/AddConsultant";
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 
@@ -90,6 +92,14 @@ const router = createBrowserRouter(
           }
         />
         <Route
+          path="consultant/add"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
+              <AddConsultant />
+            </RoleGuard>
+          }
+        />
+        <Route
           path="manageconsultants"
           element={
             <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
@@ -97,17 +107,24 @@ const router = createBrowserRouter(
             </RoleGuard>
           }
         />
-        <Route path="activity/:id" element={<Activity />} />
-        <Route path="sector/:id" element={<Sector />} />
-
         <Route
-          path="managecotractor"
+          path="managecontractors"
           element={
-            <RoleGuard roles={["Admin", "SuperAdmin"]}>
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
               <ManageContractors />
             </RoleGuard>
           }
         />
+        <Route
+          path="contractor/add"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
+              <AddContractor />
+            </RoleGuard>
+          }
+        />
+        <Route path="activity/:id" element={<Activity />} />
+        <Route path="sector/:id" element={<Sector />} />
       </Route>
     </>
   )

@@ -34,7 +34,7 @@ const authSlice = createSlice({
     });
     builder.addCase(actAuthLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
-      console.log(payload);
+
       const myToken = payload?.accessToken;
       const myRefreshToken = payload?.refreshToken;
       const myRefreshTokenExp = payload?.expires;

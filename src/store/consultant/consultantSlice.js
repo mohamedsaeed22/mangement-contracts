@@ -12,7 +12,7 @@ const initialState = {
 };
 
 const consultantSlice = createSlice({
-  name: "consultant",
+  name: "contractor",
   initialState,
   reducers: {
     filterConsultants: (state, { payload }) => {
@@ -49,8 +49,8 @@ const consultantSlice = createSlice({
     });
     builder.addCase(actCreateConsultant.fulfilled, (state, { payload }) => {
       state.loading = false;
-      console.log(payload);
-      state.consultants.push(payload);
+
+      state.consultants.push({ ...payload, totalProjects: 0 });
     });
     builder.addCase(actCreateConsultant.rejected, (state, action) => {
       state.loading = false;

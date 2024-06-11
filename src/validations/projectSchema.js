@@ -10,7 +10,9 @@ const initialProjectValues = {
   spentBudget: "",
   percentage: "",
   status: "",
-  ActivityId: "",
+  activityId: "",
+  contractorId: "",
+  consultantId: "",
   sectorId: "",
   showRisks: "no",
   riskStatus: "",
@@ -61,8 +63,10 @@ const projectSchema = yup.lazy((values) => {
     showRisks: yup.string().required(),
     showHandicaps: yup.string().required(),
     status: yup.string().required("حالة المشروع مطلوبة"),
-    ActivityId: yup.string().required("النشاط مطلوب"),
+    activityId: yup.string().required("النشاط مطلوب"),
     sectorId: yup.string().required("القطاع مطلوب"),
+    consultantId: yup.string().required("الاستشارى مطلوب"),
+    contractorId: yup.string().required("المقاول مطلوب"),
   });
 
   if (values.showRisks === "yes") {

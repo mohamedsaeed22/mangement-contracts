@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Stack,
@@ -14,21 +14,24 @@ import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import MyModal from "../components/common/UI/MyModal";
 import {
-  actDeleteActivity,
-  filteractivities,
-} from "../store/Activity/activitySlice";
-import {
   notifyFailed,
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
-import ActivityForm from "../components/Form/ActivityForm";
 import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
-import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
-import { initialConsultant } from "../validations/consultantSchema";
- 
+import { initialContractor } from "../validations/contractorSchema";
+import {
+  actDeleteContractor,
+  filterContractors,
+} from "../store/contractor/contractorSlice";
+import ContractorForm from "../components/Form/ContractorForm";
+import actGetConsultants from "../store/consultant/act/actGetConsultants";
+import actDeleteConsultant from "../store/consultant/act/actDeleteConsultant";
+import ConsultantForm from "../components/Form/ConsultantForm";
+import actGetContractors from "../store/contractor/act/actGetContractors";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -50,37 +53,41 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   borderRadius: "10px",
 }));
 
-const ManageContractors = () => {
+const ManageContractor = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
-  const { activities, error, loading } = useSelector((state) => state.activity);
-  const [updatedActivity, setUpdateContractor] = useState(initialConsultant);
+  const { contractors } = useSelector((state) => state.contractor);
+  const [updateContractor, setUpdateContractor] = useState(initialContractor);
+
+  useEffect(() => {
+    dispatch(actGetContractors());
+  }, [dispatch]);
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
-  const handleUpdateContractor = (Activity) => {
-    setUpdateContractor(Activity);
+  const handleUpdateContractor = (contractor) => {
+    setUpdateContractor(contractor);
     setOpenModal(true);
   };
 
-  const handleDeleteActivity = async (Activity) => {
+  const handleDeleteContractor = async (contractor) => {
     const willDelete = await SweatAlert({
-      title: `هل متاكد من حذف ${Activity.name}؟`,
+      title: `هل متاكد من حذف ${contractor.name}؟`,
       icon: "warning",
       dangerMode: true,
     });
     if (willDelete) {
-      dispatch(actDeleteActivity(Activity.id))
+      dispatch(actDeleteContractor(contractor.id))
         .unwrap()
         .then((e) => {
-          dispatch(filteractivities(Activity.id));
-          notifySuccess("تم حذف المقاول");
+          dispatch(filterContractors(contractor.id));
+          notifySuccess("تم حذف الاستشارى");
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed(err + "حدث خطا ما عند الحذف");
+          notifyFailed(err + "حدث خطا ما");
         });
     }
   };
@@ -88,13 +95,14 @@ const ManageContractors = () => {
   return (
     <>
       <MyModal
+        width={540}
         open={openModal}
         handleClose={handleCloseModal}
         title="تعديل بيانات مقاول"
       >
-        <ActivityForm
+        <ConsultantForm
           isUpdate={true}
-          initialValues={updatedActivity}
+          initialValues={updateContractor}
           handleCloseModal={handleCloseModal}
         />
       </MyModal>
@@ -106,30 +114,68 @@ const ManageContractors = () => {
         borderRadius={2}
         mt="70px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
-        // flex={1}
         height="calc(100vh - 130px)"
+        overflow="auto"
       >
         {/* <LoadingWrapper error={error} loading={loading}> */}
         <Box>
-          <ActivityForm isUpdate={false} initialValues={updatedActivity} />
+          <ContractorForm
+            isUpdate={false}
+            initialValues={updateContractor}
+            handleCloseModal={handleCloseModal}
+          />
           {/* activities table */}
-          <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
+          <TableContainer sx={{ maxHeight: "75vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">النشاط</StyledTableCell>
+                  <StyledTableCell align="center">اسم المقاول</StyledTableCell>
                   <StyledTableCell align="center">الوصف</StyledTableCell>
-                  <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                  <StyledTableCell align="center">رقم الهاتف</StyledTableCell>
+                  <StyledTableCell align="center">
+                    رقم هاتف المسؤل
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    اسم الشخص المسؤل
+                  </StyledTableCell>
+                  <StyledTableCell align="center">العنوان</StyledTableCell>
+                  <StyledTableCell align="center">الدولة</StyledTableCell>
+                  <StyledTableCell align="center">التخصص</StyledTableCell>
+                  <StyledTableCell align="center">الخبرة</StyledTableCell>
+                  <StyledTableCell align="center">المؤهل</StyledTableCell>
+                  <StyledTableCell align="center">الإجراءات</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {activities?.map((row) => (
+                {contractors?.map((row) => (
                   <StyledTableRow key={row.id}>
                     <StyledTableCell align="center">{row.name}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.description.length > 30
-                        ? row.description.substring(0, 30) + "..."
-                        : row.description}
+                      {row.description}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.phoneNumber}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.contactPersonPhone}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.contactPersonName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.address}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.country}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.specialization}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.experience}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.qualification}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <Stack direction="row" justifyContent="center" gap={1}>
@@ -146,22 +192,20 @@ const ManageContractors = () => {
                           bgColor="red"
                           icon={DeleteIcon}
                           title={"حذف"}
-                          handleBtnClick={() => handleDeleteActivity(row)}
+                          handleBtnClick={() => handleDeleteContractor(row)}
                         />
                       </Stack>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
-                {activities?.length === 0 && (
-                  <StyledTableRow>
-                    <StyledTableCell align="center" colSpan={3}>
-                      لا يوجد انشطه
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )}
               </TableBody>
             </Table>
           </TableContainer>
+          {contractors?.length === 0 && (
+            <Box textAlign="center" mt={3}>
+              لا يوجد مقاولين
+            </Box>
+          )}
         </Box>
         {/* </LoadingWrapper> */}
       </Box>
@@ -169,4 +213,4 @@ const ManageContractors = () => {
   );
 };
 
-export default ManageContractors;
+export default ManageContractor;

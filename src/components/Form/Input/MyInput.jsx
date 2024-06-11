@@ -22,10 +22,11 @@ const MyInput = ({
   onChange,
   name,
   select = false,
+  disabled = false,
   children,
 }) => {
   return (
-     <Stack gap={1} maxWidth="100%" width={fullWidth ? "100%" : width}>
+    <Stack gap={1} maxWidth="100%" width={fullWidth ? "100%" : width}>
       <FormControl
         sx={{
           width: fullWidth ? "100%" : width,
@@ -44,6 +45,7 @@ const MyInput = ({
             value={value}
             onChange={onChange}
             onBlur={onBlur}
+            disabled={disabled}
             name={name}
             size="small"
             displayEmpty

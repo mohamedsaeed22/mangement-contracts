@@ -14,9 +14,12 @@ import {
 } from "../../validations/consultantSchema";
 import actCreateConsultant from "../../store/consultant/act/actCreateConsultant";
 import actUpdateConsultant from "../../store/consultant/act/actUpdateConsultant";
-import { actUpdateContractor } from "../../store/contractor/contractorSlice";
+import {
+  actCreateContractor,
+  actUpdateContractor,
+} from "../../store/contractor/contractorSlice";
 
-const ConsultantForm = ({
+const ContractorForm = ({
   initialValues = initialConsultant,
   isUpdate = false,
   handleCloseModal,
@@ -28,17 +31,17 @@ const ConsultantForm = ({
       dispatch(actUpdateContractor(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم تحديث الاستشارى بنجاح");
+          notifySuccess("تم تحديث المقاول بنجاح");
           handleCloseModal();
         })
         .catch((err) => {
-          notifyFailed(err + "حدث خطأ أثناء تحديث الاستشارى");
+          notifyFailed(err + "حدث خطأ أثناء تحديث المقاول");
         });
     } else {
-      dispatch(actCreateConsultant(values))
+      dispatch(actCreateContractor(values))
         .unwrap()
         .then((e) => {
-          notifySuccess("تم اضافة الاستشارى بنجاح");
+          notifySuccess("تم اضافة المقاول بنجاح");
           resetForm();
         })
         .catch((err) => {
@@ -73,7 +76,7 @@ const ConsultantForm = ({
         >
           <MyInput
             name="name"
-            label="اسم الاستشارى"
+            label="اسم المقاول"
             placeholder="ادخل الاسم"
             value={values.name}
             onChange={handleChange}
@@ -247,4 +250,4 @@ const ConsultantForm = ({
   );
 };
 
-export default ConsultantForm;
+export default ContractorForm;

@@ -56,7 +56,7 @@ const ManageCompanies = () => {
   const [openModal, setOpenModal] = useState(false);
   const { companies } = useSelector((state) => state.company);
   const [updateCompany, setUpdateCompany] = useState(initialCompany);
-  console.log(companies);
+
   const handleCloseModal = () => {
     setOpenModal(false);
   };

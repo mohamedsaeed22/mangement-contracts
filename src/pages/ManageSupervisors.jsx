@@ -58,8 +58,6 @@ const ManageActivities = () => {
   const { consultants } = useSelector((state) => state.consultant);
   const [updatedSupervisor, setUpdatedSupervisor] = useState(initialSupervisor);
 
-  console.log(consultants);
-
   const handleCloseModal = () => {
     setOpenModal(false);
   };
@@ -84,7 +82,7 @@ const ManageActivities = () => {
       //     setOpenModal(false);
       //   })
       //   .catch((err) => {
-      //     console.log(err);
+      //
       //     notifyFailed(err + "حدث خطا ما عند حذف الاستشارى");
       //   });
     }

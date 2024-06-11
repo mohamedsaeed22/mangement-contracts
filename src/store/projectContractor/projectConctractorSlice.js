@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import actCreateConsultant from "./act/actCreateConsultant";
+import actCreateConsultant from "./act/actCreateProjectContractor";
 import actGetConsultantByProjectId from "./act/actGetConsultantByProjectId";
 import actDeleteConsultant from "./act/actDeleteConsultant";
+import actCreateProjectContractor from "./act/actCreateProjectContractor";
 
 const initialState = {
   consultants: [],
@@ -9,16 +10,10 @@ const initialState = {
   error: null,
 };
 
-const consultantSlice = createSlice({
-  name: "consultant",
+const projectConctractorSlice = createSlice({
+  name: "projectConctractor",
   initialState,
-  reducers: {
-    filterConsultants: (state, { payload }) => {
-      state.consultants = state.consultants.filter(
-        (el) => el.id !== `${payload}`
-      );
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // get all consultants
     builder.addCase(actGetConsultantByProjectId.pending, (state) => {
@@ -43,18 +38,18 @@ const consultantSlice = createSlice({
       }
     });
 
-    // create consultant
-    builder.addCase(actCreateConsultant.pending, (state) => {
+    // create projectConctractor
+    builder.addCase(actCreateProjectContractor.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actCreateConsultant.fulfilled, (state, { payload }) => {
-      state.loading = false;
-      console.log(payload);
-      const { id, name, phone } = payload;
-      state.consultants.push({ id, name, phone });
-    });
-    builder.addCase(actCreateConsultant.rejected, (state, action) => {
+    builder.addCase(
+      actCreateProjectContractor.fulfilled,
+      (state, { payload }) => {
+        state.loading = false;
+      }
+    );
+    builder.addCase(actCreateProjectContractor.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -68,7 +63,7 @@ const consultantSlice = createSlice({
     // builder.addCase(actUpdateSupervisor.fulfilled, (state, { payload }) => {
     //   state.loading = false;
     //   const index = state.consultants.findIndex(
-    //     (consultant) => consultant.id === payload.id
+    //     (projectConctractor) => projectConctractor.id === payload.id
     //   );
     //   if (index !== -1) {
     //     state.consultants[index] = payload;
@@ -87,7 +82,7 @@ const consultantSlice = createSlice({
     //   }
     // });
 
-    // delete consultant
+    // delete projectConctractor
     builder.addCase(actDeleteConsultant.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -108,11 +103,7 @@ const consultantSlice = createSlice({
   },
 });
 
-export {
-  actCreateConsultant,
-  actGetConsultantByProjectId,
-  actDeleteConsultant,
-};
+export { actCreateProjectContractor };
 
-export const { filterConsultants } = consultantSlice.actions;
-export default consultantSlice.reducer;
+export const { filterConsultants } = projectConctractorSlice.actions;
+export default projectConctractorSlice.reducer;

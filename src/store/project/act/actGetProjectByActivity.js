@@ -1,37 +1,40 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
-import { actGetSupervisors } from "../../consultant/consultantSlice";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
 import { actGetActivities } from "../../Activity/activitySlice";
+import actGetConsultants from "../../consultant/act/actGetConsultants";
+import actGetSectors from "../../sector/act/actGetSectors";
 
 const actGetProjectByActivity = createAsyncThunk(
   "project/actGetProjectByActivity",
   async (params, thunkAPI) => {
-    console.log(params);
     const { getState, rejectWithValue, dispatch } = thunkAPI;
 
     try {
-      await dispatch(actGetSupervisors()).unwrap();
+      await dispatch(actGetConsultants()).unwrap();
       await dispatch(actGetActivities()).unwrap();
+      await dispatch(actGetSectors()).unwrap();
       const { consultants } = getState().consultant;
-      const { activities } = getState().Activity;
+      const { activities } = getState().activity;
+      const { sectors } = getState().sector;
 
       const res = await api.get(
         `api/Project/browse?ActivityId=${params.id}&PageSize=10&Page=${params.page}`
       );
-      const enhancedProjects = res.data.data.map((project) => {
-        const supervisor = consultants.find(
-          (sup) => sup.id === project.consultantId
-        );
-        const Activity = activities.find((br) => br.id === project.ActivityId);
+
+      const enhancedProjects = res.data.map((project) => {
+        const sector = sectors.find((con) => con.id === project.sectorId);
+
+        const activity = activities.find((br) => br.id === project.activityId);
         return {
           ...project,
-          supervisorName: supervisor.name,
-          ActivityName: Activity.name,
+          sectorName: sector.name,
+          activityName: activity.name,
         };
       });
+
       return {
-        ...res.data,
+        ...res,
         data: enhancedProjects,
       };
     } catch (error) {

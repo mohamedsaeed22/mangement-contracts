@@ -2,12 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../../services/axios-global";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
 
-const actCreateConsultant = createAsyncThunk(
-  "consultant/actCreateConsultant",
-  async (consultant, thunk) => {
+const actGetConsultantByProjectId = createAsyncThunk(
+  "consultant/actGetConsultantByProjectId",
+  async (projectId, thunk) => {
     const { rejectWithValue } = thunk;
     try {
-      const res = await api.post("api/ProjectConsultant/create", consultant);
+      const res = await api.get(
+        "api/ProjectConsultant/browse/project/" + projectId
+      );
       return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
@@ -15,4 +17,4 @@ const actCreateConsultant = createAsyncThunk(
   }
 );
 
-export default actCreateConsultant;
+export default actGetConsultantByProjectId;

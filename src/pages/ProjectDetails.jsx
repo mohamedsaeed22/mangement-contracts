@@ -79,7 +79,7 @@ const ProjectDetails = () => {
               label="حالة المشروع"
               value={getProjectStateName(project.status)}
             />
-            <MyLabel label=" النشاط" value={project.ActivityName} />
+            <MyLabel label=" النشاط" value={project.activityName} />
             <MyLabel label="الاستشارى" value={project.supervisorName} />
           </Stack>
           <Stack

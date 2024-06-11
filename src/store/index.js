@@ -8,6 +8,9 @@ import statReducer from "./Statistics/statSlice";
 import riskReducer from "./risk/riskSlice";
 import handicapReducer from "./handicap/handicapSlice";
 import sectorReducer from "./sector/sectorSlice";
+import contractorReducer from "./contractor/contractorSlice";
+import projectConsultantReducer from "./projectConsultant/projectConsultantSlice";
+import projectContractorReducer from "./projectContractor/projectConctractorSlice";
 
 const store = configureStore({
   reducer: {
@@ -15,6 +18,9 @@ const store = configureStore({
     activity: ActivityReducer,
     project: projectReducer,
     consultant: consultantReducer,
+    contractor: contractorReducer,
+    projectConsultant: projectConsultantReducer,
+    projectContractor: projectContractorReducer,
     company: companyReducer,
     stat: statReducer,
     risk: riskReducer,

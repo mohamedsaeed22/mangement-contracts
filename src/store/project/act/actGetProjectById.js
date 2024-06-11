@@ -3,29 +3,32 @@ import { api } from "../../../services/axios-global";
 import { actGetSupervisors } from "../../consultant/consultantSlice";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
 import { actGetActivities } from "../../Activity/activitySlice";
+import actGetConsultants from "../../consultant/act/actGetConsultants";
+import actGetSectors from "../../sector/act/actGetSectors";
 
 const actGetProjectById = createAsyncThunk(
   "project/actGetProjectById",
   async (id, thunkAPI) => {
     const { getState, rejectWithValue, dispatch } = thunkAPI;
     try {
-      // await dispatch(actGetSupervisors()).unwrap();
-      // await dispatch(actGetActivities()).unwrap();
-      // const { consultants } = getState().consultant;
-      // const { activities } = getState().Activity;
+      await dispatch(actGetActivities()).unwrap();
+      await dispatch(actGetConsultants()).unwrap();
+      await dispatch(actGetSectors()).unwrap();
+
+      const { consultants } = getState().consultant;
+      const { activities } = getState().activity;
+      const { sectors } = getState().sector;
+
       const res = await api.get("api/Project/" + id);
-      // const supervisor = supervisors.find(
-      //   (sup) => sup.id === res.data.supervisorId
-      // );
-      // const supervisorName = supervisor ? supervisor.name : "";
-      // const Activity = activities.find(
-      //   (Activity) => Activity.id === res.data.ActivityId
-      // );
-      // const ActivityName = Activity ? Activity.name : "";
-      // res.data.supervisorName = supervisorName;
-      // res.data.ActivityName = ActivityName;
-      console.log(res);
-      return res;
+      const activity = activities.find((sup) => sup.id === res.activityId);
+      // const supervisorName = consultant ? consultant.name : "";
+      const sector = sectors.find((sector) => sector.id === res.sectorId);
+
+      return {
+        ...res,
+        activityName: activity.name,
+        sectorName: sector.name,
+      };
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }
