@@ -33,6 +33,7 @@ import { RestartAlt } from "@mui/icons-material";
 import AddIcon from "../assets/icon/add-icon.svg";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { projectStateOptions } from "../utils/statusList";
+import actGetConsultants from "../store/consultant/act/actGetConsultants";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -63,6 +64,8 @@ const initialFormData = {
   spentBudget: "",
   startDate: null,
   endDate: null,
+  contractorId: "",
+  consultantId: "",
 };
 
 const ProjectsBox = () => {
@@ -71,7 +74,8 @@ const ProjectsBox = () => {
   const { projects, totalItems } = useSelector((state) => state.project);
   const { activities } = useSelector((state) => state.activity);
   const { sectors } = useSelector((state) => state.sector);
-
+  const { contractors } = useSelector((state) => state.contractor);
+  const { consultants } = useSelector((state) => state.consultant);
   const [toggleFilter, setToggleFilter] = useState(false);
   const [page, handleChangePge] = useState(1);
   const [search, setSearch] = useState("");
@@ -81,6 +85,9 @@ const ProjectsBox = () => {
     handleChangePge(value);
   };
 
+  useEffect(() => {
+    dispatch(actGetConsultants());
+  }, [dispatch]);
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
@@ -101,6 +108,7 @@ const ProjectsBox = () => {
         activityId: formData.activityId,
         sectorId: formData.sectorId,
         spentBudget: formData.spentBudget,
+        contractorId: formData.contractorId,
       })
     );
   }, [dispatch, page, search, formData, debouncedSearch]);
@@ -170,14 +178,14 @@ const ProjectsBox = () => {
               icon={FilterIcon}
               handleBtnClick={handleToggleFilter}
             />
-            <MyBtn
+            {/* <MyBtn
               type="submit"
               width={100}
               height={40}
               icon={AddIcon}
               handleBtnClick={() => navigate("/project/add")}
               title={"اضافة"}
-            />
+            /> */}
           </Stack>
         </Stack>
         <Stack
@@ -235,6 +243,27 @@ const ProjectsBox = () => {
                   ))}
                 </Select>
               </FormControl>
+
+              <FormControl sx={{ minWidth: 150 }} size="small">
+                <InputLabel id="demo-simple-select-supervisor">
+                  المقاول
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-supervisor"
+                  id="demo-simple-selectSupervisor"
+                  value={formData.contractorId}
+                  name="contractorId"
+                  label="المقاول"
+                  onChange={(e) => handleChange("contractorId", e.target.value)}
+                >
+                  {contractors?.map((supervisor) => (
+                    <MenuItem key={supervisor.id} value={supervisor.id}>
+                      {supervisor.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
               <TextField
                 size="small"
                 id="planned-cost"

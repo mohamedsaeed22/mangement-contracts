@@ -48,7 +48,7 @@ const SidebarMenu = ({
           paddingBottom={1}
           sx={{
             direction: "rtl",
-            maxHeight: "150px", // Set your desired max height here
+            maxHeight: "180px", // Set your desired max height here
             overflowY: "auto", // Enable vertical scrolling if content overflows
             "&::-webkit-scrollbar": {
               width: "4px", // Set the width of the scrollbar thumb

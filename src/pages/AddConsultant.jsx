@@ -6,6 +6,7 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  Tooltip,
 } from "@mui/material";
 import Heading from "../components/common/Heading/Heading";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -26,6 +27,7 @@ import { initialConsultant } from "../validations/consultantSchema";
 import actGetConsultants from "../store/consultant/act/actGetConsultants";
 import actDeleteConsultant from "../store/consultant/act/actDeleteConsultant";
 import { filterConsultants } from "../store/consultant/consultantSlice";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,6 +51,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const AddConsultant = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const { consultants } = useSelector((state) => state.consultant);
@@ -133,31 +136,53 @@ const AddConsultant = () => {
               </TableHead>
               <TableBody>
                 {consultants?.map((row) => (
-                  <StyledTableRow key={row.id}>
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.totalProjects}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Stack direction="row" justifyContent="center" gap={1}>
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          icon={EditIcon}
-                          title={"تعديل"}
-                          handleBtnClick={() => handleUpdateConsultant(row)}
-                        />
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          bgColor="red"
-                          icon={DeleteIcon}
-                          title={"حذف"}
-                          handleBtnClick={() => handleDeleteConsultant(row)}
-                        />
-                      </Stack>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                  <Tooltip
+                    title="اضغط لعرض الاستشارى"
+                    placement="top"
+                    arrow
+                    key={row.id}
+                  >
+                    <StyledTableRow
+                      key={row.id}
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": { backgroundColor: "#fff !important" },
+                      }}
+                      onClick={() => navigate(`/consultant/id/${row.id}`)}
+                    >
+                      <StyledTableCell align="center">
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {row.totalProjects}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Stack direction="row" justifyContent="center" gap={1}>
+                          <MyBtn
+                            width={100}
+                            height={40}
+                            icon={EditIcon}
+                            title={"تعديل"}
+                            handleBtnClick={(e) => {
+                              e.stopPropagation(); // Stop propagation here
+                              handleUpdateConsultant(row);
+                            }}
+                          />
+                          <MyBtn
+                            width={100}
+                            height={40}
+                            bgColor="red"
+                            icon={DeleteIcon}
+                            title={"حذف"}
+                            handleBtnClick={(e) => {
+                              e.stopPropagation(); // Stop propagation here
+                              handleDeleteConsultant(row);
+                            }}
+                          />
+                        </Stack>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </Tooltip>
                 ))}
               </TableBody>
             </Table>

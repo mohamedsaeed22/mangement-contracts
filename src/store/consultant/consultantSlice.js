@@ -4,9 +4,11 @@ import actGetConsultantByProjectId from "./act/actGetConsultants";
 import actDeleteConsultant from "./act/actDeleteConsultant";
 import actGetConsultants from "./act/actGetConsultants";
 import actUpdateConsultant from "./act/actUpdateConsultant";
+import actGetConsultantById from "./act/actGetConsultantById";
 
 const initialState = {
   consultants: [],
+  consultant: {},
   loading: false,
   error: null,
 };
@@ -41,7 +43,24 @@ const consultantSlice = createSlice({
         state.error = action.payload;
       }
     });
-
+    builder.addCase(actGetConsultantById.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(actGetConsultantById.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.consultant = payload;
+    });
+    builder.addCase(actGetConsultantById.rejected, (state, action) => {
+      state.loading = false;
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = action.payload;
+      }
+    });
     // create consultant
     builder.addCase(actCreateConsultant.pending, (state) => {
       state.loading = true;
@@ -62,6 +81,7 @@ const consultantSlice = createSlice({
         state.error = action.payload;
       }
     });
+
     builder.addCase(actUpdateConsultant.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -113,6 +133,7 @@ export {
   actCreateConsultant,
   actGetConsultantByProjectId,
   actDeleteConsultant,
+  actGetConsultantById,
 };
 
 export const { filterConsultants } = consultantSlice.actions;

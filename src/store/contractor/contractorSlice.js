@@ -3,9 +3,11 @@ import actCreateContractor from "./act/actCreateContractor";
 import actGetContractors from "./act/actGetContractors";
 import actUpdateContractor from "./act/actUpdateContractor";
 import actDeleteContractor from "./act/actDeleteContractor";
+import actGetContractorById from "./act/actGetContractorById";
 
 const initialState = {
   contractors: [],
+  contractor: {},
   loading: false,
   error: null,
 };
@@ -41,6 +43,27 @@ const contractorSlice = createSlice({
       }
     });
 
+    // get contractor by id
+    builder.addCase(actGetContractorById.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(actGetContractorById.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      console.log(payload);
+      state.contractor = payload;
+    });
+    builder.addCase(actGetContractorById.rejected, (state, action) => {
+      state.loading = false;
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = action.payload;
+      }
+    });
+
     // create contractor
     builder.addCase(actCreateContractor.pending, (state) => {
       state.loading = true;
@@ -48,8 +71,7 @@ const contractorSlice = createSlice({
     });
     builder.addCase(actCreateContractor.fulfilled, (state, { payload }) => {
       state.loading = false;
-
-      state.contractors.push(payload);
+      state.contractors.push({ ...payload, totalProjects: 0 });
     });
     builder.addCase(actCreateContractor.rejected, (state, action) => {
       state.loading = false;
@@ -67,6 +89,7 @@ const contractorSlice = createSlice({
     });
     builder.addCase(actUpdateContractor.fulfilled, (state, { payload }) => {
       state.loading = false;
+      console.log(payload);
       const index = state.contractors.findIndex(
         (consultant) => consultant.id === payload.id
       );
@@ -113,6 +136,7 @@ export {
   actDeleteContractor,
   actUpdateContractor,
   actGetContractors,
+  actGetContractorById,
 };
 
 export const { filterContractors } = contractorSlice.actions;

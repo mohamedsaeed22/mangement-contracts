@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import actCreateProjectConsultant from "./act/actCreateProjectConsultant";
 import actGetConsultantByProjectId from "./act/actGetConsultantByProjectId";
-import actDeleteConsultant from "./act/actDeleteConsultant";
+import actDeleteConsultant from "./act/actDeleteProjectConsultant";
+import actDeleteProjectConsultant from "./act/actDeleteProjectConsultant";
 
 const initialState = {
   consultants: [],
@@ -68,6 +69,29 @@ const projectConsultantSlice = createSlice({
       }
     });
 
+    // create projectConsultant
+    builder.addCase(actDeleteProjectConsultant.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(
+      actDeleteProjectConsultant.fulfilled,
+      (state, { payload }) => {
+        state.loading = false;
+        console.log(payload);
+      }
+    );
+    builder.addCase(actDeleteProjectConsultant.rejected, (state, action) => {
+      state.loading = false;
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = action.payload;
+      }
+    });
+
     // builder.addCase(actUpdateSupervisor.fulfilled, (state, { payload }) => {
     //   state.loading = false;
     //   const index = state.consultants.findIndex(
@@ -91,27 +115,27 @@ const projectConsultantSlice = createSlice({
     // });
 
     // delete projectConsultant
-    builder.addCase(actDeleteConsultant.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(actDeleteConsultant.fulfilled, (state, { payload }) => {
-      state.loading = false;
-    });
-    builder.addCase(actDeleteConsultant.rejected, (state, action) => {
-      state.loading = false;
-      if (action?.payload === 403) {
-        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
-      } else if (action?.payload === 500) {
-        state.error = "حدث خطا ما فى السيرفر";
-      } else {
-        state.error = action.payload;
-      }
-    });
+    // builder.addCase(actDeleteConsultant.pending, (state) => {
+    //   state.loading = true;
+    //   state.error = null;
+    // });
+    // builder.addCase(actDeleteConsultant.fulfilled, (state, { payload }) => {
+    //   state.loading = false;
+    // });
+    // builder.addCase(actDeleteConsultant.rejected, (state, action) => {
+    //   state.loading = false;
+    //   if (action?.payload === 403) {
+    //     state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+    //   } else if (action?.payload === 500) {
+    //     state.error = "حدث خطا ما فى السيرفر";
+    //   } else {
+    //     state.error = action.payload;
+    //   }
+    // });
   },
 });
 
-export { actCreateProjectConsultant };
+export { actCreateProjectConsultant, actDeleteProjectConsultant };
 
 export const { filterConsultants } = projectConsultantSlice.actions;
 export default projectConsultantSlice.reducer;

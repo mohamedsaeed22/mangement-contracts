@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import actCreateConsultant from "./act/actCreateProjectContractor";
+// import actCreateConsultant from "./act/actCreateProjectContractor";
 import actGetConsultantByProjectId from "./act/actGetConsultantByProjectId";
-import actDeleteConsultant from "./act/actDeleteConsultant";
+// import actDeleteConsultant from "./act/actDeleteConsultant";
 import actCreateProjectContractor from "./act/actCreateProjectContractor";
+import { actDeleteProjectConsultant } from "../projectConsultant/projectConsultantSlice";
 
 const initialState = {
   consultants: [],
@@ -60,37 +61,18 @@ const projectConctractorSlice = createSlice({
       }
     });
 
-    // builder.addCase(actUpdateSupervisor.fulfilled, (state, { payload }) => {
-    //   state.loading = false;
-    //   const index = state.consultants.findIndex(
-    //     (projectConctractor) => projectConctractor.id === payload.id
-    //   );
-    //   if (index !== -1) {
-    //     state.consultants[index] = payload;
-    //   } else {
-    //     console.error("Activity not found");
-    //   }
-    // });
-    // builder.addCase(actUpdateSupervisor.rejected, (state, action) => {
-    //   state.loading = false;
-    //   if (action?.payload === 403) {
-    //     state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
-    //   } else if (action?.payload === 500) {
-    //     state.error = "حدث خطا ما فى السيرفر";
-    //   } else {
-    //     state.error = action.payload;
-    //   }
-    // });
-
     // delete projectConctractor
-    builder.addCase(actDeleteConsultant.pending, (state) => {
+    builder.addCase(actDeleteProjectConsultant.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(actDeleteConsultant.fulfilled, (state, { payload }) => {
-      state.loading = false;
-    });
-    builder.addCase(actDeleteConsultant.rejected, (state, action) => {
+    builder.addCase(
+      actDeleteProjectConsultant.fulfilled,
+      (state, { payload }) => {
+        state.loading = false;
+      }
+    );
+    builder.addCase(actDeleteProjectConsultant.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 403) {
         state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
@@ -103,7 +85,7 @@ const projectConctractorSlice = createSlice({
   },
 });
 
-export { actCreateProjectContractor };
+export { actCreateProjectContractor, actDeleteProjectConsultant };
 
 export const { filterConsultants } = projectConctractorSlice.actions;
 export default projectConctractorSlice.reducer;

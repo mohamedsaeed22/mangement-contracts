@@ -19,8 +19,8 @@ const ProjectDetails = () => {
   const dispatch = useDispatch();
   const { project, loading, error } = useSelector((state) => state.project);
   const { id } = useParams();
-  const { risks, handicaps } = project;
-
+  const { risks, handicaps, consultants, contractors } = project;
+  console.log(project);
   useEffect(() => {
     if (id) {
       dispatch(actGetProjectById(id));
@@ -80,7 +80,10 @@ const ProjectDetails = () => {
               value={getProjectStateName(project.status)}
             />
             <MyLabel label=" النشاط" value={project.activityName} />
-            <MyLabel label="الاستشارى" value={project.supervisorName} />
+            <MyLabel
+              label="الاستشارى"
+              value={consultants?.length > 0 && consultants[0].name}
+            />
           </Stack>
           <Stack
             p={1}
@@ -89,11 +92,23 @@ const ProjectDetails = () => {
             gap={2}
             flexWrap="wrap"
           >
+            <MyLabel
+              label="المقاول"
+              value={contractors?.length > 0 && contractors[0].name}
+            />
             <MyLabel label="ما تم انجازة" value={`%${project.percentage}`} />
             <MyLabel
               label="تاريخ البداية"
               value={project.startDate?.split("T")[0]}
             />
+          </Stack>
+          <Stack
+            p={1}
+            direction="row"
+            justifyContent="space-between"
+            gap={2}
+            flexWrap="wrap"
+          >
             <MyLabel
               label="تاريخ النهايه"
               value={project.endDate?.split("T")[0]}

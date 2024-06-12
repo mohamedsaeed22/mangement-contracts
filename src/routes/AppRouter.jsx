@@ -22,6 +22,8 @@ import ManageConsultants from "../pages/ManageConsultants";
 import ManageSectors from "../pages/ManageSectors";
 import AddContractor from "../pages/AddContractor";
 import AddConsultant from "../pages/AddConsultant";
+import ContractorDetails from "../pages/ContractorDetails";
+import ConsultantDetails from "../pages/ConsultantDetails";
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 
@@ -120,6 +122,22 @@ const router = createBrowserRouter(
           element={
             <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
               <AddContractor />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="contractor/id/:id"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
+              <ContractorDetails />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="consultant/id/:id"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
+              <ConsultantDetails />
             </RoleGuard>
           }
         />

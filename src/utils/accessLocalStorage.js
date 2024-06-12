@@ -7,7 +7,7 @@ const getAcessToken = () => {
 
 const setAccessToken = (accessToken) => {
   const decodedToken = jwtDecode(accessToken);
-  const expirationTime = new Date(decodedToken.exp * 1000);
+  const expirationTime = new Date(decodedToken.exp * 1500);
   Cookies.set("token", accessToken, { expires: expirationTime });
 };
 

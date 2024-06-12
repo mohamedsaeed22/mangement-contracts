@@ -50,11 +50,11 @@ let contractorSubmenuList = [
     nav: "contractor/add",
     name: "اضافه مقاول",
   },
-  {
-    id: 6,
-    nav: "managecontractors",
-    name: "اداره المقاولين",
-  },
+  // {
+  //   id: 6,
+  //   nav: "managecontractors",
+  //   name: "اداره المقاولين",
+  // },
 ];
 
 const consultantSubmenuList = [
@@ -63,11 +63,11 @@ const consultantSubmenuList = [
     nav: "consultant/add",
     name: "اضافه استشارى",
   },
-  {
-    id: 8,
-    nav: "manageconsultants",
-    name: "اداره الاستشاريين",
-  },
+  // {
+  //   id: 8,
+  //   nav: "manageconsultants",
+  //   name: "اداره الاستشاريين",
+  // },
 ];
 
 let activitiesList = [];
@@ -91,7 +91,7 @@ const Sidebar = () => {
   if (sectors) {
     sectorList = [...sectorSubmenuList, ...sectors];
   }
-  console.log(sectors)
+  console.log(sectors);
   const toggleProjectSubmenu = () => {
     setShowProjectsMenu(!showProjectsMenu);
   };
@@ -263,24 +263,106 @@ const Sidebar = () => {
           />
 
           {/* consultants menu  */}
-          {/* <Box sx={{ position: "absolute", width: "100%", bottom: 109 }}> */}
-          {filterRoles(["Admin", "SuperAdmin"]) && (
-            <SidebarMenu
-              menuTitle={"الاستشاريين"}
-              toggleSubmenuFun={toggleSupervisorSubmenu}
-              showSubmenu={showSupervisorsMenu}
-              subMenuList={consultantSubmenuList}
-            />
-          )}
-          {filterRoles(["Admin", "SuperAdmin"]) && (
-            <SidebarMenu
-              menuTitle={"المقاولين"}
-              toggleSubmenuFun={toggleContractorSubmenu}
-              showSubmenu={showContractorMenu}
-              subMenuList={contractorSubmenuList}
-            />
-          )}
-          {/* </Box> */}
+          <Box
+            sx={{
+              position: "absolute",
+              width: "100%",
+              bottom: 109,
+              marginBottom: "10px",
+            }}
+          >
+            {filterRoles([
+              "Admin",
+              "SuperAdmin",
+              "ProjectManagement.ReadOnly",
+            ]) && (
+              <Box>
+                <NavLink
+                  to="/consultant/add"
+                  exact="true"
+                  className={({ isActive }) =>
+                    `navlink ${isActive ? "active-link" : ""}`
+                  }
+                >
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    p={1}
+                    bgcolor="inherit"
+                    sx={{
+                      borderTopLeftRadius: "10px",
+                      borderBottomLeftRadius: "10px",
+                      // "&:hover": { color: "blue !important" },
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      color="initial"
+                      ml={1}
+                      fontWeight="bold"
+                      sx={{ color: "inherit", fontSize: "14px" }}
+                    >
+                      الاستشاريين
+                    </Typography>
+                  </Stack>
+                </NavLink>
+              </Box>
+            )}
+             {filterRoles([
+              "Admin",
+              "SuperAdmin",
+              "ProjectManagement.ReadOnly",
+            ]) && (
+              <Box>
+                <NavLink
+                  to="/contractor/add"
+                  exact="true"
+                  className={({ isActive }) =>
+                    `navlink ${isActive ? "active-link" : ""}`
+                  }
+                >
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    p={1}
+                    bgcolor="inherit"
+                    sx={{
+                      borderTopLeftRadius: "10px",
+                      borderBottomLeftRadius: "10px",
+                      // "&:hover": { color: "blue !important" },
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      color="initial"
+                      ml={1}
+                      fontWeight="bold"
+                      sx={{ color: "inherit", fontSize: "14px" }}
+                    >
+                      المقاولين
+                    </Typography>
+                  </Stack>
+                </NavLink>
+              </Box>
+            )}
+
+            {/* {filterRoles(["Admin", "SuperAdmin"]) && (
+              <SidebarMenu
+                menuTitle={"الاستشاريين"}
+                toggleSubmenuFun={toggleSupervisorSubmenu}
+                showSubmenu={showSupervisorsMenu}
+                subMenuList={consultantSubmenuList}
+              />
+            )} */}
+            {/* {filterRoles(["Admin", "SuperAdmin"]) && (
+              <SidebarMenu
+                menuTitle={"المقاولين"}
+                toggleSubmenuFun={toggleContractorSubmenu}
+                showSubmenu={showContractorMenu}
+                subMenuList={contractorSubmenuList}
+              />
+            )} */}
+          </Box>
         </Box>
         {/* logout */}
         <Stack

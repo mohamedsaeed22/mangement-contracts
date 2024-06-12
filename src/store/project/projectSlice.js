@@ -4,6 +4,8 @@ import actUpdateProject from "./act/actUpdateProject";
 import actGetProjectById from "./act/actGetProjectById";
 import actGetProjectByActivity from "./act/actGetProjectByActivity";
 import actGetProjectsBySector from "./act/actGetProjectsBySector";
+import actGetProjectsByContractorId from "./act/actGetProjectsByContractorId";
+import actGetProjectsByConsultantId from "./act/actGetProjectsByConsultantId";
 
 const initialState = {
   projects: [],
@@ -107,6 +109,46 @@ const projectSlice = createSlice({
       }
     });
 
+    // get project by id
+    builder.addCase(actGetProjectsByContractorId.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(
+      actGetProjectsByContractorId.fulfilled,
+      (state, { payload }) => {
+        state.loading = false;
+        state.projects = payload.data;
+        state.totalItems = payload.totalItems;
+      }
+    );
+    builder.addCase(actGetProjectsByContractorId.rejected, (state, action) => {
+      state.loading = false;
+      if (action?.payload?.response?.status === 400) {
+        state.error = "هذا العنوان غير صالح";
+      }
+    });
+
+    // get project by id
+    builder.addCase(actGetProjectsByConsultantId.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(
+      actGetProjectsByConsultantId.fulfilled,
+      (state, { payload }) => {
+        state.loading = false;
+        state.projects = payload.data;
+        state.totalItems = payload.totalItems;
+      }
+    );
+    builder.addCase(actGetProjectsByConsultantId.rejected, (state, action) => {
+      state.loading = false;
+      if (action?.payload?.response?.status === 400) {
+        state.error = "هذا العنوان غير صالح";
+      }
+    });
+
     // update project
     builder.addCase(actUpdateProject.pending, (state) => {
       state.loading = true;
@@ -137,6 +179,12 @@ const projectSlice = createSlice({
   },
 });
 
-export { actGetProjects, actGetProjectByActivity, actGetProjectsBySector };
+export {
+  actGetProjects,
+  actGetProjectByActivity,
+  actGetProjectsBySector,
+  actGetProjectsByContractorId,
+  actGetProjectsByConsultantId,
+};
 export const { getProjectById } = projectSlice.actions;
 export default projectSlice.reducer;

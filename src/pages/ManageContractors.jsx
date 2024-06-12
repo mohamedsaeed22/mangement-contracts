@@ -83,11 +83,11 @@ const ManageContractor = () => {
         .unwrap()
         .then((e) => {
           dispatch(filterContractors(contractor.id));
-          notifySuccess("تم حذف الاستشارى");
+          notifySuccess("تم حذف المقاول");
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed(err + "حدث خطا ما");
+          notifyFailed(err + "المقاول له مشاريع برجاء حذفها اولا");
         });
     }
   };

@@ -82,7 +82,7 @@ const ManageConsultants = () => {
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed(err + "حدث خطا ما");
+          notifyFailed(err + "الاسنشارى له مشاريع برجاء حذفها اولا");
         });
     }
   };

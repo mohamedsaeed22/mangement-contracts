@@ -4,7 +4,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
-import { Stack, TextField } from "@mui/material";
+import { InputLabel, Stack, TextField } from "@mui/material";
 
 const MyInput = ({
   value,
@@ -39,9 +39,10 @@ const MyInput = ({
         variant="outlined"
         error={error}
       >
+        {/* <InputLabel id={`my-input-${name}`}>Age</InputLabel> */}
         {select ? (
           <Select
-            id={`my-input-${name}`}
+            labelId={`my-input-${name}`}
             value={value}
             onChange={onChange}
             onBlur={onBlur}

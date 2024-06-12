@@ -5,10 +5,12 @@ import {
   FormControlLabel,
   Grid,
   IconButton,
+  InputLabel,
   Menu,
   MenuItem,
   Radio,
   RadioGroup,
+  Select,
   Stack,
   Tooltip,
   Typography,
@@ -54,7 +56,12 @@ import {
   actGetContractors,
 } from "../store/contractor/contractorSlice";
 import actCreateProjectContractor from "../store/projectContractor/act/actCreateProjectContractor";
-import { actCreateProjectConsultant } from "../store/projectConsultant/projectConsultantSlice";
+import {
+  actCreateProjectConsultant,
+  actDeleteProjectConsultant,
+} from "../store/projectConsultant/projectConsultantSlice";
+import actDeleteProjectContractor from "../store/projectContractor/act/actDeleteProjectContractor";
+import MySelectChip from "../components/Form/Input/MySelectChip";
 
 const myWidth = 250;
 
@@ -67,8 +74,21 @@ const Project = () => {
   const { contractors } = useSelector((state) => state.contractor);
   const { consultants } = useSelector((state) => state.consultant);
   const { project, loading } = useSelector((state) => state.project);
+  const [consultantsIds, setConsultantsIds] = useState(
+    project?.consultants || []
+  );
+  const [contractorsIds, setContractorsIds] = useState(
+    project?.contractors || []
+  );
+
   const [myProject, setMyProject] = useState(initialProjectValues);
   const [anchorEl, setAnchorEl] = useState(null);
+  console.log(project.consultants);
+  console.log(project.contractors);
+  console.log(project);
+  console.log(consultantsIds);
+  console.log(contractorsIds);
+
   const {
     risks: r,
     handicaps: h,
@@ -133,6 +153,8 @@ const Project = () => {
         contractorId: contractorObj?.id || "",
         consultantId: consultantObj?.id || "",
       });
+      setConsultantsIds(project?.consultants);
+      setContractorsIds(project?.contractors);
     }
   }, [id, project, handicapObj, riskObj, contractorObj, consultantObj]);
 
@@ -146,6 +168,42 @@ const Project = () => {
       spentBudget: values.spentBudget,
       percentage: values.percentage,
     };
+    if (values.contractorId !== myProject.contractorId) {
+      // delete and add
+      if (myProject.contractorId) {
+        dispatch(
+          actDeleteProjectContractor({
+            projectId: id,
+            contractorId: myProject.contractorId,
+          })
+        );
+      }
+      dispatch(
+        actCreateProjectContractor({
+          contractorIds: [values.contractorId],
+          projectId: id,
+        })
+      );
+      console.log(values.contractorId, id);
+    }
+    if (values.consultantId !== myProject.consultantId) {
+      // delete and add
+      if (myProject.consultantId) {
+        dispatch(
+          actDeleteProjectConsultant({
+            projectId: id,
+            consultantId: myProject.consultantId,
+          })
+        );
+      }
+      dispatch(
+        actCreateProjectConsultant({
+          consultantIds: [values.consultantId],
+          projectId: id,
+        })
+      );
+      console.log(values.consultantId, id);
+    }
     if (id) {
       if (values.showHandicaps === "yes") {
         if (handicapObj?.id) {
@@ -334,6 +392,7 @@ const Project = () => {
                   gap={1}
                   justifyContent="center"
                 >
+                  
                   <MyInput
                     width={180}
                     name="status"
@@ -397,6 +456,7 @@ const Project = () => {
                       <MenuItem disabled>لا يوجد قطاعات</MenuItem>
                     )}
                   </MyInput>
+
                   {id && (
                     <Stack direction="row" alignSelf="flex-start">
                       <MyBtn title="تعديل" type="submit" />
@@ -554,11 +614,60 @@ const Project = () => {
 
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="المقاولين والاستشارين">
-                      <MyInput
+                      <Box sx={{ minWidth: 180 }}>
+                        <FormControl fullWidth size="small">
+                          <InputLabel id="demo-simple-select-label">
+                            المقاولين
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            name="contractorId"
+                            value={values.contractorId}
+                            label="المقاولين"
+                            onChange={handleChange}
+                          >
+                            {contractors.length > 0 ? (
+                              contractors.map((el) => (
+                                <MenuItem key={el.id} value={el.id}>
+                                  {el.name}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <MenuItem disabled>لا يوجد مقاولين</MenuItem>
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                      <Box sx={{ minWidth: 180 }}>
+                        <FormControl fullWidth size="small">
+                          <InputLabel id="demo-simple-select-label">
+                            الاستشاريين
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            name="consultantId"
+                            value={values.consultantId}
+                            onChange={handleChange}
+                            label="الاستشاريين"
+                          >
+                            {consultants.length > 0 ? (
+                              consultants.map((el) => (
+                                <MenuItem key={el.id} value={el.id}>
+                                  {el.name}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <MenuItem disabled>لا يوجد مقاولين</MenuItem>
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                      {/* <MyInput
                         width={180}
                         name="contractorId"
                         select
-                        disabled={id && true}
                         label="المقاول"
                         placeholder="اختر المقاول"
                         value={values.contractorId}
@@ -567,18 +676,21 @@ const Project = () => {
                         error={!!touched.contractorId && !!errors.contractorId}
                         helperText={touched.contractorId && errors.contractorId}
                       >
-                        {contractors.map((el) => (
-                          <MenuItem key={el.id} value={el.id}>
-                            {el.name}
-                          </MenuItem>
-                        ))}
-                      </MyInput>
+                        {contractors.length > 0 ? (
+                          contractors.map((el) => (
+                            <MenuItem key={el.id} value={el.id}>
+                              {el.name}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem disabled>لا يوجد مقاولين</MenuItem>
+                        )}
+                      </MyInput> */}
 
-                      <MyInput
+                      {/* <MyInput
                         width={180}
                         name="consultantId"
                         select
-                        disabled={id && true}
                         label="الاستشارى"
                         placeholder="اختر الاستشارى"
                         value={values.consultantId}
@@ -587,12 +699,28 @@ const Project = () => {
                         error={!!touched.consultantId && !!errors.consultantId}
                         helperText={touched.consultantId && errors.consultantId}
                       >
-                        {consultants.map((el) => (
-                          <MenuItem key={el.id} value={el.id}>
-                            {el.name}
-                          </MenuItem>
-                        ))}
-                      </MyInput>
+                        {consultants.length > 0 ? (
+                          consultants.map((el) => (
+                            <MenuItem key={el.id} value={el.id}>
+                              {el.name}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem disabled>لا يوجد استشاريين</MenuItem>
+                        )}
+                      </MyInput> */}
+                      {/* <MySelectChip
+                        data={contractors}
+                        labelName="اختر المقاول"
+                        setArrIds={setContractorsIds}
+                        seletedIds={contractorsIds}
+                      />
+                      <MySelectChip
+                        data={consultants}
+                        labelName="اختر الاستشارى"
+                        setArrIds={setConsultantsIds}
+                        seletedIds={consultantsIds}
+                      /> */}
                     </MyInputsWrapper>
                   </Grid>
                   <Grid item xs={12}>

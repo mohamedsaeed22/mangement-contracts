@@ -65,8 +65,8 @@ const projectSchema = yup.lazy((values) => {
     status: yup.string().required("حالة المشروع مطلوبة"),
     activityId: yup.string().required("النشاط مطلوب"),
     sectorId: yup.string().required("القطاع مطلوب"),
-    consultantId: yup.string().required("الاستشارى مطلوب"),
-    contractorId: yup.string().required("المقاول مطلوب"),
+    consultantId: yup.string(),
+    contractorId: yup.string(),
   });
 
   if (values.showRisks === "yes") {

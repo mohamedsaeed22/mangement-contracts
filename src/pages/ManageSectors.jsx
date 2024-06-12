@@ -6,6 +6,7 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  Tooltip,
 } from "@mui/material";
 import Heading from "../components/common/Heading/Heading";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -27,6 +28,7 @@ import actGetSectors from "../store/sector/act/actGetSectors";
 import SectorForm from "../components/Form/SectorForm";
 import { initialSector } from "../validations/sectorSchema";
 import { filterSectors } from "../store/sector/sectorSlice";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,6 +52,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 const ManageSectors = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [openModal, setOpenModal] = useState(false);
   const { sectors } = useSelector((state) => state.sector);
   const [updateSector, setUpdateSector] = useState(initialSector);
@@ -109,6 +113,7 @@ const ManageSectors = () => {
         mt="70px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         overflow="auto"
+        height="calc(100vh - 130px)"
       >
         {/* <LoadingWrapper error={error} loading={loading}> */}
         <Box>
@@ -125,32 +130,47 @@ const ManageSectors = () => {
               </TableHead>
               <TableBody>
                 {sectors?.map((row) => (
-                  <StyledTableRow key={row.id}>
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.totalProjects}
-                    </StyledTableCell>
+                  <Tooltip
+                    title="اضغط لعرض التفاصيل"
+                    placement="top"
+                    arrow
+                    key={row.id}
+                  >
+                    <StyledTableRow
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": { backgroundColor: "#fff !important" },
+                      }}
+                      onClick={() => navigate(`/sector/${row.id}`)}
+                    >
+                      <StyledTableCell align="center">
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {row.totalProjects}
+                      </StyledTableCell>
 
-                    <StyledTableCell align="center">
-                      <Stack direction="row" justifyContent="center" gap={1}>
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          icon={EditIcon}
-                          title={"تعديل"}
-                          handleBtnClick={() => handleUpdateSector(row)}
-                        />
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          bgColor="red"
-                          icon={DeleteIcon}
-                          title={"حذف"}
-                          handleBtnClick={() => handleDeleteSector(row)}
-                        />
-                      </Stack>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                      <StyledTableCell align="center">
+                        <Stack direction="row" justifyContent="center" gap={1}>
+                          <MyBtn
+                            width={100}
+                            height={40}
+                            icon={EditIcon}
+                            title={"تعديل"}
+                            handleBtnClick={() => handleUpdateSector(row)}
+                          />
+                          <MyBtn
+                            width={100}
+                            height={40}
+                            bgColor="red"
+                            icon={DeleteIcon}
+                            title={"حذف"}
+                            handleBtnClick={() => handleDeleteSector(row)}
+                          />
+                        </Stack>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </Tooltip>
                 ))}
               </TableBody>
             </Table>

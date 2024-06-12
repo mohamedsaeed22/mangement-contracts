@@ -6,6 +6,7 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  Tooltip,
 } from "@mui/material";
 import Heading from "../components/common/Heading/Heading";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -27,6 +28,7 @@ import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,6 +61,7 @@ const ManageActivities = () => {
   const [openModal, setOpenModal] = useState(false);
   const { activities, error, loading } = useSelector((state) => state.activity);
   const [updatedActivity, setUpdatedActivity] = useState(initialActivity);
+  const navigate = useNavigate();
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -128,33 +131,48 @@ const ManageActivities = () => {
               </TableHead>
               <TableBody>
                 {activities?.map((row) => (
-                  <StyledTableRow key={row.id}>
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.description.length > 30
-                        ? row.description.substring(0, 30) + "..."
-                        : row.description}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Stack direction="row" justifyContent="center" gap={1}>
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          icon={EditIcon}
-                          title={"تعديل"}
-                          handleBtnClick={() => handleUpdateActivity(row)}
-                        />
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          bgColor="red"
-                          icon={DeleteIcon}
-                          title={"حذف"}
-                          handleBtnClick={() => handleDeleteActivity(row)}
-                        />
-                      </Stack>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                  <Tooltip
+                    title="اضغط لعرض التفاصيل"
+                    placement="top"
+                    arrow
+                    key={row.id}
+                  >
+                    <StyledTableRow
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": { backgroundColor: "#fff !important" },
+                      }}
+                      onClick={() => navigate(`/activity/${row.id}`)}
+                    >
+                      <StyledTableCell align="center">
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {row.description.length > 30
+                          ? row.description.substring(0, 30) + "..."
+                          : row.description}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Stack direction="row" justifyContent="center" gap={1}>
+                          <MyBtn
+                            width={100}
+                            height={40}
+                            icon={EditIcon}
+                            title={"تعديل"}
+                            handleBtnClick={() => handleUpdateActivity(row)}
+                          />
+                          <MyBtn
+                            width={100}
+                            height={40}
+                            bgColor="red"
+                            icon={DeleteIcon}
+                            title={"حذف"}
+                            handleBtnClick={() => handleDeleteActivity(row)}
+                          />
+                        </Stack>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </Tooltip>
                 ))}
                 {activities?.length === 0 && (
                   <StyledTableRow>
