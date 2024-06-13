@@ -3,6 +3,7 @@ import Heading from "../components/common/Heading/Heading";
 import MyLabel from "../components/common/UI/MyLabel";
 import {
   Box,
+  Grid,
   IconButton,
   LinearProgress,
   Stack,
@@ -87,62 +88,322 @@ const ContractorDetails = () => {
         mt="4px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         // marginInline="20px"
+       
         flex={1}
         // bgcolor="#ddd"
       >
-        <Stack gap={4} m={2}>
-          <Stack
-            p={1}
-            direction="row"
-            justifyContent="space-between"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <MyLabel label="اسم المقاول" value={contractor.name} />
-            <MyLabel label=" وصف" value={contractor.description} />
-            <MyLabel label="رقم الهاتف" value={contractor.phoneNumber} />
-          </Stack>
+        <Stack gap={1} m={2} overflow="auto">
+        <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  اسم المقاول
+                </Typography>
 
-          <Stack
-            p={1}
-            direction="row"
-            justifyContent="space-between"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <MyLabel
-              label="اسم الشخص المسؤل"
-              value={contractor.contactPersonName}
-            />
-            <MyLabel
-              label="رقم هاتف المسؤل"
-              value={contractor.contactPersonPhone}
-            />
-            <MyLabel label="العنوان" value={contractor.address} />
-          </Stack>
+                {contractor.name}
+              </Box>
+            </Grid>
 
-          <Stack
-            p={1}
-            direction="row"
-            justifyContent="space-between"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <MyLabel label="الدوله" value={contractor.country} />
-            <MyLabel label="التخصص" value={contractor.specialization} />
-            <MyLabel label="الخبره" value={contractor.experience} />
-          </Stack>
-          <Stack
-            p={1}
-            direction="row"
-            justifyContent="space-between"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <MyLabel label="المؤهلات" value={contractor.qualification} />
-          </Stack>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  الوصف
+                </Typography>
+                {contractor.description === ""
+                  ? "لا يوجد"
+                  : contractor.description}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  رقم الهاتف
+                </Typography>
 
-          <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
+                {contractor.phoneNumber === ""
+                  ? "لا يوجد"
+                  : contractor.phoneNumber}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  اسم الشخص المسؤل
+                </Typography>
+
+                {contractor.contactPersonName === ""
+                  ? "لا يوجد"
+                  : contractor.contactPersonName}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  رقم هاتف المسؤل
+                </Typography>
+
+                {contractor.contactPersonPhone === ""
+                  ? "لا يوجد"
+                  : contractor.contactPersonPhone}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  العنوان
+                </Typography>
+                {contractor.address === "" ? "لا يوجد" : contractor.address}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  الدوله
+                </Typography>
+
+                {contractor.country === "" ? "لا يوجد" : contractor.country}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  التخصص
+                </Typography>
+                {contractor.specialization === ""
+                  ? "لا يوجد"
+                  : contractor.specialization}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  الخبره
+                </Typography>
+
+                {contractor.qualification === ""
+                  ? "لا يوجد"
+                  : contractor.qualification}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  المؤهلات
+                </Typography>
+                {contractor.qualification === ""
+                  ? "لا يوجد"
+                  : contractor.qualification}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <TableContainer sx={{ maxHeight: "48vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>

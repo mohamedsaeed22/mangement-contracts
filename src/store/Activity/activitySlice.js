@@ -47,7 +47,7 @@ const ActivitySlice = createSlice({
     builder.addCase(actCreateActivity.fulfilled, (state, { payload }) => {
       state.loading = false;
       const { id, name, description } = payload;
-      state.activities.push({ id, name, description });
+      state.activities.unshift({ id, name, description, totalProjects: 0 });
     });
     builder.addCase(actCreateActivity.rejected, (state, action) => {
       state.loading = false;
@@ -61,7 +61,7 @@ const ActivitySlice = createSlice({
       }
     });
 
-    // update Activitye
+    // update Activity
     builder.addCase(actUpdateActivity.pending, (state) => {
       state.loading = true;
       state.error = null;

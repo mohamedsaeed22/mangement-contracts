@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import Heading from "../components/common/Heading/Heading";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MyBtn from "../components/common/UI/MyBtn";
 import FilterIcon from "../assets/icon/filter-icon.svg";
 import { actGetProjects } from "../store/project/projectSlice";
@@ -71,6 +71,8 @@ const initialFormData = {
 const ProjectsBox = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
   const { projects, totalItems } = useSelector((state) => state.project);
   const { activities } = useSelector((state) => state.activity);
   const { sectors } = useSelector((state) => state.sector);
@@ -80,11 +82,14 @@ const ProjectsBox = () => {
   const [page, handleChangePge] = useState(1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState({
+    ...initialFormData,
+    status: searchParams.get("projectstatus") || "",
+  });
   const handleChangePage = (event, value) => {
     handleChangePge(value);
   };
-
+  console.log(searchParams.get("projectstatus"));
   useEffect(() => {
     dispatch(actGetConsultants());
   }, [dispatch]);

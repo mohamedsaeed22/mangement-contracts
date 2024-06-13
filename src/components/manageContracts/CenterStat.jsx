@@ -4,8 +4,10 @@ import WorkingImage from "./../../assets/imgs/working.svg";
 import ClosingImage from "./../../assets/imgs/closing.svg";
 
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const CenterStat = ({ stats }) => {
+  const navigate = useNavigate();
   const {
     totalCompletedProjects,
     totalInProgressProjects,
@@ -15,155 +17,175 @@ const CenterStat = ({ stats }) => {
   return (
     <Grid container spacing={2} mb={2}>
       <Grid item xs={12} sm={6} lg={3}>
-        <Paper
-          sx={{
-            padding: "8px",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            border: "1px solid #ddd",
-          }}
-          elevation={0}
-        >
-          <Box
+        <NavLink to={"/projectsbox?projectstatus=1"}>
+          <Paper
             sx={{
-              backgroundColor: "#ccc",
-              borderRadius: "50%",
-              padding: "10px",
+              padding: "8px",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              border: "1px solid #ddd",
             }}
+            elevation={0}
           >
-            <img
-              src={StartTimeImage}
-              alt="overview"
-              style={{ width: "80px" }}
-            />
-          </Box>
-          <Stack textAlign="center" flex={1}>
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              color="#01204E"
-              textAlign="center"
+            <Box
+              sx={{
+                backgroundColor: "#ccc",
+                borderRadius: "50%",
+                padding: "10px",
+              }}
             >
-              {totalOnHoldProjects}
-            </Typography>
-            <Typography variant="body1" color="initial">
-              مرحلة البدء
-            </Typography>
-          </Stack>
-        </Paper>
+              <img
+                src={StartTimeImage}
+                alt="overview"
+                style={{ width: "80px" }}
+              />
+            </Box>
+            <Stack textAlign="center" flex={1}>
+              <Typography
+                variant="h4"
+                fontWeight="bold"
+                color="#01204E"
+                textAlign="center"
+              >
+                {totalNotStartedProjects}
+              </Typography>
+              <Typography variant="body1" color="initial">
+                مرحلة البدء
+              </Typography>
+            </Stack>
+          </Paper>
+        </NavLink>
       </Grid>
 
       <Grid item xs={12} sm={6} lg={3}>
-        <Paper
-          sx={{
-            padding: "8px",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            border: "1px solid #ddd",
-          }}
-          elevation={0}
-        >
-          <Box
+        <NavLink to={"/projectsbox?projectstatus=2"}>
+          <Paper
             sx={{
-              backgroundColor: "#ccc",
-              borderRadius: "50%",
-              padding: "10px",
+              padding: "8px",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              border: "1px solid #ddd",
             }}
+            elevation={0}
           >
-            <img src={PlanningImage} alt="overview" style={{ width: "80px" }} />
-          </Box>
-          <Stack textAlign="center" flex={1}>
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              color="#01204E"
-              textAlign="center"
+            <Box
+              sx={{
+                backgroundColor: "#ccc",
+                borderRadius: "50%",
+                padding: "10px",
+              }}
             >
-              {totalNotStartedProjects}
-            </Typography>
-            <Typography variant="body1" color="initial">
-              مرحلة التخطيط
-            </Typography>
-          </Stack>
-        </Paper>
+              <img
+                src={PlanningImage}
+                alt="overview"
+                style={{ width: "80px" }}
+              />
+            </Box>
+            <Stack textAlign="center" flex={1}>
+              <Typography
+                variant="h4"
+                fontWeight="bold"
+                color="#01204E"
+                textAlign="center"
+              >
+                {totalInProgressProjects}
+              </Typography>
+              <Typography variant="body1" color="initial">
+                مرحلة التخطيط
+              </Typography>
+            </Stack>
+          </Paper>
+        </NavLink>
       </Grid>
 
       <Grid item xs={12} sm={6} lg={3}>
-        <Paper
-          sx={{
-            padding: "8px",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            border: "1px solid #ddd",
-          }}
-          elevation={0}
-        >
-          <Box
+        <NavLink to={"/projectsbox?projectstatus=3"}>
+          <Paper
             sx={{
-              backgroundColor: "#ccc",
-              borderRadius: "50%",
-              padding: "10px",
+              padding: "8px",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              border: "1px solid #ddd",
             }}
+            elevation={0}
           >
-            <img src={WorkingImage} alt="overview" style={{ width: "80px" }} />
-          </Box>
-          <Stack textAlign="center" flex={1}>
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              color="#01204E"
-              textAlign="center"
+            <Box
+              sx={{
+                backgroundColor: "#ccc",
+                borderRadius: "50%",
+                padding: "10px",
+              }}
             >
-              {totalInProgressProjects}
-            </Typography>
-            <Typography variant="body1" color="initial">
-              مرحلة التنفيذ
-            </Typography>
-          </Stack>
-        </Paper>
+              <img
+                src={WorkingImage}
+                alt="overview"
+                style={{ width: "80px" }}
+              />
+            </Box>
+            <Stack textAlign="center" flex={1}>
+              <Typography
+                variant="h4"
+                fontWeight="bold"
+                color="#01204E"
+                textAlign="center"
+              >
+                {totalCompletedProjects}
+              </Typography>
+              <Typography variant="body1" color="initial">
+                مرحلة التنفيذ
+              </Typography>
+            </Stack>
+          </Paper>
+        </NavLink>
       </Grid>
 
       <Grid item xs={12} sm={6} lg={3}>
-        <Paper
-          sx={{
-            padding: "8px",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            border: "1px solid #ddd",
-          }}
-          elevation={0}
-        >
-          <Box
+        <NavLink to={"/projectsbox?projectstatus=4"}>
+          <Paper
             sx={{
-              backgroundColor: "#ccc",
-              borderRadius: "50%",
-              padding: "10px",
+              padding: "8px",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              border: "1px solid #ddd",
             }}
+            elevation={0}
           >
-            <img src={ClosingImage} alt="overview" style={{ width: "80px" }} />
-          </Box>
-          <Stack textAlign="center" flex={1}>
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              color="#01204E"
-              textAlign="center"
+            <Box
+              sx={{
+                backgroundColor: "#ccc",
+                borderRadius: "50%",
+                padding: "10px",
+              }}
             >
-              {totalCompletedProjects}
-            </Typography>
-            <Typography variant="body1" color="initial">
-              مرحلة الاغلاق
-            </Typography>
-          </Stack>
-        </Paper>
+              <img
+                src={ClosingImage}
+                alt="overview"
+                style={{ width: "80px" }}
+              />
+            </Box>
+            <Stack textAlign="center" flex={1}>
+              <Typography
+                variant="h4"
+                fontWeight="bold"
+                color="#01204E"
+                textAlign="center"
+              >
+                {totalOnHoldProjects}
+              </Typography>
+              <Typography variant="body1" color="initial">
+                مرحلة الاغلاق
+              </Typography>
+            </Stack>
+          </Paper>
+        </NavLink>
       </Grid>
     </Grid>
   );

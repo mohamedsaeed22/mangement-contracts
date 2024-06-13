@@ -3,6 +3,7 @@ import Heading from "../components/common/Heading/Heading";
 import MyLabel from "../components/common/UI/MyLabel";
 import {
   Box,
+  Grid,
   IconButton,
   LinearProgress,
   Stack,
@@ -11,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { East } from "@mui/icons-material";
@@ -63,10 +65,12 @@ const ConsultantDetails = () => {
       dispatch(actGetProjectsByConsultantId({ id, page: 1 }));
     }
   }, [dispatch, id]);
-
+  const handleShowProject = (project) => {
+    navigate(`/project/id/${project.id}`);
+  };
   return (
     <LoadingWrapper loading={loading} error={error}>
-      <Heading title="تفاصيل مقاول" />
+      <Heading title="تفاصيل استشارى" />
       <Stack
         direction="row"
         mt="60px"
@@ -91,56 +95,316 @@ const ConsultantDetails = () => {
         // bgcolor="#ddd"
       >
         <Stack gap={4} m={2}>
-          <Stack
-            p={1}
-            direction="row"
-            justifyContent="space-between"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <MyLabel label="اسم المقاول" value={consultant.name} />
-            <MyLabel label=" وصف" value={consultant.description} />
-            <MyLabel label="رقم الهاتف" value={consultant.phoneNumber} />
-          </Stack>
+          
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  اسم المقاول
+                </Typography>
 
-          <Stack
-            p={1}
-            direction="row"
-            justifyContent="space-between"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <MyLabel
-              label="اسم الشخص المسؤل"
-              value={consultant.contactPersonName}
-            />
-            <MyLabel
-              label="رقم هاتف المسؤل"
-              value={consultant.contactPersonPhone}
-            />
-            <MyLabel label="العنوان" value={consultant.address} />
-          </Stack>
+                {consultant.name}
+              </Box>
+            </Grid>
 
-          <Stack
-            p={1}
-            direction="row"
-            justifyContent="space-between"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <MyLabel label="الدوله" value={consultant.country} />
-            <MyLabel label="التخصص" value={consultant.specialization} />
-            <MyLabel label="الخبره" value={consultant.experience} />
-          </Stack>
-          <Stack
-            p={1}
-            direction="row"
-            justifyContent="space-between"
-            gap={2}
-            flexWrap="wrap"
-          >
-            <MyLabel label="المؤهلات" value={consultant.qualification} />
-          </Stack>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  الوصف
+                </Typography>
+                {consultant.description === ""
+                  ? "لا يوجد"
+                  : consultant.description}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  رقم الهاتف
+                </Typography>
+
+                {consultant.phoneNumber === ""
+                  ? "لا يوجد"
+                  : consultant.phoneNumber}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  اسم الشخص المسؤل
+                </Typography>
+
+                {consultant.contactPersonName === ""
+                  ? "لا يوجد"
+                  : consultant.contactPersonName}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  رقم هاتف المسؤل
+                </Typography>
+
+                {consultant.contactPersonPhone === ""
+                  ? "لا يوجد"
+                  : consultant.contactPersonPhone}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  العنوان
+                </Typography>
+                {consultant.address === "" ? "لا يوجد" : consultant.address}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  الدوله
+                </Typography>
+
+                {consultant.country === "" ? "لا يوجد" : consultant.country}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  التخصص
+                </Typography>
+                {consultant.specialization === ""
+                  ? "لا يوجد"
+                  : consultant.specialization}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  الخبره
+                </Typography>
+
+                {consultant.qualification === ""
+                  ? "لا يوجد"
+                  : consultant.qualification}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  المؤهلات
+                </Typography>
+                {consultant.qualification === ""
+                  ? "لا يوجد"
+                  : consultant.qualification}
+              </Box>
+            </Grid>
+          </Grid>
 
           <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
@@ -178,7 +442,7 @@ const ConsultantDetails = () => {
                         cursor: "pointer",
                         "&:hover": { backgroundColor: "#ddd !important" },
                       }}
-                      // onClick={() => handleShowProject(row)}
+                      onClick={() => handleShowProject(row)}
                     >
                       <StyledTableCell align="center">
                         {row.sectorName}

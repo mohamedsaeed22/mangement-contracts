@@ -180,7 +180,7 @@ const Project = () => {
       }
       dispatch(
         actCreateProjectContractor({
-          contractorIds: [values.contractorId],
+          ContractorIds: [values.contractorId],
           projectId: id,
         })
       );
@@ -198,7 +198,7 @@ const Project = () => {
       }
       dispatch(
         actCreateProjectConsultant({
-          consultantIds: [values.consultantId],
+          ConsultantIds: [values.consultantId],
           projectId: id,
         })
       );
@@ -271,77 +271,65 @@ const Project = () => {
     } else {
       dispatch(actCreateProject(projectData))
         .unwrap()
-        .then((res) => {
-          if (res.id) {
-            if (values.riskStatus && values.handicapStatus) {
-              const riskObj = {
-                description: values.riskDescription,
-                status: values.riskStatus,
-              };
-              const handicapObj = {
-                description: values.handicapDescription,
-                status: values.handicapStatus,
-              };
-              Promise.all([
-                dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
-                dispatch(
+        .then(async (res) => {
+          if (res && res.id) {
+            try {
+              if (values.riskStatus && values.handicapStatus) {
+                const riskObj = {
+                  description: values.riskDescription,
+                  status: values.riskStatus,
+                };
+                const handicapObj = {
+                  description: values.handicapDescription,
+                  status: values.handicapStatus,
+                };
+                await Promise.all([
+                  dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
+                  dispatch(
+                    actCreateHandicap({ projectId: res.id, ...handicapObj })
+                  ),
+                ]);
+              } else if (values.riskStatus) {
+                const riskObj = {
+                  description: values.riskDescription,
+                  status: values.riskStatus,
+                };
+                await dispatch(
+                  actCreateRisk({ projectId: res.id, ...riskObj })
+                );
+              } else if (values.handicapStatus) {
+                const handicapObj = {
+                  description: values.handicapDescription,
+                  status: values.handicapStatus,
+                };
+                await dispatch(
                   actCreateHandicap({ projectId: res.id, ...handicapObj })
-                ),
-              ])
-                .then(() => {
-                  // All actions dispatched successfully
-                  notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate("/projectsbox");
-                })
-                .catch((err) => {
-                  // Error occurred while dispatching actions
-                  notifyFailed(err + "حدث خطا ما..الرجاء المحاولة مره اخرى");
-                });
-            } else if (values.riskStatus) {
-              const riskObj = {
-                description: values.riskDescription,
-                status: values.riskStatus,
-              };
-              dispatch(actCreateRisk({ projectId: res.id, ...riskObj }))
-                .unwrap()
-                .then(() => {
-                  notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate("/projectsbox");
-                })
-                .catch((err) => {
-                  notifyFailed(err + "حدث خطا ما..الرجاء المحاولة مره اخرى");
-                });
-            } else if (values.handicapStatus) {
-              const handicapObj = {
-                description: values.handicapDescription,
-                status: values.handicapStatus,
-              };
-              dispatch(actCreateHandicap({ projectId: res.id, ...handicapObj }))
-                .unwrap()
-                .then(() => {
-                  notifySuccess("تم إنشاء المشروع بنجاح");
-                  navigate("/projectsbox");
-                })
-                .catch((err) => {
-                  notifyFailed(err + "حدث خطا ما..الرجاء المحاولة مره اخرى");
-                });
-            } else {
-              // No status for risk and disables
+                );
+              }
+
+              if (values.contractorId) {
+                const objContractor = {
+                  ContractorIds: [values.contractorId],
+                  projectId: res.id,
+                };
+                await dispatch(actCreateProjectContractor(objContractor));
+              }
+
+              if (values.consultantId) {
+                const objConsultant = {
+                  ConsultantIds: [values.consultantId],
+                  projectId: res.id,
+                };
+                await dispatch(actCreateProjectConsultant(objConsultant));
+              }
+
               notifySuccess("تم إنشاء المشروع بنجاح");
               navigate("/projectsbox");
+            } catch (error) {
+              notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
             }
-            dispatch(
-              actCreateProjectContractor({
-                contractorId: values.contractorId,
-                projectId: res.id,
-              })
-            );
-            dispatch(
-              actCreateProjectConsultant({
-                consultantId: values.consultantId,
-                projectId: res.id,
-              })
-            );
+          } else {
+            notifyFailed("Failed to create project. ID is undefined.");
           }
         })
         .catch(() => {
@@ -392,7 +380,6 @@ const Project = () => {
                   gap={1}
                   justifyContent="center"
                 >
-                  
                   <MyInput
                     width={180}
                     name="status"

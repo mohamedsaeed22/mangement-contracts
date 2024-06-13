@@ -1,8 +1,10 @@
+import { NavLink, useNavigate } from "react-router-dom";
 import OverviewImage from "./../../assets/imgs/overview.svg";
 
 import { Box, Paper, Stack, Typography } from "@mui/material";
 
 const TopStat = ({ stats }) => {
+  // const navigate = useNavigate();
   const { totalProjects, totalPercentage, totalBudget, totalSpent } = stats;
   return (
     <Paper
@@ -32,38 +34,46 @@ const TopStat = ({ stats }) => {
         >
           <img src={OverviewImage} alt="overview" style={{ width: "80px" }} />
         </Box>
-        <Stack textAlign="center">
-          <Typography variant="h4" fontWeight="bold" color="#01204E">
-            {totalProjects}
-          </Typography>
-          <Typography variant="body1" color="initial">
-            اجمالى عدد المشروعات
-          </Typography>
-        </Stack>
-        <Stack textAlign="center">
-          <Typography variant="h4" fontWeight="bold" color="#01204E">
-            {totalPercentage} %
-          </Typography>
-          <Typography variant="body1" color="initial">
-            نسبة التنفيذ الفعلى (%)
-          </Typography>
-        </Stack>
-        <Stack textAlign="center">
-          <Typography variant="h4" fontWeight="bold" color="#01204E">
-            {totalBudget}
-          </Typography>
-          <Typography variant="body1" color="initial">
-            التكلفة المخططة
-          </Typography>
-        </Stack>
-        <Stack textAlign="center">
-          <Typography variant="h4" fontWeight="bold" color="#01204E">
-            {totalSpent}
-          </Typography>
-          <Typography variant="body1" color="initial">
-            المنصرف الفعلى
-          </Typography>
-        </Stack>
+        <NavLink to={"/projectsbox"}>
+          <Stack textAlign="center">
+            <Typography variant="h4" fontWeight="bold" color="#01204E">
+              {totalProjects}
+            </Typography>
+            <Typography variant="body1" color="initial">
+              اجمالى عدد المشروعات
+            </Typography>
+          </Stack>
+        </NavLink>
+        <NavLink to={"/projectsbox"}>
+          <Stack textAlign="center">
+            <Typography variant="h4" fontWeight="bold" color="#01204E">
+              {totalPercentage} %
+            </Typography>
+            <Typography variant="body1" color="initial">
+              نسبة التنفيذ الفعلى (%)
+            </Typography>
+          </Stack>
+        </NavLink>
+        <NavLink to={"/projectsbox"}>
+          <Stack textAlign="center">
+            <Typography variant="h4" fontWeight="bold" color="#01204E">
+              {totalBudget && totalBudget.toLocaleString()}
+            </Typography>
+            <Typography variant="body1" color="initial">
+              التكلفة المخططة
+            </Typography>
+          </Stack>
+        </NavLink>
+        <NavLink to={"/projectsbox"}>
+          <Stack textAlign="center">
+            <Typography variant="h4" fontWeight="bold" color="#01204E">
+              {totalSpent && totalSpent.toLocaleString()}
+            </Typography>
+            <Typography variant="body1" color="initial">
+              المنصرف الفعلى
+            </Typography>
+          </Stack>
+        </NavLink>
       </Stack>
     </Paper>
   );

@@ -62,7 +62,7 @@ const ManageActivities = () => {
   const { activities, error, loading } = useSelector((state) => state.activity);
   const [updatedActivity, setUpdatedActivity] = useState(initialActivity);
   const navigate = useNavigate();
-
+  console.log(activities);
   const handleCloseModal = () => {
     setOpenModal(false);
   };
@@ -126,6 +126,7 @@ const ManageActivities = () => {
                 <TableRow>
                   <StyledTableCell align="center">النشاط</StyledTableCell>
                   <StyledTableCell align="center">الوصف</StyledTableCell>
+                  <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
                   <StyledTableCell align="center">الاجراءات</StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -153,13 +154,19 @@ const ManageActivities = () => {
                           : row.description}
                       </StyledTableCell>
                       <StyledTableCell align="center">
+                        {row.totalProjects}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
                         <Stack direction="row" justifyContent="center" gap={1}>
                           <MyBtn
                             width={100}
                             height={40}
                             icon={EditIcon}
                             title={"تعديل"}
-                            handleBtnClick={() => handleUpdateActivity(row)}
+                            handleBtnClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateActivity(row);
+                            }}
                           />
                           <MyBtn
                             width={100}
@@ -167,7 +174,10 @@ const ManageActivities = () => {
                             bgColor="red"
                             icon={DeleteIcon}
                             title={"حذف"}
-                            handleBtnClick={() => handleDeleteActivity(row)}
+                            handleBtnClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteActivity(row);
+                            }}
                           />
                         </Stack>
                       </StyledTableCell>
