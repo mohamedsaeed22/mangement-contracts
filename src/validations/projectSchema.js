@@ -1,11 +1,10 @@
-import dayjs from "dayjs";
-import * as yup from "yup";
+ import * as yup from "yup";
 
 const initialProjectValues = {
   name: "",
   description: "",
-  startDate: dayjs().toISOString(), // Set initial date to current date
-  endDate: dayjs().toISOString(),
+  startDate: null,
+  endDate: null,
   budget: "",
   spentBudget: "",
   percentage: "",
@@ -31,28 +30,28 @@ const projectSchema = yup.lazy((values) => {
     description: yup.string().required("الوصف مطلوب"),
     startDate: yup
       .date()
-      .nullable()
-      .required("تاريخ البداية مطلوب")
+      .required("تاريخ البدايه مطلوب")
       .typeError("التاريخ غير صحيح"),
     endDate: yup
       .date()
-      .nullable()
       .required("تاريخ النهاية مطلوب")
-      .typeError("التاريخ غير صحيح")
-      .when(
-        "startDate",
-        (started, yup) =>
-          started &&
-          yup.min(started, "تاريخ النهاية يجب أن يكون بعد تاريخ البداية")
-      ),
+      .min(
+        yup.ref("startDate"),
+        "تاريخ النهاية لا يمكن ان يكون قبل تاريخ البدايه"
+      )
+      .typeError("التاريخ غير صحيح"),
     budget: yup
       .number()
       .required("التكلفة مطلوبة")
-      .typeError("التكلفه لابد من ان تكون رقم"),
+      .typeError("التكلفة لابد من ان تكون رقم")
+      .min(0, "التكلفة لابد أن تكون قيمة موجبة"),
+
     spentBudget: yup
       .number()
       .required("المنصرف مطلوب")
-      .typeError("المنصرف لابد من ان يكون رقم"),
+      .typeError("المنصرف لابد من ان يكون رقم")
+      .min(0, "المنصرف لابد أن يكون قيمة موجبة"),
+
     percentage: yup
       .number()
       .required("النسبة مطلوبة")

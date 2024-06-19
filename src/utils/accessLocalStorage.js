@@ -24,7 +24,7 @@ const removeAllCookies = () => {
 };
 const getUserRoles = () => {
   if (!getAcessToken()) {
-    return null;
+    return ["SuperAdmin"];
   }
   const decoded = jwtDecode(getAcessToken());
   if (decoded) {

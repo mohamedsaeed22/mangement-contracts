@@ -3,6 +3,7 @@ import {
   Box,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   Grid,
   IconButton,
   InputLabel,
@@ -12,13 +13,14 @@ import {
   RadioGroup,
   Select,
   Stack,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik } from "formik";
+import { ErrorMessage, Field, Formik } from "formik";
 import actCreateProject from "../store/project/act/actCreateProject";
 import {
   notifyFailed,
@@ -49,7 +51,11 @@ import { risksandDisablesOptions } from "../utils/riskHandicapStatus";
 import actDeleteRisk from "../store/risk/act/actDeleteRisk";
 import actDeleteHandicap from "../store/handicap/act/actDeleteHandicap";
 import { projectStateOptions } from "../utils/statusList";
-import { convertDateToIso } from "../utils/convertDateToIso";
+import {
+  convertDateToFormat,
+  convertDateToIso,
+  convertIsoToDateObject,
+} from "../utils/convertDateToIso";
 import actGetConsultants from "../store/consultant/act/actGetConsultants";
 import {
   actCreateContractor,
@@ -62,6 +68,7 @@ import {
 } from "../store/projectConsultant/projectConsultantSlice";
 import actDeleteProjectContractor from "../store/projectContractor/act/actDeleteProjectContractor";
 import MySelectChip from "../components/Form/Input/MySelectChip";
+import MuiInput from "../components/Form/Input/MuiInput";
 
 const myWidth = 250;
 
@@ -83,12 +90,7 @@ const Project = () => {
 
   const [myProject, setMyProject] = useState(initialProjectValues);
   const [anchorEl, setAnchorEl] = useState(null);
-  console.log(project.consultants);
-  console.log(project.contractors);
   console.log(project);
-  console.log(consultantsIds);
-  console.log(contractorsIds);
-
   const {
     risks: r,
     handicaps: h,
@@ -142,8 +144,8 @@ const Project = () => {
     if (id && project) {
       setMyProject({
         ...project,
-        startDate: dayjs(project.startDate).toISOString(),
-        endDate: dayjs(project.endDate).toISOString(),
+        startDate: dayjs(dayjs(project.startDate).toISOString()),
+        endDate: dayjs(dayjs(project.endDate).toISOString()),
         showRisks: riskObj?.id ? "yes" : "no",
         riskStatus: riskObj?.status || "",
         riskDescription: riskObj?.description || "",
@@ -157,187 +159,190 @@ const Project = () => {
       setContractorsIds(project?.contractors);
     }
   }, [id, project, handicapObj, riskObj, contractorObj, consultantObj]);
-
+  console.log(myProject);
   const handleFormSubmit = (values) => {
     console.table(values);
     const projectData = {
       ...values,
-      startDate: values.startDate,
-      endDate: values.endDate,
+      startDate: convertDateToIso(values.startDate),
+      endDate: convertDateToIso(values.endDate),
       budget: values.budget,
       spentBudget: values.spentBudget,
       percentage: values.percentage,
     };
-    if (values.contractorId !== myProject.contractorId) {
-      // delete and add
-      if (myProject.contractorId) {
-        dispatch(
-          actDeleteProjectContractor({
-            projectId: id,
-            contractorId: myProject.contractorId,
-          })
-        );
-      }
-      dispatch(
-        actCreateProjectContractor({
-          ContractorIds: [values.contractorId],
-          projectId: id,
-        })
-      );
-      console.log(values.contractorId, id);
-    }
-    if (values.consultantId !== myProject.consultantId) {
-      // delete and add
-      if (myProject.consultantId) {
-        dispatch(
-          actDeleteProjectConsultant({
-            projectId: id,
-            consultantId: myProject.consultantId,
-          })
-        );
-      }
-      dispatch(
-        actCreateProjectConsultant({
-          ConsultantIds: [values.consultantId],
-          projectId: id,
-        })
-      );
-      console.log(values.consultantId, id);
-    }
-    if (id) {
-      if (values.showHandicaps === "yes") {
-        if (handicapObj?.id) {
-          dispatch(
-            actUpdateHandicap({
-              id: handicapObj.id,
-              projectId: id,
-              status: values.handicapStatus,
-              description: values.handicapDescription,
-            })
-          );
-        } else {
-          dispatch(
-            actCreateHandicap({
-              projectId: id,
-              status: values.handicapStatus,
-              description: values.handicapDescription,
-            })
-          );
-        }
-      }
-      if (values.showHandicaps === "no") {
-        if (handicapObj?.id) {
-          dispatch(actDeleteHandicap(handicapObj.id));
-        }
-      }
-      if (values.showRisks === "no") {
-        if (riskObj?.id) {
-          dispatch(actDeleteRisk(riskObj.id));
-        } else {
-        }
-      }
+    console.log(values);
+    console.log(convertIsoToDateObject(projectData.startDate));
 
-      if (values.showRisks === "yes") {
-        if (riskObj?.id) {
-          dispatch(
-            actUpdateRisk({
-              id: riskObj.id,
-              projectId: id,
-              status: values.riskStatus,
-              description: values.riskDescription,
-            })
-          );
-        } else {
-          dispatch(
-            actCreateRisk({
-              projectId: id,
-              status: values.riskStatus,
-              description: values.riskDescription,
-            })
-          );
-        }
-      }
-      dispatch(actUpdateProject(projectData))
-        .unwrap()
-        .then((res) => {
-          if (res.id) {
-            notifySuccess("تم تعديل المشروع بنجاح");
-            navigate(-1);
-          }
-        })
-        .catch((err) => {
-          notifyFailed(err + " خطا ما..الرجاء المحاولة مره اخرى");
-        });
-    } else {
-      dispatch(actCreateProject(projectData))
-        .unwrap()
-        .then(async (res) => {
-          if (res && res.id) {
-            try {
-              if (values.riskStatus && values.handicapStatus) {
-                const riskObj = {
-                  description: values.riskDescription,
-                  status: values.riskStatus,
-                };
-                const handicapObj = {
-                  description: values.handicapDescription,
-                  status: values.handicapStatus,
-                };
-                await Promise.all([
-                  dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
-                  dispatch(
-                    actCreateHandicap({ projectId: res.id, ...handicapObj })
-                  ),
-                ]);
-              } else if (values.riskStatus) {
-                const riskObj = {
-                  description: values.riskDescription,
-                  status: values.riskStatus,
-                };
-                await dispatch(
-                  actCreateRisk({ projectId: res.id, ...riskObj })
-                );
-              } else if (values.handicapStatus) {
-                const handicapObj = {
-                  description: values.handicapDescription,
-                  status: values.handicapStatus,
-                };
-                await dispatch(
-                  actCreateHandicap({ projectId: res.id, ...handicapObj })
-                );
-              }
+    // if (values.contractorId !== myProject.contractorId) {
+    //   // delete and add
+    //   if (myProject.contractorId) {
+    //     dispatch(
+    //       actDeleteProjectContractor({
+    //         projectId: id,
+    //         contractorId: myProject.contractorId,
+    //       })
+    //     );
+    //   }
+    //   dispatch(
+    //     actCreateProjectContractor({
+    //       ContractorIds: [values.contractorId],
+    //       projectId: id,
+    //     })
+    //   );
+    //   console.log(values.contractorId, id);
+    // }
+    // if (values.consultantId !== myProject.consultantId) {
+    //   // delete and add
+    //   if (myProject.consultantId) {
+    //     dispatch(
+    //       actDeleteProjectConsultant({
+    //         projectId: id,
+    //         consultantId: myProject.consultantId,
+    //       })
+    //     );
+    //   }
+    //   dispatch(
+    //     actCreateProjectConsultant({
+    //       ConsultantIds: [values.consultantId],
+    //       projectId: id,
+    //     })
+    //   );
+    //   console.log(values.consultantId, id);
+    // }
+    // if (id) {
+    //   if (values.showHandicaps === "yes") {
+    //     if (handicapObj?.id) {
+    //       dispatch(
+    //         actUpdateHandicap({
+    //           id: handicapObj.id,
+    //           projectId: id,
+    //           status: values.handicapStatus,
+    //           description: values.handicapDescription,
+    //         })
+    //       );
+    //     } else {
+    //       dispatch(
+    //         actCreateHandicap({
+    //           projectId: id,
+    //           status: values.handicapStatus,
+    //           description: values.handicapDescription,
+    //         })
+    //       );
+    //     }
+    //   }
+    //   if (values.showHandicaps === "no") {
+    //     if (handicapObj?.id) {
+    //       dispatch(actDeleteHandicap(handicapObj.id));
+    //     }
+    //   }
+    //   if (values.showRisks === "no") {
+    //     if (riskObj?.id) {
+    //       dispatch(actDeleteRisk(riskObj.id));
+    //     } else {
+    //     }
+    //   }
 
-              if (values.contractorId) {
-                const objContractor = {
-                  ContractorIds: [values.contractorId],
-                  projectId: res.id,
-                };
-                await dispatch(actCreateProjectContractor(objContractor));
-              }
+    //   if (values.showRisks === "yes") {
+    //     if (riskObj?.id) {
+    //       dispatch(
+    //         actUpdateRisk({
+    //           id: riskObj.id,
+    //           projectId: id,
+    //           status: values.riskStatus,
+    //           description: values.riskDescription,
+    //         })
+    //       );
+    //     } else {
+    //       dispatch(
+    //         actCreateRisk({
+    //           projectId: id,
+    //           status: values.riskStatus,
+    //           description: values.riskDescription,
+    //         })
+    //       );
+    //     }
+    //   }
+    //   dispatch(actUpdateProject(projectData))
+    //     .unwrap()
+    //     .then((res) => {
+    //       if (res.id) {
+    //         notifySuccess("تم تعديل المشروع بنجاح");
+    //         navigate(-1);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       notifyFailed(err + " خطا ما..الرجاء المحاولة مره اخرى");
+    //     });
+    // } else {
+    //   dispatch(actCreateProject(projectData))
+    //     .unwrap()
+    //     .then(async (res) => {
+    //       if (res && res.id) {
+    //         try {
+    //           if (values.riskStatus && values.handicapStatus) {
+    //             const riskObj = {
+    //               description: values.riskDescription,
+    //               status: values.riskStatus,
+    //             };
+    //             const handicapObj = {
+    //               description: values.handicapDescription,
+    //               status: values.handicapStatus,
+    //             };
+    //             await Promise.all([
+    //               dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
+    //               dispatch(
+    //                 actCreateHandicap({ projectId: res.id, ...handicapObj })
+    //               ),
+    //             ]);
+    //           } else if (values.riskStatus) {
+    //             const riskObj = {
+    //               description: values.riskDescription,
+    //               status: values.riskStatus,
+    //             };
+    //             await dispatch(
+    //               actCreateRisk({ projectId: res.id, ...riskObj })
+    //             );
+    //           } else if (values.handicapStatus) {
+    //             const handicapObj = {
+    //               description: values.handicapDescription,
+    //               status: values.handicapStatus,
+    //             };
+    //             await dispatch(
+    //               actCreateHandicap({ projectId: res.id, ...handicapObj })
+    //             );
+    //           }
 
-              if (values.consultantId) {
-                const objConsultant = {
-                  ConsultantIds: [values.consultantId],
-                  projectId: res.id,
-                };
-                await dispatch(actCreateProjectConsultant(objConsultant));
-              }
+    //           if (values.contractorId) {
+    //             const objContractor = {
+    //               ContractorIds: [values.contractorId],
+    //               projectId: res.id,
+    //             };
+    //             await dispatch(actCreateProjectContractor(objContractor));
+    //           }
 
-              notifySuccess("تم إنشاء المشروع بنجاح");
-              navigate("/projectsbox");
-            } catch (error) {
-              notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-            }
-          } else {
-            notifyFailed("Failed to create project. ID is undefined.");
-          }
-        })
-        .catch(() => {
-          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-        });
-    }
+    //           if (values.consultantId) {
+    //             const objConsultant = {
+    //               ConsultantIds: [values.consultantId],
+    //               projectId: res.id,
+    //             };
+    //             await dispatch(actCreateProjectConsultant(objConsultant));
+    //           }
+
+    //           notifySuccess("تم إنشاء المشروع بنجاح");
+    //           navigate("/projectsbox");
+    //         } catch (error) {
+    //           notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //         }
+    //       } else {
+    //         notifyFailed("Failed to create project. ID is undefined.");
+    //       }
+    //     })
+    //     .catch(() => {
+    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+    //     });
+    // }
   };
-
+  console.log(dayjs(dayjs("2024-05-29T21:00:00").toISOString()));
   return (
     <>
       <Heading title={id ? "تعديل مشروع" : "اضافة مشروع"} />
@@ -380,70 +385,6 @@ const Project = () => {
                   gap={1}
                   justifyContent="center"
                 >
-                  <MyInput
-                    width={180}
-                    name="status"
-                    select
-                    label="الحالة"
-                    placeholder="اختر الحالة"
-                    value={values.status}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={!!touched.status && !!errors.status}
-                    helperText={touched.status && errors.status}
-                  >
-                    {projectStateOptions.map((status) => (
-                      <MenuItem key={status.id} value={status.id}>
-                        {status.name}
-                      </MenuItem>
-                    ))}
-                  </MyInput>
-
-                  <MyInput
-                    width={180}
-                    name="activityId"
-                    select
-                    label="النشاط"
-                    placeholder="اختر النشاط"
-                    value={values.activityId}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={!!touched.activityId && !!errors.activityId}
-                    helperText={touched.activityId && errors.activityId}
-                  >
-                    {activities.length > 0 ? (
-                      activities.map((Activity) => (
-                        <MenuItem key={Activity.id} value={Activity.id}>
-                          {Activity.name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem disabled>لا يوجد انشطة</MenuItem>
-                    )}
-                  </MyInput>
-                  <MyInput
-                    width={180}
-                    name="sectorId"
-                    select
-                    label="القطاع"
-                    placeholder="اختر القطاع"
-                    value={values.sectorId}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={!!touched.sectorId && !!errors.sectorId}
-                    helperText={touched.sectorId && errors.sectorId}
-                  >
-                    {sectors.length > 0 ? (
-                      sectors.map((supervisor) => (
-                        <MenuItem key={supervisor.id} value={supervisor.id}>
-                          {supervisor.name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem disabled>لا يوجد قطاعات</MenuItem>
-                    )}
-                  </MyInput>
-
                   {id && (
                     <Stack direction="row" alignSelf="flex-start">
                       <MyBtn title="تعديل" type="submit" />
@@ -482,7 +423,7 @@ const Project = () => {
               </Stack>
 
               <Box
-                p={3}
+                padding="18px 10px"
                 border="2px solid #000"
                 borderRadius={2}
                 flexGrow={1}
@@ -490,73 +431,160 @@ const Project = () => {
               >
                 {/* row 1 */}
 
-                <Grid container spacing={3}>
+                <Grid container spacing={2}>
+                  {/* name and desc */}
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper
                       direction="column"
                       title="اسم و وصف المشروع"
                     >
-                      <MyInput
-                        // width={myWidth}
-                        fullWidth
+                      <TextField
+                        size="small"
                         name="name"
-                        label="الاسم"
-                        placeholder="ادخل الاسم"
-                        value={values.name}
+                        fullWidth
                         onChange={handleChange}
                         onBlur={handleBlur}
                         error={!!touched.name && !!errors.name}
                         helperText={touched.name && errors.name}
+                        label="الاسم"
+                        value={values.name}
                       />
-                      <MyInput
+                      <TextField
+                        size="small"
                         name="description"
-                        label="الوصف"
-                        multiline={true}
-                        fullWidth={true}
-                        rows={2.8}
-                        placeholder="ادخل الوصف"
-                        value={values.description}
+                        fullWidth
+                        multiline
+                        rows={2.6}
                         onChange={handleChange}
+                        value={values.description}
                         onBlur={handleBlur}
                         error={!!touched.description && !!errors.description}
                         helperText={touched.description && errors.description}
+                        label="الوصف"
                       />
                     </MyInputsWrapper>
                   </Grid>
-
-                  <Grid item xs={12} md={6}>
+                  {/* activities - sectors - persentage - status */}
+                  <Grid item xs={12} md={6} gap={2}>
                     <Grid item xs={12}>
-                      <MyInputsWrapper title="تكلفة المشروع">
-                        <MyInput
-                          width={myWidth}
-                          name="budget"
-                          label="التكلفة المخططة"
-                          placeholder="ادخل التكلفة"
-                          type="number"
-                          value={values.budget}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={!!touched.budget && !!errors.budget}
-                          helperText={touched.budget && errors.budget}
-                        />
-                        <MyInput
-                          width={myWidth}
-                          name="spentBudget"
-                          label="المنصرف الفعلى"
-                          placeholder="ادخل المنصرف"
-                          type="number"
-                          value={values.spentBudget}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={!!touched.spentBudget && !!errors.spentBudget}
-                          helperText={touched.spentBudget && errors.spentBudget}
-                        />
+                      <MyInputsWrapper title="الانشطه والقطاعات">
+                        <Box sx={{ minWidth: 220 }}>
+                          <FormControl fullWidth size="small">
+                            <InputLabel id="status-select-label">
+                              النشاط
+                            </InputLabel>
+                            <Select
+                              labelId="status-select-label"
+                              id="status-select"
+                              name="activityId"
+                              label="النشاط"
+                              value={values.activityId}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              error={
+                                !!touched.activityId && !!errors.activityId
+                              }
+                              helperText={
+                                touched.activityId && errors.activityId
+                              }
+                            >
+                              {activities.length > 0 ? (
+                                activities.map((Activity) => (
+                                  <MenuItem
+                                    key={Activity.id}
+                                    value={Activity.id}
+                                  >
+                                    {Activity.name}
+                                  </MenuItem>
+                                ))
+                              ) : (
+                                <MenuItem disabled>لا يوجد انشطة</MenuItem>
+                              )}
+                            </Select>
+                            {touched.activityId && errors.activityId ? (
+                              <FormHelperText>
+                                {touched.activityId && errors.activityId}
+                              </FormHelperText>
+                            ) : (
+                              " "
+                            )}
+                          </FormControl>
+                        </Box>
+                        <Box sx={{ minWidth: 220 }}>
+                          <FormControl fullWidth size="small">
+                            <InputLabel id="status-select-label">
+                              القطاع
+                            </InputLabel>
+                            <Select
+                              labelId="status-select-label"
+                              id="status-select"
+                              name="sectorId"
+                              label="القطاع"
+                              value={values.sectorId}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              error={!!touched.sectorId && !!errors.sectorId}
+                              helperText={touched.sectorId && errors.sectorId}
+                            >
+                              {sectors.length > 0 ? (
+                                sectors.map((supervisor) => (
+                                  <MenuItem
+                                    key={supervisor.id}
+                                    value={supervisor.id}
+                                  >
+                                    {supervisor.name}
+                                  </MenuItem>
+                                ))
+                              ) : (
+                                <MenuItem disabled>لا يوجد قطاعات</MenuItem>
+                              )}
+                            </Select>
+                            {touched.sectorId && errors.sectorId ? (
+                              <FormHelperText>
+                                {touched.sectorId && errors.sectorId}
+                              </FormHelperText>
+                            ) : (
+                              " "
+                            )}
+                          </FormControl>
+                        </Box>
                       </MyInputsWrapper>
                     </Grid>
-                    <Grid item xs={12}>
-                      <MyInputsWrapper title="ما تم انجازة من المشروع">
-                        <MyInput
-                          width={myWidth}
+                    <Grid item xs={12} mt={2}>
+                      <MyInputsWrapper title="الحاله وما تم انجازه">
+                        <Box sx={{ minWidth: 220 }}>
+                          <FormControl fullWidth size="small">
+                            <InputLabel id="status-select-label">
+                              الحالة
+                            </InputLabel>
+                            <Select
+                              labelId="status-select-label"
+                              id="status-select"
+                              name="status"
+                              label="الحالة"
+                              value={values.status}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              error={!!touched.status && !!errors.status}
+                            >
+                              {projectStateOptions.map((status) => (
+                                <MenuItem key={status.id} value={status.id}>
+                                  {status.name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                            {touched.status && errors.status ? (
+                              <FormHelperText>
+                                {touched.status && errors.status}
+                              </FormHelperText>
+                            ) : (
+                              " "
+                            )}
+                          </FormControl>
+                        </Box>
+                        <TextField
+                          sx={{ minWidth: 220 }}
+                          size="small"
                           name="percentage"
                           label="ادخل نسبة مؤية"
                           type="number"
@@ -569,39 +597,79 @@ const Project = () => {
                       </MyInputsWrapper>
                     </Grid>
                   </Grid>
+                  {/* project budget */}
+                  <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
+                      <MyInputsWrapper title="تكلفة المشروع">
+                        <TextField
+                          sx={{ minWidth: 220 }}
+                          size="small"
+                          name="budget"
+                          label="التكلفة المخططة"
+                          type="number"
+                          value={values.budget}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={!!touched.budget && !!errors.budget}
+                          helperText={touched.budget && errors.budget}
+                        />
 
+                        <TextField
+                          sx={{ minWidth: 220 }}
+                          size="small"
+                          name="spentBudget"
+                          label="المنصرف الفعلى"
+                          type="number"
+                          value={values.spentBudget}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={!!touched.spentBudget && !!errors.spentBudget}
+                          helperText={touched.spentBudget && errors.spentBudget}
+                        />
+                      </MyInputsWrapper>
+                    </Grid>
+                  </Grid>
+                  {/* project dates */}
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="الخطة الزمنية للمشروع">
-                      <MyDatePicker
-                        name="startDate"
-                        width={myWidth}
-                        title="تاريخ البداية"
-                        value={dayjs(values.startDate)}
-                        onChangeDate={(value) => {
-                          setFieldValue("startDate", value.toISOString());
-                          setFieldValue("endDate", null);
-                        }}
-                        error={!!touched.startDate && !!errors.startDate}
-                        helperText={touched.startDate && errors.startDate}
-                      />
-
-                      <MyDatePicker
-                        name="endDate"
-                        width={myWidth}
-                        title="تاريخ النهاية"
-                        value={dayjs(values.endDate)}
-                        onChangeDate={(value) => {
-                          setFieldValue("endDate", value.toISOString());
-                        }}
-                        error={!!touched.endDate && !!errors.endDate}
-                        helperText={touched.endDate && errors.endDate}
-                      />
+                      <Field name="startDate">
+                        {({ field, form }) => (
+                          <MyDatePicker
+                            name="startDate"
+                            title="تاريخ البدايه"
+                            value={values.startDate}
+                            onChangeDate={(date) =>
+                              setFieldValue("startDate", date)
+                            }
+                            error={
+                              touched.startDate && Boolean(errors.startDate)
+                            }
+                            helperText={touched.startDate && errors.startDate}
+                            // width="100%"
+                          />
+                        )}
+                      </Field>
+                      <Field name="endDate">
+                        {({ field, form }) => (
+                          <MyDatePicker
+                            name="endDate"
+                            title="تاريخ النهايه"
+                            value={values.endDate}
+                            onChangeDate={(date) =>
+                              setFieldValue("endDate", date)
+                            }
+                            error={touched.endDate && Boolean(errors.endDate)}
+                            helperText={touched.endDate && errors.endDate}
+                            // width="100%"
+                          />
+                        )}
+                      </Field>
                     </MyInputsWrapper>
                   </Grid>
-
+                  {/* contractors and consultants */}
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="المقاولين والاستشارين">
-                      <Box sx={{ minWidth: 180 }}>
+                      <Box sx={{ minWidth: 220 }}>
                         <FormControl fullWidth size="small">
                           <InputLabel id="demo-simple-select-label">
                             المقاولين
@@ -626,7 +694,7 @@ const Project = () => {
                           </Select>
                         </FormControl>
                       </Box>
-                      <Box sx={{ minWidth: 180 }}>
+                      <Box sx={{ minWidth: 220 }}>
                         <FormControl fullWidth size="small">
                           <InputLabel id="demo-simple-select-label">
                             الاستشاريين
@@ -651,255 +719,258 @@ const Project = () => {
                           </Select>
                         </FormControl>
                       </Box>
-                      {/* <MyInput
-                        width={180}
-                        name="contractorId"
-                        select
-                        label="المقاول"
-                        placeholder="اختر المقاول"
-                        value={values.contractorId}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={!!touched.contractorId && !!errors.contractorId}
-                        helperText={touched.contractorId && errors.contractorId}
-                      >
-                        {contractors.length > 0 ? (
-                          contractors.map((el) => (
-                            <MenuItem key={el.id} value={el.id}>
-                              {el.name}
-                            </MenuItem>
-                          ))
-                        ) : (
-                          <MenuItem disabled>لا يوجد مقاولين</MenuItem>
-                        )}
-                      </MyInput> */}
-
-                      {/* <MyInput
-                        width={180}
-                        name="consultantId"
-                        select
-                        label="الاستشارى"
-                        placeholder="اختر الاستشارى"
-                        value={values.consultantId}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={!!touched.consultantId && !!errors.consultantId}
-                        helperText={touched.consultantId && errors.consultantId}
-                      >
-                        {consultants.length > 0 ? (
-                          consultants.map((el) => (
-                            <MenuItem key={el.id} value={el.id}>
-                              {el.name}
-                            </MenuItem>
-                          ))
-                        ) : (
-                          <MenuItem disabled>لا يوجد استشاريين</MenuItem>
-                        )}
-                      </MyInput> */}
-                      {/* <MySelectChip
-                        data={contractors}
-                        labelName="اختر المقاول"
-                        setArrIds={setContractorsIds}
-                        seletedIds={contractorsIds}
-                      />
-                      <MySelectChip
-                        data={consultants}
-                        labelName="اختر الاستشارى"
-                        setArrIds={setConsultantsIds}
-                        seletedIds={consultantsIds}
-                      /> */}
                     </MyInputsWrapper>
                   </Grid>
+                  {/* handicaps and risks */}
                   <Grid item xs={12}>
                     <MyInputsWrapper
                       direction="column"
                       title="المخاطر و المعوقات"
                     >
                       {/* riskObj */}
-                      <Stack width="100%" gap={2}>
-                        <Box>
-                          <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
-                            <Typography variant="body1" color="initial" mt={1}>
-                              هل له مخاطر ؟
-                            </Typography>
-                            <FormControl>
-                              <RadioGroup
-                                row
-                                aria-labelledby="form-control-label-placement"
-                                name="showRisks"
-                                value={values.showRisks}
-                                onChange={(e) => {
-                                  handleChange(e);
-                                }}
+                      <Grid container spacing={2}>
+                        {/* Risks Section */}
+                        <Grid item xs={12} md={6}>
+                          <Stack width="100%" gap={2}>
+                            <Box>
+                              <Stack
+                                direction="row"
+                                flexWrap="wrap"
+                                gap={1}
+                                mb={2}
                               >
-                                <FormControlLabel
-                                  value="no"
-                                  control={<Radio size="small" />}
-                                  label="لا"
-                                  labelPlacement="start"
-                                />
-                                <FormControlLabel
-                                  value="yes"
-                                  control={<Radio size="small" />}
-                                  label="نعم"
-                                  labelPlacement="start"
-                                />
-                              </RadioGroup>
-                            </FormControl>
-                            {values.showRisks === "yes" && (
-                              <Box ml={2}>
-                                <MyInput
-                                  width={180}
-                                  name="riskStatus"
-                                  select
-                                  label="الحالة"
-                                  placeholder="اختر الحالة"
-                                  value={values.riskStatus}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  error={
-                                    !!touched.riskStatus && !!errors.riskStatus
-                                  }
-                                  helperText={
-                                    touched.riskStatus && errors.riskStatus
-                                  }
+                                <Typography
+                                  variant="body1"
+                                  color="initial"
+                                  mt={1}
                                 >
-                                  {risksandDisablesOptions.map((el) => (
-                                    <MenuItem key={el.id} value={el.id}>
-                                      {el.name}
-                                    </MenuItem>
-                                  ))}
-                                </MyInput>
-                              </Box>
-                            )}
+                                  هل له مخاطر ؟
+                                </Typography>
+                                <FormControl>
+                                  <RadioGroup
+                                    row
+                                    aria-labelledby="form-control-label-placement"
+                                    name="showRisks"
+                                    value={values.showRisks}
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                    }}
+                                  >
+                                    <FormControlLabel
+                                      value="no"
+                                      control={<Radio size="small" />}
+                                      label="لا"
+                                      labelPlacement="start"
+                                    />
+                                    <FormControlLabel
+                                      value="yes"
+                                      control={<Radio size="small" />}
+                                      label="نعم"
+                                      labelPlacement="start"
+                                    />
+                                  </RadioGroup>
+                                </FormControl>
+                                {values.showRisks === "yes" && (
+                                  <Box ml={2}>
+                                    <Box sx={{ minWidth: 220 }}>
+                                      <FormControl fullWidth size="small">
+                                        <InputLabel id="status-select-label">
+                                          الحالة
+                                        </InputLabel>
+                                        <Select
+                                          labelId="status-select-label"
+                                          id="status-select"
+                                          name="riskStatus"
+                                          label="الحالة"
+                                          value={values.riskStatus}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          error={
+                                            !!touched.riskStatus &&
+                                            !!errors.riskStatus
+                                          }
+                                          helperText={
+                                            touched.riskStatus &&
+                                            errors.riskStatus
+                                          }
+                                        >
+                                          {risksandDisablesOptions.map((el) => (
+                                            <MenuItem key={el.id} value={el.id}>
+                                              {el.name}
+                                            </MenuItem>
+                                          ))}
+                                        </Select>
+                                        {touched.riskStatus &&
+                                        errors.riskStatus ? (
+                                          <FormHelperText>
+                                            {touched.riskStatus &&
+                                              errors.riskStatus}
+                                          </FormHelperText>
+                                        ) : (
+                                          " "
+                                        )}
+                                      </FormControl>
+                                    </Box>
+                                  </Box>
+                                )}
+                              </Stack>
+                              {values.showRisks === "yes" && (
+                                <>
+                                  <TextField
+                                    size="small"
+                                    name="riskDescription"
+                                    label="المخاطر"
+                                    multiline
+                                    rows={2}
+                                    fullWidth
+                                    value={values.riskDescription}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={
+                                      !!touched.riskDescription &&
+                                      !!errors.riskDescription
+                                    }
+                                    helperText={
+                                      touched.riskDescription &&
+                                      errors.riskDescription
+                                    }
+                                  />
+                                </>
+                              )}
+                            </Box>
                           </Stack>
-                          {values.showRisks === "yes" && (
-                            <>
-                              <MyInput
-                                name="riskDescription"
-                                label="المخاطر"
-                                multiline={true}
-                                fullWidth={true}
-                                rows={3}
-                                placeholder="ادخل المخاطر"
-                                value={values.riskDescription}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={
-                                  !!touched.riskDescription &&
-                                  !!errors.riskDescription
-                                }
-                                helperText={
-                                  touched.riskDescription &&
-                                  errors.riskDescription
-                                }
-                              />
-                            </>
-                          )}
-                        </Box>
-                      </Stack>
-                      {/* disables */}
-                      <Stack width="100%" gap={2}>
-                        <Box>
-                          <Stack direction="row" flexWrap="wrap" gap={1} mb={2}>
-                            <Typography variant="body1" color="initial" mt={1}>
-                              هل له معوقات ؟
-                            </Typography>
-                            <FormControl>
-                              <RadioGroup
-                                row
-                                aria-labelledby="demo-form-control-label-placement"
-                                name="showHandicaps"
-                                value={values.showHandicaps}
-                                onChange={(e) => {
-                                  handleChange(e);
-                                }}
+                        </Grid>
+
+                        {/* handicaps Section */}
+                        <Grid item xs={12} md={6}>
+                          <Stack width="100%" gap={2}>
+                            <Box>
+                              <Stack
+                                direction="row"
+                                flexWrap="wrap"
+                                gap={1}
+                                mb={2}
                               >
-                                <FormControlLabel
-                                  value="no"
-                                  control={<Radio size="small" />}
-                                  label="لا"
-                                  labelPlacement="start"
-                                />
-                                <FormControlLabel
-                                  value="yes"
-                                  control={<Radio size="small" />}
-                                  label="نعم"
-                                  labelPlacement="start"
-                                />
-                              </RadioGroup>
-                            </FormControl>
-                            {values.showHandicaps === "yes" && (
-                              <Box ml={2}>
-                                <MyInput
-                                  width={180}
-                                  name="handicapStatus"
-                                  select
-                                  label="الحالة"
-                                  placeholder="اختر الحالة"
-                                  value={values.handicapStatus}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  error={
-                                    !!touched.handicapStatus &&
-                                    !!errors.handicapStatus
-                                  }
-                                  helperText={
-                                    touched.handicapStatus &&
-                                    errors.handicapStatus
-                                  }
+                                <Typography
+                                  variant="body1"
+                                  color="initial"
+                                  mt={1}
                                 >
-                                  {risksandDisablesOptions.map((el) => (
-                                    <MenuItem key={el.id} value={el.id}>
-                                      {el.name}
-                                    </MenuItem>
-                                  ))}
-                                </MyInput>
-                              </Box>
-                            )}
+                                  هل له معوقات ؟
+                                </Typography>
+                                <FormControl>
+                                  <RadioGroup
+                                    row
+                                    aria-labelledby="demo-form-control-label-placement"
+                                    name="showHandicaps"
+                                    value={values.showHandicaps}
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                    }}
+                                  >
+                                    <FormControlLabel
+                                      value="no"
+                                      control={<Radio size="small" />}
+                                      label="لا"
+                                      labelPlacement="start"
+                                    />
+                                    <FormControlLabel
+                                      value="yes"
+                                      control={<Radio size="small" />}
+                                      label="نعم"
+                                      labelPlacement="start"
+                                    />
+                                  </RadioGroup>
+                                </FormControl>
+                                {values.showHandicaps === "yes" && (
+                                  <Box ml={2}>
+                                    <Box sx={{ minWidth: 220 }}>
+                                      <FormControl fullWidth size="small">
+                                        <InputLabel id="status-select-label">
+                                          الحالة
+                                        </InputLabel>
+                                        <Select
+                                          labelId="status-select-label"
+                                          id="status-select"
+                                          name="handicapStatus"
+                                          label="الحالة"
+                                          value={values.handicapStatus}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          error={
+                                            !!touched.handicapStatus &&
+                                            !!errors.handicapStatus
+                                          }
+                                          helperText={
+                                            touched.handicapStatus &&
+                                            errors.handicapStatus
+                                          }
+                                        >
+                                          {risksandDisablesOptions.map((el) => (
+                                            <MenuItem key={el.id} value={el.id}>
+                                              {el.name}
+                                            </MenuItem>
+                                          ))}
+                                        </Select>
+                                        {touched.handicapStatus &&
+                                        errors.handicapStatus ? (
+                                          <FormHelperText>
+                                            {touched.handicapStatus &&
+                                              errors.handicapStatus}
+                                          </FormHelperText>
+                                        ) : (
+                                          " "
+                                        )}
+                                      </FormControl>
+                                    </Box>
+                                  </Box>
+                                )}
+                              </Stack>
+                              {values.showHandicaps === "yes" && (
+                                <>
+                                  <TextField
+                                    size="small"
+                                    name="handicapDescription"
+                                    label="المعوقات"
+                                    multiline
+                                    fullWidth
+                                    rows={2}
+                                    placeholder="ادخل المعوقات"
+                                    value={values.handicapDescription}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={
+                                      !!touched.handicapDescription &&
+                                      !!errors.handicapDescription
+                                    }
+                                    helperText={
+                                      touched.handicapDescription &&
+                                      errors.handicapDescription
+                                    }
+                                  />
+                                </>
+                              )}
+                            </Box>
                           </Stack>
-                          {values.showHandicaps === "yes" && (
-                            <>
-                              <MyInput
-                                name="handicapDescription"
-                                label="المعوقات"
-                                multiline={true}
-                                fullWidth={true}
-                                rows={3}
-                                placeholder="ادخل المعوقات"
-                                value={values.handicapDescription}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={
-                                  !!touched.handicapDescription &&
-                                  !!errors.handicapDescription
-                                }
-                                helperText={
-                                  touched.handicapDescription &&
-                                  errors.handicapDescription
-                                }
-                              />
-                            </>
-                          )}
-                        </Box>
-                      </Stack>
+                        </Grid>
+                      </Grid>
                     </MyInputsWrapper>
                   </Grid>
                 </Grid>
 
-                {!id && (
-                  <Box
-                    // minHeight="100%"
-                    textAlign="center"
-                    alignSelf="center"
-                    mt={4}
+                <Box
+                  textAlign="center"
+                  alignSelf="center"
+                  mt={4}
+                  width={250}
+                  marginInline="auto"
+                >
+                  <MyBtn
+                    title={!id ? "اضافة" : "تعديل"}
+                    type="submit"
                     width={250}
-                    marginInline="auto"
-                  >
-                    <MyBtn title={"اضافة"} type="submit" width={250} />
-                  </Box>
-                )}
-                {/* row 5 */}
+                  />
+                </Box>
               </Box>
             </Stack>
           )}

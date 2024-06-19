@@ -130,3 +130,10 @@ th {
 .active-link {
   background-color: #f3f3f3;
 }
+
+.muirtl-hzkct5-MuiFormHelperText-root,
+.muirtl-q3cyw7-MuiFormHelperText-root {
+  font-size: 10px !important;
+  margin-right: 4px !important;
+  color: red !important;
+}

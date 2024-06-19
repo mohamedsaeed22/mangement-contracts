@@ -1,14 +1,13 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
 
-const MyInputsWrapper = ({ direction = "row", title, children }) => {
+const MyInputsWrapper = ({ title, children }) => {
   return (
     <Stack
-      mb={1}
       sx={{
-        border: "1px solid #ddd ",
+        border: "1px solid #ccc ",
         borderRadius: "8px",
-        padding: "20px 18px 20px",
+        padding: "24px 14px 18px",
         position: "relative",
         gap: 2,
         flexDirection: "row",
@@ -19,6 +18,7 @@ const MyInputsWrapper = ({ direction = "row", title, children }) => {
         variant="body1"
         color="initial"
         sx={{
+          fontWeight: "600",
           fontSize: "13px",
           position: "absolute",
           top: "-10px",

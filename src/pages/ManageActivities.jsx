@@ -186,7 +186,7 @@ const ManageActivities = () => {
                 ))}
                 {activities?.length === 0 && (
                   <StyledTableRow>
-                    <StyledTableCell align="center" colSpan={3}>
+                    <StyledTableCell align="center" colSpan={4}>
                       لا يوجد انشطه
                     </StyledTableCell>
                   </StyledTableRow>

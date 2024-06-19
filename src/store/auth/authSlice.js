@@ -3,13 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import {
   getAcessToken,
+  getRefreshToken,
   getUserRoles,
   setAccessToken,
   setRefreshToken,
 } from "../../utils/accessLocalStorage";
 
 const initialState = {
-  accessToken: getAcessToken() || null,
+  // accessToken: getAcessToken() & getRefreshToken() || null,
+  accessToken: true,
   roles: getUserRoles() || [],
   loading: false,
   error: null,

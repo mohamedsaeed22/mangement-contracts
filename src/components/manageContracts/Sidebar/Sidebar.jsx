@@ -44,41 +44,12 @@ let activitySubmenuList = [
   },
 ];
 
-let contractorSubmenuList = [
-  {
-    id: 5,
-    nav: "contractor/add",
-    name: "اضافه مقاول",
-  },
-  // {
-  //   id: 6,
-  //   nav: "managecontractors",
-  //   name: "اداره المقاولين",
-  // },
-];
-
-const consultantSubmenuList = [
-  {
-    id: 7,
-    nav: "consultant/add",
-    name: "اضافه استشارى",
-  },
-  // {
-  //   id: 8,
-  //   nav: "manageconsultants",
-  //   name: "اداره الاستشاريين",
-  // },
-];
 
 let activitiesList = [];
 let sectorList = [];
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const [showProjectsMenu, setShowProjectsMenu] = useState(false);
-  const [showSectormenu, setShowSectormenu] = useState(false);
-  const [showactivitiesMenu, setShowactivitiesMenu] = useState(false);
-  const [showSupervisorsMenu, setShowSupervisorsMenu] = useState(false);
-  const [showContractorMenu, setShowContractorMenu] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null);
 
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const { activities } = useSelector((state) => state.activity);
@@ -92,24 +63,13 @@ const Sidebar = () => {
     sectorList = [...sectorSubmenuList, ...sectors];
   }
   console.log(sectors);
-  const toggleProjectSubmenu = () => {
-    setShowProjectsMenu(!showProjectsMenu);
+
+  const handleMenuToggle = (menuName) => {
+    setOpenMenu((prevMenu) => (prevMenu === menuName ? null : menuName));
   };
-  const toggleSectorSubmenu = () => {
-    setShowSectormenu(!showSectormenu);
-  };
-  const toggleActivitySubmenu = () => {
-    setShowactivitiesMenu(!showactivitiesMenu);
-  };
-  const toggleSupervisorSubmenu = () => {
-    setShowSupervisorsMenu(!showSupervisorsMenu);
-  };
-  const toggleContractorSubmenu = () => {
-    setShowContractorMenu(!showContractorMenu);
-  };
+
   useEffect(() => {
     dispatch(actGetActivities());
-    // dispatch(actGetSupervisors());
     dispatch(actGetSectors());
   }, [dispatch]);
 
@@ -140,7 +100,6 @@ const Sidebar = () => {
             margin: "20px",
             cursor: "pointer",
             zIndex: 20,
-            // backgroundColor: "#fff",
             display: { xs: "block", md: toggleSidebar ? "none" : "block" },
           }}
           onClick={handleToggleSidebar}
@@ -188,7 +147,6 @@ const Sidebar = () => {
           }}
         />
         <Box mt={2}>
-          {/* home menu */}
           {filterRoles([
             "Admin",
             "SuperAdmin",
@@ -210,7 +168,6 @@ const Sidebar = () => {
                   sx={{
                     borderTopLeftRadius: "10px",
                     borderBottomLeftRadius: "10px",
-                    // "&:hover": { color: "blue !important" },
                   }}
                 >
                   <Typography
@@ -229,8 +186,8 @@ const Sidebar = () => {
 
           <SidebarMenu
             menuTitle={"القطاعات"}
-            toggleSubmenuFun={toggleSectorSubmenu}
-            showSubmenu={showSectormenu}
+            toggleSubmenuFun={() => handleMenuToggle("sector")}
+            showSubmenu={openMenu === "sector"}
             subMenuList={
               filterRoles(["Admin", "SuperAdmin"])
                 ? sectorList
@@ -238,11 +195,10 @@ const Sidebar = () => {
             }
             navLink="sector"
           />
-          {/* activities menu  */}
           <SidebarMenu
             menuTitle={"الانشطة"}
-            toggleSubmenuFun={toggleActivitySubmenu}
-            showSubmenu={showactivitiesMenu}
+            toggleSubmenuFun={() => handleMenuToggle("activity")}
+            showSubmenu={openMenu === "activity"}
             subMenuList={
               filterRoles(["Admin", "SuperAdmin"])
                 ? activitiesList
@@ -250,11 +206,10 @@ const Sidebar = () => {
             }
             navLink="activity"
           />
-          {/* projects menu  */}
           <SidebarMenu
             menuTitle={"المشروعات"}
-            toggleSubmenuFun={toggleProjectSubmenu}
-            showSubmenu={showProjectsMenu}
+            toggleSubmenuFun={() => handleMenuToggle("project")}
+            showSubmenu={openMenu === "project"}
             subMenuList={
               filterRoles(["Admin", "SuperAdmin", "DefaultUserActivity"])
                 ? projectSubmenuList
@@ -262,7 +217,6 @@ const Sidebar = () => {
             }
           />
 
-          {/* consultants menu  */}
           <Box
             sx={{
               position: "absolute",
@@ -292,7 +246,6 @@ const Sidebar = () => {
                     sx={{
                       borderTopLeftRadius: "10px",
                       borderBottomLeftRadius: "10px",
-                      // "&:hover": { color: "blue !important" },
                     }}
                   >
                     <Typography
@@ -308,7 +261,7 @@ const Sidebar = () => {
                 </NavLink>
               </Box>
             )}
-             {filterRoles([
+            {filterRoles([
               "Admin",
               "SuperAdmin",
               "ProjectManagement.ReadOnly",
@@ -329,7 +282,6 @@ const Sidebar = () => {
                     sx={{
                       borderTopLeftRadius: "10px",
                       borderBottomLeftRadius: "10px",
-                      // "&:hover": { color: "blue !important" },
                     }}
                   >
                     <Typography
@@ -345,26 +297,8 @@ const Sidebar = () => {
                 </NavLink>
               </Box>
             )}
-
-            {/* {filterRoles(["Admin", "SuperAdmin"]) && (
-              <SidebarMenu
-                menuTitle={"الاستشاريين"}
-                toggleSubmenuFun={toggleSupervisorSubmenu}
-                showSubmenu={showSupervisorsMenu}
-                subMenuList={consultantSubmenuList}
-              />
-            )} */}
-            {/* {filterRoles(["Admin", "SuperAdmin"]) && (
-              <SidebarMenu
-                menuTitle={"المقاولين"}
-                toggleSubmenuFun={toggleContractorSubmenu}
-                showSubmenu={showContractorMenu}
-                subMenuList={contractorSubmenuList}
-              />
-            )} */}
           </Box>
         </Box>
-        {/* logout */}
         <Stack
           direction="row"
           position="absolute"

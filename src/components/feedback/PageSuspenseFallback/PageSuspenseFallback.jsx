@@ -13,7 +13,7 @@ const PageSuspenseFallback = () => {
         transform: "translate(-50%,-50%)",
       }}
     >
-      <LottieWrapper MyLottieIcon={LoadingAnimation} />;
+      <LottieWrapper MyLottieIcon={LoadingAnimation} />
     </Box>
   );
 };
