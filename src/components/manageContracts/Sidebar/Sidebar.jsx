@@ -96,8 +96,8 @@ const Sidebar = () => {
           alt="burger icon"
           style={{
             position: "absolute",
-            width: "30px",
-            margin: "20px",
+            width: "32px",
+            margin: "10px",
             cursor: "pointer",
             zIndex: 20,
             display: { xs: "block", md: toggleSidebar ? "none" : "block" },
@@ -129,7 +129,7 @@ const Sidebar = () => {
           style={{
             width: "30px",
             display: "block",
-            marginTop: "10px",
+            marginTop: "15px",
             marginRight: "auto",
             marginLeft: "20px",
             cursor: "pointer",
@@ -143,7 +143,7 @@ const Sidebar = () => {
             width: "180px",
             display: "block",
             marginInline: "auto",
-            marginTop: "40px",
+            marginTop: "20px",
           }}
         />
         <Box mt={2}>
@@ -221,7 +221,7 @@ const Sidebar = () => {
             sx={{
               position: "absolute",
               width: "100%",
-              bottom: 109,
+              bottom: 90,
               marginBottom: "10px",
             }}
           >

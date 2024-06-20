@@ -157,7 +157,10 @@ const ManageSectors = () => {
                             height={40}
                             icon={EditIcon}
                             title={"تعديل"}
-                            handleBtnClick={() => handleUpdateSector(row)}
+                            handleBtnClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateSector(row);
+                            }}
                           />
                           <MyBtn
                             width={100}
@@ -165,7 +168,10 @@ const ManageSectors = () => {
                             bgColor="red"
                             icon={DeleteIcon}
                             title={"حذف"}
-                            handleBtnClick={() => handleDeleteSector(row)}
+                            handleBtnClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteSector(row);
+                            }}
                           />
                         </Stack>
                       </StyledTableCell>

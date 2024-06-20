@@ -3,7 +3,7 @@ import MyInput from "./Input/MyInput";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, TextField } from "@mui/material";
 import actUpdateActivity from "../../store/Activity/act/actUpdateActivity";
 import actCreateActivity from "../../store/Activity/act/actCreateActivity";
 import ActivitySchema from "../../validations/ActivitySchema";
@@ -65,34 +65,33 @@ const ActivityForm = ({
           id="Activity-form"
           flexWrap="wrap"
           direction={isUpdate && "column"}
-          gap={isUpdate ? 0 : 2}
+          gap={1}
           marginBlock={isUpdate && "1.25rem"}
           alignItems="center"
+          justifyContent={{ xs: "center", md: "flex-start" }}
           onSubmit={handleSubmit}
         >
-          <MyInput
+          <TextField
+            sx={{ minWidth: 220 }}
             name="name"
             label="اسم النشاط"
-            placeholder="ادخل الاسم"
             value={values.name}
             size="small"
             onChange={handleChange}
             onBlur={handleBlur}
-            width={250}
             error={!!touched.name && !!errors.name}
             helperText={
               touched.name && errors.name ? touched.name && errors.name : " "
             }
           />
-          <MyInput
+          <TextField
+            sx={{ minWidth: 220 }}
             name="description"
             label="الوصف"
-            placeholder="ادخل الوصف"
             value={values.description}
             onChange={handleChange}
             onBlur={handleBlur}
             size="small"
-            width={250}
             error={!!touched.description && !!errors.description}
             helperText={
               touched.description && errors.description

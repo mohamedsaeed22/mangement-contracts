@@ -171,7 +171,7 @@ const Project = () => {
       percentage: values.percentage,
     };
     console.log(values);
-    console.log(convertIsoToDateObject(projectData.startDate));
+    console.log(projectData)
 
     // if (values.contractorId !== myProject.contractorId) {
     //   // delete and add
@@ -365,13 +365,13 @@ const Project = () => {
           }) => (
             <Stack
               component="form"
-              gap={1}
+              // gap={1}
               onSubmit={handleSubmit}
-              mt="60px"
-              height="calc(100vh - 117px)"
+              mt="20px"
+              height="calc(100vh - 80px)"
               sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
             >
-              <Stack direction="row" flexWrap="wrap" gap={2} mr={1}>
+              <Stack direction="row" flexWrap="wrap" gap={2} ml={3}>
                 <Box flexGrow={1}>
                   <Tooltip title="رجوع" placement="top" arrow>
                     <IconButton onClick={() => navigate(-1)}>
@@ -387,7 +387,7 @@ const Project = () => {
                 >
                   {id && (
                     <Stack direction="row" alignSelf="flex-start">
-                      <MyBtn title="تعديل" type="submit" />
+                      {/* <MyBtn title="تعديل" type="submit" /> */}
                       <Box>
                         <IconButton
                           aria-label="more"
@@ -446,7 +446,7 @@ const Project = () => {
                         onBlur={handleBlur}
                         error={!!touched.name && !!errors.name}
                         helperText={touched.name && errors.name}
-                        label="الاسم"
+                        label="الاسم*"
                         value={values.name}
                       />
                       <TextField
@@ -460,7 +460,7 @@ const Project = () => {
                         onBlur={handleBlur}
                         error={!!touched.description && !!errors.description}
                         helperText={touched.description && errors.description}
-                        label="الوصف"
+                        label="الوصف*"
                       />
                     </MyInputsWrapper>
                   </Grid>
@@ -471,13 +471,13 @@ const Project = () => {
                         <Box sx={{ minWidth: 220 }}>
                           <FormControl fullWidth size="small">
                             <InputLabel id="status-select-label">
-                              النشاط
+                              النشاط*
                             </InputLabel>
                             <Select
                               labelId="status-select-label"
                               id="status-select"
                               name="activityId"
-                              label="النشاط"
+                              label=" النشاط*"
                               value={values.activityId}
                               onChange={handleChange}
                               onBlur={handleBlur}
@@ -513,13 +513,13 @@ const Project = () => {
                         <Box sx={{ minWidth: 220 }}>
                           <FormControl fullWidth size="small">
                             <InputLabel id="status-select-label">
-                              القطاع
+                              القطاع*
                             </InputLabel>
                             <Select
                               labelId="status-select-label"
                               id="status-select"
                               name="sectorId"
-                              label="القطاع"
+                              label="القطاع*"
                               value={values.sectorId}
                               onChange={handleChange}
                               onBlur={handleBlur}
@@ -555,13 +555,13 @@ const Project = () => {
                         <Box sx={{ minWidth: 220 }}>
                           <FormControl fullWidth size="small">
                             <InputLabel id="status-select-label">
-                              الحالة
+                              الحالة*
                             </InputLabel>
                             <Select
                               labelId="status-select-label"
                               id="status-select"
                               name="status"
-                              label="الحالة"
+                              label="الحالة*"
                               value={values.status}
                               onChange={handleChange}
                               onBlur={handleBlur}
@@ -586,7 +586,8 @@ const Project = () => {
                           sx={{ minWidth: 220 }}
                           size="small"
                           name="percentage"
-                          label="ادخل نسبة مؤية"
+                          label="ما تم انجازه*"
+                          placeholder="ادخل نسبة مؤية "
                           type="number"
                           value={values.percentage}
                           onChange={handleChange}
@@ -605,7 +606,7 @@ const Project = () => {
                           sx={{ minWidth: 220 }}
                           size="small"
                           name="budget"
-                          label="التكلفة المخططة"
+                          label="التكلفة المخططة*"
                           type="number"
                           value={values.budget}
                           onChange={handleChange}
@@ -618,7 +619,7 @@ const Project = () => {
                           sx={{ minWidth: 220 }}
                           size="small"
                           name="spentBudget"
-                          label="المنصرف الفعلى"
+                          label="المنصرف الفعلى*"
                           type="number"
                           value={values.spentBudget}
                           onChange={handleChange}
@@ -636,7 +637,7 @@ const Project = () => {
                         {({ field, form }) => (
                           <MyDatePicker
                             name="startDate"
-                            title="تاريخ البدايه"
+                            title="تاريخ البداية*"
                             value={values.startDate}
                             onChangeDate={(date) =>
                               setFieldValue("startDate", date)
@@ -653,7 +654,7 @@ const Project = () => {
                         {({ field, form }) => (
                           <MyDatePicker
                             name="endDate"
-                            title="تاريخ النهايه"
+                            title="تاريخ النهاية*"
                             value={values.endDate}
                             onChangeDate={(date) =>
                               setFieldValue("endDate", date)
@@ -961,7 +962,7 @@ const Project = () => {
                 <Box
                   textAlign="center"
                   alignSelf="center"
-                  mt={4}
+                  mt={2}
                   width={250}
                   marginInline="auto"
                 >

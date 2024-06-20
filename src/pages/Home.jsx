@@ -17,14 +17,14 @@ const Home = () => {
   }, [dispatch]);
    return (
     <>
-      <LoadingWrapper loading={loading} error={error} icon={ErrorIcon}>
+      {/* <LoadingWrapper loading={loading} error={error} icon={ErrorIcon}> */}
         <Heading title="الصفحة الرئيسية" />
         <Box
           gap={2}
           p={2}
           border="2px solid #000"
           borderRadius={2}
-          mt="90px"
+          mt="70px"
           sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
           flex={1}
         >
@@ -35,7 +35,7 @@ const Home = () => {
           {/* bottom paper */}
           <BottomStat stats={stats} />
         </Box>
-      </LoadingWrapper>
+      {/* </LoadingWrapper> */}
     </>
   );
 };

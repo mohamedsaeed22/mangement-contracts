@@ -14,14 +14,18 @@ export default function MyModal({
     top: "40px",
     left: "50%",
     transform: "translateX(-50%)",
-    width: "100%",
-    maxWidth: { width },
+    width: {
+      xs: "90%",  // Full width on small screens
+      sm: "80%",  // Slightly reduced width on medium screens
+      md: width, // Custom width on larger screens
+    },
+    maxWidth: width,
+    maxHeight: "calc(100vh - 80px)", // Ensure the modal does not exceed the screen height
     bgcolor: "background.paper",
     boxShadow: 24,
     borderRadius: "6px",
-    overflow: "hidden",
+    overflowY: "auto", // Make the modal content scrollable if it overflows vertically
     paddingTop: "50px",
-     // paddingBottom: "20px",
     paddingLeft: "10px",
     paddingRight: "10px",
     "::before": {

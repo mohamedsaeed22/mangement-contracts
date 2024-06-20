@@ -76,468 +76,461 @@ const ProjectDetails = () => {
 
   return (
     <>
-      <LoadingWrapper loading={loading} error={error}>
-        <Heading title="تفاصيل مشروع" />
-        <Stack
-          direction="row"
-          mt="60px"
-          justifyContent="space-between"
-          marginInline={3}
-        >
-          <Box>
-            <Tooltip title="رجوع" placement="top" arrow>
-              <IconButton onClick={() => navigate(-1)}>
-                <East style={{ color: "black" }} />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <NavLink to={`/project/edit/${id}`}>
-            <MyBtn icon={EditIcon} title="تعديل المشروع" />
-          </NavLink>
-        </Stack>
-        <Box
-          border="2px solid #000"
-          borderRadius={2}
-          mt="4px"
-          sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
-          // marginInline="20px"
-          flex={1}
-          // bgcolor="#ddd"
-        >
-          <Stack gap={1} m={2}>
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} sm={6}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    اسم المشروع
-                  </Typography>
-                  {/* {project.description && project.description.length > 40
-              ? project.description.substring(0, 40) + "..."
-              : project.description} */}
-                  {project.name}
-                </Box>
-              </Grid>
-
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    تكلفه المشروع
-                  </Typography>
-                  {/* {project.description && project.description.length > 40
-              ? project.description.substring(0, 40) + "..."
-              : project.description} */}
-                  {project.budget}
-                </Box>
-              </Grid>
-
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    القطاع
-                  </Typography>
-
-                  {project.sectorName}
-                </Box>
-              </Grid>
-
-            </Grid>
-
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    النشاط
-                  </Typography>
-
-                  {project.activityName}
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    الاستشارى
-                  </Typography>
-                  {consultants?.length > 0 ? consultants[0].name : "لا يوجد"}
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    المقاول
-                  </Typography>
-                  {contractors?.length > 0 ? contractors[0].name : "لا يوجد"}
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    ما تم انجازه
-                  </Typography>
-                  {`%${project.percentage}`}
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    تاريخ البدايه
-                  </Typography>
-
-                  {project.startDate?.split("T")[0]}
-                </Box>
-              </Grid>
-
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    تاريخ النهايه
-                  </Typography>
-                  {project.endDate?.split("T")[0]}
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    المنصرف الفعلى
-                  </Typography>
-                  {/* {project.description && project.description.length > 40
-              ? project.description.substring(0, 40) + "..."
-              : project.description} */}
-                  {project.spentBudget}
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    حاله المشروع
-                  </Typography>
-                  {/* {project.description && project.description.length > 40
-              ? project.description.substring(0, 40) + "..."
-              : project.description} */}
-                  {getProjectStateName(project.status)}
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} sm={6}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    المخاطر
-                  </Typography>
-
-                  {risks && risks.length > 0
-                    ? risks[0]?.description
-                    : "لا يوجد مخاطر"}
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    المعوقات
-                  </Typography>
-                  {handicaps && handicaps.length > 0
-                    ? handicaps[0].description
-                    : "لا يوجد معوقات"}
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} >
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    تفاصيل المشروع
-                  </Typography>
-                  {project?.description}
-                </Box>
-              </Grid>
-            </Grid>
-          </Stack>
+      {/* <LoadingWrapper loading={loading} error={error}> */}
+      <Heading title="تفاصيل مشروع" />
+      <Stack
+        direction="row"
+        mt="60px"
+        justifyContent="space-between"
+        marginInline={3}
+      >
+        <Box>
+          <Tooltip title="رجوع" placement="top" arrow>
+            <IconButton onClick={() => navigate(-1)}>
+              <East style={{ color: "black" }} />
+            </IconButton>
+          </Tooltip>
         </Box>
-      </LoadingWrapper>
+        <NavLink to={`/project/edit/${id}`}>
+          <MyBtn icon={EditIcon} title="تعديل المشروع" />
+        </NavLink>
+      </Stack>
+      <Box
+        border="2px solid #000"
+        borderRadius={2}
+        mt="4px"
+        sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
+        // marginInline="20px"
+        flex={1}
+        // bgcolor="#ddd"
+      >
+        <Stack   m={2}>
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} lg={6}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  اسم المشروع
+                </Typography>
+                {project.name}
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  تكلفه المشروع
+                </Typography>
+                {project.budget}
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  القطاع
+                </Typography>
+                 {project.sectorName}
+              </Box>
+            </Grid>
+
+          </Grid>
+
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  النشاط
+                </Typography>
+                {project.activityName}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  الاستشارى
+                </Typography>
+                {consultants?.length > 0 ? consultants[0].name : "لا يوجد"}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  المقاول
+                </Typography>
+                {contractors?.length > 0 ? contractors[0].name : "لا يوجد"}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  ما تم انجازه
+                </Typography>
+                {`%${project.percentage}`}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  تاريخ البدايه
+                </Typography>
+
+                {project.startDate?.split("T")[0]}
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  تاريخ النهايه
+                </Typography>
+                {project.endDate?.split("T")[0]}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  المنصرف الفعلى
+                </Typography>
+                {/* {project.description && project.description.length > 40
+              ? project.description.substring(0, 40) + "..."
+              : project.description} */}
+                {project.spentBudget}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={3}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  حاله المشروع
+                </Typography>
+                {/* {project.description && project.description.length > 40
+              ? project.description.substring(0, 40) + "..."
+              : project.description} */}
+                {getProjectStateName(project.status)}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12} sm={6}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  المخاطر
+                </Typography>
+
+                {risks && risks.length > 0
+                  ? risks[0]?.description
+                  : "لا يوجد مخاطر"}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  المعوقات
+                </Typography>
+                {handicaps && handicaps.length > 0
+                  ? handicaps[0].description
+                  : "لا يوجد معوقات"}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2} mb={2}>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  backgroundColor: "#F5F5F5 !important",
+                  border: "1px solid #000",
+                  borderRadius: "6px",
+                  padding: "15px 10px",
+                  position: "relative",
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "13px",
+                    position: "absolute",
+                    top: "-12px",
+                    backgroundColor: "#F5F5F5",
+                    left: 15,
+                    zIndex: 10,
+                    paddingInline: "6px",
+                  }}
+                >
+                  تفاصيل المشروع
+                </Typography>
+                {project?.description}
+              </Box>
+            </Grid>
+          </Grid>
+
+        </Stack>
+      </Box>
+      {/* </LoadingWrapper> */}
     </>
   );
 };

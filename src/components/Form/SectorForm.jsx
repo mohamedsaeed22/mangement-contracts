@@ -3,7 +3,7 @@ import MyInput from "./Input/MyInput";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, TextField } from "@mui/material";
 import MyBtn from "../common/UI/MyBtn";
 import AddIcon from "../../assets/icon/add-icon.svg";
 import EditIcon from "../../assets/icon/edit-icon.svg";
@@ -61,27 +61,25 @@ const SectorForm = ({
           component="form"
           id="Activity-form"
           flexWrap="wrap"
-          direction={isUpdate && "column"}
-          gap={isUpdate ? 0 : 2}
-          marginBlock={isUpdate && "1.25rem"}
-          alignItems="center"
+          direction={isUpdate ? "column" : "row"}
+          gap={2}
+          marginBlock={isUpdate ? "1.25rem" : 0}
+          alignItems={{ xs: "center", sm: isUpdate ? "center" : "flex-start" }}
+          justifyContent={{ xs: "center", sm: "flex-start" }}
           onSubmit={handleSubmit}
         >
-          <MyInput
+          <TextField
+            sx={{ minWidth: 220 }}
             name="name"
-            label="اسم القطاع"
-            placeholder="ادخل الاسم"
+            label="اسم القطاع *"
             value={values.name}
             size="small"
             onChange={handleChange}
             onBlur={handleBlur}
-            width={250}
             error={!!touched.name && !!errors.name}
-            helperText={
-              touched.name && errors.name ? touched.name && errors.name : " "
-            }
+            helperText={ touched.name && errors.name ? touched.name && errors.name : " "}
           />
-          <Box alignSelf={isUpdate ? "center" : "flex-start"}>
+          <Box alignSelf={isUpdate ? "center" : { xs: "flex-start" }}>
             <MyBtn
               type="submit"
               width={100}

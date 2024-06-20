@@ -30,7 +30,7 @@ import FilterIcon from "../assets/icon/filter-icon.svg";
 import { actGetProjects } from "../store/project/projectSlice";
 import StatusLabel from "../components/manageContracts/StatusLabel";
 import { RestartAlt } from "@mui/icons-material";
-import AddIcon from "../assets/icon/add-icon.svg";
+import FilterFill from "../assets/icon/filter-fill.svg";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { projectStateOptions } from "../utils/statusList";
 import actGetConsultants from "../store/consultant/act/actGetConsultants";
@@ -180,7 +180,7 @@ const ProjectsBox = () => {
           <Stack direction="row" gap={1}>
             <MyBtn
               title="تصنيف"
-              icon={FilterIcon}
+              icon={toggleFilter ? FilterFill : FilterIcon}
               handleBtnClick={handleToggleFilter}
             />
             {/* <MyBtn
@@ -201,149 +201,135 @@ const ProjectsBox = () => {
           alignItems="center"
         >
           {toggleFilter && (
-            <Stack
-              direction="row"
-              mt="10px"
-              justifyContent="center"
-              gap={2}
-              flexWrap="wrap"
-              alignItems="center"
-            >
-              <FormControl sx={{ minWidth: 150 }} size="small">
-                <InputLabel id="demo-simple-select-Activitye">
-                  النشاط
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-Activitye"
-                  id="demo-simple-selectActivity"
-                  value={formData.activityId}
-                  label="النشاط"
-                  name="activityId"
-                  onChange={(e) => handleChange("activityId", e.target.value)}
-                >
-                  {activities?.map((Activity) => (
-                    <MenuItem key={Activity.id} value={Activity.id}>
-                      {Activity.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl sx={{ minWidth: 150 }} size="small">
-                <InputLabel id="demo-simple-select-supervisor">
-                  القطاع
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-supervisor"
-                  id="demo-simple-selectSupervisor"
-                  value={formData.sectorId}
-                  name="sectorId"
-                  label="القطاع"
-                  onChange={(e) => handleChange("sectorId", e.target.value)}
-                >
-                  {sectors?.map((supervisor) => (
-                    <MenuItem key={supervisor.id} value={supervisor.id}>
-                      {supervisor.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl sx={{ minWidth: 150 }} size="small">
-                <InputLabel id="demo-simple-select-supervisor">
-                  المقاول
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-supervisor"
-                  id="demo-simple-selectSupervisor"
-                  value={formData.contractorId}
-                  name="contractorId"
-                  label="المقاول"
-                  onChange={(e) => handleChange("contractorId", e.target.value)}
-                >
-                  {contractors?.map((supervisor) => (
-                    <MenuItem key={supervisor.id} value={supervisor.id}>
-                      {supervisor.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <TextField
-                size="small"
-                id="planned-cost"
-                type="number"
-                label="المنصرف الفعلى"
-                variant="outlined"
-                sx={{ width: "150px" }}
-                value={formData.spentBudget}
-                name="spentBudget"
-                onChange={(e) => handleChange("spentBudget", e.target.value)}
-              />
-              <FormControl sx={{ minWidth: 150 }} size="small">
-                <InputLabel id="demo-simple-select-projectState">
-                  حالة المشروع
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-projectState"
-                  id="demo-simple-selectProjectState"
-                  value={formData.status}
-                  label="حالة المشروع"
-                  name="status"
-                  onChange={(e) => handleChange("status", e.target.value)}
-                >
-                  {projectStateOptions.map((option) => (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    // mt: 2,
-                    gap: 3,
-                    justifyContent: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <Box sx={{ width: "150px" }}>
-                    <DatePicker
-                      label="بداية المشروع"
-                      slotProps={{ textField: { size: "small" } }}
-                      name="startDate"
-                      value={formData.startDate}
-                      onChange={(value) => handleChange("startDate", value)}
-                      renderInput={(params) => <TextField {...params} />}
-                      inputFormat="MM/DD/YYYY"
-                    />
-                  </Box>
-                  <Box sx={{ width: "150px" }}>
-                    <DatePicker
-                      label="نهاية المشروع"
-                      value={formData.endDate}
-                      name="endDate"
-                      onChange={(value) => handleChange("endDate", value)}
-                      renderInput={(params) => <TextField {...params} />}
-                      inputFormat="MM/DD/YYYY"
-                      slotProps={{ textField: { size: "small" } }}
-                    />
-                  </Box>
-                  <Box>
-                    <Tooltip title="مسح" placement="top" arrow>
-                      <IconButton onClick={handleResetForm}>
-                        <RestartAlt style={{ color: "black" }} />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Stack
+                direction="row"
+                mt="10px"
+                justifyContent="center"
+                gap={2}
+                flexWrap="wrap"
+                alignItems="center"
+              >
+                <FormControl sx={{ width: 160 }} size="small">
+                  <InputLabel id="demo-simple-select-supervisor">
+                    القطاع
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-supervisor"
+                    id="demo-simple-selectSupervisor"
+                    value={formData.sectorId}
+                    name="sectorId"
+                    label="القطاع"
+                    onChange={(e) => handleChange("sectorId", e.target.value)}
+                  >
+                    {sectors?.map((supervisor) => (
+                      <MenuItem key={supervisor.id} value={supervisor.id}>
+                        {supervisor.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ width: 160 }} size="small">
+                  <InputLabel id="demo-simple-select-Activitye">
+                    النشاط
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-Activitye"
+                    id="demo-simple-selectActivity"
+                    value={formData.activityId}
+                    label="النشاط"
+                    name="activityId"
+                    onChange={(e) => handleChange("activityId", e.target.value)}
+                  >
+                    {activities?.map((Activity) => (
+                      <MenuItem key={Activity.id} value={Activity.id}>
+                        {Activity.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ width: 160 }} size="small">
+                  <InputLabel id="demo-simple-select-supervisor">
+                    المقاول
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-supervisor"
+                    id="demo-simple-selectSupervisor"
+                    value={formData.contractorId}
+                    name="contractorId"
+                    label="المقاول"
+                    onChange={(e) =>
+                      handleChange("contractorId", e.target.value)
+                    }
+                  >
+                    {contractors?.map((supervisor) => (
+                      <MenuItem key={supervisor.id} value={supervisor.id}>
+                        {supervisor.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  size="small"
+                  id="planned-cost"
+                  type="number"
+                  label="المنصرف الفعلى"
+                  variant="outlined"
+                  sx={{ width: 160 }}
+                  value={formData.spentBudget}
+                  name="spentBudget"
+                  onChange={(e) => handleChange("spentBudget", e.target.value)}
+                />
+                <FormControl sx={{ width: 150 }} size="small">
+                  <InputLabel id="demo-simple-select-projectState">
+                    حالة المشروع
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-projectState"
+                    id="demo-simple-selectProjectState"
+                    value={formData.status}
+                    label="حالة المشروع"
+                    name="status"
+                    onChange={(e) => handleChange("status", e.target.value)}
+                  >
+                    {projectStateOptions.map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Box sx={{ width: 160 }}>
+                  <DatePicker
+                    label="بداية المشروع"
+                    slotProps={{ textField: { size: "small" } }}
+                    name="startDate"
+                    value={formData.startDate}
+                    onChange={(value) => handleChange("startDate", value)}
+                    renderInput={(params) => <TextField {...params} />}
+                    inputFormat="MM/DD/YYYY"
+                  />
                 </Box>
-              </LocalizationProvider>
-            </Stack>
+                <Box sx={{ width: 160 }}>
+                  <DatePicker
+                    label="نهاية المشروع"
+                    value={formData.endDate}
+                    name="endDate"
+                    onChange={(value) => handleChange("endDate", value)}
+                    renderInput={(params) => <TextField {...params} />}
+                    inputFormat="MM/DD/YYYY"
+                    slotProps={{ textField: { size: "small" } }}
+                  />
+                </Box>
+                <Box x sx={{ width: 160 }} textAlign={"center"}>
+                  <Tooltip title="مسح" placement="top" arrow>
+                    <IconButton onClick={handleResetForm}>
+                      <RestartAlt style={{ color: "black" }} />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Stack>
+            </LocalizationProvider>
           )}
         </Stack>
 

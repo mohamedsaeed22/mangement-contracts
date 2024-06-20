@@ -18,7 +18,6 @@ const TopStat = ({ stats }) => {
       <Stack
         flexDirection="row"
         alignItems="center"
-        // justifyContent="center"
         sx={{ justifyContent: { xs: "center", md: "space-between" } }}
         gap={4}
         flexWrap="wrap"

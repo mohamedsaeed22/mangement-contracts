@@ -84,10 +84,9 @@ form #my-input-userName {
   font-family: Cairo, BlinkMacSystemFont;
   outline: none;
   border: none;
-  /* background-color: #F3F3F3 ; */
   border-radius: 8px;
-  max-width: 260px;
-  width: 100%;
+  max-width: 100%;
+  width: 240px;
   padding: 8px 10px;
   font-size: 16px;
 }
@@ -136,4 +135,9 @@ th {
   font-size: 10px !important;
   margin-right: 4px !important;
   color: red !important;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

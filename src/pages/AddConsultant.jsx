@@ -104,7 +104,7 @@ const AddConsultant = () => {
           handleCloseModal={handleCloseModal}
         />
       </MyModal>
-      <Heading title="اضافه استشارى" />
+      <Heading title="ادارة الاستشاريين" />
       <Box
         gap={2}
         p={2}
