@@ -6,12 +6,14 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  Tooltip,
 } from "@mui/material";
 import Heading from "../components/common/Heading/Heading";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
+
 import MyModal from "../components/common/UI/MyModal";
 import {
   notifyFailed,
@@ -27,10 +29,8 @@ import {
   filterContractors,
 } from "../store/contractor/contractorSlice";
 import ContractorForm from "../components/Form/ContractorForm";
-import actGetConsultants from "../store/consultant/act/actGetConsultants";
-import actDeleteConsultant from "../store/consultant/act/actDeleteConsultant";
-import ConsultantForm from "../components/Form/ConsultantForm";
 import actGetContractors from "../store/contractor/act/actGetContractors";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,6 +55,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const ManageContractor = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [openModal, setOpenModal] = useState(false);
   const { contractors } = useSelector((state) => state.contractor);
   const [updateContractor, setUpdateContractor] = useState(initialContractor);
@@ -83,11 +85,11 @@ const ManageContractor = () => {
         .unwrap()
         .then((e) => {
           dispatch(filterContractors(contractor.id));
-          notifySuccess("تم حذف المقاول");
+          notifySuccess("تم حذف الاستشارى");
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed(err + "المقاول له مشاريع برجاء حذفها اولا");
+          notifyFailed(err + "حدث خطا ما");
         });
     }
   };
@@ -100,13 +102,13 @@ const ManageContractor = () => {
         handleClose={handleCloseModal}
         title="تعديل بيانات مقاول"
       >
-        <ConsultantForm
+        <ContractorForm
           isUpdate={true}
           initialValues={updateContractor}
           handleCloseModal={handleCloseModal}
         />
       </MyModal>
-      <Heading title="ادارة المقاولين" />
+      <Heading title="اداره المقاولين" />
       <Box
         gap={2}
         p={2}
@@ -130,73 +132,61 @@ const ManageContractor = () => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center">اسم المقاول</StyledTableCell>
-                  <StyledTableCell align="center">الوصف</StyledTableCell>
-                  <StyledTableCell align="center">رقم الهاتف</StyledTableCell>
-                  <StyledTableCell align="center">
-                    رقم هاتف المسؤل
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    اسم الشخص المسؤل
-                  </StyledTableCell>
-                  <StyledTableCell align="center">العنوان</StyledTableCell>
-                  <StyledTableCell align="center">الدولة</StyledTableCell>
-                  <StyledTableCell align="center">التخصص</StyledTableCell>
-                  <StyledTableCell align="center">الخبرة</StyledTableCell>
-                  <StyledTableCell align="center">المؤهل</StyledTableCell>
+                  <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
                   <StyledTableCell align="center">الإجراءات</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {contractors?.map((row) => (
-                  <StyledTableRow key={row.id}>
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.description}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.phoneNumber}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.contactPersonPhone}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.contactPersonName}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.address}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.country}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.specialization}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.experience}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.qualification}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Stack direction="row" justifyContent="center" gap={1}>
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          icon={EditIcon}
-                          title={"تعديل"}
-                          handleBtnClick={() => handleUpdateContractor(row)}
-                        />
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          bgColor="red"
-                          icon={DeleteIcon}
-                          title={"حذف"}
-                          handleBtnClick={() => handleDeleteContractor(row)}
-                        />
-                      </Stack>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                  <Tooltip
+                    title="اضغط لعرض المقاول"
+                    placement="top"
+                    arrow
+                    key={row.id}
+                  >
+                    <StyledTableRow
+                      key={row.id}
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": { backgroundColor: "#fff !important" },
+                      }}
+                      onClick={() => navigate(`/contractor/id/${row.id}`)}
+                    >
+                      <StyledTableCell align="center">
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {row.totalProjects}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Stack direction="row" justifyContent="center" gap={1}>
+                          <MyBtn
+                            width={100}
+                            height={40}
+                            icon={EditIcon}
+                            title={"تعديل"}
+                            handleBtnClick={(e) => {
+                              e.stopPropagation(); // Stop propagation here
+                              handleUpdateContractor(row);
+                            }}
+                          />
+                          {/* <StopPropagation> */}
+                            <MyBtn
+                              width={100}
+                              height={40}
+                              bgColor="red"
+                              icon={DeleteIcon}
+                              title={"حذف"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation(); // Stop propagation here
+                                handleDeleteContractor(row);
+                              }}
+                            />
+                          {/* </StopPropagation> */}
+                        </Stack>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </Tooltip>
                 ))}
               </TableBody>
             </Table>

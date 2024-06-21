@@ -44,7 +44,6 @@ let activitySubmenuList = [
   },
 ];
 
-
 let activitiesList = [];
 let sectorList = [];
 const Sidebar = () => {
@@ -221,7 +220,7 @@ const Sidebar = () => {
             sx={{
               position: "absolute",
               width: "100%",
-              bottom: 90,
+              bottom: 70,
               marginBottom: "10px",
             }}
           >
@@ -232,7 +231,7 @@ const Sidebar = () => {
             ]) && (
               <Box>
                 <NavLink
-                  to="/consultant/add"
+                  to="/manageconsultants"
                   exact="true"
                   className={({ isActive }) =>
                     `navlink ${isActive ? "active-link" : ""}`
@@ -268,7 +267,7 @@ const Sidebar = () => {
             ]) && (
               <Box>
                 <NavLink
-                  to="/contractor/add"
+                  to="/managecontractors"
                   exact="true"
                   className={({ isActive }) =>
                     `navlink ${isActive ? "active-link" : ""}`
@@ -302,7 +301,7 @@ const Sidebar = () => {
         <Stack
           direction="row"
           position="absolute"
-          bottom="50px"
+          bottom="30px"
           width="100%"
           justifyContent="space-between"
           p={1}

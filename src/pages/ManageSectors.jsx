@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import Heading from "../components/common/Heading/Heading";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -22,7 +23,6 @@ import {
 import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
-import ConsultantForm from "../components/Form/ConsultantForm";
 import actDeleteSector from "../store/sector/act/actDeleteSector";
 import actGetSectors from "../store/sector/act/actGetSectors";
 import SectorForm from "../components/Form/SectorForm";
@@ -119,7 +119,7 @@ const ManageSectors = () => {
         <Box>
           <SectorForm isUpdate={false} handleCloseModal={handleCloseModal} />
           {/* activities table */}
-          <TableContainer sx={{ maxHeight: "75vh", marginTop: "8px" }}>
+          <TableContainer sx={{ maxHeight: "75vh", marginTop: "4px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
@@ -129,63 +129,71 @@ const ManageSectors = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sectors?.map((row) => (
-                  <Tooltip
-                    title="اضغط لعرض التفاصيل"
-                    placement="top"
-                    arrow
-                    key={row.id}
-                  >
-                    <StyledTableRow
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { backgroundColor: "#fff !important" },
-                      }}
-                      onClick={() => navigate(`/sector/${row.id}`)}
+                {sectors?.length > 0 ? (
+                  sectors.map((row) => (
+                    <Tooltip
+                      title="اضغط لعرض التفاصيل"
+                      placement="top"
+                      arrow
+                      key={row.id}
                     >
-                      <StyledTableCell align="center">
-                        {row.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.totalProjects}
-                      </StyledTableCell>
-
-                      <StyledTableCell align="center">
-                        <Stack direction="row" justifyContent="center" gap={1}>
-                          <MyBtn
-                            width={100}
-                            height={40}
-                            icon={EditIcon}
-                            title={"تعديل"}
-                            handleBtnClick={(e) => {
-                              e.stopPropagation();
-                              handleUpdateSector(row);
-                            }}
-                          />
-                          <MyBtn
-                            width={100}
-                            height={40}
-                            bgColor="red"
-                            icon={DeleteIcon}
-                            title={"حذف"}
-                            handleBtnClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSector(row);
-                            }}
-                          />
-                        </Stack>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  </Tooltip>
-                ))}
+                      <StyledTableRow
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#fff !important" },
+                        }}
+                        onClick={() => navigate(`/sector/${row.id}`)}
+                      >
+                        <StyledTableCell align="center">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.totalProjects}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <Stack
+                            direction="row"
+                            justifyContent="center"
+                            gap={1}
+                          >
+                            <MyBtn
+                              width={100}
+                              height={40}
+                              icon={EditIcon}
+                              title={"تعديل"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation();
+                                handleUpdateSector(row);
+                              }}
+                            />
+                            <MyBtn
+                              width={100}
+                              height={40}
+                              bgColor="red"
+                              icon={DeleteIcon}
+                              title={"حذف"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteSector(row);
+                              }}
+                            />
+                          </Stack>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    </Tooltip>
+                  ))
+                ) : (
+                  <StyledTableRow>
+                    <StyledTableCell align="center" colSpan={3}>
+                      <Typography variant="body1" color="initial">
+                        لا يوجد قطاعات
+                      </Typography>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
               </TableBody>
             </Table>
           </TableContainer>
-          {sectors?.length === 0 && (
-            <Box textAlign="center" mt={3}>
-              لا يوجد قطاعات
-            </Box>
-          )}
         </Box>
         {/* </LoadingWrapper> */}
       </Box>

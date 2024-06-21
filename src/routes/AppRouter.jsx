@@ -59,6 +59,7 @@ const router = createBrowserRouter(
             </RoleGuard>
           }
         />
+        {/* sectors routes */}
         <Route
           path="managesectors"
           element={
@@ -67,6 +68,8 @@ const router = createBrowserRouter(
             </RoleGuard>
           }
         />
+        <Route path="sector/:id" element={<Sector />} />
+        {/* projects routes */}
         <Route
           path="project/add"
           element={
@@ -85,6 +88,7 @@ const router = createBrowserRouter(
         />
         <Route path="project/id/:id" element={<ProjectDetails />} />
         <Route path="projectsbox" element={<ProjectsBox />} />
+        {/* activities routes */}
         <Route
           path="manageactivities"
           element={
@@ -93,43 +97,13 @@ const router = createBrowserRouter(
             </RoleGuard>
           }
         />
-        <Route
-          path="consultant/add"
-          element={
-            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
-              <AddConsultant />
-            </RoleGuard>
-          }
-        />
+        <Route path="activity/:id" element={<Activity />} />
+        {/* consultants routes */}
         <Route
           path="manageconsultants"
           element={
             <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
               <ManageConsultants />
-            </RoleGuard>
-          }
-        />
-        <Route
-          path="managecontractors"
-          element={
-            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
-              <ManageContractors />
-            </RoleGuard>
-          }
-        />
-        <Route
-          path="contractor/add"
-          element={
-            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
-              <AddContractor />
-            </RoleGuard>
-          }
-        />
-        <Route
-          path="contractor/id/:id"
-          element={
-            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
-              <ContractorDetails />
             </RoleGuard>
           }
         />
@@ -141,8 +115,24 @@ const router = createBrowserRouter(
             </RoleGuard>
           }
         />
-        <Route path="activity/:id" element={<Activity />} />
-        <Route path="sector/:id" element={<Sector />} />
+        
+        {/* contractors routes */}
+        <Route
+          path="managecontractors"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
+              <ManageContractors />
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="contractor/id/:id"
+          element={
+            <RoleGuard roles={["Admin", "SuperAdmin", "DefaultUserActivity"]}>
+              <ContractorDetails />
+            </RoleGuard>
+          }
+        />
       </Route>
     </>
   )

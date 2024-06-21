@@ -6,6 +6,7 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  Tooltip,
 } from "@mui/material";
 import Heading from "../components/common/Heading/Heading";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -26,6 +27,7 @@ import { initialConsultant } from "../validations/consultantSchema";
 import actGetConsultants from "../store/consultant/act/actGetConsultants";
 import actDeleteConsultant from "../store/consultant/act/actDeleteConsultant";
 import { filterConsultants } from "../store/consultant/consultantSlice";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,6 +51,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const ManageConsultants = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const { consultants } = useSelector((state) => state.consultant);
@@ -82,7 +85,7 @@ const ManageConsultants = () => {
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed(err + "الاسنشارى له مشاريع برجاء حذفها اولا");
+          notifyFailed(err + "حدث خطا ما");
         });
     }
   };
@@ -127,82 +130,75 @@ const ManageConsultants = () => {
                   <StyledTableCell align="center">
                     اسم الاستشارى
                   </StyledTableCell>
-                  <StyledTableCell align="center">الوصف</StyledTableCell>
-                  <StyledTableCell align="center">رقم الهاتف</StyledTableCell>
-                  <StyledTableCell align="center">
-                    رقم هاتف المسؤل
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    اسم الشخص المسؤل
-                  </StyledTableCell>
-                  <StyledTableCell align="center">العنوان</StyledTableCell>
-                  <StyledTableCell align="center">الدولة</StyledTableCell>
-                  <StyledTableCell align="center">التخصص</StyledTableCell>
-                  <StyledTableCell align="center">الخبرة</StyledTableCell>
-                  <StyledTableCell align="center">المؤهل</StyledTableCell>
+                  <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
                   <StyledTableCell align="center">الإجراءات</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {consultants?.map((row) => (
-                  <StyledTableRow key={row.id}>
-                    <StyledTableCell align="center">{row.name}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.description}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.phoneNumber}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.contactPersonPhone}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.contactPersonName}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.address}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.country}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.specialization}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.experience}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.qualification}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Stack direction="row" justifyContent="center" gap={1}>
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          icon={EditIcon}
-                          title={"تعديل"}
-                          handleBtnClick={() => handleUpdateConsultant(row)}
-                        />
-                        <MyBtn
-                          width={100}
-                          height={40}
-                          bgColor="red"
-                          icon={DeleteIcon}
-                          title={"حذف"}
-                          handleBtnClick={() => handleDeleteConsultant(row)}
-                        />
-                      </Stack>
+                {consultants?.length > 0 ? (
+                  consultants.map((row) => (
+                    <Tooltip
+                      title="اضغط لعرض الاستشارى"
+                      placement="top"
+                      arrow
+                      key={row.id}
+                    >
+                      <StyledTableRow
+                        key={row.id}
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#fff !important" },
+                        }}
+                        onClick={() => navigate(`/consultant/id/${row.id}`)}
+                      >
+                        <StyledTableCell align="center">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.totalProjects}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <Stack
+                            direction="row"
+                            justifyContent="center"
+                            gap={1}
+                          >
+                            <MyBtn
+                              width={100}
+                              height={40}
+                              icon={EditIcon}
+                              title={"تعديل"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation();
+                                handleUpdateConsultant(row);
+                              }}
+                            />
+                            <MyBtn
+                              width={100}
+                              height={40}
+                              bgColor="red"
+                              icon={DeleteIcon}
+                              title={"حذف"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteConsultant(row);
+                              }}
+                            />
+                          </Stack>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    </Tooltip>
+                  ))
+                ) : (
+                  <StyledTableRow>
+                    <StyledTableCell align="center" colSpan={3}>
+                      لا يوجد استشاريين
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </TableContainer>
-          {consultants?.length === 0 && (
-            <Box textAlign="center" mt={3}>
-              لا يوجد استشاريين
-            </Box>
-          )}
         </Box>
         {/* </LoadingWrapper> */}
       </Box>

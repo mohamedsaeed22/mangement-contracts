@@ -77,7 +77,9 @@ const SectorForm = ({
             onChange={handleChange}
             onBlur={handleBlur}
             error={!!touched.name && !!errors.name}
-            helperText={ touched.name && errors.name ? touched.name && errors.name : " "}
+            helperText={
+              touched.name && errors.name ? touched.name && errors.name : " "
+            }
           />
           <Box alignSelf={isUpdate ? "center" : { xs: "flex-start" }}>
             <MyBtn

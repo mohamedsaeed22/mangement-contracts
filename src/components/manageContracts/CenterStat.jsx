@@ -51,7 +51,15 @@ const CenterStat = ({ stats }) => {
               >
                 {totalNotStartedProjects}
               </Typography>
-              <Typography variant="body1" color="initial">
+              <Typography
+                variant="body1"
+                color="initial"
+                sx={{
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+              >
                 مرحلة البدء
               </Typography>
             </Stack>
@@ -94,7 +102,15 @@ const CenterStat = ({ stats }) => {
               >
                 {totalInProgressProjects}
               </Typography>
-              <Typography variant="body1" color="initial">
+              <Typography
+                variant="body1"
+                color="initial"
+                sx={{
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+              >
                 مرحلة التخطيط
               </Typography>
             </Stack>
@@ -137,7 +153,15 @@ const CenterStat = ({ stats }) => {
               >
                 {totalCompletedProjects}
               </Typography>
-              <Typography variant="body1" color="initial">
+              <Typography
+                variant="body1"
+                color="initial"
+                sx={{
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+              >
                 مرحلة التنفيذ
               </Typography>
             </Stack>
@@ -180,7 +204,15 @@ const CenterStat = ({ stats }) => {
               >
                 {totalOnHoldProjects}
               </Typography>
-              <Typography variant="body1" color="initial">
+              <Typography
+                variant="body1"
+                color="initial"
+                sx={{
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+              >
                 مرحلة الاغلاق
               </Typography>
             </Stack>

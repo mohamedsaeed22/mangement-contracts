@@ -5,14 +5,12 @@ const getAcessToken = () => {
   return Cookies.get("token") ? Cookies.get("token") : "";
 };
 
-const setAccessToken = (accessToken) => {
-  const decodedToken = jwtDecode(accessToken);
-  const expirationTime = new Date(decodedToken.exp * 1500);
-  Cookies.set("token", accessToken, { expires: expirationTime });
+const setAccessToken = (accessToken, exp) => {
+  Cookies.set("token", accessToken, { expires: new Date(exp) });
 };
 
 const getRefreshToken = () => {
-  return Cookies.get("refreshToken");
+  return Cookies.get("refreshToken") ? Cookies.get("refreshToken") : "";
 };
 const setRefreshToken = (refreshToken, exp) => {
   Cookies.set("refreshToken", refreshToken, { expires: new Date(exp) });

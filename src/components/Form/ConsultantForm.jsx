@@ -1,10 +1,9 @@
 import React from "react";
 import MyInput from "./Input/MyInput";
 import { Formik } from "formik";
-
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
-import { Box, Grid, Stack, TextField } from "@mui/material";
+import { Box, Grid, TextField } from "@mui/material";
 import MyBtn from "../common/UI/MyBtn";
 import AddIcon from "../../assets/icon/add-icon.svg";
 import EditIcon from "../../assets/icon/edit-icon.svg";
@@ -74,10 +73,9 @@ const ConsultantForm = ({
           onSubmit={handleSubmit}
         >
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="name"
               label="اسم الاستشارى*"
-              placeholder="ادخل الاسم"
               value={values.name}
               onChange={handleChange}
               size="small"
@@ -260,7 +258,10 @@ const ConsultantForm = ({
             sm={6}
             md={isUpdate ? 6 : 3}
             display="flex"
-            justifyContent={{ xs: "center", md:isUpdate?"center" :"flex-start" }}
+            justifyContent={{
+              xs: "center",
+              md: isUpdate ? "center" : "flex-start",
+            }}
           >
             <Box alignSelf={"flex-start"}>
               <MyBtn

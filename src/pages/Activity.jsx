@@ -102,7 +102,7 @@ const Activity = () => {
         height="calc(100vh - 130px)"
       >
         <Box borderRadius={2}>
-          <LoadingWrapper loading={projectLoading} error={statError}>
+          {/* <LoadingWrapper loading={projectLoading} error={statError}> */}
             <TopStat stats={stats} />
             {/* center paper */}
             <CenterStat stats={stats} />
@@ -246,7 +246,7 @@ const Activity = () => {
                 </Stack>
               </>
             )}
-          </LoadingWrapper>
+          {/* </LoadingWrapper> */}
         </Box>
       </Box>
     </>

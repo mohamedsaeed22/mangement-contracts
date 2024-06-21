@@ -183,14 +183,6 @@ const ProjectsBox = () => {
               icon={toggleFilter ? FilterFill : FilterIcon}
               handleBtnClick={handleToggleFilter}
             />
-            {/* <MyBtn
-              type="submit"
-              width={100}
-              height={40}
-              icon={AddIcon}
-              handleBtnClick={() => navigate("/project/add")}
-              title={"اضافة"}
-            /> */}
           </Stack>
         </Stack>
         <Stack
@@ -443,7 +435,7 @@ const ProjectsBox = () => {
               page={page ? page : 1}
               onChange={handleChangePage}
             />
-          ) : (
+          ) : (            
             "لا يوجد مشاريع"
           )}
         </Stack>

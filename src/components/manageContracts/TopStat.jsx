@@ -1,10 +1,8 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import OverviewImage from "./../../assets/imgs/overview.svg";
-
 import { Box, Paper, Stack, Typography } from "@mui/material";
 
 const TopStat = ({ stats }) => {
-  // const navigate = useNavigate();
   const { totalProjects, totalPercentage, totalBudget, totalSpent } = stats;
   return (
     <Paper
@@ -38,7 +36,15 @@ const TopStat = ({ stats }) => {
             <Typography variant="h4" fontWeight="bold" color="#01204E">
               {totalProjects}
             </Typography>
-            <Typography variant="body1" color="initial">
+            <Typography
+              variant="body1"
+              color="initial"
+              sx={{
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
               اجمالى عدد المشروعات
             </Typography>
           </Stack>
@@ -48,7 +54,15 @@ const TopStat = ({ stats }) => {
             <Typography variant="h4" fontWeight="bold" color="#01204E">
               {totalPercentage} %
             </Typography>
-            <Typography variant="body1" color="initial">
+            <Typography
+              variant="body1"
+              color="initial"
+              sx={{
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
               نسبة التنفيذ الفعلى (%)
             </Typography>
           </Stack>
@@ -58,7 +72,15 @@ const TopStat = ({ stats }) => {
             <Typography variant="h4" fontWeight="bold" color="#01204E">
               {totalBudget && totalBudget.toLocaleString()}
             </Typography>
-            <Typography variant="body1" color="initial">
+            <Typography
+              variant="body1"
+              color="initial"
+              sx={{
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
               التكلفة المخططة
             </Typography>
           </Stack>
@@ -68,7 +90,15 @@ const TopStat = ({ stats }) => {
             <Typography variant="h4" fontWeight="bold" color="#01204E">
               {totalSpent && totalSpent.toLocaleString()}
             </Typography>
-            <Typography variant="body1" color="initial">
+            <Typography
+              variant="body1"
+              color="initial"
+              sx={{
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
               المنصرف الفعلى
             </Typography>
           </Stack>

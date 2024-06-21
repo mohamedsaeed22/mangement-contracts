@@ -3,9 +3,7 @@ import {
   getAcessToken,
   getRefreshToken,
   setAccessToken,
-  setRefreshToken,
 } from "../utils/accessLocalStorage";
-import { jwtDecode } from "jwt-decode";
 
 const BASE_URL = "http://172.16.3.230:9433/";
 
@@ -15,19 +13,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  // timeout: 5000,
 });
-const myExpTime = getAcessToken() && jwtDecode(getAcessToken())?.exp;
-
-const currentTime = Math.floor(Date.now() / 1000);
-const remainingTime = myExpTime - 100;
-
-if (Date.now() === Date.now() + 10) {
-  // refreshMyToken();
-  console.log("hello world");
-}
-console.log(Date.now());
-// setInterval(refreshMyToken, 20 * 60 * 1000);
 
 api.interceptors.request.use(
   (config) => {
@@ -55,9 +41,12 @@ api.interceptors.response.use(
         try {
           const rs = await refreshMyToken();
           console.log(rs);
-          const { accessToken } = rs;
-          setAccessToken(accessToken);
+          const { accessToken, expires } = rs;
+          setAccessToken(accessToken, expires);
           api.defaults.headers.common["x-access-token"] = accessToken;
+          api.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${accessToken}`;
           return api(originalConfig);
         } catch (_error) {
           if (_error.response && _error.response.data) {

@@ -66,11 +66,12 @@ const ContractorDetails = () => {
     navigate(`/project/id/${project.id}`);
   };
   return (
-    <LoadingWrapper loading={loading} error={error}>
+    // <LoadingWrapper loading={loading} error={error}>
+    <>
       <Heading title="تفاصيل مقاول" />
       <Stack
         direction="row"
-        mt="60px"
+        mt="40px"
         justifyContent="space-between"
         marginInline={3}
       >
@@ -88,12 +89,12 @@ const ContractorDetails = () => {
         mt="4px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         // marginInline="20px"
-       
+
         flex={1}
         // bgcolor="#ddd"
       >
-        <Stack gap={1} m={2} overflow="auto">
-        <Grid container spacing={2} mb={2}>
+        <Stack gap={1} m={2} overflowY="auto">
+          <Grid container spacing={2}>
             <Grid item xs={12} sm={6} lg={3}>
               <Box
                 sx={{
@@ -218,7 +219,7 @@ const ContractorDetails = () => {
             </Grid>
           </Grid>
 
-          <Grid container spacing={2} mb={2}>
+          <Grid container spacing={2}>
             <Grid item xs={12} sm={6} lg={3}>
               <Box
                 sx={{
@@ -339,7 +340,7 @@ const ContractorDetails = () => {
             </Grid>
           </Grid>
 
-          <Grid container spacing={2} mb={2}>
+          <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Box
                 sx={{
@@ -403,102 +404,114 @@ const ContractorDetails = () => {
             </Grid>
           </Grid>
 
-          <TableContainer sx={{ maxHeight: "48vh", marginTop: "8px" }}>
-            <Table aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center">القطاع</StyledTableCell>
-
-                  <StyledTableCell align="center">اسم المشروع</StyledTableCell>
-                  <StyledTableCell align="center">الوصف</StyledTableCell>
-                  <StyledTableCell align="center">
-                    التكلفة المخططة
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    المنصرف الفعلى
-                  </StyledTableCell>
-                  <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
-                  <StyledTableCell align="center">حالة المشروع</StyledTableCell>
-                  <StyledTableCell align="center">
-                    بداية المشروع
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    نهاية المشروع
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    هل له مخاطر/معوقات
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {projects?.map((row) => (
-                  <Tooltip title="اضغط لعرض المشروع" placement="top" arrow>
-                    <StyledTableRow
-                      key={row}
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { backgroundColor: "#ddd !important" },
-                      }}
-                      onClick={() => handleShowProject(row)}
+          {projects?.length > 0 ? (
+            <TableContainer sx={{ maxHeight: "48vh", marginTop: "8px" }}>
+              <Table aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center">القطاع</StyledTableCell>
+                    <StyledTableCell align="center">
+                      اسم المشروع
+                    </StyledTableCell>
+                    <StyledTableCell align="center">الوصف</StyledTableCell>
+                    <StyledTableCell align="center">
+                      التكلفة المخططة
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      المنصرف الفعلى
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      نسبة الانجاز
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      حالة المشروع
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      بداية المشروع
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      نهاية المشروع
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      هل له مخاطر/معوقات
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {projects.map((row) => (
+                    <Tooltip
+                      title="اضغط لعرض المشروع"
+                      placement="top"
+                      arrow
+                      key={row.id}
                     >
-                      <StyledTableCell align="center">
-                        {row.sectorName}
-                      </StyledTableCell>
-
-                      <StyledTableCell align="center">
-                        {row.name.length > 20
-                          ? row.name.substring(0, 20) + "..."
-                          : row.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.description.length > 20
-                          ? row.description.substring(0, 20) + "..."
-                          : row.description}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.budget}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.spentBudget}
-                      </StyledTableCell>
-
-                      <StyledTableCell align="center">
-                        {row.percentage}
-                        <Box sx={{ width: "100%", marginTop: "2px" }}>
-                          <LinearProgress
-                            variant="determinate"
-                            value={parseInt(row.percentage)}
-                          />
-                        </Box>
-                      </StyledTableCell>
-
-                      <StyledTableCell align="center">
-                        <Box sx={{ width: "100%", marginTop: "2px" }}>
-                          <StatusLabel status={row.status} />
-                        </Box>
-                      </StyledTableCell>
-
-                      <StyledTableCell align="center">
-                        {row.startDate.split("T")[0]}
-                      </StyledTableCell>
-
-                      <StyledTableCell align="center">
-                        {row.endDate.split("T")[0]}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row?.risks?.length > 0 || row?.handicaps?.length > 0
-                          ? "يوجد"
-                          : "لا يوجد"}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  </Tooltip>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                      <StyledTableRow
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#ddd !important" },
+                        }}
+                        onClick={() => handleShowProject(row)}
+                      >
+                        <StyledTableCell align="center">
+                          {row.sectorName}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.name.length > 20
+                            ? row.name.substring(0, 20) + "..."
+                            : row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.description.length > 20
+                            ? row.description.substring(0, 20) + "..."
+                            : row.description}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.budget}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.spentBudget}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.percentage}
+                          <Box sx={{ width: "100%", marginTop: "2px" }}>
+                            <LinearProgress
+                              variant="determinate"
+                              value={parseInt(row.percentage)}
+                            />
+                          </Box>
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <Box sx={{ width: "100%", marginTop: "2px" }}>
+                            <StatusLabel status={row.status} />
+                          </Box>
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.startDate.split("T")[0]}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.endDate.split("T")[0]}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row?.risks?.length > 0 || row?.handicaps?.length > 0
+                            ? "يوجد"
+                            : "لا يوجد"}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    </Tooltip>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Box textAlign="center" mt={3}>
+            <Typography variant="body1" color="initial">
+              لا يوجد مشاريع لهذا المقاول
+            </Typography>
+          </Box>
+          )}
         </Stack>
       </Box>
-    </LoadingWrapper>
+    </>
   );
 };
 

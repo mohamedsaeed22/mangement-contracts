@@ -2,8 +2,6 @@ import actAuthLogin from "./act/actAuthLogin";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import {
-  getAcessToken,
-  getRefreshToken,
   getUserRoles,
   setAccessToken,
   setRefreshToken,
@@ -40,11 +38,12 @@ const authSlice = createSlice({
       const myToken = payload?.accessToken;
       const myRefreshToken = payload?.refreshToken;
       const myRefreshTokenExp = payload?.expires;
-      setAccessToken(myToken);
+      setAccessToken(myToken, myRefreshTokenExp);
       setRefreshToken(myRefreshToken, myRefreshTokenExp);
       state.accessToken = myToken;
     });
 
+    
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;
       if (action?.payload === 400) {

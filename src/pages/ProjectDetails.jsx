@@ -80,9 +80,9 @@ const ProjectDetails = () => {
       <Heading title="تفاصيل مشروع" />
       <Stack
         direction="row"
-        mt="60px"
+        mt="40px"
         justifyContent="space-between"
-        marginInline={3}
+        marginInline={4}
       >
         <Box>
           <Tooltip title="رجوع" placement="top" arrow>

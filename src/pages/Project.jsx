@@ -27,6 +27,8 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
+import EditIcon from "../assets/icon/edit-icon.svg";
+import AddIcon from "../assets/icon/add-icon.svg";
 import MyInput from "../components/Form/Input/MyInput";
 import MyInputsWrapper from "../components/common/UI/MyInputsWrapper";
 import MyDatePicker from "../components/Form/Input/MyDatePicker";
@@ -171,7 +173,7 @@ const Project = () => {
       percentage: values.percentage,
     };
     console.log(values);
-    console.log(projectData)
+    console.log(projectData);
 
     // if (values.contractorId !== myProject.contractorId) {
     //   // delete and add
@@ -968,6 +970,7 @@ const Project = () => {
                 >
                   <MyBtn
                     title={!id ? "اضافة" : "تعديل"}
+                    icon={!id ? AddIcon : EditIcon}
                     type="submit"
                     width={250}
                   />

@@ -131,60 +131,65 @@ const ManageActivities = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {activities?.map((row) => (
-                  <Tooltip
-                    title="اضغط لعرض التفاصيل"
-                    placement="top"
-                    arrow
-                    key={row.id}
-                  >
-                    <StyledTableRow
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { backgroundColor: "#fff !important" },
-                      }}
-                      onClick={() => navigate(`/activity/${row.id}`)}
+                {activities?.length > 0 ? (
+                  activities.map((row) => (
+                    <Tooltip
+                      title="اضغط لعرض التفاصيل"
+                      placement="top"
+                      arrow
+                      key={row.id}
                     >
-                      <StyledTableCell align="center">
-                        {row.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.description.length > 30
-                          ? row.description.substring(0, 30) + "..."
-                          : row.description}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.totalProjects}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Stack direction="row" justifyContent="center" gap={1}>
-                          <MyBtn
-                            width={100}
-                            height={40}
-                            icon={EditIcon}
-                            title={"تعديل"}
-                            handleBtnClick={(e) => {
-                              e.stopPropagation();
-                              handleUpdateActivity(row);
-                            }}
-                          />
-                          <MyBtn
-                            width={100}
-                            height={40}
-                            bgColor="red"
-                            icon={DeleteIcon}
-                            title={"حذف"}
-                            handleBtnClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteActivity(row);
-                            }}
-                          />
-                        </Stack>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  </Tooltip>
-                ))}
-                {activities?.length === 0 && (
+                      <StyledTableRow
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#fff !important" },
+                        }}
+                        onClick={() => navigate(`/activity/${row.id}`)}
+                      >
+                        <StyledTableCell align="center">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.description.length > 30
+                            ? row.description.substring(0, 30) + "..."
+                            : row.description}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.totalProjects}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <Stack
+                            direction="row"
+                            justifyContent="center"
+                            gap={1}
+                          >
+                            <MyBtn
+                              width={100}
+                              height={40}
+                              icon={EditIcon}
+                              title={"تعديل"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation();
+                                handleUpdateActivity(row);
+                              }}
+                            />
+                            <MyBtn
+                              width={100}
+                              height={40}
+                              bgColor="red"
+                              icon={DeleteIcon}
+                              title={"حذف"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteActivity(row);
+                              }}
+                            />
+                          </Stack>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    </Tooltip>
+                  ))
+                ) : (
                   <StyledTableRow>
                     <StyledTableCell align="center" colSpan={4}>
                       لا يوجد انشطه
