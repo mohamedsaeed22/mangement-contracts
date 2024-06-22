@@ -92,7 +92,7 @@ const Project = () => {
 
   const [myProject, setMyProject] = useState(initialProjectValues);
   const [anchorEl, setAnchorEl] = useState(null);
-  console.log(project);
+
   const {
     risks: r,
     handicaps: h,
@@ -161,7 +161,7 @@ const Project = () => {
       setContractorsIds(project?.contractors);
     }
   }, [id, project, handicapObj, riskObj, contractorObj, consultantObj]);
-  console.log(myProject);
+
   const handleFormSubmit = (values) => {
     console.table(values);
     const projectData = {
@@ -172,179 +172,175 @@ const Project = () => {
       spentBudget: values.spentBudget,
       percentage: values.percentage,
     };
-    console.log(values);
-    console.log(projectData);
 
-    // if (values.contractorId !== myProject.contractorId) {
-    //   // delete and add
-    //   if (myProject.contractorId) {
-    //     dispatch(
-    //       actDeleteProjectContractor({
-    //         projectId: id,
-    //         contractorId: myProject.contractorId,
-    //       })
-    //     );
-    //   }
-    //   dispatch(
-    //     actCreateProjectContractor({
-    //       ContractorIds: [values.contractorId],
-    //       projectId: id,
-    //     })
-    //   );
-    //   console.log(values.contractorId, id);
-    // }
-    // if (values.consultantId !== myProject.consultantId) {
-    //   // delete and add
-    //   if (myProject.consultantId) {
-    //     dispatch(
-    //       actDeleteProjectConsultant({
-    //         projectId: id,
-    //         consultantId: myProject.consultantId,
-    //       })
-    //     );
-    //   }
-    //   dispatch(
-    //     actCreateProjectConsultant({
-    //       ConsultantIds: [values.consultantId],
-    //       projectId: id,
-    //     })
-    //   );
-    //   console.log(values.consultantId, id);
-    // }
-    // if (id) {
-    //   if (values.showHandicaps === "yes") {
-    //     if (handicapObj?.id) {
-    //       dispatch(
-    //         actUpdateHandicap({
-    //           id: handicapObj.id,
-    //           projectId: id,
-    //           status: values.handicapStatus,
-    //           description: values.handicapDescription,
-    //         })
-    //       );
-    //     } else {
-    //       dispatch(
-    //         actCreateHandicap({
-    //           projectId: id,
-    //           status: values.handicapStatus,
-    //           description: values.handicapDescription,
-    //         })
-    //       );
-    //     }
-    //   }
-    //   if (values.showHandicaps === "no") {
-    //     if (handicapObj?.id) {
-    //       dispatch(actDeleteHandicap(handicapObj.id));
-    //     }
-    //   }
-    //   if (values.showRisks === "no") {
-    //     if (riskObj?.id) {
-    //       dispatch(actDeleteRisk(riskObj.id));
-    //     } else {
-    //     }
-    //   }
+    if (values.contractorId !== myProject.contractorId) {
+      // delete and add
+      if (myProject.contractorId) {
+        dispatch(
+          actDeleteProjectContractor({
+            projectId: id,
+            contractorId: myProject.contractorId,
+          })
+        );
+      }
+      dispatch(
+        actCreateProjectContractor({
+          ContractorIds: [values.contractorId],
+          projectId: id,
+        })
+      );
+    }
+    if (values.consultantId !== myProject.consultantId) {
+      // delete and add
+      if (myProject.consultantId) {
+        dispatch(
+          actDeleteProjectConsultant({
+            projectId: id,
+            consultantId: myProject.consultantId,
+          })
+        );
+      }
+      dispatch(
+        actCreateProjectConsultant({
+          ConsultantIds: [values.consultantId],
+          projectId: id,
+        })
+      );
+    }
+    if (id) {
+      if (values.showHandicaps === "yes") {
+        if (handicapObj?.id) {
+          dispatch(
+            actUpdateHandicap({
+              id: handicapObj.id,
+              projectId: id,
+              status: values.handicapStatus,
+              description: values.handicapDescription,
+            })
+          );
+        } else {
+          dispatch(
+            actCreateHandicap({
+              projectId: id,
+              status: values.handicapStatus,
+              description: values.handicapDescription,
+            })
+          );
+        }
+      }
+      if (values.showHandicaps === "no") {
+        if (handicapObj?.id) {
+          dispatch(actDeleteHandicap(handicapObj.id));
+        }
+      }
+      if (values.showRisks === "no") {
+        if (riskObj?.id) {
+          dispatch(actDeleteRisk(riskObj.id));
+        } else {
+        }
+      }
 
-    //   if (values.showRisks === "yes") {
-    //     if (riskObj?.id) {
-    //       dispatch(
-    //         actUpdateRisk({
-    //           id: riskObj.id,
-    //           projectId: id,
-    //           status: values.riskStatus,
-    //           description: values.riskDescription,
-    //         })
-    //       );
-    //     } else {
-    //       dispatch(
-    //         actCreateRisk({
-    //           projectId: id,
-    //           status: values.riskStatus,
-    //           description: values.riskDescription,
-    //         })
-    //       );
-    //     }
-    //   }
-    //   dispatch(actUpdateProject(projectData))
-    //     .unwrap()
-    //     .then((res) => {
-    //       if (res.id) {
-    //         notifySuccess("تم تعديل المشروع بنجاح");
-    //         navigate(-1);
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       notifyFailed(err + " خطا ما..الرجاء المحاولة مره اخرى");
-    //     });
-    // } else {
-    //   dispatch(actCreateProject(projectData))
-    //     .unwrap()
-    //     .then(async (res) => {
-    //       if (res && res.id) {
-    //         try {
-    //           if (values.riskStatus && values.handicapStatus) {
-    //             const riskObj = {
-    //               description: values.riskDescription,
-    //               status: values.riskStatus,
-    //             };
-    //             const handicapObj = {
-    //               description: values.handicapDescription,
-    //               status: values.handicapStatus,
-    //             };
-    //             await Promise.all([
-    //               dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
-    //               dispatch(
-    //                 actCreateHandicap({ projectId: res.id, ...handicapObj })
-    //               ),
-    //             ]);
-    //           } else if (values.riskStatus) {
-    //             const riskObj = {
-    //               description: values.riskDescription,
-    //               status: values.riskStatus,
-    //             };
-    //             await dispatch(
-    //               actCreateRisk({ projectId: res.id, ...riskObj })
-    //             );
-    //           } else if (values.handicapStatus) {
-    //             const handicapObj = {
-    //               description: values.handicapDescription,
-    //               status: values.handicapStatus,
-    //             };
-    //             await dispatch(
-    //               actCreateHandicap({ projectId: res.id, ...handicapObj })
-    //             );
-    //           }
+      if (values.showRisks === "yes") {
+        if (riskObj?.id) {
+          dispatch(
+            actUpdateRisk({
+              id: riskObj.id,
+              projectId: id,
+              status: values.riskStatus,
+              description: values.riskDescription,
+            })
+          );
+        } else {
+          dispatch(
+            actCreateRisk({
+              projectId: id,
+              status: values.riskStatus,
+              description: values.riskDescription,
+            })
+          );
+        }
+      }
+      dispatch(actUpdateProject(projectData))
+        .unwrap()
+        .then((res) => {
+          if (res.id) {
+            notifySuccess("تم تعديل المشروع بنجاح");
+            navigate(-1);
+          }
+        })
+        .catch((err) => {
+          notifyFailed(err + " خطا ما..الرجاء المحاولة مره اخرى");
+        });
+    } else {
+      dispatch(actCreateProject(projectData))
+        .unwrap()
+        .then(async (res) => {
+          if (res && res.id) {
+            try {
+              if (values.riskStatus && values.handicapStatus) {
+                const riskObj = {
+                  description: values.riskDescription,
+                  status: values.riskStatus,
+                };
+                const handicapObj = {
+                  description: values.handicapDescription,
+                  status: values.handicapStatus,
+                };
+                await Promise.all([
+                  dispatch(actCreateRisk({ projectId: res.id, ...riskObj })),
+                  dispatch(
+                    actCreateHandicap({ projectId: res.id, ...handicapObj })
+                  ),
+                ]);
+              } else if (values.riskStatus) {
+                const riskObj = {
+                  description: values.riskDescription,
+                  status: values.riskStatus,
+                };
+                await dispatch(
+                  actCreateRisk({ projectId: res.id, ...riskObj })
+                );
+              } else if (values.handicapStatus) {
+                const handicapObj = {
+                  description: values.handicapDescription,
+                  status: values.handicapStatus,
+                };
+                await dispatch(
+                  actCreateHandicap({ projectId: res.id, ...handicapObj })
+                );
+              }
 
-    //           if (values.contractorId) {
-    //             const objContractor = {
-    //               ContractorIds: [values.contractorId],
-    //               projectId: res.id,
-    //             };
-    //             await dispatch(actCreateProjectContractor(objContractor));
-    //           }
+              if (values.contractorId) {
+                const objContractor = {
+                  ContractorIds: [values.contractorId],
+                  projectId: res.id,
+                };
+                await dispatch(actCreateProjectContractor(objContractor));
+              }
 
-    //           if (values.consultantId) {
-    //             const objConsultant = {
-    //               ConsultantIds: [values.consultantId],
-    //               projectId: res.id,
-    //             };
-    //             await dispatch(actCreateProjectConsultant(objConsultant));
-    //           }
+              if (values.consultantId) {
+                const objConsultant = {
+                  ConsultantIds: [values.consultantId],
+                  projectId: res.id,
+                };
+                await dispatch(actCreateProjectConsultant(objConsultant));
+              }
 
-    //           notifySuccess("تم إنشاء المشروع بنجاح");
-    //           navigate("/projectsbox");
-    //         } catch (error) {
-    //           notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-    //         }
-    //       } else {
-    //         notifyFailed("Failed to create project. ID is undefined.");
-    //       }
-    //     })
-    //     .catch(() => {
-    //       notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
-    //     });
-    // }
+              notifySuccess("تم إنشاء المشروع بنجاح");
+              navigate("/projectsbox");
+            } catch (error) {
+              notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+            }
+          } else {
+            notifyFailed("Failed to create project. ID is undefined.");
+          }
+        })
+        .catch(() => {
+          notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+        });
+    }
   };
-  console.log(dayjs(dayjs("2024-05-29T21:00:00").toISOString()));
+
   return (
     <>
       <Heading title={id ? "تعديل مشروع" : "اضافة مشروع"} />
@@ -470,7 +466,7 @@ const Project = () => {
                   <Grid item xs={12} md={6} gap={2}>
                     <Grid item xs={12}>
                       <MyInputsWrapper title="الانشطه والقطاعات">
-                        <Box sx={{ minWidth: 220 }}>
+                        <Box sx={{ maxWidth: 220, width: "100%" }}>
                           <FormControl fullWidth size="small">
                             <InputLabel id="status-select-label">
                               النشاط*
@@ -512,7 +508,7 @@ const Project = () => {
                             )}
                           </FormControl>
                         </Box>
-                        <Box sx={{ minWidth: 220 }}>
+                        <Box sx={{ maxWidth: 220, width: "100%" }}>
                           <FormControl fullWidth size="small">
                             <InputLabel id="status-select-label">
                               القطاع*
@@ -554,7 +550,7 @@ const Project = () => {
                     </Grid>
                     <Grid item xs={12} mt={2}>
                       <MyInputsWrapper title="الحاله وما تم انجازه">
-                        <Box sx={{ minWidth: 220 }}>
+                        <Box sx={{ maxWidth: 220, width: "100%" }}>
                           <FormControl fullWidth size="small">
                             <InputLabel id="status-select-label">
                               الحالة*
@@ -585,7 +581,7 @@ const Project = () => {
                           </FormControl>
                         </Box>
                         <TextField
-                          sx={{ minWidth: 220 }}
+                          sx={{ maxWidth: 220, width: "100%" }}
                           size="small"
                           name="percentage"
                           label="ما تم انجازه*"
@@ -605,7 +601,7 @@ const Project = () => {
                     <Grid item xs={12}>
                       <MyInputsWrapper title="تكلفة المشروع">
                         <TextField
-                          sx={{ minWidth: 220 }}
+                          sx={{ maxWidth: 220, width: "100%" }}
                           size="small"
                           name="budget"
                           label="التكلفة المخططة*"
@@ -618,7 +614,7 @@ const Project = () => {
                         />
 
                         <TextField
-                          sx={{ minWidth: 220 }}
+                          sx={{ maxWidth: 220, width: "100%" }}
                           size="small"
                           name="spentBudget"
                           label="المنصرف الفعلى*"
@@ -635,44 +631,47 @@ const Project = () => {
                   {/* project dates */}
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="الخطة الزمنية للمشروع">
-                      <Field name="startDate">
-                        {({ field, form }) => (
-                          <MyDatePicker
-                            name="startDate"
-                            title="تاريخ البداية*"
-                            value={values.startDate}
-                            onChangeDate={(date) =>
-                              setFieldValue("startDate", date)
-                            }
-                            error={
-                              touched.startDate && Boolean(errors.startDate)
-                            }
-                            helperText={touched.startDate && errors.startDate}
-                            // width="100%"
-                          />
-                        )}
-                      </Field>
-                      <Field name="endDate">
-                        {({ field, form }) => (
-                          <MyDatePicker
-                            name="endDate"
-                            title="تاريخ النهاية*"
-                            value={values.endDate}
-                            onChangeDate={(date) =>
-                              setFieldValue("endDate", date)
-                            }
-                            error={touched.endDate && Boolean(errors.endDate)}
-                            helperText={touched.endDate && errors.endDate}
-                            // width="100%"
-                          />
-                        )}
-                      </Field>
+                      <Box sx={{ maxWidth: 220, width: "100%" }}>
+                        <Field name="startDate">
+                          {({ field, form }) => (
+                            <MyDatePicker
+                              name="startDate"
+                              title="تاريخ البداية*"
+                              value={values.startDate}
+                              onChangeDate={(date) =>
+                                setFieldValue("startDate", date)
+                              }
+                              error={
+                                touched.startDate && Boolean(errors.startDate)
+                              }
+                              helperText={touched.startDate && errors.startDate}
+                            />
+                          )}
+                        </Field>
+                      </Box>
+                      <Box sx={{ maxWidth: 220, width: "100%" }}>
+                        <Field name="endDate">
+                          {({ field, form }) => (
+                            <MyDatePicker
+                              name="endDate"
+                              title="تاريخ النهاية*"
+                              value={values.endDate}
+                              onChangeDate={(date) =>
+                                setFieldValue("endDate", date)
+                              }
+                              error={touched.endDate && Boolean(errors.endDate)}
+                              helperText={touched.endDate && errors.endDate}
+                              // width="100%"
+                            />
+                          )}
+                        </Field>
+                      </Box>
                     </MyInputsWrapper>
                   </Grid>
                   {/* contractors and consultants */}
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="المقاولين والاستشارين">
-                      <Box sx={{ minWidth: 220 }}>
+                      <Box sx={{ maxWidth: 220, width: "100%" }}>
                         <FormControl fullWidth size="small">
                           <InputLabel id="demo-simple-select-label">
                             المقاولين
@@ -697,7 +696,7 @@ const Project = () => {
                           </Select>
                         </FormControl>
                       </Box>
-                      <Box sx={{ minWidth: 220 }}>
+                      <Box sx={{ maxWidth: 220, width: "100%" }}>
                         <FormControl fullWidth size="small">
                           <InputLabel id="demo-simple-select-label">
                             الاستشاريين
@@ -775,7 +774,7 @@ const Project = () => {
                                 </FormControl>
                                 {values.showRisks === "yes" && (
                                   <Box ml={2}>
-                                    <Box sx={{ minWidth: 220 }}>
+                                    <Box sx={{ maxWidth: 220, width: "100%" }}>
                                       <FormControl fullWidth size="small">
                                         <InputLabel id="status-select-label">
                                           الحالة
@@ -887,7 +886,7 @@ const Project = () => {
                                 </FormControl>
                                 {values.showHandicaps === "yes" && (
                                   <Box ml={2}>
-                                    <Box sx={{ minWidth: 220 }}>
+                                    <Box sx={{ maxWidth: 220, width: "100%" }}>
                                       <FormControl fullWidth size="small">
                                         <InputLabel id="status-select-label">
                                           الحالة

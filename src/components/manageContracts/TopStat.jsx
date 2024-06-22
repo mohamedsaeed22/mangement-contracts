@@ -2,8 +2,18 @@ import { NavLink } from "react-router-dom";
 import OverviewImage from "./../../assets/imgs/overview.svg";
 import { Box, Paper, Stack, Typography } from "@mui/material";
 
-const TopStat = ({ stats }) => {
+const TopStat = ({ stats, allowNav = false }) => {
   const { totalProjects, totalPercentage, totalBudget, totalSpent } = stats;
+
+  // Function to render NavLink or a non-link based on allowNav
+  const renderLink = (to, children) => {
+    if (allowNav) {
+      return <NavLink to={to}>{children}</NavLink>;
+    } else {
+      return <div>{children}</div>;
+    }
+  };
+
   return (
     <Paper
       sx={{
@@ -31,7 +41,10 @@ const TopStat = ({ stats }) => {
         >
           <img src={OverviewImage} alt="overview" style={{ width: "80px" }} />
         </Box>
-        <NavLink to={"/projectsbox"}>
+
+        {/* Render NavLink or a non-link based on allowNav */}
+        {renderLink(
+          "/projectsbox",
           <Stack textAlign="center">
             <Typography variant="h4" fontWeight="bold" color="#01204E">
               {totalProjects}
@@ -41,15 +54,18 @@ const TopStat = ({ stats }) => {
               color="initial"
               sx={{
                 "&:hover": {
-                  textDecoration: "underline",
+                  textDecoration: allowNav && "underline",
                 },
               }}
             >
               اجمالى عدد المشروعات
             </Typography>
           </Stack>
-        </NavLink>
-        <NavLink to={"/projectsbox"}>
+        )}
+
+        {/* Repeat similar pattern for other NavLink instances */}
+        {renderLink(
+          "/projectsbox",
           <Stack textAlign="center">
             <Typography variant="h4" fontWeight="bold" color="#01204E">
               {totalPercentage} %
@@ -59,15 +75,17 @@ const TopStat = ({ stats }) => {
               color="initial"
               sx={{
                 "&:hover": {
-                  textDecoration: "underline",
+                  textDecoration: allowNav && "underline",
                 },
               }}
             >
               نسبة التنفيذ الفعلى (%)
             </Typography>
           </Stack>
-        </NavLink>
-        <NavLink to={"/projectsbox"}>
+        )}
+
+        {renderLink(
+          "/projectsbox",
           <Stack textAlign="center">
             <Typography variant="h4" fontWeight="bold" color="#01204E">
               {totalBudget && totalBudget.toLocaleString()}
@@ -77,15 +95,17 @@ const TopStat = ({ stats }) => {
               color="initial"
               sx={{
                 "&:hover": {
-                  textDecoration: "underline",
+                  textDecoration: allowNav && "underline",
                 },
               }}
             >
               التكلفة المخططة
             </Typography>
           </Stack>
-        </NavLink>
-        <NavLink to={"/projectsbox"}>
+        )}
+
+        {renderLink(
+          "/projectsbox",
           <Stack textAlign="center">
             <Typography variant="h4" fontWeight="bold" color="#01204E">
               {totalSpent && totalSpent.toLocaleString()}
@@ -95,14 +115,14 @@ const TopStat = ({ stats }) => {
               color="initial"
               sx={{
                 "&:hover": {
-                  textDecoration: "underline",
+                  textDecoration: allowNav && "underline",
                 },
               }}
             >
               المنصرف الفعلى
             </Typography>
           </Stack>
-        </NavLink>
+        )}
       </Stack>
     </Paper>
   );

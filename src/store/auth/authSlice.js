@@ -2,14 +2,16 @@ import actAuthLogin from "./act/actAuthLogin";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import {
+  getAcessToken,
+  getRefreshToken,
   getUserRoles,
   setAccessToken,
   setRefreshToken,
 } from "../../utils/accessLocalStorage";
 
 const initialState = {
-  // accessToken: getAcessToken() & getRefreshToken() || null,
-  accessToken: true,
+  accessToken: getAcessToken() || null,
+  // accessToken: true,
   roles: getUserRoles() || [],
   loading: false,
   error: null,
@@ -43,15 +45,15 @@ const authSlice = createSlice({
       state.accessToken = myToken;
     });
 
-    
     builder.addCase(actAuthLogin.rejected, (state, action) => {
       state.loading = false;
-      if (action?.payload === 400) {
+
+      if (action?.payload === 401) {
         state.error = "خطا فى اسم المستخدم او كلمة المرور";
       } else if (action?.payload === 500) {
         state.error = "حدث خطا ما فى السيرفر";
-      } else {
-        state.error = "حدث خطا ما فى الشبكة";
+      } else if (action?.payload === "حدث خطا فى الشبكة") {
+        state.error = "خطا فى اسم المستخدم او كلمة المرور";
       }
     });
   },

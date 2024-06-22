@@ -16,6 +16,7 @@ import actCreateConsultant from "../../store/consultant/act/actCreateConsultant"
 import actUpdateConsultant from "../../store/consultant/act/actUpdateConsultant";
 import {
   actCreateContractor,
+  actGetContractors,
   actUpdateContractor,
 } from "../../store/contractor/contractorSlice";
 import { contractorSchema } from "../../validations/contractorSchema";
@@ -33,6 +34,7 @@ const ContractorForm = ({
         .unwrap()
         .then((e) => {
           notifySuccess("تم تحديث المقاول بنجاح");
+          dispatch(actGetContractors())
           handleCloseModal();
         })
         .catch((err) => {

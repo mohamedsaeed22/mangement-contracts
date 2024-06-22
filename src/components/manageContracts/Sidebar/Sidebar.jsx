@@ -61,7 +61,6 @@ const Sidebar = () => {
   if (sectors) {
     sectorList = [...sectorSubmenuList, ...sectors];
   }
-  console.log(sectors);
 
   const handleMenuToggle = (menuName) => {
     setOpenMenu((prevMenu) => (prevMenu === menuName ? null : menuName));

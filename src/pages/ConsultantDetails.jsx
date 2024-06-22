@@ -54,10 +54,9 @@ const ConsultantDetails = () => {
     (state) => state.consultant
   );
   const { projects } = useSelector((state) => state.project);
-  console.log(projects);
 
   const { id } = useParams();
-  console.log(consultant);
+
   useEffect(() => {
     if (id) {
       dispatch(actGetConsultantById(id));
@@ -91,6 +90,7 @@ const ConsultantDetails = () => {
         mt="4px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         // marginInline="20px"
+        overflowY="auto"
         flex={1}
         // bgcolor="#ddd"
       >
@@ -404,7 +404,7 @@ const ConsultantDetails = () => {
             </Grid>
           </Grid>
           {projects?.length > 0 ? (
-            <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
+            <TableContainer sx={{ maxHeight: "50vh", marginTop: "8px" }}>
               <Table aria-label="customized table">
                 <TableHead>
                   <TableRow>

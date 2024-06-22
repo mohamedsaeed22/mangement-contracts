@@ -62,7 +62,7 @@ const ManageActivities = () => {
   const { activities, error, loading } = useSelector((state) => state.activity);
   const [updatedActivity, setUpdatedActivity] = useState(initialActivity);
   const navigate = useNavigate();
-  console.log(activities);
+
   const handleCloseModal = () => {
     setOpenModal(false);
   };
@@ -116,91 +116,93 @@ const ManageActivities = () => {
         // flex={1}
         height="calc(100vh - 130px)"
       >
-        {/* <LoadingWrapper error={error} loading={loading}> */}
-        <Box>
-          <ActivityForm isUpdate={false} initialValues={updatedActivity} />
-          {/* activities table */}
-          <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
-            <Table aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center">النشاط</StyledTableCell>
-                  <StyledTableCell align="center">الوصف</StyledTableCell>
-                  <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
-                  <StyledTableCell align="center">الاجراءات</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {activities?.length > 0 ? (
-                  activities.map((row) => (
-                    <Tooltip
-                      title="اضغط لعرض التفاصيل"
-                      placement="top"
-                      arrow
-                      key={row.id}
-                    >
-                      <StyledTableRow
-                        sx={{
-                          cursor: "pointer",
-                          "&:hover": { backgroundColor: "#fff !important" },
-                        }}
-                        onClick={() => navigate(`/activity/${row.id}`)}
-                      >
-                        <StyledTableCell align="center">
-                          {row.name}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {row.description.length > 30
-                            ? row.description.substring(0, 30) + "..."
-                            : row.description}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {row.totalProjects}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Stack
-                            direction="row"
-                            justifyContent="center"
-                            gap={1}
-                          >
-                            <MyBtn
-                              width={100}
-                              height={40}
-                              icon={EditIcon}
-                              title={"تعديل"}
-                              handleBtnClick={(e) => {
-                                e.stopPropagation();
-                                handleUpdateActivity(row);
-                              }}
-                            />
-                            <MyBtn
-                              width={100}
-                              height={40}
-                              bgColor="red"
-                              icon={DeleteIcon}
-                              title={"حذف"}
-                              handleBtnClick={(e) => {
-                                e.stopPropagation();
-                                handleDeleteActivity(row);
-                              }}
-                            />
-                          </Stack>
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    </Tooltip>
-                  ))
-                ) : (
-                  <StyledTableRow>
-                    <StyledTableCell align="center" colSpan={4}>
-                      لا يوجد انشطه
+        <LoadingWrapper error={error} loading={loading}>
+          <Box>
+            <ActivityForm isUpdate={false} initialValues={updatedActivity} />
+            {/* activities table */}
+            <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
+              <Table aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center">النشاط</StyledTableCell>
+                    <StyledTableCell align="center">الوصف</StyledTableCell>
+                    <StyledTableCell align="center">
+                      عدد المشاريع
                     </StyledTableCell>
-                  </StyledTableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-        {/* </LoadingWrapper> */}
+                    <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {activities?.length > 0 ? (
+                    activities.map((row) => (
+                      <Tooltip
+                        title="اضغط لعرض التفاصيل"
+                        placement="top"
+                        arrow
+                        key={row.id}
+                      >
+                        <StyledTableRow
+                          sx={{
+                            cursor: "pointer",
+                            "&:hover": { backgroundColor: "#fff !important" },
+                          }}
+                          onClick={() => navigate(`/activity/${row.id}`)}
+                        >
+                          <StyledTableCell align="center">
+                            {row.name}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {row.description.length > 30
+                              ? row.description.substring(0, 30) + "..."
+                              : row.description}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {row.totalProjects}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            <Stack
+                              direction="row"
+                              justifyContent="center"
+                              gap={1}
+                            >
+                              <MyBtn
+                                width={100}
+                                height={40}
+                                icon={EditIcon}
+                                title={"تعديل"}
+                                handleBtnClick={(e) => {
+                                  e.stopPropagation();
+                                  handleUpdateActivity(row);
+                                }}
+                              />
+                              <MyBtn
+                                width={100}
+                                height={40}
+                                bgColor="red"
+                                icon={DeleteIcon}
+                                title={"حذف"}
+                                handleBtnClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteActivity(row);
+                                }}
+                              />
+                            </Stack>
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      </Tooltip>
+                    ))
+                  ) : (
+                    <StyledTableRow>
+                      <StyledTableCell align="center" colSpan={4}>
+                        لا يوجد انشطه
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </LoadingWrapper>
       </Box>
     </>
   );

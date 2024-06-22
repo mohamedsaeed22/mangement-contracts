@@ -29,7 +29,7 @@ const Heading = ({ title }) => {
             sm: "12px 30px", // smaller padding for sm
             md: "15px 30px", // default padding for md and above
           },
-          width: {
+          minWidth: {
             xs: "150px", // smaller width for xs
             sm: "220px", // smaller width for sm
             md: "200px", // default width for md and above

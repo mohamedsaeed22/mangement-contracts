@@ -107,14 +107,14 @@ const consultantSlice = createSlice({
     });
     builder.addCase(actUpdateConsultant.fulfilled, (state, { payload }) => {
       state.loading = false;
-      const index = state.consultants.findIndex(
-        (consultant) => consultant.id === payload.id
-      );
-      if (index !== -1) {
-        state.consultants[index] = payload;
-      } else {
-        console.error("Activity not found");
-      }
+      // const index = state.consultants.findIndex(
+      //   (consultant) => consultant.id === payload.id
+      // );
+      // if (index !== -1) {
+      //   state.consultants[index] = payload;
+      // } else {
+      //   console.error("Activity not found");
+      // }
     });
     builder.addCase(actUpdateConsultant.rejected, (state, action) => {
       state.loading = false;

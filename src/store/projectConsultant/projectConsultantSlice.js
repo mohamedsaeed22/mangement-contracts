@@ -78,7 +78,6 @@ const projectConsultantSlice = createSlice({
       actDeleteProjectConsultant.fulfilled,
       (state, { payload }) => {
         state.loading = false;
-        console.log(payload);
       }
     );
     builder.addCase(actDeleteProjectConsultant.rejected, (state, action) => {

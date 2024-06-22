@@ -15,9 +15,9 @@ const Home = () => {
   useEffect(() => {
     dispatch(actGetAllStat());
   }, [dispatch]);
-   return (
+  return (
     <>
-      {/* <LoadingWrapper loading={loading} error={error} icon={ErrorIcon}> */}
+      <LoadingWrapper loading={loading} error={error} icon={ErrorIcon}>
         <Heading title="الصفحة الرئيسية" />
         <Box
           gap={2}
@@ -29,13 +29,13 @@ const Home = () => {
           flex={1}
         >
           {/* top paper */}
-          <TopStat stats={stats} />
+          <TopStat stats={stats} allowNav={true} />
           {/* center paper */}
-          <CenterStat stats={stats} />
+          <CenterStat stats={stats} allowNav={true} />
           {/* bottom paper */}
           <BottomStat stats={stats} />
         </Box>
-      {/* </LoadingWrapper> */}
+      </LoadingWrapper>
     </>
   );
 };

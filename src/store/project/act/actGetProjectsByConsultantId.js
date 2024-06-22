@@ -20,7 +20,7 @@ const actGetProjectsByConsultantId = createAsyncThunk(
       const res = await api.get(
         `api/Project/browse?ConsultantId=${params.id}&PageSize=10&Page=${params.page}`
       );
-      console.log(res);
+
       const enhancedProjects = res.data.map((project) => {
         const sector = sectors.find((con) => con.id === project.sectorId);
 

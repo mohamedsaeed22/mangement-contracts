@@ -102,7 +102,7 @@ const Activity = () => {
         height="calc(100vh - 130px)"
       >
         <Box borderRadius={2}>
-          {/* <LoadingWrapper loading={projectLoading} error={statError}> */}
+          <LoadingWrapper loading={projectLoading} error={statError}>
             <TopStat stats={stats} />
             {/* center paper */}
             <CenterStat stats={stats} />
@@ -125,7 +125,7 @@ const Activity = () => {
                     color="initial"
                     fontWeight="bold"
                   >
-                    {projects.length > 0 && projects[0].ActivityName}
+                    {projects.length > 0 && projects[0].activityName}
                   </Typography>
                 </Typography>
                 <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
@@ -246,7 +246,7 @@ const Activity = () => {
                 </Stack>
               </>
             )}
-          {/* </LoadingWrapper> */}
+          </LoadingWrapper>
         </Box>
       </Box>
     </>

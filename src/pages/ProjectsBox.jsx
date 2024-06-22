@@ -1,4 +1,5 @@
 import { styled } from "@mui/material/styles";
+import { CircularProgress, Backdrop, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -34,7 +35,9 @@ import FilterFill from "../assets/icon/filter-fill.svg";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { projectStateOptions } from "../utils/statusList";
 import actGetConsultants from "../store/consultant/act/actGetConsultants";
-
+import actGetSectors from "../store/sector/act/actGetSectors";
+import actGetContractors from "../store/contractor/act/actGetContractors";
+import { actGetActivities } from "../store/Activity/activitySlice";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -78,6 +81,7 @@ const ProjectsBox = () => {
   const { sectors } = useSelector((state) => state.sector);
   const { contractors } = useSelector((state) => state.contractor);
   const { consultants } = useSelector((state) => state.consultant);
+  const [loading, setLoading] = useState(false);
   const [toggleFilter, setToggleFilter] = useState(false);
   const [page, handleChangePge] = useState(1);
   const [search, setSearch] = useState("");
@@ -89,9 +93,11 @@ const ProjectsBox = () => {
   const handleChangePage = (event, value) => {
     handleChangePge(value);
   };
-  console.log(searchParams.get("projectstatus"));
   useEffect(() => {
     dispatch(actGetConsultants());
+    dispatch(actGetSectors());
+    dispatch(actGetContractors());
+    dispatch(actGetActivities());
   }, [dispatch]);
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -103,6 +109,7 @@ const ProjectsBox = () => {
   }, [search]);
 
   useEffect(() => {
+    setLoading(true);
     dispatch(
       actGetProjects({
         page,
@@ -115,7 +122,7 @@ const ProjectsBox = () => {
         spentBudget: formData.spentBudget,
         contractorId: formData.contractorId,
       })
-    );
+    ).then(() => setLoading(false));
   }, [dispatch, page, search, formData, debouncedSearch]);
 
   const handleToggleFilter = () => {
@@ -324,7 +331,18 @@ const ProjectsBox = () => {
             </LocalizationProvider>
           )}
         </Stack>
-
+        {loading && (
+          <Stack
+            sx={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%,-50%)",
+            }}
+          >
+            <CircularProgress color="primary" />
+          </Stack>
+        )}
         <TableContainer
           sx={{
             marginTop: "10px",
@@ -423,20 +441,30 @@ const ProjectsBox = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
         <Stack
           justifyContent="center"
           alignItems="center"
           marginInline="auto"
           mt={2}
         >
-          {totalItems > 0 ? (
+          {totalItems > 0 && (
             <Pagination
               count={Math.ceil(totalItems / 10)}
               page={page ? page : 1}
               onChange={handleChangePage}
             />
-          ) : (            
-            "لا يوجد مشاريع"
+          )}
+          {totalItems === 0 && !loading && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography>لا يوجد مشاريع</Typography>
+            </Box>
           )}
         </Stack>
         {/* </LoadingWrapper> */}

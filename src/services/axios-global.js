@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   getAcessToken,
   getRefreshToken,
+  removeAllCookies,
   setAccessToken,
 } from "../utils/accessLocalStorage";
 
@@ -34,26 +35,30 @@ api.interceptors.response.use(
     return res.data;
   },
   async (err) => {
-    const originalConfig = err.config;
+    // const originalConfig = err.config;
     if (err.response) {
-      console.log(err.response);
-      if (err.response.status === 401) {
+      // Handle 401 Unauthorized responses
+      if (err.response && err.response.status === 401) {
+        removeAllCookies();
+        window.location.reload();
+
+        // You can also handle refresh token logic here if needed
+        // Example:
+        /*
         try {
           const rs = await refreshMyToken();
-          console.log(rs);
           const { accessToken, expires } = rs;
           setAccessToken(accessToken, expires);
           api.defaults.headers.common["x-access-token"] = accessToken;
-          api.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${accessToken}`;
-          return api(originalConfig);
-        } catch (_error) {
-          if (_error.response && _error.response.data) {
-            return Promise.reject(_error.response.data);
+          api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+          return api(originalRequest);
+        } catch (refreshError) {
+          if (refreshError.response && refreshError.response.data) {
+            return Promise.reject(refreshError.response.data);
           }
-          return Promise.reject(_error);
+          return Promise.reject(refreshError);
         }
+        */
       }
       if (err.response.status === 403 && err.response.data) {
         return Promise.reject(err.response.data);
@@ -64,12 +69,14 @@ api.interceptors.response.use(
   }
 );
 
-async function refreshMyToken() {
-  const res = await api.post(
-    `${BASE_URL}api/users/Identity/refresh-token?refreshToken=${getRefreshToken()}&accessToken=${getAcessToken()}`
-  );
-  setAccessToken(res.accessToken);
-}
+// async function refreshMyToken() {
+//   if (getAcessToken() && getRefreshToken()) {
+//     const res = await api.post(
+//       `${BASE_URL}api/users/Identity/refresh-token?refreshToken=${getRefreshToken()}&accessToken=${getAcessToken()}`
+//     );
+//     setAccessToken(res.accessToken);
+//   }
+// }
 //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImIzN2I2ZjRmLWMxMzUtNDZmNi1hMjhjLWZjYzQ0NGU5NjBjYiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2hhbWVkIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibW9oYW1lZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJEZWZhdWx0VXNlckJyYW5jaCIsIlN1cGVyQWRtaW4iXSwiZXhwIjoxNzE3OTM5MDY5LCJpc3MiOiJQcm9qZWN0cyBNYW5hZ2VtZW50IiwiYXVkIjoiRnV0dXJlIE9mIEVneXB0IFVzZXJzIn0.Pcat0_ECQ6ynVajrtUESvp67cmxJ8pxOukDUF6GVfhk'
 
 export { api };

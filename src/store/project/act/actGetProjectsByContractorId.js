@@ -8,7 +8,6 @@ import actGetSectors from "../../sector/act/actGetSectors";
 const actGetProjectsByContractorId = createAsyncThunk(
   "project/actGetProjectsByContractorId",
   async (params, thunkAPI) => {
-    
     const { getState, rejectWithValue, dispatch } = thunkAPI;
 
     try {
@@ -21,10 +20,10 @@ const actGetProjectsByContractorId = createAsyncThunk(
       const res = await api.get(
         `api/Project/browse?ContractorId=${params.id}&PageSize=10&Page=${params.page}`
       );
-      console.log(res)
+
       const enhancedProjects = res.data.map((project) => {
         const sector = sectors.find((con) => con.id === project.sectorId);
-        
+
         const activity = activities.find((br) => br.id === project.activityId);
         return {
           ...project,

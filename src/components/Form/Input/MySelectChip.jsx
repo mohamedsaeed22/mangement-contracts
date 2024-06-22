@@ -34,7 +34,6 @@ export default function MySelectChip({
   setArrIds,
   seletedIds,
 }) {
-  console.log(seletedIds)
   const theme = useTheme();
   const [selectedIds, setSelectedIds] = React.useState(seletedIds);
   const handleChange = (event) => {
@@ -42,7 +41,7 @@ export default function MySelectChip({
       target: { value },
     } = event;
     setSelectedIds(value);
-    console.log(value);
+
     setArrIds(value);
   };
 

@@ -14,6 +14,7 @@ import {
 import actCreateConsultant from "../../store/consultant/act/actCreateConsultant";
 import actUpdateConsultant from "../../store/consultant/act/actUpdateConsultant";
 import { actUpdateContractor } from "../../store/contractor/contractorSlice";
+import actGetConsultants from "../../store/consultant/act/actGetConsultants";
 
 const ConsultantForm = ({
   initialValues = initialConsultant,
@@ -24,10 +25,11 @@ const ConsultantForm = ({
 
   const handleFormSubmit = (values, { resetForm }) => {
     if (isUpdate) {
-      dispatch(actUpdateContractor(values))
+      dispatch(actUpdateConsultant(values))
         .unwrap()
         .then((e) => {
           notifySuccess("تم تحديث الاستشارى بنجاح");
+          dispatch(actGetConsultants())
           handleCloseModal();
         })
         .catch((err) => {

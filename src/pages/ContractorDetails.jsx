@@ -89,7 +89,7 @@ const ContractorDetails = () => {
         mt="4px"
         sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
         // marginInline="20px"
-
+        overflowY="auto"
         flex={1}
         // bgcolor="#ddd"
       >
@@ -405,7 +405,7 @@ const ContractorDetails = () => {
           </Grid>
 
           {projects?.length > 0 ? (
-            <TableContainer sx={{ maxHeight: "48vh", marginTop: "8px" }}>
+            <TableContainer sx={{ maxHeight: "53vh", marginTop: "8px" }}>
               <Table aria-label="customized table">
                 <TableHead>
                   <TableRow>
@@ -504,10 +504,10 @@ const ContractorDetails = () => {
             </TableContainer>
           ) : (
             <Box textAlign="center" mt={3}>
-            <Typography variant="body1" color="initial">
-              لا يوجد مشاريع لهذا المقاول
-            </Typography>
-          </Box>
+              <Typography variant="body1" color="initial">
+                لا يوجد مشاريع لهذا المقاول
+              </Typography>
+            </Box>
           )}
         </Stack>
       </Box>

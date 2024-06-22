@@ -9,6 +9,7 @@ import AddIcon from "../../assets/icon/add-icon.svg";
 import EditIcon from "../../assets/icon/edit-icon.svg";
 import {
   actCreateSector,
+  actGetSectors,
   actUpdateSector,
 } from "../../store/sector/sectorSlice";
 import { sectorSchema, initialSector } from "../../validations/sectorSchema";
@@ -25,6 +26,7 @@ const SectorForm = ({
         .unwrap()
         .then((e) => {
           notifySuccess("تم تحديث القطاع بنجاح");
+          dispatch(actGetSectors())
           handleCloseModal();
         })
         .catch((err) => {

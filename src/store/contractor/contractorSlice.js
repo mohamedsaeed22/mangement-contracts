@@ -69,7 +69,7 @@ const contractorSlice = createSlice({
     });
     builder.addCase(actGetContractorById.fulfilled, (state, { payload }) => {
       state.loading = false;
-      console.log(payload);
+
       state.contractor = payload;
     });
     builder.addCase(actGetContractorById.rejected, (state, action) => {
@@ -108,15 +108,15 @@ const contractorSlice = createSlice({
     });
     builder.addCase(actUpdateContractor.fulfilled, (state, { payload }) => {
       state.loading = false;
-      console.log(payload);
-      const index = state.contractors.findIndex(
-        (consultant) => consultant.id === payload.id
-      );
-      if (index !== -1) {
-        state.contractors[index] = payload;
-      } else {
-        console.error("Activity not found");
-      }
+
+      // const index = state.contractors.findIndex(
+      //   (consultant) => consultant.id === payload.id
+      // );
+      // if (index !== -1) {
+      //   state.contractors[index] = payload;
+      // } else {
+      //   console.error("Activity not found");
+      // }
     });
     builder.addCase(actUpdateContractor.rejected, (state, action) => {
       state.loading = false;
