@@ -13,8 +13,12 @@ import { Navigate, useNavigate } from "react-router-dom";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 
 const validationSchema = Yup.object({
-  userHandle: Yup.string().required("اسم المستخدم مطلوب"),
-  password: Yup.string().required("كلمة المرور مطلوبة"),
+  userHandle: Yup.string()
+    .required("اسم المستخدم مطلوب")
+    .min(5, "يجب أن يحتوي اسم المستخدم على 5 أحرف على الأقل"),
+  password: Yup.string()
+    .required("كلمة المرور مطلوبة")
+    .min(5, "يجب أن تحتوي كلمة المرور على 5 أحرف على الأقل"),
 });
 
 const Login = () => {
@@ -28,7 +32,6 @@ const Login = () => {
   // } else {
   //   navigate("/");
   // }
-
   const formik = useFormik({
     initialValues: {
       userHandle: "",

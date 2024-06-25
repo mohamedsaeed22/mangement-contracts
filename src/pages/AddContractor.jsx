@@ -49,7 +49,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#fff",
+  backgroundColor: "#ddd",
   borderRadius: "10px",
 }));
 
@@ -148,7 +148,7 @@ const AddContractor = () => {
                       key={row.id}
                       sx={{
                         cursor: "pointer",
-                        "&:hover": { backgroundColor: "#fff !important" },
+                        "&:hover": { backgroundColor: "#ccc !important" },
                       }}
                       onClick={() => navigate(`/contractor/id/${row.id}`)}
                     >
@@ -171,17 +171,17 @@ const AddContractor = () => {
                             }}
                           />
                           {/* <StopPropagation> */}
-                            <MyBtn
-                              width={100}
-                              height={40}
-                              bgColor="red"
-                              icon={DeleteIcon}
-                              title={"حذف"}
-                              handleBtnClick={(e) => {
-                                e.stopPropagation(); // Stop propagation here
-                                handleDeleteContractor(row);
-                              }}
-                            />
+                          <MyBtn
+                            width={100}
+                            height={40}
+                            bgColor="red"
+                            icon={DeleteIcon}
+                            title={"حذف"}
+                            handleBtnClick={(e) => {
+                              e.stopPropagation(); // Stop propagation here
+                              handleDeleteContractor(row);
+                            }}
+                          />
                           {/* </StopPropagation> */}
                         </Stack>
                       </StyledTableCell>

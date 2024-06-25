@@ -11,6 +11,8 @@ import sectorReducer from "./sector/sectorSlice";
 import contractorReducer from "./contractor/contractorSlice";
 import projectConsultantReducer from "./projectConsultant/projectConsultantSlice";
 import projectContractorReducer from "./projectContractor/projectConctractorSlice";
+import spendBudgetedReducer from "./spentBudget/spentBudgetSlice";
+import assignBudgetedReducer from "./budget/assignBudgetSlice";
 
 const store = configureStore({
   reducer: {
@@ -26,6 +28,8 @@ const store = configureStore({
     risk: riskReducer,
     handicap: handicapReducer,
     sector: sectorReducer,
+    spentBudget: spendBudgetedReducer,
+    assignBudget: assignBudgetedReducer,
   },
 });
 

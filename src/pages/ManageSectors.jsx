@@ -47,15 +47,16 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#fff",
+  backgroundColor: "#ddd",
   borderRadius: "10px",
 }));
+
 const ManageSectors = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useState(false);
-  const { sectors ,loading,error } = useSelector((state) => state.sector);
+  const { sectors, loading, error } = useSelector((state) => state.sector);
   const [updateSector, setUpdateSector] = useState(initialSector);
 
   useEffect(() => {
@@ -116,87 +117,85 @@ const ManageSectors = () => {
         height="calc(100vh - 130px)"
       >
         {/* <LoadingWrapper error={error} loading={loading}> */}
-          <Box>
-            <SectorForm isUpdate={false} handleCloseModal={handleCloseModal} />
-            {/* activities table */}
-            <TableContainer sx={{ maxHeight: "75vh", marginTop: "4px" }}>
-              <Table aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell align="center">اسم القطاع</StyledTableCell>
-                    <StyledTableCell align="center">
-                      عدد المشاريع
-                    </StyledTableCell>
-                    <StyledTableCell align="center">الاجراءات</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {sectors?.length > 0 ? (
-                    sectors.map((row) => (
-                      <Tooltip
-                        title="اضغط لعرض التفاصيل"
-                        placement="top"
-                        arrow
-                        key={row.id}
+        <Box>
+          <SectorForm isUpdate={false} handleCloseModal={handleCloseModal} />
+          {/* activities table */}
+          <TableContainer sx={{ maxHeight: "75vh", marginTop: "4px" }}>
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">اسم القطاع</StyledTableCell>
+                  <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
+                  <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sectors?.length > 0 ? (
+                  sectors.map((row) => (
+                    <Tooltip
+                      title="اضغط لعرض التفاصيل"
+                      placement="top"
+                      arrow
+                      key={row.id}
+                    >
+                      <StyledTableRow
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#ccc !important" },
+                        }}
+                        onClick={() => navigate(`/sector/${row.id}`)}
                       >
-                        <StyledTableRow
-                          sx={{
-                            cursor: "pointer",
-                            "&:hover": { backgroundColor: "#fff !important" },
-                          }}
-                          onClick={() => navigate(`/sector/${row.id}`)}
-                        >
-                          <StyledTableCell align="center">
-                            {row.name}
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            {row.totalProjects}
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            <Stack
-                              direction="row"
-                              justifyContent="center"
-                              gap={1}
-                            >
-                              <MyBtn
-                                width={100}
-                                height={40}
-                                icon={EditIcon}
-                                title={"تعديل"}
-                                handleBtnClick={(e) => {
-                                  e.stopPropagation();
-                                  handleUpdateSector(row);
-                                }}
-                              />
-                              <MyBtn
-                                width={100}
-                                height={40}
-                                bgColor="red"
-                                icon={DeleteIcon}
-                                title={"حذف"}
-                                handleBtnClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDeleteSector(row);
-                                }}
-                              />
-                            </Stack>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      </Tooltip>
-                    ))
-                  ) : (
-                    <StyledTableRow>
-                      <StyledTableCell align="center" colSpan={3}>
-                        <Typography variant="body1" color="initial">
-                          لا يوجد قطاعات
-                        </Typography>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
+                        <StyledTableCell align="center">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.totalProjects}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <Stack
+                            direction="row"
+                            justifyContent="center"
+                            gap={1}
+                          >
+                            <MyBtn
+                              width={100}
+                              height={30}
+                              icon={EditIcon}
+                              title={"تعديل"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation();
+                                handleUpdateSector(row);
+                              }}
+                            />
+                            <MyBtn
+                              width={100}
+                              height={30}
+                              bgColor="red"
+                              icon={DeleteIcon}
+                              title={"حذف"}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteSector(row);
+                              }}
+                            />
+                          </Stack>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    </Tooltip>
+                  ))
+                ) : (
+                  <StyledTableRow>
+                    <StyledTableCell align="center" colSpan={3}>
+                      <Typography variant="body1" color="initial">
+                        لا يوجد قطاعات
+                      </Typography>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
         {/* </LoadingWrapper> */}
       </Box>
     </>

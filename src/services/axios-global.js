@@ -39,8 +39,10 @@ api.interceptors.response.use(
     if (err.response) {
       // Handle 401 Unauthorized responses
       if (err.response && err.response.status === 401) {
-        removeAllCookies();
-        window.location.reload();
+        if (getAcessToken() || getRefreshToken()) {
+          removeAllCookies();
+          window.location.reload();
+        }
 
         // You can also handle refresh token logic here if needed
         // Example:

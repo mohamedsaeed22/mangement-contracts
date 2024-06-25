@@ -27,8 +27,10 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
-import EditIcon from "../assets/icon/edit-icon.svg";
 import AddIcon from "../assets/icon/add-icon.svg";
+import DeleteIcon from "../assets/icon/delete-icon.svg";
+
+import EditIcon from "../assets/icon/edit-icon.svg";
 import MyInput from "../components/Form/Input/MyInput";
 import MyInputsWrapper from "../components/common/UI/MyInputsWrapper";
 import MyDatePicker from "../components/Form/Input/MyDatePicker";
@@ -39,7 +41,7 @@ import {
   initialProjectValues,
 } from "../validations/projectSchema";
 import { useNavigate, useParams } from "react-router-dom";
-import { East, MoreVert } from "@mui/icons-material";
+import { Add, Delete, East, Edit, MoreVert } from "@mui/icons-material";
 import actUpdateProject from "../store/project/act/actUpdateProject";
 import actGetProjectById from "../store/project/act/actGetProjectById";
 import actDeleteProject from "../store/project/act/actDeleteProject";
@@ -71,6 +73,14 @@ import {
 import actDeleteProjectContractor from "../store/projectContractor/act/actDeleteProjectContractor";
 import MySelectChip from "../components/Form/Input/MySelectChip";
 import MuiInput from "../components/Form/Input/MuiInput";
+import {
+  actCreateSpentBudget,
+  actDeleteSpentBudget,
+} from "../store/spentBudget/spentBudgetSlice";
+import {
+  actCreateAssignBudget,
+  actDeleteAssignBudget,
+} from "../store/budget/assignBudgetSlice";
 
 const myWidth = 250;
 
@@ -86,6 +96,7 @@ const Project = () => {
   const [consultantsIds, setConsultantsIds] = useState(
     project?.consultants || []
   );
+  // const [budgetArr, setBudgetArr] = useState([]);
   const [contractorsIds, setContractorsIds] = useState(
     project?.contractors || []
   );
@@ -156,23 +167,40 @@ const Project = () => {
         handicapDescription: handicapObj?.description || "",
         contractorId: contractorObj?.id || "",
         consultantId: consultantObj?.id || "",
+        spentBudgetArray: project?.spentBudgets?.map((budget) => {
+          return {
+            ...budget,
+            spentDate: dayjs(dayjs(budget.spentDate).toISOString()),
+          };
+        }),
+        budgetArray: project?.assindBudgets?.map((budget) => {
+          return {
+            ...budget,
+            assindDate: dayjs(dayjs(budget.assindDate).toISOString()),
+          };
+        }),
       });
       setConsultantsIds(project?.consultants);
       setContractorsIds(project?.contractors);
     }
   }, [id, project, handicapObj, riskObj, contractorObj, consultantObj]);
-
+  console.log(myProject);
+  const handleAddMoney = () => {
+    console.log("values");
+  };
   const handleFormSubmit = (values) => {
     console.table(values);
     const projectData = {
       ...values,
+      percentage: values.percentage,
       startDate: convertDateToIso(values.startDate),
       endDate: convertDateToIso(values.endDate),
       budget: values.budget,
-      spentBudget: values.spentBudget,
-      percentage: values.percentage,
+      spent: values.spent,
+      budget: 200,
     };
 
+    console.log(projectData);
     if (values.contractorId !== myProject.contractorId) {
       // delete and add
       if (myProject.contractorId) {
@@ -334,13 +362,37 @@ const Project = () => {
           } else {
             notifyFailed("Failed to create project. ID is undefined.");
           }
+          if (res && res.id) {
+            try {
+              const spentArr = values.spentBudgetArray.map((spent) => {
+                return {
+                  spentDate: convertDateToIso(spent.spentDate),
+                  projectId: res.id,
+                  spent: spent.spent,
+                };
+              });
+              const assignArr = values.budgetArray.map((budget) => {
+                return {
+                  assindDate: convertDateToIso(budget.assindDate),
+                  projectId: res.id,
+                  budget: budget.budget,
+                };
+              });
+              dispatch(actCreateSpentBudget(spentArr));
+              dispatch(actCreateAssignBudget(assignArr));
+            } catch (error) {
+              notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
+            }
+          } else {
+            notifyFailed("Failed to create project. ID is undefined.");
+          }
         })
         .catch(() => {
           notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
         });
     }
   };
-
+  // console.log(budgetArr);
   return (
     <>
       <Heading title={id ? "تعديل مشروع" : "اضافة مشروع"} />
@@ -596,78 +648,6 @@ const Project = () => {
                       </MyInputsWrapper>
                     </Grid>
                   </Grid>
-                  {/* project budget */}
-                  <Grid item xs={12} md={6}>
-                    <Grid item xs={12}>
-                      <MyInputsWrapper title="تكلفة المشروع">
-                        <TextField
-                          sx={{ maxWidth: 220, width: "100%" }}
-                          size="small"
-                          name="budget"
-                          label="التكلفة المخططة*"
-                          type="number"
-                          value={values.budget}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={!!touched.budget && !!errors.budget}
-                          helperText={touched.budget && errors.budget}
-                        />
-
-                        <TextField
-                          sx={{ maxWidth: 220, width: "100%" }}
-                          size="small"
-                          name="spentBudget"
-                          label="المنصرف الفعلى*"
-                          type="number"
-                          value={values.spentBudget}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={!!touched.spentBudget && !!errors.spentBudget}
-                          helperText={touched.spentBudget && errors.spentBudget}
-                        />
-                      </MyInputsWrapper>
-                    </Grid>
-                  </Grid>
-                  {/* project dates */}
-                  <Grid item xs={12} md={6}>
-                    <MyInputsWrapper title="الخطة الزمنية للمشروع">
-                      <Box sx={{ maxWidth: 220, width: "100%" }}>
-                        <Field name="startDate">
-                          {({ field, form }) => (
-                            <MyDatePicker
-                              name="startDate"
-                              title="تاريخ البداية*"
-                              value={values.startDate}
-                              onChangeDate={(date) =>
-                                setFieldValue("startDate", date)
-                              }
-                              error={
-                                touched.startDate && Boolean(errors.startDate)
-                              }
-                              helperText={touched.startDate && errors.startDate}
-                            />
-                          )}
-                        </Field>
-                      </Box>
-                      <Box sx={{ maxWidth: 220, width: "100%" }}>
-                        <Field name="endDate">
-                          {({ field, form }) => (
-                            <MyDatePicker
-                              name="endDate"
-                              title="تاريخ النهاية*"
-                              value={values.endDate}
-                              onChangeDate={(date) =>
-                                setFieldValue("endDate", date)
-                              }
-                              error={touched.endDate && Boolean(errors.endDate)}
-                              helperText={touched.endDate && errors.endDate}
-                              // width="100%"
-                            />
-                          )}
-                        </Field>
-                      </Box>
-                    </MyInputsWrapper>
-                  </Grid>
                   {/* contractors and consultants */}
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="المقاولين والاستشارين">
@@ -723,6 +703,471 @@ const Project = () => {
                       </Box>
                     </MyInputsWrapper>
                   </Grid>
+
+                  {/* project dates */}
+                  <Grid item xs={12} md={6}>
+                    <MyInputsWrapper title="الخطة الزمنية للمشروع">
+                      <Box sx={{ maxWidth: 220, width: "100%" }}>
+                        <Field name="startDate">
+                          {({ field, form }) => (
+                            <MyDatePicker
+                              name="startDate"
+                              title="تاريخ البداية*"
+                              value={values.startDate}
+                              onChangeDate={(date) =>
+                                setFieldValue("startDate", date)
+                              }
+                              error={
+                                touched.startDate && Boolean(errors.startDate)
+                              }
+                              helperText={touched.startDate && errors.startDate}
+                            />
+                          )}
+                        </Field>
+                      </Box>
+                      <Box sx={{ maxWidth: 220, width: "100%" }}>
+                        <Field name="endDate">
+                          {({ field, form }) => (
+                            <MyDatePicker
+                              name="endDate"
+                              title="تاريخ النهاية*"
+                              value={values.endDate}
+                              onChangeDate={(date) =>
+                                setFieldValue("endDate", date)
+                              }
+                              error={touched.endDate && Boolean(errors.endDate)}
+                              helperText={touched.endDate && errors.endDate}
+                              // width="100%"
+                            />
+                          )}
+                        </Field>
+                      </Box>
+                    </MyInputsWrapper>
+                  </Grid>
+
+                  {/* project budget */}
+                  <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
+                      <MyInputsWrapper title="المخصص" direction="column">
+                        {/* top input budget */}
+                        <Stack direction="row" gap={2}>
+                          <Box sx={{ maxWidth: 220, width: "100%" }}>
+                            <Field name="assindDate">
+                              {({ field, form }) => (
+                                <MyDatePicker
+                                  name="assindDate"
+                                  title="تاريخ البروتوكول"
+                                  value={values.assindDate}
+                                  onChangeDate={(date) =>
+                                    setFieldValue("assindDate", date)
+                                  }
+                                  error={
+                                    touched.assindDate &&
+                                    Boolean(errors.assindDate)
+                                  }
+                                  helperText={
+                                    touched.assindDate && errors.assindDate
+                                  }
+                                />
+                              )}
+                            </Field>
+                          </Box>
+                          <TextField
+                            sx={{ maxWidth: 220, width: "100%" }}
+                            size="small"
+                            name="budget"
+                            label="قيمة المخصص"
+                            type="number"
+                            value={values.budget}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={!!touched.budget && !!errors.budget}
+                            helperText={touched.budget && errors.budget}
+                          />
+                          {values.assindDate && values.budget && (
+                            <Tooltip title="اضافه مخصص" placement="top" arrow>
+                              <Box
+                                border="1px solid #ddd"
+                                sx={{
+                                  borderRadius: "8px",
+                                }}
+                                onClick={() => {
+                                  if (id) {
+                                    dispatch(
+                                      actCreateAssignBudget([
+                                        {
+                                          assindDate: convertDateToIso(
+                                            values.assindDate
+                                          ),
+                                          projectId: id,
+                                          budget: values.budget,
+                                        },
+                                      ])
+                                    )
+                                      .unwrap()
+                                      .then((res) => {
+                                        if (Array.isArray(res) && res[0]) {
+                                          console.log("Response data:", res[0]);
+                                          setFieldValue("budgetArray", [
+                                            {
+                                              ...res[0],
+                                              assindDate: dayjs(
+                                                dayjs(res[0].assindDate)
+                                                  .subtract(1, "day")
+                                                  .toISOString()
+                                              ),
+                                            },
+                                            ...values.budgetArray,
+                                          ]);
+
+                                          notifySuccess(
+                                            "تم اضافه المخصص بنجاح"
+                                          );
+                                        } else {
+                                          console.error(
+                                            "Unexpected response structure:",
+                                            res
+                                          );
+                                          notifyFailed(
+                                            "حدث خطا ما..الرجاء المحاولة مره اخرى"
+                                          );
+                                        }
+                                      })
+                                      .catch((err) => {
+                                        notifyFailed(
+                                          err +
+                                            "حدث خطا ما..الرجاء المحاولة مره اخرى"
+                                        );
+                                      });
+                                  } else {
+                                    values.budgetArray.unshift({
+                                      assindDate: values.assindDate,
+                                      budget: values.budget,
+                                      id:
+                                        convertDateToIso(values.assindDate) +
+                                        values.budget,
+                                    });
+                                  }
+                                  setFieldValue("assindDate", null);
+                                  setFieldValue("budget", "");
+                                }}
+                                alignSelf="flex-start"
+                                bgcolor="rgb(71, 92, 167)"
+                              >
+                                <IconButton color="secondary">
+                                  <img
+                                    src={AddIcon}
+                                    alt="add budget"
+                                    style={{ width: "20px" }}
+                                  />
+                                </IconButton>
+                              </Box>
+                            </Tooltip>
+                          )}
+                        </Stack>
+                        {/* list of budget */}
+                        {values?.budgetArray?.length > 0 &&
+                          values?.budgetArray?.map((budget, index) => (
+                            <Stack direction="row" gap={2}>
+                              <Box
+                                key={index}
+                                sx={{ maxWidth: 220, width: "100%" }}
+                              >
+                                <Field name="bDate">
+                                  {({ field, form }) => (
+                                    <MyDatePicker
+                                      disabled={true}
+                                      name="bDate"
+                                      title="التاريخ"
+                                      value={budget.assindDate}
+                                    />
+                                  )}
+                                </Field>
+                              </Box>
+                              <TextField
+                                sx={{ maxWidth: 220, width: "100%" }}
+                                disabled
+                                size="small"
+                                type="text"
+                                name="bBudget"
+                                label="القيمة "
+                                // type="number"
+                                value={budget.budget.toLocaleString()}
+                              />
+
+                              <Tooltip title="حذف مخصص" placement="top" arrow>
+                                <Box
+                                  border="1px solid #ddd"
+                                  sx={{ borderRadius: "8px" }}
+                                  onClick={() => {
+                                    // const
+                                    let myFilterArr = [];
+                                    if (id) {
+                                      myFilterArr = values.budgetArray.filter(
+                                        (el) =>
+                                          el.assindDate !== budget.assindDate
+                                      );
+                                    } else {
+                                      myFilterArr = values.budgetArray.filter(
+                                        (el) =>
+                                          convertDateToIso(el.assindDate) !==
+                                          convertDateToIso(budget.assindDate)
+                                      );
+                                    }
+                                    setFieldValue("budgetArray", myFilterArr);
+                                    if (id) {
+                                      console.log(budget);
+                                      dispatch(actDeleteAssignBudget(budget.id))
+                                        .unwrap()
+                                        .then((res) => {
+                                          notifySuccess("تم حذف المخصص بنجاح");
+                                        })
+                                        .catch((err) => {
+                                          notifyFailed(
+                                            err +
+                                              "حدث خطا ما..الرجاء المحاولة مره اخرى"
+                                          );
+                                        });
+                                    }
+                                  }}
+                                  alignSelf="flex-start"
+                                  bgcolor="red"
+                                >
+                                  <IconButton color="secondary">
+                                    <img
+                                      src={DeleteIcon}
+                                      alt="add budget"
+                                      style={{ width: "20px" }}
+                                    />
+                                  </IconButton>
+                                </Box>
+                              </Tooltip>
+                            </Stack>
+                          ))}
+                      </MyInputsWrapper>
+                    </Grid>
+                  </Grid>
+
+                  {/* project spendBudget */}
+                  <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
+                      <MyInputsWrapper title="المنصرف" direction="column">
+                        {/* top input budget */}
+                        <Stack direction="row" gap={2}>
+                          <Box sx={{ maxWidth: 220, width: "100%" }}>
+                            <Field name="spentDate">
+                              {({ field, form }) => (
+                                <MyDatePicker
+                                  name="spentDate"
+                                  title="التاريخ"
+                                  value={values.spentDate}
+                                  onChangeDate={(date) =>
+                                    setFieldValue("spentDate", date)
+                                  }
+                                  error={
+                                    touched.spentDate &&
+                                    Boolean(errors.spentDate)
+                                  }
+                                  helperText={
+                                    touched.spentDate && errors.spentDate
+                                  }
+                                />
+                              )}
+                            </Field>
+                          </Box>
+                          <TextField
+                            sx={{ maxWidth: 220, width: "100%" }}
+                            size="small"
+                            name="spent"
+                            label="قيمة المنصرف"
+                            type="number"
+                            value={values.spent}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={!!touched.spent && !!errors.spent}
+                            helperText={touched.spent && errors.spent}
+                          />
+                          {values.spentDate && values.spent && (
+                            <Tooltip title="اضافه منصرف" placement="top" arrow>
+                              <Box
+                                border="1px solid #ddd"
+                                sx={{
+                                  borderRadius: "8px",
+                                }}
+                                onClick={() => {
+                                  if (id) {
+                                    dispatch(
+                                      actCreateSpentBudget([
+                                        {
+                                          spentDate: convertDateToIso(
+                                            values.spentDate
+                                          ),
+                                          projectId: id,
+                                          spent: values.spent,
+                                        },
+                                      ])
+                                    )
+                                      .unwrap()
+                                      .then((res) => {
+                                        if (Array.isArray(res) && res[0]) {
+                                          console.log("Response data:", res[0]);
+                                          setFieldValue("spentBudgetArray", [
+                                            {
+                                              ...res[0],
+                                              spentDate: dayjs(
+                                                dayjs(res[0].spentDate)
+                                                  .subtract(1, "day")
+                                                  .toISOString()
+                                              ),
+                                            },
+                                            ...values.spentBudgetArray,
+                                          ]);
+                                          console.log([
+                                            {
+                                              ...res[0],
+                                              spentDate: dayjs(
+                                                dayjs(
+                                                  res[0].spentDate
+                                                ).toISOString()
+                                              ),
+                                            },
+                                            ...values.spentBudgetArray,
+                                          ]);
+                                          notifySuccess(
+                                            "تم اضافه المنصرف بنجاح"
+                                          );
+                                        } else {
+                                          console.error(
+                                            "Unexpected response structure:",
+                                            res
+                                          );
+                                          notifyFailed(
+                                            "حدث خطا ما..الرجاء المحاولة مره اخرى"
+                                          );
+                                        }
+                                      })
+                                      .catch((err) => {
+                                        notifyFailed(
+                                          err +
+                                            "حدث خطا ما..الرجاء المحاولة مره اخرى"
+                                        );
+                                      });
+                                  } else {
+                                    values.spentBudgetArray.unshift({
+                                      spentDate: values.spentDate,
+                                      spent: values.spent,
+                                      id:
+                                        convertDateToIso(values.spentDate) +
+                                        values.budget,
+                                    });
+                                  }
+                                  setFieldValue("spentDate", null);
+                                  setFieldValue("spent", "");
+                                }}
+                                alignSelf="flex-start"
+                                bgcolor="rgb(71, 92, 167)"
+                              >
+                                <IconButton color="secondary">
+                                  <img
+                                    src={AddIcon}
+                                    alt="add budget"
+                                    style={{ width: "20px" }}
+                                  />
+                                </IconButton>
+                              </Box>
+                            </Tooltip>
+                          )}
+                        </Stack>
+                        {/* list of budget */}
+                        {values?.spentBudgetArray?.length > 0 &&
+                          values?.spentBudgetArray?.map((budget, index) => (
+                            <Stack direction="row" gap={2}>
+                              <Box
+                                key={index}
+                                sx={{ maxWidth: 220, width: "100%" }}
+                              >
+                                <Field name="sDate">
+                                  {({ field, form }) => (
+                                    <MyDatePicker
+                                      disabled={true}
+                                      name="sDate"
+                                      title="التاريخ"
+                                      value={budget.spentDate}
+                                    />
+                                  )}
+                                </Field>
+                              </Box>
+                              <TextField
+                                sx={{ maxWidth: 220, width: "100%" }}
+                                disabled
+                                size="small"
+                                name="sBudget"
+                                label="القيمة "
+                                type="text"
+                                value={budget.spent.toLocaleString()}
+                              />
+
+                              <Tooltip title="حذف منصرف" placement="top" arrow>
+                                <Box
+                                  border="1px solid #ddd"
+                                  sx={{ borderRadius: "8px" }}
+                                  onClick={() => {
+                                    // const
+                                    let myFilterArr = [];
+                                    if (id) {
+                                      myFilterArr =
+                                        values.spentBudgetArray.filter(
+                                          (el) =>
+                                            el.spentDate !== budget.spentDate
+                                        );
+                                    } else {
+                                      myFilterArr =
+                                        values.spentBudgetArray.filter(
+                                          (el) =>
+                                            convertDateToIso(el.spentDate) !==
+                                            convertDateToIso(budget.spentDate)
+                                        );
+                                    }
+                                    setFieldValue(
+                                      "spentBudgetArray",
+                                      myFilterArr
+                                    );
+                                    if (id) {
+                                      console.log(budget);
+                                      dispatch(actDeleteSpentBudget(budget.id))
+                                        .unwrap()
+                                        .then((res) => {
+                                          notifySuccess("تم حذف المنصرف بنجاح");
+                                        })
+                                        .catch((err) => {
+                                          notifyFailed(
+                                            err +
+                                              "حدث خطا ما..الرجاء المحاولة مره اخرى"
+                                          );
+                                        });
+                                    }
+                                    console.log(budget);
+                                    console.log(values.spentBudgetArray);
+                                    console.log(myFilterArr);
+                                  }}
+                                  alignSelf="flex-start"
+                                  bgcolor="red"
+                                >
+                                  <IconButton color="secondary">
+                                    <img
+                                      src={DeleteIcon}
+                                      alt="add budget"
+                                      style={{ width: "20px" }}
+                                    />
+                                  </IconButton>
+                                </Box>
+                              </Tooltip>
+                            </Stack>
+                          ))}
+                      </MyInputsWrapper>
+                    </Grid>
+                  </Grid>
+
                   {/* handicaps and risks */}
                   <Grid item xs={12}>
                     <MyInputsWrapper
@@ -774,7 +1219,7 @@ const Project = () => {
                                 </FormControl>
                                 {values.showRisks === "yes" && (
                                   <Box ml={2}>
-                                    <Box sx={{ maxWidth: 220, width: "100%" }}>
+                                    <Box sx={{ minWidth: 150 }}>
                                       <FormControl fullWidth size="small">
                                         <InputLabel id="status-select-label">
                                           الحالة
@@ -886,7 +1331,7 @@ const Project = () => {
                                 </FormControl>
                                 {values.showHandicaps === "yes" && (
                                   <Box ml={2}>
-                                    <Box sx={{ maxWidth: 220, width: "100%" }}>
+                                    <Box sx={{ minWidth: 150 }}>
                                       <FormControl fullWidth size="small">
                                         <InputLabel id="status-select-label">
                                           الحالة

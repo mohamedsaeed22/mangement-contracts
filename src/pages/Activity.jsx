@@ -49,7 +49,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#F3F3F3",
+  backgroundColor: "#ddd",
   borderRadius: "10px",
 }));
 
@@ -138,12 +138,12 @@ const Activity = () => {
                           اسم المشروع
                         </StyledTableCell>
                         <StyledTableCell align="center">الوصف</StyledTableCell>
-                        <StyledTableCell align="center">
+                        {/* <StyledTableCell align="center">
                           التكلفة المخططة
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           المنصرف الفعلى
-                        </StyledTableCell>
+                        </StyledTableCell> */}
                         <StyledTableCell align="center">
                           نسبة الانجاز
                         </StyledTableCell>
@@ -172,7 +172,7 @@ const Activity = () => {
                             key={row}
                             sx={{
                               cursor: "pointer",
-                              "&:hover": { backgroundColor: "#ddd !important" },
+                              "&:hover": { backgroundColor: "#ccc !important" },
                             }}
                             onClick={() => handleShowProject(row)}
                           >
@@ -190,12 +190,12 @@ const Activity = () => {
                                 ? row.description.substring(0, 20) + "..."
                                 : row.description}
                             </StyledTableCell>
-                            <StyledTableCell align="center">
+                            {/* <StyledTableCell align="center">
                               {row.budget}
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               {row.spentBudget}
-                            </StyledTableCell>
+                            </StyledTableCell> */}
 
                             <StyledTableCell align="center">
                               {row.percentage}

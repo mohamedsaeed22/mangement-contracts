@@ -44,7 +44,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#fff",
+  backgroundColor: "#ddd",
   borderRadius: "10px",
 }));
 

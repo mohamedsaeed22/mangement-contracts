@@ -1,12 +1,19 @@
- import * as yup from "yup";
+import * as yup from "yup";
 
 const initialProjectValues = {
   name: "",
   description: "",
   startDate: null,
   endDate: null,
+
+  assindDate: null,
   budget: "",
-  spentBudget: "",
+  budgetArray: [],
+
+  spentDate: null,
+  spent: "",
+  spentBudgetArray: [],
+  
   percentage: "",
   status: "",
   activityId: "",
@@ -40,18 +47,6 @@ const projectSchema = yup.lazy((values) => {
         "تاريخ النهاية لا يمكن ان يكون قبل تاريخ البدايه"
       )
       .typeError("التاريخ غير صحيح"),
-    budget: yup
-      .number()
-      .required("التكلفة مطلوبة")
-      .typeError("التكلفة لابد من ان تكون رقم")
-      .min(0, "التكلفة لابد أن تكون قيمة موجبة"),
-
-    spentBudget: yup
-      .number()
-      .required("المنصرف مطلوب")
-      .typeError("المنصرف لابد من ان يكون رقم")
-      .min(0, "المنصرف لابد أن يكون قيمة موجبة"),
-
     percentage: yup
       .number()
       .required("النسبة مطلوبة")
@@ -66,7 +61,54 @@ const projectSchema = yup.lazy((values) => {
     sectorId: yup.string().required("القطاع مطلوب"),
     consultantId: yup.string(),
     contractorId: yup.string(),
+    spentDate: yup.date().nullable().typeError("التاريخ غير صحيح"),
+    spent: yup
+      .number()
+      .typeError("قيمه المنصرف لابد من ان تكون رقم")
+      .min(0, "قيمه المنصرف لابد أن تكون قيمة موجبة"),
+    assindDate: yup
+      .date()
+      .nullable()
+      .typeError("التاريخ غير صحيح"),
+    budget: yup
+      .number()
+      .typeError("قيمه المخصص لابد من ان تكون رقم")
+      .min(0, "قيمه المخصص لابد أن تكون قيمة موجبة"),
   });
+
+  // if (values.budgetArray && values.budgetArray.length === 0) {
+  //   schema = schema.concat(
+  //     yup.object().shape({
+  //       assindDate: yup
+  //         .date()
+  //         .nullable()
+  //         .required("تاريخ المخصص مطلوب")
+  //         .typeError("التاريخ غير صحيح"),
+  //       budget: yup
+  //         .number()
+  //         .required("قيمه المخصص مطلوبة")
+  //         .typeError("قيمه المخصص لابد من ان تكون رقم")
+  //         .min(0, "قيمه المخصص لابد أن تكون قيمة موجبة"),
+  //     })
+  //   );
+  // }
+
+  // if (values.spentBudgetArray && values.spentBudgetArray.length === 0) {
+  //   schema = schema.concat(
+  //     yup.object().shape({
+  //       spentDate: yup
+  //         .date()
+  //         .nullable()
+  //         .required("تاريخ المنصرف مطلوب")
+  //         .typeError("التاريخ غير صحيح"),
+  //       spent: yup
+  //         .number()
+  //         .required("قيمه المنصرف مطلوبة")
+  //         .typeError("قيمه المنصرف لابد من ان تكون رقم")
+  //         .min(0, "قيمه المنصرف لابد أن تكون قيمة موجبة"),
+  //     })
+  //   );
+  // }
 
   if (values.showRisks === "yes") {
     schema = schema.concat(
@@ -91,6 +133,7 @@ const projectSchema = yup.lazy((values) => {
       })
     );
   }
+
   return schema;
 });
 

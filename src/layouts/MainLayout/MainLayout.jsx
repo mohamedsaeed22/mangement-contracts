@@ -27,7 +27,7 @@ const MainLayout = () => {
               minHeight: "calc(100vh - 56px)",
               flex: 1,
               position: "relative",
-              backgroundColor: "#F5F5F5",
+              backgroundColor: "#EEF7FccF",
             }}
           >
             {/* <Box
@@ -39,7 +39,7 @@ const MainLayout = () => {
               flex={1}
               bgcolor="#ddd"
             > */}
-              <Outlet />
+            <Outlet />
             {/* </Box> */}
           </Stack>
           <Footer />

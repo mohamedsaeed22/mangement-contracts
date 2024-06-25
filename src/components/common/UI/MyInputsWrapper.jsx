@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
 
-const MyInputsWrapper = ({ title, children }) => {
+const MyInputsWrapper = ({ title, direction = "row", children }) => {
   return (
     <Stack
       sx={{
@@ -10,7 +10,7 @@ const MyInputsWrapper = ({ title, children }) => {
         padding: "24px 14px 18px",
         position: "relative",
         gap: 2,
-        flexDirection: "row",
+        flexDirection: direction,
         flexWrap: "wrap",
       }}
     >

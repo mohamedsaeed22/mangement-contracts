@@ -18,7 +18,10 @@ const BottomStat = ({ stats }) => {
     <>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ padding: "8px" }}>
+          <Paper
+            sx={{ padding: "8px", border: "1px solid #ddd" }}
+            elevation={0}
+          >
             <Stack direction="row" alignItems="center">
               <Box
                 sx={{
@@ -134,7 +137,10 @@ const BottomStat = ({ stats }) => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ padding: "8px" }}>
+          <Paper
+            sx={{ padding: "8px", border: "1px solid #ddd" }}
+            elevation={0}
+          >
             <Stack direction="row" alignItems="center">
               <Box
                 sx={{

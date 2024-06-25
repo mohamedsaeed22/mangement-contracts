@@ -1,5 +1,5 @@
 import { DatePicker } from "@mui/x-date-pickers";
-import { Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 
 const MyDatePicker = ({
   name,
@@ -10,10 +10,12 @@ const MyDatePicker = ({
   width,
   helperText,
   disabled,
+  readOnly, // Add readOnly prop
 }) => {
   return (
     <Stack gap={1} width={width}>
       <DatePicker
+        disabled={disabled}
         label={title}
         value={value}
         onChange={onChangeDate}
@@ -23,10 +25,15 @@ const MyDatePicker = ({
             size: "small",
             error: error,
             helperText: helperText,
-            "& .muiformhelpertext-root": {
-              color: "red",
-              fontSize: "10px !important",
-              margin: "3px 0px 0px !important",
+            InputProps: {
+              readOnly: readOnly, // Make the input read-only
+            },
+            sx: {
+              "& .muiformhelpertext-root": {
+                color: "red",
+                fontSize: "10px !important",
+                margin: "3px 0px 0px !important",
+              },
             },
           },
         }}

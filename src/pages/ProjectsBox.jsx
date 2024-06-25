@@ -55,7 +55,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#fff",
+  backgroundColor: "#ddd",
   borderRadius: "10px",
 }));
 
@@ -69,6 +69,15 @@ const initialFormData = {
   endDate: null,
   contractorId: "",
   consultantId: "",
+};
+const calculateMonthsDifference = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const yearDiff = end.getFullYear() - start.getFullYear();
+  const monthDiff = end.getMonth() - start.getMonth();
+
+  return yearDiff * 12 + monthDiff;
 };
 
 const ProjectsBox = () => {
@@ -337,6 +346,7 @@ const ProjectsBox = () => {
               position: "absolute",
               left: "50%",
               top: "50%",
+              zIndex: 1000,
               transform: "translate(-50%,-50%)",
             }}
           >
@@ -355,10 +365,10 @@ const ProjectsBox = () => {
                 <StyledTableCell align="center">النشاط</StyledTableCell>
                 <StyledTableCell align="center">اسم المشروع</StyledTableCell>
                 <StyledTableCell align="center">الوصف</StyledTableCell>
-                <StyledTableCell align="center">
+                {/* <StyledTableCell align="center">
                   التكلفة المخططة
                 </StyledTableCell>
-                <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
+                <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell> */}
                 <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
                 <StyledTableCell align="center"> حالة المشروع</StyledTableCell>
                 <StyledTableCell align="center">بداية المشروع</StyledTableCell>
@@ -379,7 +389,7 @@ const ProjectsBox = () => {
                   <StyledTableRow
                     sx={{
                       cursor: "pointer",
-                      "&:hover": { backgroundColor: "#fff !important" },
+                      "&:hover": { backgroundColor: "#ccc !important" },
                     }}
                     onClick={() => navigate(`/project/id/${row.id}`)}
                   >
@@ -400,12 +410,12 @@ const ProjectsBox = () => {
                         : row.description}
                     </StyledTableCell>
 
-                    <StyledTableCell align="center">
+                    {/* <StyledTableCell align="center">
                       {row.budget}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {row.spentBudget}
-                    </StyledTableCell>
+                    </StyledTableCell> */}
 
                     <StyledTableCell align="center">
                       {row.percentage}%

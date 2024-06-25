@@ -12,7 +12,7 @@ import {
 import MyBtn from "../components/common/UI/MyBtn";
 import EditIcon from "../assets/icon/edit-icon.svg";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { East } from "@mui/icons-material";
+import { CalendarMonth, East, AttachMoney } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import actGetProjectById from "../store/project/act/actGetProjectById";
 import actGetRisksByProjectId from "../store/risk/act/actGetRisksByProjectId";
@@ -20,53 +20,24 @@ import { getRisksAndDisablesName } from "../utils/riskHandicapStatus";
 import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByProjectId";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { getProjectStateName } from "../utils/statusList";
-
+import BudgetChart from "../components/manageContracts/BudgetChart";
+const data = {
+  // spentBudgets: [
+  //   { spentDate: "2024-06-11T21:00:00", spent: 2322.0 },
+  //   { spentDate: "2024-06-16T21:00:00", spent: 985.0 },
+  //   { spentDate: "2024-10-29T21:00:00", spent: 7412.0 },
+  // ],
+  // assindBudgets: [
+  //   { assindDate: "2024-06-12T21:00:00", budget: 12.0 },
+  //   { assindDate: "2024-06-27T21:00:00", budget: 231.0 },
+  //   { assindDate: "2024-06-06T21:00:00", budget: 632.0 },
+  // ],
+};
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { project, loading, error } = useSelector((state) => state.project);
   const { id } = useParams();
-
-  // const project = {
-  //   id: "8e140339-4b5a-4cb2-bdbd-08dc8b721f91",
-  //   name: "rrrtrttt",
-  //   description:
-  //     "ewrfhhhhh hhhh hhhhhh hhhhhhhh hhh hh hhhhh hhhhhhh hhhhhh hhhhhh hhhhh hhhhh hhhhhh hhhh hhhhhhhhhhhhh hhhhhhh hhhhhhhhh hhhhhhh hhhh heafd",
-  //   startDate: "2024-06-13T07:37:10.277",
-  //   endDate: "2024-06-15T07:37:10",
-  //   budget: 344,
-  //   spentBudget: 344,
-  //   percentage: 44,
-  //   status: 3,
-  //   activityId: "eca97204-2df5-499a-27af-08dc89f514b0",
-  //   createdAt: "2024-06-13T10:42:36.3315702",
-  //   updatedAt: "0001-01-01T00:00:00",
-  //   updatedBy: "00000000-0000-0000-0000-000000000000",
-  //   createdBy: "10c7ee03-e84d-48c7-b736-a20e7bb5555c",
-  //   sectorId: "192350dd-c6f2-4339-bced-341d52362502",
-  //   risks: [],
-  //   handicaps: [],
-  //   consultants: [
-  //     {
-  //       id: "bbd5beb8-0374-467e-6e85-08dc8adb8b64",
-  //       name: "مصطفى",
-  //       description: "",
-  //       phoneNumber: "",
-  //       contactPersonPhone: "",
-  //       contactPersonName: "",
-  //       address: "",
-  //       country: "",
-  //       specialization: "",
-  //       experience: "",
-  //       qualification: "",
-  //       createdAt: "2024-06-12T16:42:51.8132579",
-  //       updatedAt: null,
-  //       updatedBy: null,
-  //       createdBy: "10c7ee03-e84d-48c7-b736-a20e7bb5555c",
-  //       totalProjects: null,
-  //     },
-  //   ],
-  // };
   const { risks, handicaps, consultants, contractors } = project;
   useEffect(() => {
     if (id) {
@@ -100,10 +71,17 @@ const ProjectDetails = () => {
           borderRadius={2}
           mt="4px"
           sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
-          // marginInline="20px"
-          flex={1}
-          // bgcolor="#ddd"
+          height="calc(100vh - 150px)"
+          overflow="auto"
         >
+          <Box maxHeight="600px" maxWidth="1200px" marginInline="auto">
+            <BudgetChart
+              data={{
+                spentBudgets: project.spentBudgets,
+                assindBudgets: project.assindBudgets,
+              }}
+            />
+          </Box>
           <Stack m={2}>
             <Grid container spacing={2} mb={2}>
               <Grid item xs={12} lg={6}>
@@ -158,9 +136,53 @@ const ProjectDetails = () => {
                       paddingInline: "6px",
                     }}
                   >
-                    تكلفه المشروع
+                    المخصصات
                   </Typography>
-                  {project.budget}
+                  {project?.assindBudgets?.length > 0
+                    ? project.assindBudgets.map((budget, index) => (
+                        <Stack
+                          direction="row"
+                          key={budget.id}
+                          justifyContent="space-evenly"
+                          alignItems="center"
+                          sx={{
+                            width: "100%", // Ensures the Stack takes full width of its container
+                            padding: "4px 0px", // Adds padding for visual spacing
+                          }}
+                        >
+                          <CalendarMonth
+                            sx={{
+                              color: "#333",
+                              flex: "1",
+                              textAlign: "center",
+                            }}
+                          />
+                          <Typography
+                            variant="body1"
+                            color="initial"
+                            sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
+                          >
+                            {budget.assindDate?.split("T")[0]}
+                          </Typography>
+
+                          <AttachMoney
+                            sx={{
+                              color: "#333",
+                              flex: "1",
+                              textAlign: "center",
+                            }}
+                          />
+
+                          <Typography
+                            variant="body1"
+                            color="initial"
+                            sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
+                          >
+                            {budget.budget.toLocaleString()}
+                          </Typography>
+                        </Stack>
+                      ))
+                    : "لا يوجد"}
                 </Box>
               </Grid>
 
@@ -187,9 +209,53 @@ const ProjectDetails = () => {
                       paddingInline: "6px",
                     }}
                   >
-                    القطاع
+                    المنصرف
                   </Typography>
-                  {project.sectorName}
+                  {project?.spentBudgets?.length > 0
+                    ? project.spentBudgets.map((budget) => (
+                        <Stack
+                          direction="row"
+                          key={budget.id}
+                          justifyContent="space-evenly"
+                          alignItems="center"
+                          sx={{
+                            width: "100%", // Ensures the Stack takes full width of its container
+                            padding: "4px 0px", // Adds padding for visual spacing
+                          }}
+                        >
+                          <CalendarMonth
+                            sx={{
+                              color: "#333",
+                              flex: "1",
+                              textAlign: "center",
+                            }}
+                          />
+                          <Typography
+                            variant="body1"
+                            color="initial"
+                            sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
+                          >
+                            {budget.spentDate?.split("T")[0]}
+                          </Typography>
+
+                          <AttachMoney
+                            sx={{
+                              color: "#333",
+                              flex: "1",
+                              textAlign: "center",
+                            }}
+                          />
+
+                          <Typography
+                            variant="body1"
+                            color="initial"
+                            sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
+                          >
+                            {budget.spent.toLocaleString()}
+                          </Typography>
+                        </Stack>
+                      ))
+                    : "لا يوجد"}
                 </Box>
               </Grid>
             </Grid>
@@ -368,6 +434,7 @@ const ProjectDetails = () => {
                   {project.endDate?.split("T")[0]}
                 </Box>
               </Grid>
+
               <Grid item xs={12} sm={6} lg={3}>
                 <Box
                   sx={{
@@ -391,10 +458,9 @@ const ProjectDetails = () => {
                       paddingInline: "6px",
                     }}
                   >
-                    المنصرف الفعلى
+                    القطاع
                   </Typography>
-
-                  {project.spentBudget}
+                  {project.sectorName}
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6} lg={3}>
@@ -422,9 +488,7 @@ const ProjectDetails = () => {
                   >
                     حاله المشروع
                   </Typography>
-                  {/* {project.description && project.description.length > 40
-              ? project.description.substring(0, 40) + "..."
-              : project.description} */}
+
                   {getProjectStateName(project.status)}
                 </Box>
               </Grid>

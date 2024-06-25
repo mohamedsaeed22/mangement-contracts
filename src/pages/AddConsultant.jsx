@@ -46,7 +46,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: "#fff",
+  backgroundColor: "#ddd",
   borderRadius: "10px",
 }));
 
@@ -146,7 +146,7 @@ const AddConsultant = () => {
                       key={row.id}
                       sx={{
                         cursor: "pointer",
-                        "&:hover": { backgroundColor: "#fff !important" },
+                        "&:hover": { backgroundColor: "#ccc !important" },
                       }}
                       onClick={() => navigate(`/consultant/id/${row.id}`)}
                     >
