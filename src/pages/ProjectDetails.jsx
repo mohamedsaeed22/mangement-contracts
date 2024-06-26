@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import MyBtn from "../components/common/UI/MyBtn";
 import EditIcon from "../assets/icon/edit-icon.svg";
+import PrinterIcon from "../assets/icon/printer-icon.svg";
+
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { CalendarMonth, East, AttachMoney } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,22 +23,12 @@ import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByP
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { getProjectStateName } from "../utils/statusList";
 import BudgetChart from "../components/manageContracts/BudgetChart";
-const data = {
-  // spentBudgets: [
-  //   { spentDate: "2024-06-11T21:00:00", spent: 2322.0 },
-  //   { spentDate: "2024-06-16T21:00:00", spent: 985.0 },
-  //   { spentDate: "2024-10-29T21:00:00", spent: 7412.0 },
-  // ],
-  // assindBudgets: [
-  //   { assindDate: "2024-06-12T21:00:00", budget: 12.0 },
-  //   { assindDate: "2024-06-27T21:00:00", budget: 231.0 },
-  //   { assindDate: "2024-06-06T21:00:00", budget: 632.0 },
-  // ],
-};
+
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { project, loading, error } = useSelector((state) => state.project);
+  console.log(project);
   const { id } = useParams();
   const { risks, handicaps, consultants, contractors } = project;
   useEffect(() => {
@@ -62,16 +54,23 @@ const ProjectDetails = () => {
               </IconButton>
             </Tooltip>
           </Box>
-          <NavLink to={`/project/edit/${id}`}>
-            <MyBtn icon={EditIcon} title="تعديل المشروع" />
-          </NavLink>
+          <Stack direction="row" flexWrap="wrap" gap={1}>
+            <MyBtn
+              icon={PrinterIcon}
+              title="طباعة"
+              handleBtnClick={() => window.print()}
+            />
+            <NavLink to={`/project/edit/${id}`}>
+              <MyBtn icon={EditIcon} title="تعديل المشروع" />
+            </NavLink>
+          </Stack>
         </Stack>
         <Box
           border="2px solid #000"
           borderRadius={2}
           mt="4px"
           sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
-          height="calc(100vh - 150px)"
+          // height="calc(100vh - 150px)"
           overflow="auto"
         >
           <Box maxHeight="600px" maxWidth="1200px" marginInline="auto">
@@ -596,3 +595,41 @@ const ProjectDetails = () => {
 };
 
 export default ProjectDetails;
+/**
+ *
+ * {
+      "id": "dbcb1cc5-083c-4c5e-07f8-08dc9288fdfa",
+      "name": "مشروع 400 الف فدان ",
+      "description": "مشروع زراعة 400 الف فدان",
+      "startDate": "2024-07-07T21:00:00",
+      "endDate": "2028-06-28T21:00:00",
+      "percentage": 5,
+      "budget": 450,
+      "spentBudget": 5,
+      "status": 2,
+      "activityId": "5af4e278-0079-4279-82a8-08dc8853219e",
+      "createdAt": "2024-06-22T11:32:33.1304906",
+      "updatedAt": "0001-01-01T00:00:00",
+      "updatedBy": "00000000-0000-0000-0000-000000000000",
+      "createdBy": "10c7ee03-e84d-48c7-b736-a20e7bb5555c",
+      "sectorId": "e338d130-0b41-46bc-1d33-08dc8ae456d6",
+      "risks": [],
+      "handicaps": [],
+      "consultants": null,
+      "contractors": null,
+      "spentBudgets": [
+        {
+          "id": "db34e5b1-5ff2-4f05-ef64-08dc94e0346b",
+          "spentDate": "2024-08-14T21:00:00",
+          "spent": 32521442,
+          "projectId": "dbcb1cc5-083c-4c5e-07f8-08dc9288fdfa",
+          "createdAt": "0001-01-01T00:00:00",
+          "updatedAt": null,
+          "updatedBy": null,
+          "createdBy": null
+        }
+      ],
+      "assindBudgets": []
+    },
+ *
+ */

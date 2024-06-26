@@ -378,8 +378,12 @@ const Project = () => {
                   budget: budget.budget,
                 };
               });
-              dispatch(actCreateSpentBudget(spentArr));
-              dispatch(actCreateAssignBudget(assignArr));
+              if (spentArr.length > 0) {
+                dispatch(actCreateSpentBudget(spentArr));
+              }
+              if (assignArr.length > 0) {
+                dispatch(actCreateAssignBudget(assignArr));
+              }
             } catch (error) {
               notifyFailed("حدث خطا ما..الرجاء المحاولة مره اخرى");
             }

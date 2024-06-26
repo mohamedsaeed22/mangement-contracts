@@ -13,7 +13,8 @@ import {
   TimeSeriesScale,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
- 
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,7 +24,8 @@ ChartJS.register(
   Tooltip,
   Legend,
   TimeScale,
-  TimeSeriesScale
+  TimeSeriesScale,
+  ChartDataLabels
 );
 
 const BudgetChart = ({ data }) => {
@@ -40,7 +42,7 @@ const BudgetChart = ({ data }) => {
     data.assindBudgets && data.assindBudgets.length > 0;
 
   if (!hasSpentBudgets && !hasAssignedBudgets) {
-    return ;
+    return null;
   }
 
   const spentBudgets = hasSpentBudgets
@@ -102,6 +104,19 @@ const BudgetChart = ({ data }) => {
         display: true,
         text: "المنصرف مقابل الميزانيات المخصصة على مدار الوقت",
       },
+      datalabels: {
+        display: true,
+        align: "top",
+        formatter: (value, context) => {
+          const date = context.chart.data.labels[context.dataIndex];
+          return `${date}\n${value}`; // Display the date and the value
+        },
+        color: 'black',
+        font: {
+          size: 10,
+        },
+      
+      },
     },
     scales: {
       x: {
@@ -129,4 +144,5 @@ const BudgetChart = ({ data }) => {
     </div>
   );
 };
+
 export default BudgetChart;

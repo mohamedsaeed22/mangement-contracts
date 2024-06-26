@@ -5,6 +5,9 @@ import {
   removeAllCookies,
   setAccessToken,
 } from "../utils/accessLocalStorage";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const MySwal = withReactContent(Swal);
 
 const BASE_URL = "http://172.16.3.230:9433/";
 
@@ -40,8 +43,17 @@ api.interceptors.response.use(
       // Handle 401 Unauthorized responses
       if (err.response && err.response.status === 401) {
         if (getAcessToken() || getRefreshToken()) {
-          removeAllCookies();
-          window.location.reload();
+          MySwal.fire({
+            title: "انتهت صلاحيه الجلسة ,الرجاء اعاده تسجيل الدخول",
+            icon: "warning",
+            allowOutsideClick: false, // This prevents the modal from closing when clicking outside
+            confirmButtonText: "موافق",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              removeAllCookies();
+              window.location.reload();
+            }
+          });
         }
 
         // You can also handle refresh token logic here if needed

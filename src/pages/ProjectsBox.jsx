@@ -365,10 +365,10 @@ const ProjectsBox = () => {
                 <StyledTableCell align="center">النشاط</StyledTableCell>
                 <StyledTableCell align="center">اسم المشروع</StyledTableCell>
                 <StyledTableCell align="center">الوصف</StyledTableCell>
-                {/* <StyledTableCell align="center">
-                  التكلفة المخططة
+                <StyledTableCell align="center">
+                    قيمه المخصص
                 </StyledTableCell>
-                <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell> */}
+                <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
                 <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
                 <StyledTableCell align="center"> حالة المشروع</StyledTableCell>
                 <StyledTableCell align="center">بداية المشروع</StyledTableCell>
@@ -410,12 +410,12 @@ const ProjectsBox = () => {
                         : row.description}
                     </StyledTableCell>
 
-                    {/* <StyledTableCell align="center">
+                    <StyledTableCell align="center">
                       {row.budget}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {row.spentBudget}
-                    </StyledTableCell> */}
+                    </StyledTableCell>
 
                     <StyledTableCell align="center">
                       {row.percentage}%
