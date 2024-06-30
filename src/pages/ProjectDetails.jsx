@@ -23,12 +23,14 @@ import actGetHandicapsByProjectId from "../store/handicap/act/actGetHandicapsByP
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { getProjectStateName } from "../utils/statusList";
 import BudgetChart from "../components/manageContracts/BudgetChart";
-
+import html2canvas from "html2canvas";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+ 
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { project, loading, error } = useSelector((state) => state.project);
-  console.log(project);
   const { id } = useParams();
   const { risks, handicaps, consultants, contractors } = project;
   useEffect(() => {
@@ -36,6 +38,10 @@ const ProjectDetails = () => {
       dispatch(actGetProjectById(id));
     }
   }, [dispatch, id]);
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   return (
     <>
@@ -46,6 +52,12 @@ const ProjectDetails = () => {
           mt="40px"
           justifyContent="space-between"
           marginInline={4}
+          id="print-wrapper"
+          sx={{
+            "@media print": {
+              display: "none !important",
+            },
+          }}
         >
           <Box>
             <Tooltip title="رجوع" placement="top" arrow>
@@ -58,7 +70,29 @@ const ProjectDetails = () => {
             <MyBtn
               icon={PrinterIcon}
               title="طباعة"
-              handleBtnClick={() => window.print()}
+              // handleBtnClick={() => {
+              //   html2canvas(document.body, {
+              //     scale: 2,
+              //     width: document.documentElement.scrollWidth,
+              //     height: document.documentElement.scrollHeight,
+              //   }).then((canvas) => {
+              //     const imgData = canvas.toDataURL("image/png");
+              //     const printWindow = window.open("", "_blank");
+              //     printWindow.document.write(`
+              //        <style>
+              //          body, html { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100%; }
+              //          .print-override {
+              //           height: auto !important;
+              //           overflow: visible !important;
+              //         }
+              //          img { max-width: 100%; max-height: 100vh; margin: auto; display: block; }
+              //        </style>
+              //        <img src="${imgData}" onload="window.print();window.close()" />
+              //      `);
+              //     printWindow.document.close();
+              //   });
+              // }}
+              handleBtnClick={handlePrint}
             />
             <NavLink to={`/project/edit/${id}`}>
               <MyBtn icon={EditIcon} title="تعديل المشروع" />
@@ -69,11 +103,20 @@ const ProjectDetails = () => {
           border="2px solid #000"
           borderRadius={2}
           mt="4px"
-          sx={{ marginInline: { xs: "5px", sm: "10px", md: "20px" } }}
-          // height="calc(100vh - 150px)"
+          className="print-override"
+          sx={{
+            marginInline: { xs: "5px", sm: "10px", md: "20px" },
+          }}
+          height="calc(100vh - 150px)"
           overflow="auto"
+          ref={componentRef}
         >
-          <Box maxHeight="600px" maxWidth="1200px" marginInline="auto">
+          <Box
+            className="budget-chart-container"
+            maxHeight="600px"
+            maxWidth="1200px"
+            marginInline="auto"
+          >
             <BudgetChart
               data={{
                 spentBudgets: project.spentBudgets,
@@ -108,7 +151,13 @@ const ProjectDetails = () => {
                   >
                     اسم المشروع
                   </Typography>
-                  {project.name}
+                  <Typography
+                    variant="body1"
+                    color="initial"
+                    sx={{ direction: "ltr" }}
+                  >
+                    {project.name}
+                  </Typography>
                 </Box>
               </Grid>
 
@@ -135,53 +184,58 @@ const ProjectDetails = () => {
                       paddingInline: "6px",
                     }}
                   >
-                    المخصصات
+                    المخصصات الماليه
                   </Typography>
-                  {project?.assindBudgets?.length > 0
-                    ? project.assindBudgets.map((budget, index) => (
-                        <Stack
-                          direction="row"
-                          key={budget.id}
-                          justifyContent="space-evenly"
-                          alignItems="center"
-                          sx={{
-                            width: "100%", // Ensures the Stack takes full width of its container
-                            padding: "4px 0px", // Adds padding for visual spacing
-                          }}
+                  {project?.assindBudgets?.length > 0 ? (
+                    project.assindBudgets.map((budget, index) => (
+                      <Stack
+                        direction="row"
+                        key={budget.id}
+                        justifyContent="space-evenly"
+                        alignItems="center"
+                        sx={{
+                          width: "100%",
+                          padding: "4px 0px",
+                          "@media print": {
+                            direction: "ltr",
+                          },
+                        }}
+                      >
+                        <Typography
+                          variant="body1"
+                          color="initial"
+                          fontWeight="600"
                         >
-                          <CalendarMonth
-                            sx={{
-                              color: "#333",
-                              flex: "1",
-                              textAlign: "center",
-                            }}
-                          />
-                          <Typography
-                            variant="body1"
-                            color="initial"
-                            sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
-                          >
-                            {budget.assindDate?.split("T")[0]}
-                          </Typography>
-
-                          <AttachMoney
-                            sx={{
-                              color: "#333",
-                              flex: "1",
-                              textAlign: "center",
-                            }}
-                          />
-
-                          <Typography
-                            variant="body1"
-                            color="initial"
-                            sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
-                          >
-                            {budget.budget.toLocaleString()}
-                          </Typography>
-                        </Stack>
-                      ))
-                    : "لا يوجد"}
+                          التاريخ:-
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="initial"
+                          sx={{ flex: "2", textAlign: "center" }}
+                        >
+                          {budget.assindDate?.split("T")[0]}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="initial"
+                          fontWeight="600"
+                        >
+                          القيمة:-
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="initial"
+                          sx={{ flex: "2", textAlign: "center" }}
+                        >
+                          {budget?.budget?.toLocaleString()}
+                        </Typography>
+                      </Stack>
+                    ))
+                  ) : (
+                    <Typography variant="body1" sx={{ direction: "ltr" }}>
+                      لا يوجد
+                    </Typography>
+                  )}
                 </Box>
               </Grid>
 
@@ -208,53 +262,58 @@ const ProjectDetails = () => {
                       paddingInline: "6px",
                     }}
                   >
-                    المنصرف
+                    المنصرف الفعلى
                   </Typography>
-                  {project?.spentBudgets?.length > 0
-                    ? project.spentBudgets.map((budget) => (
-                        <Stack
-                          direction="row"
-                          key={budget.id}
-                          justifyContent="space-evenly"
-                          alignItems="center"
-                          sx={{
-                            width: "100%", // Ensures the Stack takes full width of its container
-                            padding: "4px 0px", // Adds padding for visual spacing
-                          }}
+                  {project?.spentBudgets?.length > 0 ? (
+                    project.spentBudgets.map((budget) => (
+                      <Stack
+                        direction="row"
+                        key={budget.id}
+                        justifyContent="space-evenly"
+                        alignItems="center"
+                        sx={{
+                          width: "100%",
+                          padding: "4px 0px",
+                          "@media print": {
+                            direction: "ltr",
+                          },
+                        }}
+                      >
+                        <Typography
+                          variant="body1"
+                          color="initial"
+                          fontWeight="600"
                         >
-                          <CalendarMonth
-                            sx={{
-                              color: "#333",
-                              flex: "1",
-                              textAlign: "center",
-                            }}
-                          />
-                          <Typography
-                            variant="body1"
-                            color="initial"
-                            sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
-                          >
-                            {budget.spentDate?.split("T")[0]}
-                          </Typography>
-
-                          <AttachMoney
-                            sx={{
-                              color: "#333",
-                              flex: "1",
-                              textAlign: "center",
-                            }}
-                          />
-
-                          <Typography
-                            variant="body1"
-                            color="initial"
-                            sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
-                          >
-                            {budget.spent.toLocaleString()}
-                          </Typography>
-                        </Stack>
-                      ))
-                    : "لا يوجد"}
+                          التاريخ:-
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="initial"
+                          sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
+                        >
+                          {budget.spentDate?.split("T")[0]}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="initial"
+                          fontWeight="600"
+                        >
+                          القيمة:-
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="initial"
+                          sx={{ flex: "2", textAlign: "center" }} // Ensures equal space distribution
+                        >
+                          {budget?.spent?.toLocaleString()}
+                        </Typography>
+                      </Stack>
+                    ))
+                  ) : (
+                    <Typography variant="body1" sx={{ direction: "ltr" }}>
+                      لا يوجد
+                    </Typography>
+                  )}
                 </Box>
               </Grid>
             </Grid>
@@ -285,7 +344,9 @@ const ProjectDetails = () => {
                   >
                     النشاط
                   </Typography>
-                  {project.activityName}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.activityName}
+                  </Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6} lg={3}>
@@ -313,7 +374,9 @@ const ProjectDetails = () => {
                   >
                     الاستشارى
                   </Typography>
-                  {consultants?.length > 0 ? consultants[0].name : "لا يوجد"}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {consultants?.length > 0 ? consultants[0].name : "لا يوجد"}
+                  </Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6} lg={3}>
@@ -341,7 +404,9 @@ const ProjectDetails = () => {
                   >
                     المقاول
                   </Typography>
-                  {contractors?.length > 0 ? contractors[0].name : "لا يوجد"}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {contractors?.length > 0 ? contractors[0].name : "لا يوجد"}
+                  </Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6} lg={3}>
@@ -369,7 +434,134 @@ const ProjectDetails = () => {
                   >
                     ما تم انجازه
                   </Typography>
-                  {`%${project.percentage}`}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {`%${project.percentage}`}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mb={2}>
+              <Grid item xs={12} sm={6} lg={3}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "1px solid #000",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    عدد الشهور
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.totalMonths === 0
+                      ? "اقل من شهر"
+                      : `${project.totalMonths} شهر`}
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "1px solid #000",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    نسبه الصرف
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {Math.floor(project.percentageSpent)}%
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "1px solid #000",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    اجمالى المخصصات
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.budget?.toLocaleString()}
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "1px solid #000",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    اجمالى المنصرف
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.spentBudget?.toLocaleString()}
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -400,8 +592,9 @@ const ProjectDetails = () => {
                   >
                     تاريخ البدايه
                   </Typography>
-
-                  {project.startDate?.split("T")[0]}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.startDate?.split("T")[0]}
+                  </Typography>
                 </Box>
               </Grid>
 
@@ -430,7 +623,9 @@ const ProjectDetails = () => {
                   >
                     تاريخ النهايه
                   </Typography>
-                  {project.endDate?.split("T")[0]}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.endDate?.split("T")[0]}
+                  </Typography>
                 </Box>
               </Grid>
 
@@ -459,7 +654,9 @@ const ProjectDetails = () => {
                   >
                     القطاع
                   </Typography>
-                  {project.sectorName}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.sectorName}
+                  </Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6} lg={3}>
@@ -487,8 +684,9 @@ const ProjectDetails = () => {
                   >
                     حاله المشروع
                   </Typography>
-
-                  {getProjectStateName(project.status)}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {getProjectStateName(project.status)}
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -519,10 +717,11 @@ const ProjectDetails = () => {
                   >
                     المخاطر
                   </Typography>
-
-                  {risks && risks.length > 0
-                    ? risks[0]?.description
-                    : "لا يوجد مخاطر"}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {risks && risks.length > 0
+                      ? risks[0]?.description
+                      : "لا يوجد مخاطر"}
+                  </Typography>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -550,9 +749,11 @@ const ProjectDetails = () => {
                   >
                     المعوقات
                   </Typography>
-                  {handicaps && handicaps.length > 0
-                    ? handicaps[0].description
-                    : "لا يوجد معوقات"}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {handicaps && handicaps.length > 0
+                      ? handicaps[0].description
+                      : "لا يوجد معوقات"}
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -583,7 +784,9 @@ const ProjectDetails = () => {
                   >
                     تفاصيل المشروع
                   </Typography>
-                  {project?.description}
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project?.description}
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>

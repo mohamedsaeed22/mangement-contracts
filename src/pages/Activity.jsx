@@ -128,22 +128,27 @@ const Activity = () => {
                     {projects.length > 0 && projects[0].activityName}
                   </Typography>
                 </Typography>
-                <TableContainer sx={{ maxHeight: "80vh", marginTop: "8px" }}>
+                <TableContainer sx={{ marginTop: "8px" }}>
                   <Table aria-label="customized table">
                     <TableHead>
                       <TableRow>
                         <StyledTableCell align="center">القطاع</StyledTableCell>
-
+                        <StyledTableCell align="center">النشاط</StyledTableCell>
                         <StyledTableCell align="center">
                           اسم المشروع
                         </StyledTableCell>
-                        <StyledTableCell align="center">الوصف</StyledTableCell>
-                        {/* <StyledTableCell align="center">
-                          التكلفة المخططة
+                        <StyledTableCell align="center">
+                          تاريخ البروتوكول
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          قيمه المخصص
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           المنصرف الفعلى
-                        </StyledTableCell> */}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          نسبه الصرف
+                        </StyledTableCell>
                         <StyledTableCell align="center">
                           نسبة الانجاز
                         </StyledTableCell>
@@ -157,6 +162,10 @@ const Activity = () => {
                           نهاية المشروع
                         </StyledTableCell>
                         <StyledTableCell align="center">
+                          مده تنفيذ المشروع
+                        </StyledTableCell>
+
+                        <StyledTableCell align="center">
                           هل له مخاطر/معوقات
                         </StyledTableCell>
                       </TableRow>
@@ -167,38 +176,46 @@ const Activity = () => {
                           title="اضغط لعرض المشروع"
                           placement="top"
                           arrow
+                          key={row.id}
                         >
                           <StyledTableRow
-                            key={row}
                             sx={{
                               cursor: "pointer",
                               "&:hover": { backgroundColor: "#ccc !important" },
                             }}
-                            onClick={() => handleShowProject(row)}
+                            onClick={() => navigate(`/project/id/${row.id}`)}
                           >
                             <StyledTableCell align="center">
                               {row.sectorName}
                             </StyledTableCell>
-
+                            <StyledTableCell align="center">
+                              {row.activityName}
+                            </StyledTableCell>
                             <StyledTableCell align="center">
                               {row.name.length > 20
                                 ? row.name.substring(0, 20) + "..."
                                 : row.name}
                             </StyledTableCell>
                             <StyledTableCell align="center">
-                              {row.description.length > 20
-                                ? row.description.substring(0, 20) + "..."
-                                : row.description}
+                              {row.assindBudgets.length > 0
+                                ? row.assindBudgets[
+                                    row.assindBudgets.length - 1
+                                  ].assindDate.split("T")[0]
+                                : "لا يوجد"}
                             </StyledTableCell>
-                            {/* <StyledTableCell align="center">
-                              {row.budget}
-                            </StyledTableCell>
-                            <StyledTableCell align="center">
-                              {row.spentBudget}
-                            </StyledTableCell> */}
 
                             <StyledTableCell align="center">
-                              {row.percentage}
+                              {row.budget.toLocaleString()}
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              {row.spentBudget.toLocaleString()}
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              {Math.floor(row.percentageSpent)}%
+                            </StyledTableCell>
+
+                            <StyledTableCell align="center">
+                              {row.percentage}%
                               <Box sx={{ width: "100%", marginTop: "2px" }}>
                                 <LinearProgress
                                   variant="determinate"
@@ -220,6 +237,13 @@ const Activity = () => {
                             <StyledTableCell align="center">
                               {row.endDate.split("T")[0]}
                             </StyledTableCell>
+
+                            <StyledTableCell align="center">
+                              {row.totalMonths === 0
+                                ? "اقل من شهر"
+                                : `${row.totalMonths} شهر`}
+                            </StyledTableCell>
+
                             <StyledTableCell align="center">
                               {row?.risks?.length > 0 ||
                               row?.handicaps?.length > 0

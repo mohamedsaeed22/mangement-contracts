@@ -6,10 +6,12 @@ import actGetProjectByActivity from "./act/actGetProjectByActivity";
 import actGetProjectsBySector from "./act/actGetProjectsBySector";
 import actGetProjectsByContractorId from "./act/actGetProjectsByContractorId";
 import actGetProjectsByConsultantId from "./act/actGetProjectsByConsultantId";
+import actBrowseAll from "./act/actBrowseAll";
 
 const initialState = {
   projects: [],
   project: {},
+  printedProjects: [],
   totalItems: 0,
   loading: false,
   error: null,
@@ -24,6 +26,25 @@ const projectSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // browse all projects
+    builder.addCase(actBrowseAll.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(actBrowseAll.fulfilled, (state, { payload }) => {
+      state.loading = false;
+       state.printedProjects = payload;
+    });
+    builder.addCase(actBrowseAll.rejected, (state, action) => {
+      state.loading = false;
+      if (action?.payload === 403) {
+        state.error = "ليس لديك الصلاحية لرؤية هذة الصفحة";
+      } else if (action?.payload === 500) {
+        state.error = "حدث خطا ما فى السيرفر";
+      } else {
+        state.error = action.payload;
+      }
+    });
     // get all projects
     builder.addCase(actGetProjects.pending, (state) => {
       state.loading = true;
@@ -185,6 +206,7 @@ export {
   actGetProjectsBySector,
   actGetProjectsByContractorId,
   actGetProjectsByConsultantId,
-};
+  actBrowseAll
+}
 export const { getProjectById } = projectSlice.actions;
 export default projectSlice.reducer;

@@ -147,3 +147,47 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+@media print {
+  /* .sidebar,
+  #print-wrapper {
+    display: none !important;
+  } */
+  .chart-container {
+    max-width: 100%;
+  }
+
+  .budget-chart-container {
+    margin-right: auto !important;
+  }
+  .print-override {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  #head-name {
+    display: flex !important;
+  }
+  #printed-table {
+    display: flex !important;
+  }
+  td {
+    border: 0.5px solid #ccc !important;
+  }
+
+  @page :first {
+    margin-top: 0in !important;
+  }
+}
+#printed-table {
+  flex-direction: column;
+  display: none;
+}
+#head-name {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  flex-direction: row;
+  width: 100%;
+  padding-inline: 10px;
+  z-index: 1000;
+}

@@ -119,6 +119,9 @@ const Sidebar = () => {
           overflowY: "auto",
           overflowX: "hidden",
           display: toggleSidebar ? "block" : "none",
+          "@media print": {
+            display: "none !important",
+          },
         }}
       >
         <img

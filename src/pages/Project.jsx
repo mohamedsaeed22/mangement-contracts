@@ -197,7 +197,7 @@ const Project = () => {
       endDate: convertDateToIso(values.endDate),
       budget: values.budget,
       spent: values.spent,
-      budget: 200,
+      budget: 0,
     };
 
     console.log(projectData);

@@ -109,13 +109,13 @@ const BudgetChart = ({ data }) => {
         align: "top",
         formatter: (value, context) => {
           const date = context.chart.data.labels[context.dataIndex];
-          return `${date}\n${value}`; // Display the date and the value
+          return `${date}\n${value.toLocaleString()}`;
         },
-        color: 'black',
+        color: "black",
         font: {
           size: 10,
+          weight: "bold",
         },
-      
       },
     },
     scales: {
@@ -140,7 +140,7 @@ const BudgetChart = ({ data }) => {
 
   return (
     <div className="chart-container">
-      <Line data={chartData} options={options} />
+      <Line data={chartData} options={options} style={{ maxWidth: "100%" }} />
     </div>
   );
 };

@@ -28,7 +28,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MyBtn from "../components/common/UI/MyBtn";
 import FilterIcon from "../assets/icon/filter-icon.svg";
-import { actGetProjects } from "../store/project/projectSlice";
+import { actBrowseAll, actGetProjects } from "../store/project/projectSlice";
 import StatusLabel from "../components/manageContracts/StatusLabel";
 import { RestartAlt } from "@mui/icons-material";
 import FilterFill from "../assets/icon/filter-fill.svg";
@@ -38,6 +38,11 @@ import actGetConsultants from "../store/consultant/act/actGetConsultants";
 import actGetSectors from "../store/sector/act/actGetSectors";
 import actGetContractors from "../store/contractor/act/actGetContractors";
 import { actGetActivities } from "../store/Activity/activitySlice";
+import PrinterIcon from "../assets/icon/printer-icon.svg";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import PrintedProjects from "../components/manageContracts/PrintedProjects";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -69,15 +74,6 @@ const initialFormData = {
   endDate: null,
   contractorId: "",
   consultantId: "",
-};
-const calculateMonthsDifference = (startDate, endDate) => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-
-  const yearDiff = end.getFullYear() - start.getFullYear();
-  const monthDiff = end.getMonth() - start.getMonth();
-
-  return yearDiff * 12 + monthDiff;
 };
 
 const ProjectsBox = () => {
@@ -149,6 +145,16 @@ const ProjectsBox = () => {
     setFormData(initialFormData);
   };
 
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onBeforeGetContent: () => {
+      return new Promise((resolve) => {
+        dispatch(actBrowseAll()).then(() => resolve());
+      });
+    },
+  });
+
   return (
     <>
       <Heading title="صندوق المشاريع" />
@@ -164,7 +170,10 @@ const ProjectsBox = () => {
         }}
         height="calc(100vh - 130px)"
       >
-        {/* <LoadingWrapper error={error} loading={loading}> */}
+        {/* <div ref={componentRef}> */}
+        <PrintedProjects ref={componentRef} />
+        {/* </div> */}
+
         {/* filteration box */}
         <Stack
           direction="row"
@@ -194,6 +203,11 @@ const ProjectsBox = () => {
             />
           </Box>
           <Stack direction="row" gap={1}>
+            <MyBtn
+              icon={PrinterIcon}
+              title="طباعة"
+              handleBtnClick={handlePrint}
+            />
             <MyBtn
               title="تصنيف"
               icon={toggleFilter ? FilterFill : FilterIcon}
@@ -364,15 +378,20 @@ const ProjectsBox = () => {
                 <StyledTableCell align="center">القطاع</StyledTableCell>
                 <StyledTableCell align="center">النشاط</StyledTableCell>
                 <StyledTableCell align="center">اسم المشروع</StyledTableCell>
-                <StyledTableCell align="center">الوصف</StyledTableCell>
                 <StyledTableCell align="center">
-                    قيمه المخصص
+                  تاريخ البروتوكول
                 </StyledTableCell>
+                <StyledTableCell align="center">قيمه المخصص</StyledTableCell>
                 <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
+                <StyledTableCell align="center"> نسبه الصرف</StyledTableCell>
                 <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
                 <StyledTableCell align="center"> حالة المشروع</StyledTableCell>
                 <StyledTableCell align="center">بداية المشروع</StyledTableCell>
                 <StyledTableCell align="center">نهاية المشروع</StyledTableCell>
+                <StyledTableCell align="center">
+                  مده تنفيذ المشروع
+                </StyledTableCell>
+
                 <StyledTableCell align="center">
                   هل له مخاطر/معوقات
                 </StyledTableCell>
@@ -405,16 +424,21 @@ const ProjectsBox = () => {
                         : row.name}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.description.length > 20
-                        ? row.description.substring(0, 20) + "..."
-                        : row.description}
+                      {row.assindBudgets.length > 0
+                        ? row.assindBudgets[
+                            row.assindBudgets.length - 1
+                          ].assindDate.split("T")[0]
+                        : "لا يوجد"}
                     </StyledTableCell>
 
                     <StyledTableCell align="center">
-                      {row.budget}
+                      {row.budget.toLocaleString()}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.spentBudget}
+                      {row.spentBudget.toLocaleString()}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {Math.floor(row.percentageSpent)}%
                     </StyledTableCell>
 
                     <StyledTableCell align="center">
@@ -440,6 +464,13 @@ const ProjectsBox = () => {
                     <StyledTableCell align="center">
                       {row.endDate.split("T")[0]}
                     </StyledTableCell>
+
+                    <StyledTableCell align="center">
+                      {row.totalMonths === 0
+                        ? "اقل من شهر"
+                        : `${row.totalMonths} شهر`}
+                    </StyledTableCell>
+
                     <StyledTableCell align="center">
                       {row?.risks?.length > 0 || row?.handicaps?.length > 0
                         ? "يوجد"

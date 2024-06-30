@@ -46,7 +46,7 @@ api.interceptors.response.use(
           MySwal.fire({
             title: "انتهت صلاحيه الجلسة ,الرجاء اعاده تسجيل الدخول",
             icon: "warning",
-            allowOutsideClick: false, // This prevents the modal from closing when clicking outside
+            allowOutsideClick: false,
             confirmButtonText: "موافق",
           }).then((result) => {
             if (result.isConfirmed) {
