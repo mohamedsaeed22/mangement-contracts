@@ -26,7 +26,7 @@ import BudgetChart from "../components/manageContracts/BudgetChart";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
- 
+
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -125,8 +125,8 @@ const ProjectDetails = () => {
             />
           </Box>
           <Stack m={2}>
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} lg={6}>
+            <Grid container spacing={2} mb={2} sx={{ direction: "ltr" }}>
+              <Grid item xs={12} sm={6} lg={3}>
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
@@ -314,6 +314,37 @@ const ProjectDetails = () => {
                       لا يوجد
                     </Typography>
                   )}
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} lg={3}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "1px solid #000",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    المتبقى
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.remaining?.toLocaleString()}
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>

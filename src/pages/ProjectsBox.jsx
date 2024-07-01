@@ -384,7 +384,7 @@ const ProjectsBox = () => {
                 <StyledTableCell align="center">قيمه المخصص</StyledTableCell>
                 <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
                 <StyledTableCell align="center"> نسبه الصرف</StyledTableCell>
-                <StyledTableCell align="center">نسبة الانجاز</StyledTableCell>
+                <StyledTableCell align="center">المتبقى</StyledTableCell>
                 <StyledTableCell align="center"> حالة المشروع</StyledTableCell>
                 <StyledTableCell align="center">بداية المشروع</StyledTableCell>
                 <StyledTableCell align="center">نهاية المشروع</StyledTableCell>
@@ -442,13 +442,7 @@ const ProjectsBox = () => {
                     </StyledTableCell>
 
                     <StyledTableCell align="center">
-                      {row.percentage}%
-                      <Box sx={{ width: "100%", marginTop: "2px" }}>
-                        <LinearProgress
-                          variant="determinate"
-                          value={parseInt(row.percentage)}
-                        />
-                      </Box>
+                      {row.remaining?.toLocaleString()}
                     </StyledTableCell>
 
                     <StyledTableCell align="center">

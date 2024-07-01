@@ -17,6 +17,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+
 });
 
 api.interceptors.request.use(
@@ -55,24 +56,6 @@ api.interceptors.response.use(
             }
           });
         }
-
-        // You can also handle refresh token logic here if needed
-        // Example:
-        /*
-        try {
-          const rs = await refreshMyToken();
-          const { accessToken, expires } = rs;
-          setAccessToken(accessToken, expires);
-          api.defaults.headers.common["x-access-token"] = accessToken;
-          api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-          return api(originalRequest);
-        } catch (refreshError) {
-          if (refreshError.response && refreshError.response.data) {
-            return Promise.reject(refreshError.response.data);
-          }
-          return Promise.reject(refreshError);
-        }
-        */
       }
       if (err.response.status === 403 && err.response.data) {
         return Promise.reject(err.response.data);
