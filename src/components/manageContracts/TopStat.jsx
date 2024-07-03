@@ -64,25 +64,7 @@ const TopStat = ({ stats, allowNav = false }) => {
         )}
 
         {/* Repeat similar pattern for other NavLink instances */}
-        {renderLink(
-          "/projectsbox",
-          <Stack textAlign="center">
-            <Typography variant="h4" fontWeight="bold" color="#01204E">
-              {totalPercentage} %
-            </Typography>
-            <Typography
-              variant="body1"
-              color="initial"
-              sx={{
-                "&:hover": {
-                  textDecoration: allowNav && "underline",
-                },
-              }}
-            >
-              نسبة التنفيذ الفعلى (%)
-            </Typography>
-          </Stack>
-        )}
+     
 
         {renderLink(
           "/projectsbox",
@@ -99,7 +81,7 @@ const TopStat = ({ stats, allowNav = false }) => {
                 },
               }}
             >
-              التكلفة المخططة
+              المخصصات المالية
             </Typography>
           </Stack>
         )}
@@ -120,6 +102,25 @@ const TopStat = ({ stats, allowNav = false }) => {
               }}
             >
               المنصرف الفعلى
+            </Typography>
+          </Stack>
+        )}
+           {renderLink(
+          "/projectsbox",
+          <Stack textAlign="center">
+            <Typography variant="h4" fontWeight="bold" color="#01204E">
+              {Math.floor(( totalSpent/totalBudget) * 100)} %
+            </Typography>
+            <Typography
+              variant="body1"
+              color="initial"
+              sx={{
+                "&:hover": {
+                  textDecoration: allowNav && "underline",
+                },
+              }}
+            >
+              نسبة  المنصرف (%)
             </Typography>
           </Stack>
         )}

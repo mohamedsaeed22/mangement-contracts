@@ -88,7 +88,7 @@ const ProjectsBox = () => {
   const { consultants } = useSelector((state) => state.consultant);
   const [loading, setLoading] = useState(false);
   const [toggleFilter, setToggleFilter] = useState(false);
-  const [page, handleChangePge] = useState(1);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [formData, setFormData] = useState({
@@ -96,7 +96,7 @@ const ProjectsBox = () => {
     status: searchParams.get("projectstatus") || "",
   });
   const handleChangePage = (event, value) => {
-    handleChangePge(value);
+    setPage(value);
   };
   useEffect(() => {
     dispatch(actGetConsultants());
@@ -115,7 +115,7 @@ const ProjectsBox = () => {
 
   useEffect(() => {
     setLoading(true);
-    dispatch(
+     dispatch(
       actGetProjects({
         page,
         search: debouncedSearch,
@@ -128,13 +128,14 @@ const ProjectsBox = () => {
         contractorId: formData.contractorId,
       })
     ).then(() => setLoading(false));
-  }, [dispatch, page, search, formData, debouncedSearch]);
+  }, [dispatch, search, page,  formData, debouncedSearch]);
 
   const handleToggleFilter = () => {
     setToggleFilter(!toggleFilter);
   };
 
   const handleChange = (key, value) => {
+    setPage(1);
     setFormData((prevState) => ({
       ...prevState,
       [key]: value,
