@@ -125,12 +125,12 @@ const ProjectDetails = () => {
             />
           </Box>
           <Stack m={2}>
-            <Grid container spacing={2} mb={2} sx={{ direction: "ltr" }}>
-              <Grid item xs={12} sm={6} lg={3}>
+            <Grid container spacing={2} mb={3} sx={{ direction: "ltr" }}>
+              <Grid item xs={12} sm={6} lg={4}>
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -144,6 +144,8 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
@@ -161,11 +163,11 @@ const ProjectDetails = () => {
                 </Box>
               </Grid>
 
-              <Grid item xs={12} sm={6} lg={3}>
+              <Grid item xs={12} sm={6} lg={4}>
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -179,6 +181,212 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    القطاع
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.sectorName}
+                  </Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} lg={4}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    النشاط
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.activityName}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mb={3} sx={{ direction: "ltr" }}>
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    وصف المشروع
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project?.description}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mb={3} sx={{ direction: "ltr" }}>
+              <Grid item xs={12} sm={6} lg={4}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    اجمالى المخصصات
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.budget?.toLocaleString()}
+                  </Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} lg={4}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    اجمالى المنصرف
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.spentBudget?.toLocaleString()}
+                  </Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} lg={4}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    اجمالى المتبقى
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.remaining?.toLocaleString()}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mb={3} sx={{ direction: "ltr" }}>
+              <Grid item xs={12} sm={6} lg={4}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                   }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
@@ -239,11 +447,11 @@ const ProjectDetails = () => {
                 </Box>
               </Grid>
 
-              <Grid item xs={12} sm={6} lg={3}>
+              <Grid item xs={12} sm={6} lg={4}>
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -257,6 +465,8 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
@@ -317,11 +527,11 @@ const ProjectDetails = () => {
                 </Box>
               </Grid>
 
-              <Grid item xs={12} sm={6} lg={3}>
+              <Grid item xs={12} sm={6} lg={4}>
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -335,26 +545,28 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
                     }}
                   >
-                    المتبقى
+                    نسبه الصرف
                   </Typography>
                   <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project.remaining?.toLocaleString()}
+                    {Math.floor(project.percentageSpent)}%
                   </Typography>
                 </Box>
               </Grid>
             </Grid>
 
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} sm={6} lg={3}>
+            <Grid container spacing={2} mb={3} sx={{ direction: "ltr" }}>
+              <Grid item xs={12} sm={6} lg={4}>
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -368,23 +580,26 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
                     }}
                   >
-                    النشاط
+                    تاريخ البدايه
                   </Typography>
                   <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project.activityName}
+                    {project.startDate?.split("T")[0]}
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
+
+              <Grid item xs={12} sm={6} lg={4}>
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -398,6 +613,78 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    تاريخ النهايه
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.endDate?.split("T")[0]}
+                  </Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} lg={4}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    عدد الشهور
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {project.totalMonths === 0
+                      ? "اقل من شهر"
+                      : `${project.totalMonths} شهر`}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mb={3} sx={{ direction: "ltr" }}>
+              <Grid item xs={12} sm={6} lg={3}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
@@ -414,7 +701,7 @@ const ProjectDetails = () => {
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -428,6 +715,8 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
@@ -444,7 +733,7 @@ const ProjectDetails = () => {
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -458,6 +747,40 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 10,
+                      paddingInline: "6px",
+                    }}
+                  >
+                    حاله المشروع
+                  </Typography>
+                  <Typography variant="body1" sx={{ direction: "ltr" }}>
+                    {getProjectStateName(project.status)}
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <Box
+                  sx={{
+                    backgroundColor: "#F5F5F5 !important",
+                    border: "2px solid #475CA7",
+                    borderRadius: "6px",
+                    padding: "15px 10px",
+                    position: "relative",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "13px",
+                      position: "absolute",
+                      top: "-12px",
+                      backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
@@ -472,262 +795,12 @@ const ProjectDetails = () => {
               </Grid>
             </Grid>
 
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    عدد الشهور
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project.totalMonths === 0
-                      ? "اقل من شهر"
-                      : `${project.totalMonths} شهر`}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    نسبه الصرف
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {Math.floor(project.percentageSpent)}%
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    اجمالى المخصصات
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project.budget?.toLocaleString()}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    اجمالى المنصرف
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project.spentBudget?.toLocaleString()}
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    تاريخ البدايه
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project.startDate?.split("T")[0]}
-                  </Typography>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    تاريخ النهايه
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project.endDate?.split("T")[0]}
-                  </Typography>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    القطاع
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project.sectorName}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={3}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    حاله المشروع
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {getProjectStateName(project.status)}
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mb={2}>
+            <Grid container spacing={2} mb={3} sx={{ direction: "ltr" }}>
               <Grid item xs={12} sm={6}>
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -741,6 +814,8 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
@@ -759,7 +834,7 @@ const ProjectDetails = () => {
                 <Box
                   sx={{
                     backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
+                    border: "2px solid #475CA7",
                     borderRadius: "6px",
                     padding: "15px 10px",
                     position: "relative",
@@ -773,6 +848,8 @@ const ProjectDetails = () => {
                       position: "absolute",
                       top: "-12px",
                       backgroundColor: "#F5F5F5",
+                      color: "#475CA7",
+                      fontWeight: "bold",
                       left: 15,
                       zIndex: 10,
                       paddingInline: "6px",
@@ -784,39 +861,6 @@ const ProjectDetails = () => {
                     {handicaps && handicaps.length > 0
                       ? handicaps[0].description
                       : "لا يوجد معوقات"}
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mb={2}>
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    backgroundColor: "#F5F5F5 !important",
-                    border: "1px solid #000",
-                    borderRadius: "6px",
-                    padding: "15px 10px",
-                    position: "relative",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "13px",
-                      position: "absolute",
-                      top: "-12px",
-                      backgroundColor: "#F5F5F5",
-                      left: 15,
-                      zIndex: 10,
-                      paddingInline: "6px",
-                    }}
-                  >
-                    تفاصيل المشروع
-                  </Typography>
-                  <Typography variant="body1" sx={{ direction: "ltr" }}>
-                    {project?.description}
                   </Typography>
                 </Box>
               </Grid>
