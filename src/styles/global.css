@@ -159,6 +159,12 @@ input[type="number"]::-webkit-outer-spin-button {
   .budget-chart-container {
     margin-right: auto !important;
   }
+  .test {
+    /* width: 100% !important; */
+    page-break-inside: avoid !important;
+    box-sizing: border-box !important;
+    break-inside: avoid !important;
+  }
   .print-override {
     height: auto !important;
     overflow: visible !important;
@@ -174,7 +180,7 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   @page :first {
-     margin: 0in !important;
+    margin: 0in !important;
   }
 }
 #printed-table {
