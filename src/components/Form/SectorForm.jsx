@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import { Box, Stack, TextField } from "@mui/material";
 import MyBtn from "../common/UI/MyBtn";
-import AddIcon from "../../assets/icon/add-icon.svg";
+import AddIcon from "../../assets/icon/Vector.svg";
 import EditIcon from "../../assets/icon/edit-icon.svg";
 import {
   actCreateSector,
@@ -26,7 +26,7 @@ const SectorForm = ({
         .unwrap()
         .then((e) => {
           notifySuccess("تم تحديث القطاع بنجاح");
-          dispatch(actGetSectors())
+          dispatch(actGetSectors());
           handleCloseModal();
         })
         .catch((err) => {

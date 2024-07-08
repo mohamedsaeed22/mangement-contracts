@@ -197,3 +197,26 @@ input[type="number"]::-webkit-outer-spin-button {
   padding-inline: 10px;
   z-index: 1000;
 }
+
+.muirtl-ue3nih-MuiStack-root,
+.muirtl-1y70p81-MuiStack-root {
+  justify-content: flex-end !important;
+}
+
+.muirtl-1kigyx2-MuiStack-root {
+  justify-content: left !important;
+}
+.muirtl-apqrd9-MuiTableBody-root tr td {
+  
+  border-radius: 2px;
+}
+.muirtl-apqrd9-MuiTableBody-root tr {
+  border-radius: 20px;
+}
+
+.muirtl-1kigyx2-MuiStack-root button {
+  background-color: transparent;
+}
+.muirtl-1kigyx2-MuiStack-root button:hover {
+  background-color: #bdbdbec4;
+}

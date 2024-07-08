@@ -23,6 +23,7 @@ import {
 import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
+import MyIcon from "../components/common/UI/MyIcon";
 import actDeleteSector from "../store/sector/act/actDeleteSector";
 import actGetSectors from "../store/sector/act/actGetSectors";
 import SectorForm from "../components/Form/SectorForm";
@@ -124,9 +125,9 @@ const ManageSectors = () => {
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">اسم القطاع</StyledTableCell>
+                  <StyledTableCell align="left">اسم القطاع</StyledTableCell>
                   <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
-                  <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -145,7 +146,7 @@ const ManageSectors = () => {
                         }}
                         onClick={() => navigate(`/sector/${row.id}`)}
                       >
-                        <StyledTableCell align="center">
+                        <StyledTableCell align="left">
                           {row.name}
                         </StyledTableCell>
                         <StyledTableCell align="center">
@@ -157,22 +158,15 @@ const ManageSectors = () => {
                             justifyContent="center"
                             gap={1}
                           >
-                            <MyBtn
-                              width={100}
-                              height={30}
+                            <MyIcon
                               icon={EditIcon}
-                              title={"تعديل"}
                               handleBtnClick={(e) => {
                                 e.stopPropagation();
                                 handleUpdateSector(row);
                               }}
                             />
-                            <MyBtn
-                              width={100}
-                              height={30}
-                              bgColor="red"
+                            <MyIcon
                               icon={DeleteIcon}
-                              title={"حذف"}
                               handleBtnClick={(e) => {
                                 e.stopPropagation();
                                 handleDeleteSector(row);

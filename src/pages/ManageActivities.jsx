@@ -27,13 +27,15 @@ import ActivityForm from "../components/Form/ActivityForm";
 import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
+import MyIcon from "../components/common/UI/MyIcon";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
 import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#BECAF9",
+    backgroundColor: "#A0ACD4",
     color: "#000",
+    borderRadius: 2,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -124,12 +126,12 @@ const ManageActivities = () => {
               <Table aria-label="customized table">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="center">النشاط</StyledTableCell>
+                    <StyledTableCell align="left">النشاط</StyledTableCell>
                     <StyledTableCell align="center">الوصف</StyledTableCell>
                     <StyledTableCell align="center">
                       عدد المشاريع
                     </StyledTableCell>
-                    <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                    <StyledTableCell align="left"></StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -144,11 +146,13 @@ const ManageActivities = () => {
                         <StyledTableRow
                           sx={{
                             cursor: "pointer",
+                            padding: "50px",
+                            
                             "&:hover": { backgroundColor: "#ccc !important" },
                           }}
                           onClick={() => navigate(`/activity/${row.id}`)}
                         >
-                          <StyledTableCell align="center">
+                          <StyledTableCell align="left">
                             {row.name}
                           </StyledTableCell>
                           <StyledTableCell align="center">
@@ -159,28 +163,21 @@ const ManageActivities = () => {
                           <StyledTableCell align="center">
                             {row.totalProjects}
                           </StyledTableCell>
-                          <StyledTableCell align="center">
+                          <StyledTableCell align="left">
                             <Stack
                               direction="row"
                               justifyContent="center"
                               gap={1}
                             >
-                              <MyBtn
-                                width={100}
-                                height={40}
+                              <MyIcon
                                 icon={EditIcon}
-                                title={"تعديل"}
                                 handleBtnClick={(e) => {
                                   e.stopPropagation();
                                   handleUpdateActivity(row);
                                 }}
                               />
-                              <MyBtn
-                                width={100}
-                                height={40}
-                                bgColor="red"
+                              <MyIcon
                                 icon={DeleteIcon}
-                                title={"حذف"}
                                 handleBtnClick={(e) => {
                                   e.stopPropagation();
                                   handleDeleteActivity(row);
