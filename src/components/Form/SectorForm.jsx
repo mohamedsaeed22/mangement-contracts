@@ -6,7 +6,7 @@ import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import { Box, Stack, TextField } from "@mui/material";
 import MyBtn from "../common/UI/MyBtn";
 import AddIcon from "../../assets/icon/Vector.svg";
-import EditIcon from "../../assets/icon/edit-icon.svg";
+import EditIcon from "../../assets/icon/edit-white.svg";
 import {
   actCreateSector,
   actGetSectors,

@@ -28,10 +28,11 @@ import actGetConsultants from "../store/consultant/act/actGetConsultants";
 import actDeleteConsultant from "../store/consultant/act/actDeleteConsultant";
 import { filterConsultants } from "../store/consultant/consultantSlice";
 import { useNavigate } from "react-router-dom";
+import MyIcon from "../components/common/UI/MyIcon";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#BECAF9",
+    backgroundColor: "#A0ACD4",
     color: "#000",
   },
   [`&.${tableCellClasses.body}`]: {
@@ -127,11 +128,9 @@ const ManageConsultants = () => {
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">
-                    اسم الاستشارى
-                  </StyledTableCell>
+                  <StyledTableCell align="left">اسم الاستشارى</StyledTableCell>
                   <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
-                  <StyledTableCell align="center">الإجراءات</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -151,7 +150,7 @@ const ManageConsultants = () => {
                         }}
                         onClick={() => navigate(`/consultant/id/${row.id}`)}
                       >
-                        <StyledTableCell align="center">
+                        <StyledTableCell align="left">
                           {row.name}
                         </StyledTableCell>
                         <StyledTableCell align="center">
@@ -163,22 +162,15 @@ const ManageConsultants = () => {
                             justifyContent="center"
                             gap={1}
                           >
-                            <MyBtn
-                              width={100}
-                              height={40}
+                            <MyIcon
                               icon={EditIcon}
-                              title={"تعديل"}
                               handleBtnClick={(e) => {
                                 e.stopPropagation();
                                 handleUpdateConsultant(row);
                               }}
                             />
-                            <MyBtn
-                              width={100}
-                              height={40}
-                              bgColor="red"
+                            <MyIcon
                               icon={DeleteIcon}
-                              title={"حذف"}
                               handleBtnClick={(e) => {
                                 e.stopPropagation();
                                 handleDeleteConsultant(row);

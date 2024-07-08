@@ -31,10 +31,10 @@ import {
 import ContractorForm from "../components/Form/ContractorForm";
 import actGetContractors from "../store/contractor/act/actGetContractors";
 import { useNavigate } from "react-router-dom";
-
+import MyIcon from "./../components/common/UI/MyIcon";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#BECAF9",
+    backgroundColor: "#A0ACD4",
     color: "#000",
   },
   [`&.${tableCellClasses.body}`]: {
@@ -131,9 +131,9 @@ const ManageContractor = () => {
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">اسم المقاول</StyledTableCell>
+                  <StyledTableCell align="left">اسم المقاول</StyledTableCell>
                   <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
-                  <StyledTableCell align="center">الإجراءات</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -152,7 +152,7 @@ const ManageContractor = () => {
                       }}
                       onClick={() => navigate(`/contractor/id/${row.id}`)}
                     >
-                      <StyledTableCell align="center">
+                      <StyledTableCell align="left">
                         {row.name}
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -160,23 +160,16 @@ const ManageContractor = () => {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <Stack direction="row" justifyContent="center" gap={1}>
-                          <MyBtn
-                            width={100}
-                            height={40}
+                          <MyIcon
                             icon={EditIcon}
-                            title={"تعديل"}
                             handleBtnClick={(e) => {
                               e.stopPropagation(); // Stop propagation here
                               handleUpdateContractor(row);
                             }}
                           />
                           {/* <StopPropagation> */}
-                          <MyBtn
-                            width={100}
-                            height={40}
-                            bgColor="red"
+                          <MyIcon
                             icon={DeleteIcon}
-                            title={"حذف"}
                             handleBtnClick={(e) => {
                               e.stopPropagation(); // Stop propagation here
                               handleDeleteContractor(row);

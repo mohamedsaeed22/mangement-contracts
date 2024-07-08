@@ -27,10 +27,10 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
-import AddIcon from "../assets/icon/add-icon.svg";
-import DeleteIcon from "../assets/icon/delete-icon.svg";
+import AddIcon from "../assets/icon/Vector.svg";
+import DeleteIcon from "../assets/icon/delete-white.svg";
 
-import EditIcon from "../assets/icon/edit-icon.svg";
+import EditIcon from "../assets/icon/edit-white.svg";
 import MyInput from "../components/Form/Input/MyInput";
 import MyInputsWrapper from "../components/common/UI/MyInputsWrapper";
 import MyDatePicker from "../components/Form/Input/MyDatePicker";
@@ -157,6 +157,7 @@ const Project = () => {
     if (id && project) {
       setMyProject({
         ...project,
+        budget: "",
         startDate: dayjs(dayjs(project.startDate).toISOString()),
         endDate: dayjs(dayjs(project.endDate).toISOString()),
         showRisks: riskObj?.id ? "yes" : "no",
@@ -184,7 +185,6 @@ const Project = () => {
       setContractorsIds(project?.contractors);
     }
   }, [id, project, handicapObj, riskObj, contractorObj, consultantObj]);
-  console.log(myProject);
   const handleAddMoney = () => {
     console.log("values");
   };
@@ -793,6 +793,7 @@ const Project = () => {
                               <Box
                                 border="1px solid #ddd"
                                 sx={{
+                                  alignSelf: "center",
                                   borderRadius: "8px",
                                 }}
                                 onClick={() => {
@@ -856,13 +857,13 @@ const Project = () => {
                                   setFieldValue("budget", "");
                                 }}
                                 alignSelf="flex-start"
-                                bgcolor="rgb(71, 92, 167)"
+                                bgcolor="#2E3344"
                               >
                                 <IconButton color="secondary">
                                   <img
                                     src={AddIcon}
                                     alt="add budget"
-                                    style={{ width: "20px" }}
+                                    style={{ width: "15px", height: "15px" }}
                                   />
                                 </IconButton>
                               </Box>
@@ -902,7 +903,10 @@ const Project = () => {
                               <Tooltip title="حذف مخصص" placement="top" arrow>
                                 <Box
                                   border="1px solid #ddd"
-                                  sx={{ borderRadius: "8px" }}
+                                  sx={{
+                                    borderRadius: "8px",
+                                    alignSelf: "center",
+                                  }}
                                   onClick={() => {
                                     // const
                                     let myFilterArr = [];
@@ -941,7 +945,7 @@ const Project = () => {
                                     <img
                                       src={DeleteIcon}
                                       alt="add budget"
-                                      style={{ width: "20px" }}
+                                      style={{ width: "15px", height: "15px" }}
                                     />
                                   </IconButton>
                                 </Box>
@@ -996,6 +1000,7 @@ const Project = () => {
                               <Box
                                 border="1px solid #ddd"
                                 sx={{
+                                  alignSelf: "center",
                                   borderRadius: "8px",
                                 }}
                                 onClick={() => {
@@ -1069,13 +1074,13 @@ const Project = () => {
                                   setFieldValue("spent", "");
                                 }}
                                 alignSelf="flex-start"
-                                bgcolor="rgb(71, 92, 167)"
+                                bgcolor="#2E3344"
                               >
                                 <IconButton color="secondary">
                                   <img
                                     src={AddIcon}
                                     alt="add budget"
-                                    style={{ width: "20px" }}
+                                    style={{ width: "15px", height: "15px" }}
                                   />
                                 </IconButton>
                               </Box>
@@ -1114,7 +1119,10 @@ const Project = () => {
                               <Tooltip title="حذف منصرف" placement="top" arrow>
                                 <Box
                                   border="1px solid #ddd"
-                                  sx={{ borderRadius: "8px" }}
+                                  sx={{
+                                    borderRadius: "8px",
+                                    alignSelf: "center",
+                                  }}
                                   onClick={() => {
                                     // const
                                     let myFilterArr = [];
@@ -1161,7 +1169,7 @@ const Project = () => {
                                     <img
                                       src={DeleteIcon}
                                       alt="add budget"
-                                      style={{ width: "20px" }}
+                                      style={{ width: "15px", height: "15px" }}
                                     />
                                   </IconButton>
                                 </Box>
@@ -1209,13 +1217,33 @@ const Project = () => {
                                   >
                                     <FormControlLabel
                                       value="no"
-                                      control={<Radio size="small" />}
+                                      control={
+                                        <Radio
+                                          size="small"
+                                          sx={{
+                                            color: "#2E3344",
+                                            "&.Mui-checked": {
+                                              color: "#2E3344",
+                                            },
+                                          }}
+                                        />
+                                      }
                                       label="لا"
                                       labelPlacement="start"
                                     />
                                     <FormControlLabel
                                       value="yes"
-                                      control={<Radio size="small" />}
+                                      control={
+                                        <Radio
+                                          size="small"
+                                          sx={{
+                                            color: "#2E3344",
+                                            "&.Mui-checked": {
+                                              color: "#2E3344",
+                                            },
+                                          }}
+                                        />
+                                      }
                                       label="نعم"
                                       labelPlacement="start"
                                     />
@@ -1321,13 +1349,33 @@ const Project = () => {
                                   >
                                     <FormControlLabel
                                       value="no"
-                                      control={<Radio size="small" />}
+                                      control={
+                                        <Radio
+                                          size="small"
+                                          sx={{
+                                            color: "#2E3344",
+                                            "&.Mui-checked": {
+                                              color: "#2E3344",
+                                            },
+                                          }}
+                                        />
+                                      }
                                       label="لا"
                                       labelPlacement="start"
                                     />
                                     <FormControlLabel
                                       value="yes"
-                                      control={<Radio size="small" />}
+                                      control={
+                                        <Radio
+                                          size="small"
+                                          sx={{
+                                            color: "#2E3344",
+                                            "&.Mui-checked": {
+                                              color: "#2E3344",
+                                            },
+                                          }}
+                                        />
+                                      }
                                       label="نعم"
                                       labelPlacement="start"
                                     />

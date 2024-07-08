@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import MyBtn from "../components/common/UI/MyBtn";
-import EditIcon from "../assets/icon/edit-icon.svg";
+import EditIcon from "../assets/icon/edit-white.svg";
 import PrinterIcon from "../assets/icon/printer-icon.svg";
 
 import { NavLink, useNavigate, useParams } from "react-router-dom";
@@ -28,84 +28,6 @@ import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import MyShowInput from "./MyShowInput";
 import BudgetChart2 from "./BudgetChart2";
-// const project = {
-//   id: "dbcb1cc5-083c-4c5e-07f8-08dc9288fdfa",
-//   name: "مشروع 400 الف فدان ",
-//   description: "مشروع زراعة 400 الف فدان",
-//   startDate: "2024-07-07T21:00:00",
-//   endDate: "2028-06-28T21:00:00",
-//   percentage: 5,
-//   percentageSpent: 20,
-//   remaining: 21477,
-//   totalMonths: 24,
-//   budget: 450,
-//   spentBudget: 5,
-//   status: 2,
-//   activityName: "5af4e278-0079-4279-82a8-08dc8853219e",
-//   createdAt: "2024-06-22T11:32:33.1304906",
-//   updatedAt: "0001-01-01T00:00:00",
-//   updatedBy: "00000000-0000-0000-0000-000000000000",
-//   createdBy: "10c7ee03-e84d-48c7-b736-a20e7bb5555c",
-//   sectorName: "e338d130-0b41-46bc-1d33-08dc8ae456d6",
-//   risks: [],
-//   handicaps: [],
-//   consultants: null,
-//   contractors: null,
-//   spentBudgets: [
-//     {
-//       id: "db34e5b1-5ff2-4f05-ef64-08dc94e0346b",
-//       spentDate: "2024-08-14T21:00:00",
-//       spent: 32521,
-//       projectId: "dbcb1cc5-083c-4c5e-07f8-08dc9288fdfa",
-//       createdAt: "0001-01-01T00:00:00",
-//       updatedAt: null,
-//       updatedBy: null,
-//       createdBy: null,
-//     },
-//     {
-//       id: "db34e5b1-5ff2-4f05-ef64-08dc94e0346b",
-//       spentDate: "2024-08-14T21:00:00",
-//       spent: 32521,
-//       projectId: "dbcb1cc5-083c-4c5e-07f8-08dc9288fdfa",
-//       createdAt: "0001-01-01T00:00:00",
-//       updatedAt: null,
-//       updatedBy: null,
-//       createdBy: null,
-//     },
-//     {
-//       id: "db34e5b1-5ff2-4f05-ef64-08dc94e0346b",
-//       spentDate: "2024-08-14T21:00:00",
-//       spent: 32521,
-//       projectId: "dbcb1cc5-083c-4c5e-07f8-08dc9288fdfa",
-//       createdAt: "0001-01-01T00:00:00",
-//       updatedAt: null,
-//       updatedBy: null,
-//       createdBy: null,
-//     },
-//   ],
-//   assindBudgets: [
-//     {
-//       id: "db34e5b1-5ff2-4f05-ef64-08dc94e0346b",
-//       assidDate: "2024-08-14T21:00:00",
-//       budget: 32521442,
-//       projectId: "dbcb1cc5-083c-4c5e-07f8-08dc9288fdfa",
-//       createdAt: "0001-01-01T00:00:00",
-//       updatedAt: null,
-//       updatedBy: null,
-//       createdBy: null,
-//     },
-//     {
-//       id: "db34e5b1-5ff2-4f05-ef64-08dc94e0346b",
-//       assidDate: "2024-08-14T21:00:00",
-//       budget: 32521442,
-//       projectId: "dbcb1cc5-083c-4c5e-07f8-08dc9288fdfa",
-//       createdAt: "0001-01-01T00:00:00",
-//       updatedAt: null,
-//       updatedBy: null,
-//       createdBy: null,
-//     },
-//   ],
-// };
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -149,28 +71,6 @@ const ProjectDetails = () => {
             <MyBtn
               icon={PrinterIcon}
               title="طباعة"
-              // handleBtnClick={() => {
-              //   html2canvas(document.body, {
-              //     scale: 2,
-              //     width: document.documentElement.scrollWidth,
-              //     height: document.documentElement.scrollHeight,
-              //   }).then((canvas) => {
-              //     const imgData = canvas.toDataURL("image/png");
-              //     const printWindow = window.open("", "_blank");
-              //     printWindow.document.write(`
-              //        <style>
-              //          body, html { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100%; }
-              //          .print-override {
-              //           height: auto !important;
-              //           overflow: visible !important;
-              //         }
-              //          img { max-width: 100%; max-height: 100vh; margin: auto; display: block; }
-              //        </style>
-              //        <img src="${imgData}" onload="window.print();window.close()" />
-              //      `);
-              //     printWindow.document.close();
-              //   });
-              // }}
               handleBtnClick={handlePrint}
             />
             <NavLink to={`/project/edit/${id}`}>
@@ -203,10 +103,15 @@ const ProjectDetails = () => {
               }}
             />
         */}
-            <BudgetChart2
-              assindBudgets={project.assindBudgets}
-              spentBudgets={project.spentBudgets}
-            />
+            {!(
+              project?.assindBudgets?.length === 0 &&
+              project?.spentBudgets?.length === 0
+            ) && (
+              <BudgetChart2
+                assindBudgets={project.assindBudgets}
+                spentBudgets={project.spentBudgets}
+              />
+            )}
           </Box>
           <Stack m={4}>
             {/* top grid */}

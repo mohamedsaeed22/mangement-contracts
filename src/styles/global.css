@@ -207,7 +207,6 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-content: left !important;
 }
 .muirtl-apqrd9-MuiTableBody-root tr td {
-  
   border-radius: 2px;
 }
 .muirtl-apqrd9-MuiTableBody-root tr {
@@ -220,3 +219,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .muirtl-1kigyx2-MuiStack-root button:hover {
   background-color: #bdbdbec4;
 }
+
+/* input[type="radio"] {
+  accent-color: "#2E3344";
+} */

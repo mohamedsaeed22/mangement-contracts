@@ -32,7 +32,7 @@ const MyBtn = ({ icon, title, handleBtnClick, type, width, bgColor }) => {
           src={icon}
           style={{
             display: "inline-block",
-            width: "20px",
+            width: "15px",
             marginRight: "10px",
           }}
           alt="my-custom-btn"

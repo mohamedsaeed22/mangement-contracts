@@ -35,7 +35,7 @@ export default function MyModal({
       left: 0,
       right: 0,
       height: "50px",
-      backgroundColor: "#475CA7",
+      backgroundColor: "#2E3344",
       display: "flex",
       alignItems: "center",
       fontWeight: "bold",
