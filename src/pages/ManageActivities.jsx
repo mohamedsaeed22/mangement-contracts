@@ -163,10 +163,10 @@ const ManageActivities = () => {
                           <StyledTableCell align="center">
                             {row.totalProjects}
                           </StyledTableCell>
-                          <StyledTableCell align="left">
+                          <StyledTableCell align="right">
                             <Stack
                               direction="row"
-                              justifyContent="center"
+                              justifyContent="right"
                               gap={1}
                             >
                               <MyIcon

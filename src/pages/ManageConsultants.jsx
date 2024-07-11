@@ -156,12 +156,8 @@ const ManageConsultants = () => {
                         <StyledTableCell align="center">
                           {row.totalProjects}
                         </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Stack
-                            direction="row"
-                            justifyContent="center"
-                            gap={1}
-                          >
+                        <StyledTableCell align="right">
+                          <Stack direction="row" justifyContent="right" gap={1}>
                             <MyIcon
                               icon={EditIcon}
                               handleBtnClick={(e) => {

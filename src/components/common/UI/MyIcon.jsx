@@ -15,13 +15,14 @@ const MyIcon = ({ icon, title, handleBtnClick, type, width, bgColor }) => {
         alignItems: "center",
         cursor: "pointer",
         width: width,
+        backgroundColor: "transparent",
       }}
       type={type}
       onClick={handleBtnClick}
     >
       <Typography
         variant="body1"
-        sx={{ color: "#fff", fontSize: "14px", textAlign: "center" }}
+        sx={{ fontSize: "14px", textAlign: "center" }}
         alignSelf="flex-start"
       >
         {title}

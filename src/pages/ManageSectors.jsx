@@ -100,11 +100,13 @@ const ManageSectors = () => {
         handleClose={handleCloseModal}
         title="تعديل بيانات قطاع"
       >
-        <SectorForm
-          isUpdate={true}
-          initialValues={updateSector}
-          handleCloseModal={handleCloseModal}
-        />
+        <Box textAlign="right" >
+          <SectorForm
+            isUpdate={true}
+            initialValues={updateSector}
+            handleCloseModal={handleCloseModal}
+          />
+        </Box>
       </MyModal>
       <Heading title="ادارة القطاعات" />
       <Box
@@ -152,12 +154,8 @@ const ManageSectors = () => {
                         <StyledTableCell align="center">
                           {row.totalProjects}
                         </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Stack
-                            direction="row"
-                            justifyContent="center"
-                            gap={1}
-                          >
+                        <StyledTableCell align="right">
+                          <Stack direction="row" justifyContent="right" gap={1}>
                             <MyIcon
                               icon={EditIcon}
                               handleBtnClick={(e) => {

@@ -61,7 +61,6 @@ const SectorForm = ({
       }) => (
         <Stack
           component="form"
-          id="Activity-form"
           flexWrap="wrap"
           direction={isUpdate ? "column" : "row"}
           gap={2}

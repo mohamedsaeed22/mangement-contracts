@@ -152,14 +152,12 @@ const ManageContractor = () => {
                       }}
                       onClick={() => navigate(`/contractor/id/${row.id}`)}
                     >
-                      <StyledTableCell align="left">
-                        {row.name}
-                      </StyledTableCell>
+                      <StyledTableCell align="left">{row.name}</StyledTableCell>
                       <StyledTableCell align="center">
                         {row.totalProjects}
                       </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Stack direction="row" justifyContent="center" gap={1}>
+                      <StyledTableCell align="right">
+                        <Stack direction="row" justifyContent="right" gap={1}>
                           <MyIcon
                             icon={EditIcon}
                             handleBtnClick={(e) => {
