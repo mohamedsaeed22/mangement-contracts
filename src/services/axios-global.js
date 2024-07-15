@@ -9,7 +9,11 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
-const BASE_URL = "http://172.16.3.230:9433/";
+// for production use only
+// const BASE_URL = "http://172.16.3.230:9433/";
+
+// for development use only
+const BASE_URL = "http://172.16.3.230:9099/";
 
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 const api = axios.create({
@@ -17,7 +21,6 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-
 });
 
 api.interceptors.request.use(

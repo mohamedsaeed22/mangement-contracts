@@ -137,56 +137,61 @@ const ManageContractor = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {contractors?.map((row) => (
-                  <Tooltip
-                    title="اضغط لعرض المقاول"
-                    placement="top"
-                    arrow
-                    key={row.id}
-                  >
-                    <StyledTableRow
+                {contractors.length > 0 ? (
+                  contractors?.map((row) => (
+                    <Tooltip
+                      title="اضغط لعرض المقاول"
+                      placement="top"
+                      arrow
                       key={row.id}
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { backgroundColor: "#ccc !important" },
-                      }}
-                      onClick={() => navigate(`/contractor/id/${row.id}`)}
                     >
-                      <StyledTableCell align="left">{row.name}</StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.totalProjects}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        <Stack direction="row" justifyContent="right" gap={1}>
-                          <MyIcon
-                            icon={EditIcon}
-                            handleBtnClick={(e) => {
-                              e.stopPropagation(); // Stop propagation here
-                              handleUpdateContractor(row);
-                            }}
-                          />
-                          {/* <StopPropagation> */}
-                          <MyIcon
-                            icon={DeleteIcon}
-                            handleBtnClick={(e) => {
-                              e.stopPropagation(); // Stop propagation here
-                              handleDeleteContractor(row);
-                            }}
-                          />
-                          {/* </StopPropagation> */}
-                        </Stack>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  </Tooltip>
-                ))}
+                      <StyledTableRow
+                        key={row.id}
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#ccc !important" },
+                        }}
+                        onClick={() => navigate(`/contractor/id/${row.id}`)}
+                      >
+                        <StyledTableCell align="left">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.totalProjects}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          <Stack direction="row" justifyContent="right" gap={1}>
+                            <MyIcon
+                              icon={EditIcon}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation(); // Stop propagation here
+                                handleUpdateContractor(row);
+                              }}
+                            />
+                            {/* <StopPropagation> */}
+                            <MyIcon
+                              icon={DeleteIcon}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation(); // Stop propagation here
+                                handleDeleteContractor(row);
+                              }}
+                            />
+                            {/* </StopPropagation> */}
+                          </Stack>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    </Tooltip>
+                  ))
+                ) : (
+                  <StyledTableRow>
+                    <StyledTableCell align="center" colSpan={3}>
+                      لا يوجد مقاولين
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
               </TableBody>
             </Table>
           </TableContainer>
-          {contractors?.length === 0 && (
-            <Box textAlign="center" mt={3}>
-              لا يوجد مقاولين
-            </Box>
-          )}
         </Box>
         {/* </LoadingWrapper> */}
       </Box>
