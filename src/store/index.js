@@ -13,6 +13,7 @@ import projectConsultantReducer from "./projectConsultant/projectConsultantSlice
 import projectContractorReducer from "./projectContractor/projectConctractorSlice";
 import spendBudgetedReducer from "./spentBudget/spentBudgetSlice";
 import assignBudgetedReducer from "./budget/assignBudgetSlice";
+import userReducer from "./users/userSlice";
 
 const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
     sector: sectorReducer,
     spentBudget: spendBudgetedReducer,
     assignBudget: assignBudgetedReducer,
+    user: userReducer,
   },
 });
 

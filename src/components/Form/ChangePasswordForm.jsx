@@ -10,50 +10,39 @@ import ActivitySchema from "../../validations/ActivitySchema";
 import MyBtn from "../common/UI/MyBtn";
 import AddIcon from "../../assets/icon/Vector.svg";
 import EditIcon from "../../assets/icon/edit-white.svg";
+import resetPasswordSchema from "../../validations/resetPasswordSchema";
+import { actChangepassword } from "../../store/users/userSlice";
 
-const defaultInitialSupervisor = {
-  name: "",
-  description: "",
-  oldPassword: "",
-   newPassword: "",
+const defualtUserObj = {
+  currentPassword: "",
+  newPassword: "",
   confirmPassword: "",
 };
 
 const ChangePasswordForm = ({
-  initialValues = defaultInitialSupervisor,
+  initialValues = defualtUserObj,
   isUpdate = false,
   handleCloseModal,
 }) => {
   const dispatch = useDispatch();
   const handleFormSubmit = (values, { resetForm }) => {
-    if (isUpdate) {
-      dispatch(actUpdateActivity(values))
-        .unwrap()
-        .then((e) => {
-          notifySuccess("تم تحديث النشاط بنجاح");
-          handleCloseModal();
-        })
-        .catch((err) => {
-          notifyFailed(err + "حدث خطأ أثناء تحديث النشاط");
-        });
-    } else {
-      dispatch(actCreateActivity(values))
-        .unwrap()
-        .then((e) => {
-          notifySuccess("تم اضافة النشاط بنجاح");
-          resetForm();
-        })
-        .catch((err) => {
-          notifyFailed(err);
-        });
-    }
+    const { currentPassword, newPassword } = values;
+    dispatch(actChangepassword({ currentPassword, newPassword }))
+      .unwrap()
+      .then((e) => {
+        notifySuccess("تم تحديث كلمه المرور بنجاح");
+        resetForm();
+      })
+      .catch((err) => {
+        notifyFailed(err + "حدث خطأ أثناء تحديث كلمه المرور");
+      });
   };
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValues}
-      validationSchema={ActivitySchema}
+      validationSchema={resetPasswordSchema}
     >
       {({
         values,
@@ -76,39 +65,59 @@ const ChangePasswordForm = ({
         >
           <TextField
             sx={{ minWidth: 220 }}
-            name="name"
+            name="currentPassword"
             label="كلمه المرور القديمه"
-            value={values.name}
+            value={values.currentPassword}
             size="small"
             onChange={handleChange}
             onBlur={handleBlur}
-            error={!!touched.name && !!errors.name}
+            error={!!touched.currentPassword && !!errors.currentPassword}
             helperText={
-              touched.name && errors.name ? touched.name && errors.name : " "
+              touched.currentPassword && errors.currentPassword
+                ? touched.currentPassword && errors.currentPassword
+                : " "
             }
+            type="password"
           />
           <TextField
             sx={{ minWidth: 220 }}
-            name="description"
+            name="newPassword"
             label="كلمه المرور الجديده"
-            value={values.description}
+            value={values.newPassword}
             onChange={handleChange}
             onBlur={handleBlur}
             size="small"
-            error={!!touched.description && !!errors.description}
+            error={!!touched.newPassword && !!errors.newPassword}
             helperText={
-              touched.description && errors.description
-                ? touched.description && errors.description
+              touched.newPassword && errors.newPassword
+                ? touched.newPassword && errors.newPassword
                 : " "
             }
+            type="password"
+          />
+          <TextField
+            sx={{ minWidth: 220 }}
+            name="confirmPassword"
+            label="تاكيد كلمه المرور"
+            value={values.confirmPassword}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            size="small"
+            error={!!touched.confirmPassword && !!errors.confirmPassword}
+            helperText={
+              touched.confirmPassword && errors.confirmPassword
+                ? touched.confirmPassword && errors.confirmPassword
+                : " "
+            }
+            type="password"
           />
           <Box alignSelf={isUpdate ? "center" : "flex-start"}>
             <MyBtn
               type="submit"
               width={100}
               height={40}
-              icon={isUpdate ? EditIcon : AddIcon}
-              title={isUpdate ? "تعديل" : "اضافة"}
+              icon={EditIcon}
+              title={"تعديل"}
             />
           </Box>
         </Stack>
