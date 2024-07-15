@@ -100,7 +100,7 @@ const ManageSectors = () => {
         handleClose={handleCloseModal}
         title="تعديل بيانات قطاع"
       >
-        <Box textAlign="right" >
+        <Box textAlign="right">
           <SectorForm
             isUpdate={true}
             initialValues={updateSector}

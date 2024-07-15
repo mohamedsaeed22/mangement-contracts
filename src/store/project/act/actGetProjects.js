@@ -26,7 +26,7 @@ const actGetProjects = createAsyncThunk(
           params.activityId
         }&SupervisorId=${params.supervisorId}&SectorId=${
           params.sectorId
-        }&ContractorId=${params.contractorId}&SpentBudget=${params.spentBudget}`
+        }&ContractorId=${params.contractorId}&ConsultantId=${params.consultantId}&SpentBudget=${params.spentBudget}`
       );
       const enhancedProjects = res.data.map((project) => {
         const sector = sectors.find((sec) => sec.id === project.sectorId);

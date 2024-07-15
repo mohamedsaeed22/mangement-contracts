@@ -171,7 +171,11 @@ const ProjectDetails = () => {
                   >
                     <MyShowInput
                       title={"اجمالى المخصصات"}
-                      value={project.budget?.toLocaleString()}
+                      value={
+                        project.budget == null
+                          ? 0
+                          : project.budget?.toLocaleString()
+                      }
                       myStyle={{ fontWeight: "bold" }}
                     />
                     <MyShowInput

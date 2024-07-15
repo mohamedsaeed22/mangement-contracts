@@ -262,6 +262,7 @@ const Sidebar = () => {
                 </NavLink>
               </Box>
             )}
+
             {filterRoles([
               "Admin",
               "SuperAdmin",
@@ -298,6 +299,37 @@ const Sidebar = () => {
                 </NavLink>
               </Box>
             )}
+
+            {/* <Box>
+              <NavLink
+                to="/changepassword"
+                exact="true"
+                className={({ isActive }) =>
+                  `navlink ${isActive ? "active-link" : ""}`
+                }
+              >
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  p={1}
+                  bgcolor="inherit"
+                  sx={{
+                    borderTopLeftRadius: "10px",
+                    borderBottomLeftRadius: "10px",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    color="initial"
+                    ml={1}
+                    fontWeight="bold"
+                    sx={{ color: "inherit", fontSize: "14px" }}
+                  >
+                    تغيير كلمه المرور
+                  </Typography>
+                </Stack>
+              </NavLink>
+            </Box> */}
           </Box>
         </Box>
         <Stack

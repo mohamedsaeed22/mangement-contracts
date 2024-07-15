@@ -115,7 +115,7 @@ const ProjectsBox = () => {
 
   useEffect(() => {
     setLoading(true);
-     dispatch(
+    dispatch(
       actGetProjects({
         page,
         search: debouncedSearch,
@@ -126,9 +126,10 @@ const ProjectsBox = () => {
         sectorId: formData.sectorId,
         spentBudget: formData.spentBudget,
         contractorId: formData.contractorId,
+        consultantId: formData.consultantId,
       })
     ).then(() => setLoading(false));
-  }, [dispatch, search, page,  formData, debouncedSearch]);
+  }, [dispatch, search, page, formData, debouncedSearch]);
 
   const handleToggleFilter = () => {
     setToggleFilter(!toggleFilter);
@@ -151,7 +152,20 @@ const ProjectsBox = () => {
     content: () => componentRef.current,
     onBeforeGetContent: () => {
       return new Promise((resolve) => {
-        dispatch(actBrowseAll()).then(() => resolve());
+        dispatch(
+          actBrowseAll({
+            page,
+            search: debouncedSearch,
+            status: formData.status,
+            startDate: formData.startDate,
+            endDate: formData.endDate,
+            activityId: formData.activityId,
+            sectorId: formData.sectorId,
+            spentBudget: formData.spentBudget,
+            contractorId: formData.contractorId,
+            consultantId: formData.consultantId,
+          })
+        ).then(() => resolve());
       });
     },
   });
@@ -273,6 +287,27 @@ const ProjectsBox = () => {
                 </FormControl>
                 <FormControl sx={{ width: 160 }} size="small">
                   <InputLabel id="demo-simple-select-supervisor">
+                    الاستشارى
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-supervisor"
+                    id="demo-simple-selectSupervisor"
+                    value={formData.consultantId}
+                    name="consultantId"
+                    label="الاستشارى"
+                    onChange={(e) =>
+                      handleChange("consultantId", e.target.value)
+                    }
+                  >
+                    {consultants?.map((consultant) => (
+                      <MenuItem key={consultant.id} value={consultant.id}>
+                        {consultant.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ width: 160 }} size="small">
+                  <InputLabel id="demo-simple-select-supervisor">
                     المقاول
                   </InputLabel>
                   <Select
@@ -285,13 +320,14 @@ const ProjectsBox = () => {
                       handleChange("contractorId", e.target.value)
                     }
                   >
-                    {contractors?.map((supervisor) => (
-                      <MenuItem key={supervisor.id} value={supervisor.id}>
-                        {supervisor.name}
+                    {contractors?.map((contractor) => (
+                      <MenuItem key={contractor.id} value={contractor.id}>
+                        {contractor.name}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
+
                 <TextField
                   size="small"
                   id="planned-cost"
@@ -433,10 +469,10 @@ const ProjectsBox = () => {
                     </StyledTableCell>
 
                     <StyledTableCell align="center">
-                      {row.budget.toLocaleString()}
+                      {row.budget == null ? 0 : row.budget?.toLocaleString()}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.spentBudget.toLocaleString()}
+                      {row.spentBudget?.toLocaleString()}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {Math.floor(row.percentageSpent)}%

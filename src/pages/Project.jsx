@@ -655,7 +655,7 @@ const Project = () => {
                   {/* contractors and consultants */}
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="المقاولين والاستشارين">
-                      <Box sx={{ maxWidth: 220, width: "100%" }}>
+                      {/* <Box sx={{ maxWidth: 220, width: "100%" }}>
                         <FormControl fullWidth size="small">
                           <InputLabel id="demo-simple-select-label">
                             المقاولين
@@ -700,7 +700,74 @@ const Project = () => {
                                 </MenuItem>
                               ))
                             ) : (
+                              <MenuItem disabled>لا يوجد استشاريين</MenuItem>
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Box> */}
+                      <Box sx={{ maxWidth: 220, width: "100%" }}>
+                        <FormControl fullWidth size="small">
+                          <InputLabel id="demo-simple-select-label">
+                            المقاولين
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            name="contractorId"
+                            value={values.contractorId}
+                            label="المقاولين"
+                            onChange={handleChange}
+                            MenuProps={{
+                              PaperProps: {
+                                style: {
+                                  maxHeight: 200, // Adjust the max height as needed
+                                  overflowY: "auto",
+                                },
+                              },
+                            }}
+                          >
+                            {contractors.length > 0 ? (
+                              contractors.map((el) => (
+                                <MenuItem key={el.id} value={el.id}>
+                                  {el.name}
+                                </MenuItem>
+                              ))
+                            ) : (
                               <MenuItem disabled>لا يوجد مقاولين</MenuItem>
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Box>
+
+                      <Box sx={{ maxWidth: 220, width: "100%" }}>
+                        <FormControl fullWidth size="small">
+                          <InputLabel id="demo-simple-select-label">
+                            الاستشاريين
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            name="consultantId"
+                            value={values.consultantId}
+                            onChange={handleChange}
+                            label="الاستشاريين"
+                            MenuProps={{
+                              PaperProps: {
+                                style: {
+                                  maxHeight: 200, // Adjust the max height as needed
+                                  overflowY: "auto",
+                                },
+                              },
+                            }}
+                          >
+                            {consultants.length > 0 ? (
+                              consultants.map((el) => (
+                                <MenuItem key={el.id} value={el.id}>
+                                  {el.name}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <MenuItem disabled>لا يوجد استشاريين</MenuItem>
                             )}
                           </Select>
                         </FormControl>

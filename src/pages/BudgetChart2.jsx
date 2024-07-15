@@ -8,7 +8,7 @@ const BudgetChart2 = ({ spentBudgets, assindBudgets }) => {
     ?.map((budget) => ({
       x: new Date(budget.spentDate),
       y: budget.spent,
-      indexLabel: "$" + budget.spent.toLocaleString(), // Format label as currency
+      indexLabel: "$" + budget.spent?.toLocaleString(), // Format label as currency
     }))
     .sort((a, b) => a.x - b.x); // Sort by date
 
@@ -17,7 +17,7 @@ const BudgetChart2 = ({ spentBudgets, assindBudgets }) => {
     ?.map((budget) => ({
       x: new Date(budget.assindDate),
       y: budget.budget,
-      indexLabel: "$" + budget.budget.toLocaleString(), // Format label as currency
+      indexLabel: "$" + budget.budget?.toLocaleString(), // Format label as currency
     }))
     .sort((a, b) => a.x - b.x); // Sort by date
 

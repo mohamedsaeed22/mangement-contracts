@@ -11,8 +11,21 @@ const actBrowseAll = createAsyncThunk(
   async (params, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res = await api.get(`api/Project/browseAll`);
-       return res;
+      const res = await api.get(
+        `api/Project/browseAll?Search=${params.search}&Status=${
+          params.status
+        }&StartDate=${convertDateToIso(
+          params.startDate
+        )}&EndDate=${convertDateToIso(params.endDate)}&ActivityId=${
+          params.activityId
+        }&SupervisorId=${params.supervisorId}&SectorId=${
+          params.sectorId
+        }&ContractorId=${params.contractorId}&ConsultantId=${
+          params.consultantId
+        }&SpentBudget=${params.spentBudget}`
+      );
+
+      return res;
     } catch (error) {
       return rejectWithValue(handleAxiosError(error));
     }

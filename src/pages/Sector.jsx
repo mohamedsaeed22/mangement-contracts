@@ -217,7 +217,9 @@ const Sector = () => {
                             </StyledTableCell>
 
                             <StyledTableCell align="center">
-                              {row.budget.toLocaleString()}
+                              {row.budget == null
+                                ? 0
+                                : row.budget?.toLocaleString()}
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               {row.spentBudget.toLocaleString()}
