@@ -32,6 +32,7 @@ import ContractorForm from "../components/Form/ContractorForm";
 import actGetContractors from "../store/contractor/act/actGetContractors";
 import { useNavigate } from "react-router-dom";
 import MyIcon from "./../components/common/UI/MyIcon";
+import SearchIcon from "../assets/icon/search.svg";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#A0ACD4",
@@ -59,11 +60,17 @@ const ManageContractor = () => {
 
   const [openModal, setOpenModal] = useState(false);
   const { contractors } = useSelector((state) => state.contractor);
-  const [updateContractor, setUpdateContractor] = useState(initialContractor);
 
+  const [updateContractor, setUpdateContractor] = useState(initialContractor);
+  const [dataSearch, setDataSearch] = useState([]);
   useEffect(() => {
     dispatch(actGetContractors());
   }, [dispatch]);
+
+  useEffect(() => {
+    setDataSearch(contractors);
+    console.log(contractors);
+  }, [contractors]);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -92,6 +99,15 @@ const ManageContractor = () => {
           notifyFailed(err + "حدث خطا ما");
         });
     }
+  };
+  const handleChange = (e) => {
+    const filterData = [...contractors];
+    console.log(filterData);
+    const value = e.target.value;
+    const filtered = filterData.filter((contractor) =>
+      contractor.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setDataSearch(filtered);
   };
 
   return (
@@ -126,6 +142,26 @@ const ManageContractor = () => {
             initialValues={updateContractor}
             handleCloseModal={handleCloseModal}
           />
+          <Stack
+            direction="row"
+            gap={2}
+            justifyContent="space-between"
+            sx={{
+              justifyContent: { xs: "center", sm: "space-between" },
+              marginTop: "10px",
+            }}
+            alignItems="center"
+            flexWrap="wrap"
+          >
+            <Box position="relative">
+              <input
+                type="search"
+                className="search-input"
+                placeholder="ابحث عن اسم المقاول"
+                onChange={handleChange}
+              />
+            </Box>
+          </Stack>
           {/* activities table */}
           <TableContainer sx={{ maxHeight: "75vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
@@ -137,8 +173,8 @@ const ManageContractor = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {contractors.length > 0 ? (
-                  contractors?.map((row) => (
+                {dataSearch.length > 0 ? (
+                  dataSearch?.map((row) => (
                     <Tooltip
                       title="اضغط لعرض المقاول"
                       placement="top"

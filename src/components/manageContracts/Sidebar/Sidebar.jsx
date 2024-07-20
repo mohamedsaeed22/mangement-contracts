@@ -299,7 +299,7 @@ const Sidebar = () => {
                 </NavLink>
               </Box>
             )}
-
+            {/* 
             <Box>
               <NavLink
                 to="/changepassword"
@@ -329,7 +329,7 @@ const Sidebar = () => {
                   </Typography>
                 </Stack>
               </NavLink>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
         <Stack

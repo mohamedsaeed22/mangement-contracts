@@ -34,7 +34,7 @@ const ContractorForm = ({
         .unwrap()
         .then((e) => {
           notifySuccess("تم تحديث المقاول بنجاح");
-          dispatch(actGetContractors())
+          dispatch(actGetContractors());
           handleCloseModal();
         })
         .catch((err) => {
@@ -95,10 +95,9 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="description"
               label="الوصف"
-              placeholder="ادخل الوصف"
               value={values.description}
               onChange={handleChange}
               size="small"
@@ -113,14 +112,12 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="phoneNumber"
               label="رقم الهاتف"
-              placeholder="ادخل رقم الهاتف"
               value={values.phoneNumber}
               onChange={handleChange}
               size="small"
-              type="number"
               onBlur={handleBlur}
               fullWidth
               error={!!touched.phoneNumber && !!errors.phoneNumber}
@@ -132,10 +129,9 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="contactPersonPhone"
               label="رقم هاتف المسؤل"
-              placeholder="ادخل رقم الهاتف"
               value={values.contactPersonPhone}
               onChange={handleChange}
               size="small"
@@ -152,10 +148,9 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="contactPersonName"
               label="اسم الشخص المسؤل"
-              placeholder="ادخل الاسم"
               value={values.contactPersonName}
               onChange={handleChange}
               size="small"
@@ -170,10 +165,9 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="address"
               label="العنوان"
-              placeholder="ادخل العنوان"
               value={values.address}
               onChange={handleChange}
               size="small"
@@ -188,10 +182,9 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="country"
               label="الدوله"
-              placeholder="ادخل الدولة"
               value={values.country}
               onChange={handleChange}
               size="small"
@@ -206,10 +199,9 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="specialization"
               label="التخصص"
-              placeholder="ادخل التخصص"
               value={values.specialization}
               onChange={handleChange}
               size="small"
@@ -224,10 +216,9 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="experience"
               label="الخبره"
-              placeholder="ادخل الخبره"
               value={values.experience}
               onChange={handleChange}
               size="small"
@@ -242,10 +233,9 @@ const ContractorForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="qualification"
               label="المؤهلات"
-              placeholder="ادخل المؤهلات"
               value={values.qualification}
               onChange={handleChange}
               size="small"

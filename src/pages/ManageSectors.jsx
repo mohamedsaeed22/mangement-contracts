@@ -88,7 +88,7 @@ const ManageSectors = () => {
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed(err);
+          notifyFailed("هذا القطاع مرتبط بمشاريع,رجاء تعديل المشارع او حذفها");
         });
     }
   };

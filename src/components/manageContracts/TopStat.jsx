@@ -107,7 +107,7 @@ const TopStat = ({ stats, allowNav = false }) => {
           "/projectsbox",
           <Stack textAlign="center">
             <Typography variant="h4" fontWeight="bold" color="#01204E">
-              {totalPercentage}%
+              {((totalSpent / totalBudget) * 100).toFixed(2)}%
             </Typography>
             <Typography
               variant="body1"

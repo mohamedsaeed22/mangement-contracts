@@ -185,12 +185,21 @@ const ProjectDetails = () => {
                     />
                     <MyShowInput
                       title={"اجمالى المتبقى"}
-                      value={project.remaining?.toLocaleString()}
+                      value={(
+                        project.budget - project.spentBudget
+                      ).toLocaleString()}
                       myStyle={{ fontWeight: "bold", color: "#FD0000" }}
                     />
                     <MyShowInput
-                      title={"نسبه الصرف"}
-                      value={`${Math.floor(project.percentageSpent)}%`}
+                      title={"نسبة الصرف"}
+                      value={
+                        project.budget
+                          ? `${(
+                              (project.spentBudget / project.budget) *
+                              100
+                            ).toFixed(2)}%`
+                          : "0%"
+                      }
                       myStyle={{ fontWeight: "bold" }}
                     />
                   </Stack>
