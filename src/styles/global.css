@@ -3,6 +3,19 @@
   padding: 0;
   box-sizing: border-box;
 }
+@font-face {
+  font-family: "Cairo";
+  src: url("../assets/fonts/cairo/Cairo-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cairo";
+  src: url("../assets/fonts/cairo/Cairo-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
 
 body {
   font-family: Cairo, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

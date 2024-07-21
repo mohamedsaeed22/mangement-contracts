@@ -506,6 +506,8 @@ const Project = () => {
                         error={!!touched.name && !!errors.name}
                         helperText={touched.name && errors.name}
                         label="الاسم*"
+                        multiline
+                        rows={1.6}
                         value={values.name}
                       />
                       <TextField

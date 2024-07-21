@@ -10,10 +10,10 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
 // for production use only
-const BASE_URL = "http://172.16.3.230:9433/";
+// const BASE_URL = "http://172.16.3.230:9433/";
 
 // for development use only
-// const BASE_URL = "http://172.16.3.230:9099/";
+const BASE_URL = "http://172.16.3.230:9099/";
 
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 const api = axios.create({
