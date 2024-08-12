@@ -111,7 +111,7 @@ const ProjectsBox = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 300);
+    }, 600);
     return () => {
       clearTimeout(handler);
     };

@@ -11,7 +11,11 @@ import createCache from "@emotion/cache";
 import "./styles/global.css";
 import { CssBaseline } from "@mui/material";
 import { CacheProvider } from "@emotion/react";
-
+import { registerLicense, enableRtl } from "@syncfusion/ej2-base";
+enableRtl(true);
+registerLicense(
+  "ORg4AjUWIQA/Gnt2U1hhQlJBfVddX2JWfFN0QXNadVt3flBBcC0sT3RfQFljTnxRdkFjWX1fd3BdQw=="
+);
 const defaultTheme = createTheme({
   direction: "rtl",
   palette: {
@@ -27,7 +31,6 @@ const defaultTheme = createTheme({
     ].join(","),
   },
 });
-
 
 const cacheRtl = createCache({
   key: "muirtl",

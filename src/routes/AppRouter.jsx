@@ -25,6 +25,8 @@ import AddConsultant from "../pages/AddConsultant";
 import ContractorDetails from "../pages/ContractorDetails";
 import ConsultantDetails from "../pages/ConsultantDetails";
 import ChangePassword from "../pages/ChangePassword";
+import Dashboard from "../pages/Dashboard";
+ 
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 
@@ -60,6 +62,9 @@ const router = createBrowserRouter(
             </RoleGuard>
           }
         />
+        {/* dashborad */}
+        <Route path="dashboard" element={<Dashboard />} />
+
         {/* sectors routes */}
         <Route
           path="managesectors"

@@ -30,6 +30,8 @@ import SectorForm from "../components/Form/SectorForm";
 import { initialSector } from "../validations/sectorSchema";
 import { filterSectors } from "../store/sector/sectorSlice";
 import { useNavigate } from "react-router-dom";
+import MainBarChart from "../components/MainBarChart";
+import MainColChart from "../components/manageContracts/MainColChart";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -95,6 +97,15 @@ const ManageSectors = () => {
 
   return (
     <>
+      {/* <Box position="relative">
+        <MainBarChart />
+      </Box>
+      <Box position="relative">
+        <MainColChart />
+      </Box> */}
+      {/* <Box position="relative">
+        <MainBarChart />
+      </Box> */}
       <MyModal
         open={openModal}
         handleClose={handleCloseModal}
