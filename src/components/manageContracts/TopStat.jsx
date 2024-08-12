@@ -4,7 +4,6 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 
 const TopStat = ({ stats, allowNav = false }) => {
   const { totalProjects, totalPercentage, totalBudget, totalSpent } = stats;
-
   // Function to render NavLink or a non-link based on allowNav
   const renderLink = (to, children) => {
     if (allowNav) {
@@ -64,13 +63,12 @@ const TopStat = ({ stats, allowNav = false }) => {
         )}
 
         {/* Repeat similar pattern for other NavLink instances */}
-     
 
         {renderLink(
           "/projectsbox",
           <Stack textAlign="center">
             <Typography variant="h4" fontWeight="bold" color="#01204E">
-              {totalBudget && totalBudget.toLocaleString()}
+              {totalBudget && totalBudget?.toLocaleString()}
             </Typography>
             <Typography
               variant="body1"
@@ -90,7 +88,7 @@ const TopStat = ({ stats, allowNav = false }) => {
           "/projectsbox",
           <Stack textAlign="center">
             <Typography variant="h4" fontWeight="bold" color="#01204E">
-              {totalSpent && totalSpent.toLocaleString()}
+              {totalSpent && totalSpent?.toLocaleString()}
             </Typography>
             <Typography
               variant="body1"
@@ -105,11 +103,11 @@ const TopStat = ({ stats, allowNav = false }) => {
             </Typography>
           </Stack>
         )}
-           {renderLink(
+        {renderLink(
           "/projectsbox",
           <Stack textAlign="center">
             <Typography variant="h4" fontWeight="bold" color="#01204E">
-              {Math.floor(( totalSpent/totalBudget) * 100)} %
+              {((totalSpent / totalBudget) * 100).toFixed(2)}%
             </Typography>
             <Typography
               variant="body1"
@@ -120,7 +118,7 @@ const TopStat = ({ stats, allowNav = false }) => {
                 },
               }}
             >
-              نسبة  المنصرف (%)
+              نسبة المنصرف (%)
             </Typography>
           </Stack>
         )}

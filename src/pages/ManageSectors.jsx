@@ -23,6 +23,7 @@ import {
 import EditIcon from "../assets/icon/edit-icon.svg";
 import DeleteIcon from "../assets/icon/delete-icon.svg";
 import MyBtn from "../components/common/UI/MyBtn";
+import MyIcon from "../components/common/UI/MyIcon";
 import actDeleteSector from "../store/sector/act/actDeleteSector";
 import actGetSectors from "../store/sector/act/actGetSectors";
 import SectorForm from "../components/Form/SectorForm";
@@ -32,7 +33,7 @@ import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#BECAF9",
+    backgroundColor: "#A0ACD4",
     color: "#000",
   },
   [`&.${tableCellClasses.body}`]: {
@@ -87,7 +88,7 @@ const ManageSectors = () => {
           setOpenModal(false);
         })
         .catch((err) => {
-          notifyFailed(err);
+          notifyFailed("هذا القطاع مرتبط بمشاريع,رجاء تعديل المشارع او حذفها");
         });
     }
   };
@@ -99,11 +100,13 @@ const ManageSectors = () => {
         handleClose={handleCloseModal}
         title="تعديل بيانات قطاع"
       >
-        <SectorForm
-          isUpdate={true}
-          initialValues={updateSector}
-          handleCloseModal={handleCloseModal}
-        />
+        <Box textAlign="right">
+          <SectorForm
+            isUpdate={true}
+            initialValues={updateSector}
+            handleCloseModal={handleCloseModal}
+          />
+        </Box>
       </MyModal>
       <Heading title="ادارة القطاعات" />
       <Box
@@ -124,9 +127,9 @@ const ManageSectors = () => {
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">اسم القطاع</StyledTableCell>
+                  <StyledTableCell align="left">اسم القطاع</StyledTableCell>
                   <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
-                  <StyledTableCell align="center">الاجراءات</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -145,34 +148,23 @@ const ManageSectors = () => {
                         }}
                         onClick={() => navigate(`/sector/${row.id}`)}
                       >
-                        <StyledTableCell align="center">
+                        <StyledTableCell align="left">
                           {row.name}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {row.totalProjects}
                         </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Stack
-                            direction="row"
-                            justifyContent="center"
-                            gap={1}
-                          >
-                            <MyBtn
-                              width={100}
-                              height={30}
+                        <StyledTableCell align="right">
+                          <Stack direction="row" justifyContent="right" gap={1}>
+                            <MyIcon
                               icon={EditIcon}
-                              title={"تعديل"}
                               handleBtnClick={(e) => {
                                 e.stopPropagation();
                                 handleUpdateSector(row);
                               }}
                             />
-                            <MyBtn
-                              width={100}
-                              height={30}
-                              bgColor="red"
+                            <MyIcon
                               icon={DeleteIcon}
-                              title={"حذف"}
                               handleBtnClick={(e) => {
                                 e.stopPropagation();
                                 handleDeleteSector(row);

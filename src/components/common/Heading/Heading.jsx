@@ -23,7 +23,7 @@ const Heading = ({ title }) => {
             md: "14px", // default font size for md and above
           },
           display: "inline-block",
-          backgroundColor: "#475CA7",
+          backgroundColor: "#2E3344",
           padding: {
             xs: "10px 10px", // smaller padding for xs
             sm: "12px 30px", // smaller padding for sm

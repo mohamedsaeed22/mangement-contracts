@@ -37,10 +37,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   backgroundColor: "#ddd",
   borderRadius: "10px",
 }));
+const formatDate = (date) => {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
 
 const PrintedProjects = forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const { printedProjects: projects } = useSelector((state) => state.project);
+  const currentDate = new Date();
+  const formattedDate = formatDate(currentDate);
   return (
     <div id="printed-table" ref={ref}>
       <Stack id="head-name" sx={{ direction: "ltr" }}>
@@ -60,7 +68,7 @@ const PrintedProjects = forwardRef((props, ref) => {
           <br />
           الادارة المالية والتجارية
           <br />
-          التاريخ 1/7/2024
+          التاريخ {formattedDate}
         </Typography>
         <Typography
           variant="h6"
@@ -137,16 +145,14 @@ const PrintedProjects = forwardRef((props, ref) => {
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    {row.name.length > 20
-                      ? row.name.substring(0, 20) + "..."
-                      : row.name}
+                    {row.name}
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    {row.budget.toLocaleString()}
+                    {row.budget == null ? 0 : row.budget?.toLocaleString()}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.spentBudget.toLocaleString()}
+                    {row.spentBudget?.toLocaleString()}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     {row.remaining?.toLocaleString()}

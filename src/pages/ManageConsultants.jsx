@@ -28,10 +28,12 @@ import actGetConsultants from "../store/consultant/act/actGetConsultants";
 import actDeleteConsultant from "../store/consultant/act/actDeleteConsultant";
 import { filterConsultants } from "../store/consultant/consultantSlice";
 import { useNavigate } from "react-router-dom";
+import MyIcon from "../components/common/UI/MyIcon";
+import SearchIcon from "../assets/icon/search.svg";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#BECAF9",
+    backgroundColor: "#A0ACD4",
     color: "#000",
   },
   [`&.${tableCellClasses.body}`]: {
@@ -55,11 +57,16 @@ const ManageConsultants = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const { consultants } = useSelector((state) => state.consultant);
+  const [dataSearch, setDataSearch] = useState([]);
   const [updateConsultant, setUpdateConsultant] = useState(initialConsultant);
 
   useEffect(() => {
     dispatch(actGetConsultants());
   }, [dispatch]);
+
+  useEffect(() => {
+    setDataSearch(consultants);
+  }, [consultants]);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -90,6 +97,15 @@ const ManageConsultants = () => {
     }
   };
 
+  const handleChange = (e) => {
+    const filterData = [...consultants];
+    const value = e.target.value;
+    const filtered = filterData.filter((consultant) =>
+      consultant.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setDataSearch(filtered);
+  };
+
   return (
     <>
       <MyModal
@@ -115,28 +131,44 @@ const ManageConsultants = () => {
         height="calc(100vh - 130px)"
         overflow="auto"
       >
-        {/* <LoadingWrapper error={error} loading={loading}> */}
         <Box>
           <ConsultantForm
             isUpdate={false}
             initialValues={updateConsultant}
             handleCloseModal={handleCloseModal}
           />
-          {/* activities table */}
+          <Stack
+            direction="row"
+            gap={2}
+            justifyContent="space-between"
+            sx={{
+              justifyContent: { xs: "center", sm: "space-between" },
+              marginTop: "10px",
+            }}
+            alignItems="center"
+            flexWrap="wrap"
+          >
+            <Box position="relative">
+              <input
+                type="search"
+                className="search-input"
+                placeholder="ابحث عن اسم الاستشاري"
+                onChange={handleChange}
+              />
+            </Box>
+          </Stack>
           <TableContainer sx={{ maxHeight: "75vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">
-                    اسم الاستشارى
-                  </StyledTableCell>
+                  <StyledTableCell align="left">اسم الاستشارى</StyledTableCell>
                   <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
-                  <StyledTableCell align="center">الإجراءات</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {consultants?.length > 0 ? (
-                  consultants.map((row) => (
+                {dataSearch?.length > 0 ? (
+                  dataSearch.map((row) => (
                     <Tooltip
                       title="اضغط لعرض الاستشارى"
                       placement="top"
@@ -151,34 +183,23 @@ const ManageConsultants = () => {
                         }}
                         onClick={() => navigate(`/consultant/id/${row.id}`)}
                       >
-                        <StyledTableCell align="center">
+                        <StyledTableCell align="left">
                           {row.name}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {row.totalProjects}
                         </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Stack
-                            direction="row"
-                            justifyContent="center"
-                            gap={1}
-                          >
-                            <MyBtn
-                              width={100}
-                              height={40}
+                        <StyledTableCell align="right">
+                          <Stack direction="row" justifyContent="right" gap={1}>
+                            <MyIcon
                               icon={EditIcon}
-                              title={"تعديل"}
                               handleBtnClick={(e) => {
                                 e.stopPropagation();
                                 handleUpdateConsultant(row);
                               }}
                             />
-                            <MyBtn
-                              width={100}
-                              height={40}
-                              bgColor="red"
+                            <MyIcon
                               icon={DeleteIcon}
-                              title={"حذف"}
                               handleBtnClick={(e) => {
                                 e.stopPropagation();
                                 handleDeleteConsultant(row);
@@ -200,7 +221,6 @@ const ManageConsultants = () => {
             </Table>
           </TableContainer>
         </Box>
-        {/* </LoadingWrapper> */}
       </Box>
     </>
   );

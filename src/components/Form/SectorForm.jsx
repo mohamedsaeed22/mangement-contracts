@@ -5,8 +5,8 @@ import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import { Box, Stack, TextField } from "@mui/material";
 import MyBtn from "../common/UI/MyBtn";
-import AddIcon from "../../assets/icon/add-icon.svg";
-import EditIcon from "../../assets/icon/edit-icon.svg";
+import AddIcon from "../../assets/icon/Vector.svg";
+import EditIcon from "../../assets/icon/edit-white.svg";
 import {
   actCreateSector,
   actGetSectors,
@@ -26,7 +26,7 @@ const SectorForm = ({
         .unwrap()
         .then((e) => {
           notifySuccess("تم تحديث القطاع بنجاح");
-          dispatch(actGetSectors())
+          dispatch(actGetSectors());
           handleCloseModal();
         })
         .catch((err) => {
@@ -61,7 +61,6 @@ const SectorForm = ({
       }) => (
         <Stack
           component="form"
-          id="Activity-form"
           flexWrap="wrap"
           direction={isUpdate ? "column" : "row"}
           gap={2}

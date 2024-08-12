@@ -31,10 +31,11 @@ import {
 import ContractorForm from "../components/Form/ContractorForm";
 import actGetContractors from "../store/contractor/act/actGetContractors";
 import { useNavigate } from "react-router-dom";
-
+import MyIcon from "./../components/common/UI/MyIcon";
+import SearchIcon from "../assets/icon/search.svg";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#BECAF9",
+    backgroundColor: "#A0ACD4",
     color: "#000",
   },
   [`&.${tableCellClasses.body}`]: {
@@ -59,11 +60,17 @@ const ManageContractor = () => {
 
   const [openModal, setOpenModal] = useState(false);
   const { contractors } = useSelector((state) => state.contractor);
-  const [updateContractor, setUpdateContractor] = useState(initialContractor);
 
+  const [updateContractor, setUpdateContractor] = useState(initialContractor);
+  const [dataSearch, setDataSearch] = useState([]);
   useEffect(() => {
     dispatch(actGetContractors());
   }, [dispatch]);
+
+  useEffect(() => {
+    setDataSearch(contractors);
+    console.log(contractors);
+  }, [contractors]);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -92,6 +99,15 @@ const ManageContractor = () => {
           notifyFailed(err + "حدث خطا ما");
         });
     }
+  };
+  const handleChange = (e) => {
+    const filterData = [...contractors];
+    console.log(filterData);
+    const value = e.target.value;
+    const filtered = filterData.filter((contractor) =>
+      contractor.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setDataSearch(filtered);
   };
 
   return (
@@ -126,76 +142,92 @@ const ManageContractor = () => {
             initialValues={updateContractor}
             handleCloseModal={handleCloseModal}
           />
+          <Stack
+            direction="row"
+            gap={2}
+            justifyContent="space-between"
+            sx={{
+              justifyContent: { xs: "center", sm: "space-between" },
+              marginTop: "10px",
+            }}
+            alignItems="center"
+            flexWrap="wrap"
+          >
+            <Box position="relative">
+              <input
+                type="search"
+                className="search-input"
+                placeholder="ابحث عن اسم المقاول"
+                onChange={handleChange}
+              />
+            </Box>
+          </Stack>
           {/* activities table */}
           <TableContainer sx={{ maxHeight: "75vh", marginTop: "8px" }}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center">اسم المقاول</StyledTableCell>
+                  <StyledTableCell align="left">اسم المقاول</StyledTableCell>
                   <StyledTableCell align="center">عدد المشاريع</StyledTableCell>
-                  <StyledTableCell align="center">الإجراءات</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {contractors?.map((row) => (
-                  <Tooltip
-                    title="اضغط لعرض المقاول"
-                    placement="top"
-                    arrow
-                    key={row.id}
-                  >
-                    <StyledTableRow
+                {dataSearch.length > 0 ? (
+                  dataSearch?.map((row) => (
+                    <Tooltip
+                      title="اضغط لعرض المقاول"
+                      placement="top"
+                      arrow
                       key={row.id}
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { backgroundColor: "#ccc !important" },
-                      }}
-                      onClick={() => navigate(`/contractor/id/${row.id}`)}
                     >
-                      <StyledTableCell align="center">
-                        {row.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.totalProjects}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Stack direction="row" justifyContent="center" gap={1}>
-                          <MyBtn
-                            width={100}
-                            height={40}
-                            icon={EditIcon}
-                            title={"تعديل"}
-                            handleBtnClick={(e) => {
-                              e.stopPropagation(); // Stop propagation here
-                              handleUpdateContractor(row);
-                            }}
-                          />
-                          {/* <StopPropagation> */}
-                          <MyBtn
-                            width={100}
-                            height={40}
-                            bgColor="red"
-                            icon={DeleteIcon}
-                            title={"حذف"}
-                            handleBtnClick={(e) => {
-                              e.stopPropagation(); // Stop propagation here
-                              handleDeleteContractor(row);
-                            }}
-                          />
-                          {/* </StopPropagation> */}
-                        </Stack>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  </Tooltip>
-                ))}
+                      <StyledTableRow
+                        key={row.id}
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#ccc !important" },
+                        }}
+                        onClick={() => navigate(`/contractor/id/${row.id}`)}
+                      >
+                        <StyledTableCell align="left">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.totalProjects}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          <Stack direction="row" justifyContent="right" gap={1}>
+                            <MyIcon
+                              icon={EditIcon}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation(); // Stop propagation here
+                                handleUpdateContractor(row);
+                              }}
+                            />
+                            {/* <StopPropagation> */}
+                            <MyIcon
+                              icon={DeleteIcon}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation(); // Stop propagation here
+                                handleDeleteContractor(row);
+                              }}
+                            />
+                            {/* </StopPropagation> */}
+                          </Stack>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    </Tooltip>
+                  ))
+                ) : (
+                  <StyledTableRow>
+                    <StyledTableCell align="center" colSpan={3}>
+                      لا يوجد مقاولين
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
               </TableBody>
             </Table>
           </TableContainer>
-          {contractors?.length === 0 && (
-            <Box textAlign="center" mt={3}>
-              لا يوجد مقاولين
-            </Box>
-          )}
         </Box>
         {/* </LoadingWrapper> */}
       </Box>

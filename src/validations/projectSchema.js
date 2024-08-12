@@ -13,7 +13,7 @@ const initialProjectValues = {
   spentDate: null,
   spent: "",
   spentBudgetArray: [],
-  
+
   percentage: "",
   status: "",
   activityId: "",
@@ -33,8 +33,12 @@ const projectSchema = yup.lazy((values) => {
     name: yup
       .string()
       .required("اسم المشروع مطلوب")
-      .min(6, "يجب أن يكون اسم المشروع أطول من 5 أحرف"),
-    description: yup.string().required("الوصف مطلوب"),
+      .min(6, "يجب أن يكون اسم المشروع أطول من 5 أحرف")
+      .max(100, "يجب أن يكون اسم المشروع اقل من 100 حرف"),
+    description: yup
+      .string()
+      .required("الوصف مطلوب")
+      .max(2000, "يجب أن يكون وصف المشروع اقل من 2000 حرف"),
     startDate: yup
       .date()
       .required("تاريخ البدايه مطلوب")
@@ -66,10 +70,7 @@ const projectSchema = yup.lazy((values) => {
       .number()
       .typeError("قيمه المنصرف لابد من ان تكون رقم")
       .min(0, "قيمه المنصرف لابد أن تكون قيمة موجبة"),
-    assindDate: yup
-      .date()
-      .nullable()
-      .typeError("التاريخ غير صحيح"),
+    assindDate: yup.date().nullable().typeError("التاريخ غير صحيح"),
     budget: yup
       .number()
       .typeError("قيمه المخصص لابد من ان تكون رقم")

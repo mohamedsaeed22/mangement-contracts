@@ -16,6 +16,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  Autocomplete,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -27,10 +28,10 @@ import {
   notifySuccess,
   SweatAlert,
 } from "../components/feedback/Alerts/alerts";
-import AddIcon from "../assets/icon/add-icon.svg";
-import DeleteIcon from "../assets/icon/delete-icon.svg";
+import AddIcon from "../assets/icon/Vector.svg";
+import DeleteIcon from "../assets/icon/delete-white.svg";
 
-import EditIcon from "../assets/icon/edit-icon.svg";
+import EditIcon from "../assets/icon/edit-white.svg";
 import MyInput from "../components/Form/Input/MyInput";
 import MyInputsWrapper from "../components/common/UI/MyInputsWrapper";
 import MyDatePicker from "../components/Form/Input/MyDatePicker";
@@ -157,6 +158,7 @@ const Project = () => {
     if (id && project) {
       setMyProject({
         ...project,
+        budget: "",
         startDate: dayjs(dayjs(project.startDate).toISOString()),
         endDate: dayjs(dayjs(project.endDate).toISOString()),
         showRisks: riskObj?.id ? "yes" : "no",
@@ -184,7 +186,6 @@ const Project = () => {
       setContractorsIds(project?.contractors);
     }
   }, [id, project, handicapObj, riskObj, contractorObj, consultantObj]);
-  console.log(myProject);
   const handleAddMoney = () => {
     console.log("values");
   };
@@ -397,6 +398,10 @@ const Project = () => {
     }
   };
   // console.log(budgetArr);
+  const formatNumber = (value) => {
+    console.log(value);
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
   return (
     <>
       <Heading title={id ? "تعديل مشروع" : "اضافة مشروع"} />
@@ -501,6 +506,8 @@ const Project = () => {
                         error={!!touched.name && !!errors.name}
                         helperText={touched.name && errors.name}
                         label="الاسم*"
+                        multiline
+                        rows={1.6}
                         value={values.name}
                       />
                       <TextField
@@ -518,89 +525,86 @@ const Project = () => {
                       />
                     </MyInputsWrapper>
                   </Grid>
+
                   {/* activities - sectors - persentage - status */}
                   <Grid item xs={12} md={6} gap={2}>
                     <Grid item xs={12}>
                       <MyInputsWrapper title="الانشطه والقطاعات">
                         <Box sx={{ maxWidth: 220, width: "100%" }}>
-                          <FormControl fullWidth size="small">
-                            <InputLabel id="status-select-label">
-                              النشاط*
-                            </InputLabel>
-                            <Select
-                              labelId="status-select-label"
-                              id="status-select"
-                              name="activityId"
-                              label=" النشاط*"
-                              value={values.activityId}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={
-                                !!touched.activityId && !!errors.activityId
-                              }
-                              helperText={
-                                touched.activityId && errors.activityId
-                              }
-                            >
-                              {activities.length > 0 ? (
-                                activities.map((Activity) => (
-                                  <MenuItem
-                                    key={Activity.id}
-                                    value={Activity.id}
-                                  >
-                                    {Activity.name}
-                                  </MenuItem>
-                                ))
-                              ) : (
-                                <MenuItem disabled>لا يوجد انشطة</MenuItem>
-                              )}
-                            </Select>
-                            {touched.activityId && errors.activityId ? (
-                              <FormHelperText>
-                                {touched.activityId && errors.activityId}
-                              </FormHelperText>
-                            ) : (
-                              " "
+                          <Autocomplete
+                            size="small"
+                            options={activities}
+                            getOptionLabel={(option) => option.name}
+                            noOptionsText="لا يوجد انشطه"
+                            value={
+                              activities.find(
+                                (activity) => activity.id === values.activityId
+                              ) || null
+                            }
+                            onChange={(event, newValue) => {
+                              handleChange({
+                                target: {
+                                  name: "activityId",
+                                  value: newValue ? newValue.id : "",
+                                },
+                              });
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="النشاط"
+                                error={
+                                  !!touched.activityId && !!errors.activityId
+                                }
+                                helperText={
+                                  touched.activityId && errors.activityId
+                                }
+                                onBlur={handleBlur}
+                              />
                             )}
-                          </FormControl>
+                            ListboxProps={{
+                              style: {
+                                maxHeight: 200, // Adjust the max height as needed
+                                overflowY: "auto",
+                              },
+                            }}
+                          />
                         </Box>
                         <Box sx={{ maxWidth: 220, width: "100%" }}>
-                          <FormControl fullWidth size="small">
-                            <InputLabel id="status-select-label">
-                              القطاع*
-                            </InputLabel>
-                            <Select
-                              labelId="status-select-label"
-                              id="status-select"
-                              name="sectorId"
-                              label="القطاع*"
-                              value={values.sectorId}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={!!touched.sectorId && !!errors.sectorId}
-                              helperText={touched.sectorId && errors.sectorId}
-                            >
-                              {sectors.length > 0 ? (
-                                sectors.map((supervisor) => (
-                                  <MenuItem
-                                    key={supervisor.id}
-                                    value={supervisor.id}
-                                  >
-                                    {supervisor.name}
-                                  </MenuItem>
-                                ))
-                              ) : (
-                                <MenuItem disabled>لا يوجد قطاعات</MenuItem>
-                              )}
-                            </Select>
-                            {touched.sectorId && errors.sectorId ? (
-                              <FormHelperText>
-                                {touched.sectorId && errors.sectorId}
-                              </FormHelperText>
-                            ) : (
-                              " "
+                          <Autocomplete
+                            size="small"
+                            options={sectors}
+                            getOptionLabel={(option) => option.name}
+                            noOptionsText="لا يوجد قطاعات"
+                            value={
+                              sectors.find(
+                                (sector) => sector.id === values.sectorId
+                              ) || null
+                            }
+                            onChange={(event, newValue) => {
+                              handleChange({
+                                target: {
+                                  name: "sectorId",
+                                  value: newValue ? newValue.id : "",
+                                },
+                              });
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="القطاع*"
+                                error={!!touched.sectorId && !!errors.sectorId}
+                                helperText={touched.sectorId && errors.sectorId}
+                                onBlur={handleBlur}
+                              />
                             )}
-                          </FormControl>
+                            ListboxProps={{
+                              style: {
+                                maxHeight: 200, // Adjust the max height as needed
+                                overflowY: "auto",
+                              },
+                            }}
+                          />
                         </Box>
                       </MyInputsWrapper>
                     </Grid>
@@ -652,58 +656,92 @@ const Project = () => {
                       </MyInputsWrapper>
                     </Grid>
                   </Grid>
+
                   {/* contractors and consultants */}
                   <Grid item xs={12} md={6}>
                     <MyInputsWrapper title="المقاولين والاستشارين">
                       <Box sx={{ maxWidth: 220, width: "100%" }}>
-                        <FormControl fullWidth size="small">
-                          <InputLabel id="demo-simple-select-label">
-                            المقاولين
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            name="contractorId"
-                            value={values.contractorId}
-                            label="المقاولين"
-                            onChange={handleChange}
-                          >
-                            {contractors.length > 0 ? (
-                              contractors.map((el) => (
-                                <MenuItem key={el.id} value={el.id}>
-                                  {el.name}
-                                </MenuItem>
-                              ))
-                            ) : (
-                              <MenuItem disabled>لا يوجد مقاولين</MenuItem>
-                            )}
-                          </Select>
-                        </FormControl>
+                        <Autocomplete
+                          size="small"
+                          options={contractors}
+                          getOptionLabel={(option) => option.name}
+                          noOptionsText="لا يوجد مقاولين"
+                          value={
+                            contractors.find(
+                              (contractor) =>
+                                contractor.id === values.contractorId
+                            ) || null
+                          }
+                          onChange={(event, newValue) => {
+                            handleChange({
+                              target: {
+                                name: "contractorId",
+                                value: newValue ? newValue.id : "",
+                              },
+                            });
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="المقاولين"
+                              error={
+                                !!touched.contractorId && !!errors.contractorId
+                              }
+                              helperText={
+                                touched.contractorId && errors.contractorId
+                              }
+                              onBlur={handleBlur}
+                            />
+                          )}
+                          ListboxProps={{
+                            style: {
+                              maxHeight: 200, // Adjust the max height as needed
+                              overflowY: "auto",
+                            },
+                          }}
+                        />
                       </Box>
+
                       <Box sx={{ maxWidth: 220, width: "100%" }}>
-                        <FormControl fullWidth size="small">
-                          <InputLabel id="demo-simple-select-label">
-                            الاستشاريين
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            name="consultantId"
-                            value={values.consultantId}
-                            onChange={handleChange}
-                            label="الاستشاريين"
-                          >
-                            {consultants.length > 0 ? (
-                              consultants.map((el) => (
-                                <MenuItem key={el.id} value={el.id}>
-                                  {el.name}
-                                </MenuItem>
-                              ))
-                            ) : (
-                              <MenuItem disabled>لا يوجد مقاولين</MenuItem>
-                            )}
-                          </Select>
-                        </FormControl>
+                        <Autocomplete
+                          size="small"
+                          options={consultants}
+                          getOptionLabel={(option) => option.name}
+                          noOptionsText="لا يوجد استشاريين"
+                          value={
+                            consultants.find(
+                              (consultant) =>
+                                consultant.id === values.consultantId
+                            ) || null
+                          }
+                          onChange={(event, newValue) => {
+                            handleChange({
+                              target: {
+                                name: "consultantId",
+                                value: newValue ? newValue.id : "",
+                              },
+                            });
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="الاستشاريين"
+                              error={
+                                !!touched.consultantId && !!errors.consultantId
+                              }
+                              helperText={
+                                touched.consultantId && errors.consultantId
+                              }
+                              onBlur={handleBlur}
+                            />
+                          )}
+                          ListboxProps={{
+                            style: {
+                              maxHeight: 200, // Adjust the max height as needed
+                              overflowY: "auto",
+                            },
+                          }}
+                        />
                       </Box>
                     </MyInputsWrapper>
                   </Grid>
@@ -780,10 +818,20 @@ const Project = () => {
                             sx={{ maxWidth: 220, width: "100%" }}
                             size="small"
                             name="budget"
+                            placeholder="000,000,000,000,000"
                             label="قيمة المخصص"
-                            type="number"
-                            value={values.budget}
-                            onChange={handleChange}
+                            type="text"
+                            value={values?.budget?.replace(
+                              /\B(?=(\d{3})+(?!\d))/g,
+                              ","
+                            )}
+                            onChange={(event) => {
+                              const { name, value } = event.target;
+                              const numericValue = value.replace(/,/g, "");
+                              if (/^\d*$/.test(numericValue)) {
+                                setFieldValue(name, numericValue);
+                              }
+                            }}
                             onBlur={handleBlur}
                             error={!!touched.budget && !!errors.budget}
                             helperText={touched.budget && errors.budget}
@@ -793,6 +841,7 @@ const Project = () => {
                               <Box
                                 border="1px solid #ddd"
                                 sx={{
+                                  alignSelf: "center",
                                   borderRadius: "8px",
                                 }}
                                 onClick={() => {
@@ -856,13 +905,13 @@ const Project = () => {
                                   setFieldValue("budget", "");
                                 }}
                                 alignSelf="flex-start"
-                                bgcolor="rgb(71, 92, 167)"
+                                bgcolor="#2E3344"
                               >
                                 <IconButton color="secondary">
                                   <img
                                     src={AddIcon}
                                     alt="add budget"
-                                    style={{ width: "20px" }}
+                                    style={{ width: "15px", height: "15px" }}
                                   />
                                 </IconButton>
                               </Box>
@@ -873,6 +922,7 @@ const Project = () => {
                         {values?.budgetArray?.length > 0 &&
                           values?.budgetArray?.map((budget, index) => (
                             <Stack direction="row" gap={2}>
+                              {console.log(budget.budget)}
                               <Box
                                 key={index}
                                 sx={{ maxWidth: 220, width: "100%" }}
@@ -892,17 +942,18 @@ const Project = () => {
                                 sx={{ maxWidth: 220, width: "100%" }}
                                 disabled
                                 size="small"
-                                type="text"
                                 name="bBudget"
                                 label="القيمة "
-                                // type="number"
-                                value={budget.budget.toLocaleString()}
+                                value={Number(budget.budget).toLocaleString()}
                               />
 
                               <Tooltip title="حذف مخصص" placement="top" arrow>
                                 <Box
                                   border="1px solid #ddd"
-                                  sx={{ borderRadius: "8px" }}
+                                  sx={{
+                                    borderRadius: "8px",
+                                    alignSelf: "center",
+                                  }}
                                   onClick={() => {
                                     // const
                                     let myFilterArr = [];
@@ -941,7 +992,7 @@ const Project = () => {
                                     <img
                                       src={DeleteIcon}
                                       alt="add budget"
-                                      style={{ width: "20px" }}
+                                      style={{ width: "15px", height: "15px" }}
                                     />
                                   </IconButton>
                                 </Box>
@@ -984,9 +1035,18 @@ const Project = () => {
                             size="small"
                             name="spent"
                             label="قيمة المنصرف"
-                            type="number"
-                            value={values.spent}
-                            onChange={handleChange}
+                            placeholder="000,000,000,000,000"
+                            value={values?.spent?.replace(
+                              /\B(?=(\d{3})+(?!\d))/g,
+                              ","
+                            )}
+                            onChange={(event) => {
+                              const { name, value } = event.target;
+                              const numericValue = value.replace(/,/g, "");
+                              if (/^\d*$/.test(numericValue)) {
+                                setFieldValue(name, numericValue);
+                              }
+                            }}
                             onBlur={handleBlur}
                             error={!!touched.spent && !!errors.spent}
                             helperText={touched.spent && errors.spent}
@@ -996,6 +1056,7 @@ const Project = () => {
                               <Box
                                 border="1px solid #ddd"
                                 sx={{
+                                  alignSelf: "center",
                                   borderRadius: "8px",
                                 }}
                                 onClick={() => {
@@ -1069,13 +1130,13 @@ const Project = () => {
                                   setFieldValue("spent", "");
                                 }}
                                 alignSelf="flex-start"
-                                bgcolor="rgb(71, 92, 167)"
+                                bgcolor="#2E3344"
                               >
                                 <IconButton color="secondary">
                                   <img
                                     src={AddIcon}
                                     alt="add budget"
-                                    style={{ width: "20px" }}
+                                    style={{ width: "15px", height: "15px" }}
                                   />
                                 </IconButton>
                               </Box>
@@ -1108,13 +1169,16 @@ const Project = () => {
                                 name="sBudget"
                                 label="القيمة "
                                 type="text"
-                                value={budget.spent.toLocaleString()}
+                                value={Number(budget.spent).toLocaleString()}
                               />
 
                               <Tooltip title="حذف منصرف" placement="top" arrow>
                                 <Box
                                   border="1px solid #ddd"
-                                  sx={{ borderRadius: "8px" }}
+                                  sx={{
+                                    borderRadius: "8px",
+                                    alignSelf: "center",
+                                  }}
                                   onClick={() => {
                                     // const
                                     let myFilterArr = [];
@@ -1161,7 +1225,7 @@ const Project = () => {
                                     <img
                                       src={DeleteIcon}
                                       alt="add budget"
-                                      style={{ width: "20px" }}
+                                      style={{ width: "15px", height: "15px" }}
                                     />
                                   </IconButton>
                                 </Box>
@@ -1209,13 +1273,33 @@ const Project = () => {
                                   >
                                     <FormControlLabel
                                       value="no"
-                                      control={<Radio size="small" />}
+                                      control={
+                                        <Radio
+                                          size="small"
+                                          sx={{
+                                            color: "#2E3344",
+                                            "&.Mui-checked": {
+                                              color: "#2E3344",
+                                            },
+                                          }}
+                                        />
+                                      }
                                       label="لا"
                                       labelPlacement="start"
                                     />
                                     <FormControlLabel
                                       value="yes"
-                                      control={<Radio size="small" />}
+                                      control={
+                                        <Radio
+                                          size="small"
+                                          sx={{
+                                            color: "#2E3344",
+                                            "&.Mui-checked": {
+                                              color: "#2E3344",
+                                            },
+                                          }}
+                                        />
+                                      }
                                       label="نعم"
                                       labelPlacement="start"
                                     />
@@ -1321,13 +1405,33 @@ const Project = () => {
                                   >
                                     <FormControlLabel
                                       value="no"
-                                      control={<Radio size="small" />}
+                                      control={
+                                        <Radio
+                                          size="small"
+                                          sx={{
+                                            color: "#2E3344",
+                                            "&.Mui-checked": {
+                                              color: "#2E3344",
+                                            },
+                                          }}
+                                        />
+                                      }
                                       label="لا"
                                       labelPlacement="start"
                                     />
                                     <FormControlLabel
                                       value="yes"
-                                      control={<Radio size="small" />}
+                                      control={
+                                        <Radio
+                                          size="small"
+                                          sx={{
+                                            color: "#2E3344",
+                                            "&.Mui-checked": {
+                                              color: "#2E3344",
+                                            },
+                                          }}
+                                        />
+                                      }
                                       label="نعم"
                                       labelPlacement="start"
                                     />

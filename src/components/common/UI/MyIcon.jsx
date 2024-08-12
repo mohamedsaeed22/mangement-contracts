@@ -1,12 +1,11 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 
-const MyBtn = ({ icon, title, handleBtnClick, type, width, bgColor }) => {
+const MyIcon = ({ icon, title, handleBtnClick, type, width, bgColor }) => {
   return (
     <button
       style={{
-        backgroundColor: bgColor ? bgColor : "#2E3344",
-        padding: "10px 20px",
+        padding: "10px",
         borderRadius: "5px",
         border: "none",
         fontSize: "14px",
@@ -16,13 +15,14 @@ const MyBtn = ({ icon, title, handleBtnClick, type, width, bgColor }) => {
         alignItems: "center",
         cursor: "pointer",
         width: width,
+        backgroundColor: "transparent",
       }}
       type={type}
       onClick={handleBtnClick}
     >
       <Typography
         variant="body1"
-        sx={{ color: "#fff", fontSize: "14px", textAlign: "center" }}
+        sx={{ fontSize: "14px", textAlign: "center" }}
         alignSelf="flex-start"
       >
         {title}
@@ -32,8 +32,7 @@ const MyBtn = ({ icon, title, handleBtnClick, type, width, bgColor }) => {
           src={icon}
           style={{
             display: "inline-block",
-            width: "15px",
-            marginRight: "10px",
+            width: "20px",
           }}
           alt="my-custom-btn"
         />
@@ -42,4 +41,4 @@ const MyBtn = ({ icon, title, handleBtnClick, type, width, bgColor }) => {
   );
 };
 
-export default MyBtn;
+export default MyIcon;

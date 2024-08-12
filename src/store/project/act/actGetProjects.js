@@ -9,11 +9,13 @@ import actGetSectors from "../../sector/act/actGetSectors";
 const actGetProjects = createAsyncThunk(
   "project/actGetProjects",
   async (params, thunkAPI) => {
+    console.log("tst");
+    
     const { getState, rejectWithValue, dispatch } = thunkAPI;
     try {
-      await dispatch(actGetActivities()).unwrap();
-      await dispatch(actGetConsultants()).unwrap();
-      await dispatch(actGetSectors()).unwrap();
+      // await dispatch(actGetActivities()).unwrap();
+      // await dispatch(actGetConsultants()).unwrap();
+      // await dispatch(actGetSectors()).unwrap();
       const { sectors } = getState().sector;
       const { activities } = getState().activity;
 
@@ -26,8 +28,10 @@ const actGetProjects = createAsyncThunk(
           params.activityId
         }&SupervisorId=${params.supervisorId}&SectorId=${
           params.sectorId
-        }&ContractorId=${params.contractorId}&SpentBudget=${params.spentBudget}`
+        }&ContractorId=${params.contractorId}&ConsultantId=${params.consultantId}&SpentBudget=${params.spentBudget}`
       );
+      console.log(res);
+      
       const enhancedProjects = res.data.map((project) => {
         const sector = sectors.find((sec) => sec.id === project.sectorId);
         const activity = activities.find((ac) => ac.id === project.activityId);
@@ -41,11 +45,17 @@ const actGetProjects = createAsyncThunk(
       enhancedProjects.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
+      console.log( {
+        ...res,
+        data: enhancedProjects,
+      });
+      
       return {
         ...res,
         data: enhancedProjects,
       };
     } catch (error) {
+      
       return rejectWithValue(handleAxiosError(error));
     }
   }

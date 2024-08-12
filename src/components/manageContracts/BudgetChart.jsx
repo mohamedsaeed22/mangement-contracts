@@ -109,7 +109,7 @@ const BudgetChart = ({ data }) => {
         align: "top",
         formatter: (value, context) => {
           const date = context.chart.data.labels[context.dataIndex];
-          return `${date}\n${value.toLocaleString()}`;
+          return `${date}\n${value?.toLocaleString()}`;
         },
         color: "black",
         font: {

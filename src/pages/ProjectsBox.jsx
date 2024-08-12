@@ -1,12 +1,13 @@
 import { styled } from "@mui/material/styles";
-import { CircularProgress, Backdrop, Typography } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import SearchIcon from "../assets/icon/search.svg";
 import {
+  CircularProgress,
+  Backdrop,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Box,
   FormControl,
   IconButton,
@@ -19,30 +20,33 @@ import {
   TableContainer,
   TextField,
   Tooltip,
+  Autocomplete,
 } from "@mui/material";
+import { tableCellClasses } from "@mui/material/TableCell";
+import SearchIcon from "../assets/icon/search.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import Heading from "../components/common/Heading/Heading";
+import { useEffect, useState, useRef, useMemo } from "react";
+import { useReactToPrint } from "react-to-print";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import MyBtn from "../components/common/UI/MyBtn";
-import FilterIcon from "../assets/icon/filter-icon.svg";
-import { actBrowseAll, actGetProjects } from "../store/project/projectSlice";
-import StatusLabel from "../components/manageContracts/StatusLabel";
 import { RestartAlt } from "@mui/icons-material";
+import MyBtn from "../components/common/UI/MyBtn";
+import Heading from "../components/common/Heading/Heading";
+import FilterIcon from "../assets/icon/filter-icon.svg";
 import FilterFill from "../assets/icon/filter-fill.svg";
-import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
-import { projectStateOptions } from "../utils/statusList";
+import PrinterIcon from "../assets/icon/printer-icon.svg";
+import PrintedProjects from "../components/manageContracts/PrintedProjects";
+import StatusLabel from "../components/manageContracts/StatusLabel";
+import { actBrowseAll, actGetProjects } from "../store/project/projectSlice";
 import actGetConsultants from "../store/consultant/act/actGetConsultants";
 import actGetSectors from "../store/sector/act/actGetSectors";
 import actGetContractors from "../store/contractor/act/actGetContractors";
 import { actGetActivities } from "../store/Activity/activitySlice";
-import PrinterIcon from "../assets/icon/printer-icon.svg";
-import { useRef } from "react";
-import { useReactToPrint } from "react-to-print";
-import PrintedProjects from "../components/manageContracts/PrintedProjects";
-
+import { projectStateOptions } from "../utils/statusList";
+import { initialContractor } from "../validations/contractorSchema";
+import MyIcon from "./../components/common/UI/MyIcon";
+import EditIcon from "../assets/icon/edit-icon.svg";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -64,16 +68,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   borderRadius: "10px",
 }));
 
-// const getIsoDate = () => {};
 const initialFormData = {
-  activityId: "",
-  status: "",
-  sectorId: "",
+  activityId: null,
+  status: null,
+  sectorId: null,
   spentBudget: "",
   startDate: null,
   endDate: null,
-  contractorId: "",
-  consultantId: "",
+  contractorId: null,
+  consultantId: null,
 };
 
 const ProjectsBox = () => {
@@ -93,42 +96,88 @@ const ProjectsBox = () => {
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [formData, setFormData] = useState({
     ...initialFormData,
-    status: searchParams.get("projectstatus") || "",
+    status: searchParams.get("projectstatus"),
   });
+
   const handleChangePage = (event, value) => {
     setPage(value);
   };
-  useEffect(() => {
-    dispatch(actGetConsultants());
-    dispatch(actGetSectors());
-    dispatch(actGetContractors());
-    dispatch(actGetActivities());
-  }, [dispatch]);
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 300);
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [search]);
+console.log();
 
-  useEffect(() => {
+useEffect(() => {
+  const fetchData = async () => {
     setLoading(true);
-     dispatch(
+    await dispatch(actGetConsultants());
+    await dispatch(actGetSectors());
+    await dispatch(actGetContractors());
+    await dispatch(actGetActivities());
+    dispatch(
       actGetProjects({
         page,
         search: debouncedSearch,
-        status: formData.status,
+        status: formData.status || "",
         startDate: formData.startDate,
         endDate: formData.endDate,
-        activityId: formData.activityId,
-        sectorId: formData.sectorId,
+        activityId: formData.activityId?.id || "",
+        sectorId: formData.sectorId?.id || "",
         spentBudget: formData.spentBudget,
-        contractorId: formData.contractorId,
+        contractorId: formData.contractorId?.id || "",
+        consultantId: formData.consultantId?.id || "",
       })
     ).then(() => setLoading(false));
-  }, [dispatch, search, page,  formData, debouncedSearch]);
+  };
+
+  fetchData();
+}, []);
+
+
+useEffect(() => {
+  const handler = setTimeout(() => {
+    setDebouncedSearch(search);
+  }, 500);
+  return () => {
+    clearTimeout(handler);
+  };
+}, [search]);
+
+useEffect(() => {
+  setLoading(true);
+    dispatch(
+      actGetProjects({
+        page,
+        search: debouncedSearch,
+        status: formData.status || "",
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        activityId: formData.activityId?.id || "",
+        sectorId: formData.sectorId?.id || "",
+        spentBudget: formData.spentBudget,
+        contractorId: formData.contractorId?.id || "",
+        consultantId: formData.consultantId?.id || "",
+      })
+    ).then(() => setLoading(false));
+  
+}, [dispatch, page, debouncedSearch, formData]);
+
+
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   dispatch(
+  //     actGetProjects({
+  //       page,
+  //       search: debouncedSearch,
+  //       status: formData.status || "",
+  //       startDate: formData.startDate,
+  //       endDate: formData.endDate,
+  //       activityId: formData.activityId?.id || "",
+  //       sectorId: formData.sectorId?.id || "",
+  //       spentBudget: formData.spentBudget,
+  //       contractorId: formData.contractorId?.id || "",
+  //       consultantId: formData.consultantId?.id || "",
+  //     })
+  //   ).then(() => setLoading(false));
+  // }, [dispatch, search, page, formData, debouncedSearch]);
 
   const handleToggleFilter = () => {
     setToggleFilter(!toggleFilter);
@@ -151,10 +200,30 @@ const ProjectsBox = () => {
     content: () => componentRef.current,
     onBeforeGetContent: () => {
       return new Promise((resolve) => {
-        dispatch(actBrowseAll()).then(() => resolve());
+        dispatch(
+          actBrowseAll({
+            page,
+            search: debouncedSearch,
+            status: formData.status || "",
+            startDate: formData.startDate,
+            endDate: formData.endDate,
+            activityId: formData.activityId?.id || "",
+            sectorId: formData.sectorId?.id || "",
+            spentBudget: formData.spentBudget,
+            contractorId: formData.contractorId?.id || "",
+            consultantId: formData.consultantId?.id || "",
+          })
+        ).then(() => resolve());
       });
     },
   });
+
+  const [openModal, setOpenModal] = useState(false);
+  const [updateContractor, setUpdateContractor] = useState(initialContractor);
+  const handleUpdateContractor = (contractor) => {
+    setUpdateContractor(contractor);
+    setOpenModal(true);
+  };
 
   return (
     <>
@@ -171,11 +240,8 @@ const ProjectsBox = () => {
         }}
         height="calc(100vh - 130px)"
       >
-        {/* <div ref={componentRef}> */}
         <PrintedProjects ref={componentRef} />
-        {/* </div> */}
 
-        {/* filteration box */}
         <Stack
           direction="row"
           gap={2}
@@ -233,65 +299,62 @@ const ProjectsBox = () => {
                 flexWrap="wrap"
                 alignItems="center"
               >
-                <FormControl sx={{ width: 160 }} size="small">
-                  <InputLabel id="demo-simple-select-supervisor">
-                    القطاع
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-supervisor"
-                    id="demo-simple-selectSupervisor"
-                    value={formData.sectorId}
-                    name="sectorId"
-                    label="القطاع"
-                    onChange={(e) => handleChange("sectorId", e.target.value)}
-                  >
-                    {sectors?.map((supervisor) => (
-                      <MenuItem key={supervisor.id} value={supervisor.id}>
-                        {supervisor.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl sx={{ width: 160 }} size="small">
-                  <InputLabel id="demo-simple-select-Activitye">
-                    النشاط
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-Activitye"
-                    id="demo-simple-selectActivity"
-                    value={formData.activityId}
-                    label="النشاط"
-                    name="activityId"
-                    onChange={(e) => handleChange("activityId", e.target.value)}
-                  >
-                    {activities?.map((Activity) => (
-                      <MenuItem key={Activity.id} value={Activity.id}>
-                        {Activity.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl sx={{ width: 160 }} size="small">
-                  <InputLabel id="demo-simple-select-supervisor">
-                    المقاول
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-supervisor"
-                    id="demo-simple-selectSupervisor"
-                    value={formData.contractorId}
-                    name="contractorId"
-                    label="المقاول"
-                    onChange={(e) =>
-                      handleChange("contractorId", e.target.value)
-                    }
-                  >
-                    {contractors?.map((supervisor) => (
-                      <MenuItem key={supervisor.id} value={supervisor.id}>
-                        {supervisor.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Autocomplete
+                  sx={{ width: 160 }}
+                  size="small"
+                  options={sectors}
+                  getOptionLabel={(option) => option.name}
+                  noOptionsText="لا يوجد قطاعات"
+                  value={formData.sectorId}
+                  onChange={(event, newValue) =>
+                    handleChange("sectorId", newValue)
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} label="القطاع" />
+                  )}
+                />
+                <Autocomplete
+                  sx={{ width: 160 }}
+                  size="small"
+                  options={activities}
+                  getOptionLabel={(option) => option.name}
+                  noOptionsText="لا يوجد انشطه"
+                  value={formData.activityId}
+                  onChange={(event, newValue) =>
+                    handleChange("activityId", newValue)
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} label="النشاط" />
+                  )}
+                />
+                <Autocomplete
+                  sx={{ width: 160 }}
+                  size="small"
+                  options={consultants}
+                  getOptionLabel={(option) => option.name}
+                  noOptionsText="لا يوجد استشاريين"
+                  value={formData.consultantId}
+                  onChange={(event, newValue) =>
+                    handleChange("consultantId", newValue)
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} label="الاستشارى" />
+                  )}
+                />
+                <Autocomplete
+                  sx={{ width: 160 }}
+                  size="small"
+                  options={contractors}
+                  getOptionLabel={(option) => option.name}
+                  noOptionsText="لا يوجد مقاولين"
+                  value={formData.contractorId}
+                  onChange={(event, newValue) =>
+                    handleChange("contractorId", newValue)
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} label="المقاول" />
+                  )}
+                />
                 <TextField
                   size="small"
                   id="planned-cost"
@@ -344,7 +407,7 @@ const ProjectsBox = () => {
                     slotProps={{ textField: { size: "small" } }}
                   />
                 </Box>
-                <Box x sx={{ width: 160 }} textAlign={"center"}>
+                <Box sx={{ width: 160 }} textAlign={"center"}>
                   <Tooltip title="مسح" placement="top" arrow>
                     <IconButton onClick={handleResetForm}>
                       <RestartAlt style={{ color: "black" }} />
@@ -384,18 +447,18 @@ const ProjectsBox = () => {
                 </StyledTableCell>
                 <StyledTableCell align="center">قيمه المخصص</StyledTableCell>
                 <StyledTableCell align="center">المنصرف الفعلى</StyledTableCell>
-                <StyledTableCell align="center"> نسبه الصرف</StyledTableCell>
+                <StyledTableCell align="center">نسبه الصرف</StyledTableCell>
                 <StyledTableCell align="center">المتبقى</StyledTableCell>
-                <StyledTableCell align="center"> حالة المشروع</StyledTableCell>
+                <StyledTableCell align="center">حالة المشروع</StyledTableCell>
                 <StyledTableCell align="center">بداية المشروع</StyledTableCell>
                 <StyledTableCell align="center">نهاية المشروع</StyledTableCell>
                 <StyledTableCell align="center">
                   مده تنفيذ المشروع
                 </StyledTableCell>
-
                 <StyledTableCell align="center">
                   هل له مخاطر/معوقات
                 </StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -431,46 +494,53 @@ const ProjectsBox = () => {
                           ].assindDate.split("T")[0]
                         : "لا يوجد"}
                     </StyledTableCell>
-
                     <StyledTableCell align="center">
-                      {row.budget.toLocaleString()}
+                      {row.budget == null ? 0 : row.budget?.toLocaleString()}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.spentBudget.toLocaleString()}
+                      {row.spentBudget?.toLocaleString()}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {Math.floor(row.percentageSpent)}%
+                      {row.budget
+                        ? ((row.spentBudget / row.budget) * 100)?.toFixed(2)
+                        : 0}
+                      %
                     </StyledTableCell>
-
                     <StyledTableCell align="center">
                       {row.remaining?.toLocaleString()}
                     </StyledTableCell>
-
                     <StyledTableCell align="center">
                       <Box sx={{ width: "100%", marginTop: "2px" }}>
                         <StatusLabel status={row.status} />
                       </Box>
                     </StyledTableCell>
-
                     <StyledTableCell align="center">
                       {row.startDate.split("T")[0]}
                     </StyledTableCell>
-
                     <StyledTableCell align="center">
                       {row.endDate.split("T")[0]}
                     </StyledTableCell>
-
                     <StyledTableCell align="center">
                       {row.totalMonths === 0
                         ? "اقل من شهر"
                         : `${row.totalMonths} شهر`}
                     </StyledTableCell>
-
                     <StyledTableCell align="center">
                       {row?.risks?.length > 0 || row?.handicaps?.length > 0
                         ? "يوجد"
                         : "لا يوجد"}
                     </StyledTableCell>
+                    <StyledTableCell align="right">
+                          <Stack direction="row" justifyContent="right" gap={1}>
+                            <MyIcon
+                              icon={EditIcon}
+                              handleBtnClick={(e) => {
+                                e.stopPropagation(); // Stop propagation here
+                                handleUpdateContractor(row);
+                              }}
+                            />
+                          </Stack>
+                        </StyledTableCell>
                   </StyledTableRow>
                 </Tooltip>
               ))}
@@ -503,7 +573,6 @@ const ProjectsBox = () => {
             </Box>
           )}
         </Stack>
-        {/* </LoadingWrapper> */}
       </Box>
     </>
   );

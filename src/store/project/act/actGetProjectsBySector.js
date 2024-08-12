@@ -12,14 +12,14 @@ const actGetProjectsBySector = createAsyncThunk(
     const { getState, rejectWithValue, dispatch } = thunkAPI;
 
     try {
-      await dispatch(actGetConsultants()).unwrap();
-      await dispatch(actGetActivities()).unwrap();
-      await dispatch(actGetSectors()).unwrap();
+      // await dispatch(actGetConsultants()).unwrap();
+      // await dispatch(actGetActivities()).unwrap();
+      // await dispatch(actGetSectors()).unwrap();
       const { activities } = getState().activity;
       const { sectors } = getState().sector;
 
       const res = await api.get(
-        `api/Project/browse?SectorId=${params.id}&PageSize=10&Page=${params.page}`
+        `api/Project/browse?Search=${params.search}&SectorId=${params.id}&PageSize=10&Page=${params.page}`
       );
       
       const enhancedProjects = res.data.map((project) => {

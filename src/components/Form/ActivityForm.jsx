@@ -8,8 +8,8 @@ import actUpdateActivity from "../../store/Activity/act/actUpdateActivity";
 import actCreateActivity from "../../store/Activity/act/actCreateActivity";
 import ActivitySchema from "../../validations/ActivitySchema";
 import MyBtn from "../common/UI/MyBtn";
-import AddIcon from "../../assets/icon/add-icon.svg";
-import EditIcon from "../../assets/icon/edit-icon.svg";
+import AddIcon from "../../assets/icon/Vector.svg";
+import EditIcon from "../../assets/icon/edit-white.svg";
 
 const defaultInitialSupervisor = {
   name: "",

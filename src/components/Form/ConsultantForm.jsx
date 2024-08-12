@@ -1,12 +1,12 @@
-import React from "react";
+import React,{useState} from "react";
 import MyInput from "./Input/MyInput";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { notifyFailed, notifySuccess } from "../feedback/Alerts/alerts";
 import { Box, Grid, TextField } from "@mui/material";
 import MyBtn from "../common/UI/MyBtn";
-import AddIcon from "../../assets/icon/add-icon.svg";
-import EditIcon from "../../assets/icon/edit-icon.svg";
+import AddIcon from "../../assets/icon/Vector.svg";
+import EditIcon from "../../assets/icon/edit-white.svg";
 import {
   consultantSchema,
   initialConsultant,
@@ -29,7 +29,7 @@ const ConsultantForm = ({
         .unwrap()
         .then((e) => {
           notifySuccess("تم تحديث الاستشارى بنجاح");
-          dispatch(actGetConsultants())
+          dispatch(actGetConsultants());
           handleCloseModal();
         })
         .catch((err) => {
@@ -90,10 +90,9 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="description"
               label="الوصف"
-              placeholder="ادخل الوصف"
               value={values.description}
               onChange={handleChange}
               size="small"
@@ -108,14 +107,12 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="phoneNumber"
               label="رقم الهاتف"
-              placeholder="ادخل رقم الهاتف"
               value={values.phoneNumber}
               onChange={handleChange}
               size="small"
-              type="number"
               onBlur={handleBlur}
               fullWidth
               error={!!touched.phoneNumber && !!errors.phoneNumber}
@@ -127,10 +124,9 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="contactPersonPhone"
               label="رقم هاتف المسؤل"
-              placeholder="ادخل رقم الهاتف"
               value={values.contactPersonPhone}
               onChange={handleChange}
               size="small"
@@ -147,10 +143,9 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="contactPersonName"
               label="اسم الشخص المسؤل"
-              placeholder="ادخل الاسم"
               value={values.contactPersonName}
               onChange={handleChange}
               size="small"
@@ -165,10 +160,9 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="address"
               label="العنوان"
-              placeholder="ادخل العنوان"
               value={values.address}
               onChange={handleChange}
               size="small"
@@ -183,10 +177,9 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="country"
               label="الدوله"
-              placeholder="ادخل الدولة"
               value={values.country}
               onChange={handleChange}
               size="small"
@@ -201,10 +194,9 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="specialization"
               label="التخصص"
-              placeholder="ادخل التخصص"
               value={values.specialization}
               onChange={handleChange}
               size="small"
@@ -219,10 +211,9 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="experience"
               label="الخبره"
-              placeholder="ادخل الخبره"
               value={values.experience}
               onChange={handleChange}
               size="small"
@@ -237,10 +228,9 @@ const ConsultantForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={isUpdate ? 6 : 3}>
-            <MyInput
+            <TextField
               name="qualification"
               label="المؤهلات"
-              placeholder="ادخل المؤهلات"
               value={values.qualification}
               onChange={handleChange}
               size="small"
@@ -254,6 +244,7 @@ const ConsultantForm = ({
               }
             />
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -275,7 +266,10 @@ const ConsultantForm = ({
               />
             </Box>
           </Grid>
-        </Grid>
+          
+            
+          </Grid>
+        
       )}
     </Formik>
   );
