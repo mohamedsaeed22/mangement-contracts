@@ -73,48 +73,46 @@ const Activity = () => {
     error: statError,
     loading: statLoading,
   } = useSelector((state) => state.stat);
-  
-  const [page, handleChangePge] = useState(1);
-  
+
+  const [page, setPage] = useState(1);
+
+
   const handleChangePage = (event, value) => {
-    handleChangePge(value);
+    setPage(value);
   };
 
-    const [search, setSearch] = useState("");
+  const handleShowProject = (project) => {
+    navigate(`/project/id/${project.id}`);
+  };
+
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 500);
+    }, 600);
+    setPage(1)
     return () => {
       clearTimeout(handler);
     };
   }, [search]);
 
-  useEffect( ()=>{
+  useEffect(() => {
     const fetchData = async () => {
-    await dispatch(actGetConsultants())
-    await dispatch(actGetActivities())
-    await dispatch(actGetSectors())
-    dispatch(actGetStatByActivityId(id));
-    dispatch(actGetProjectByActivity({ id, page ,search}));
-    }
-    fetchData()
-  },[])
+      await dispatch(actGetConsultants());
+      await dispatch(actGetActivities());
+      await dispatch(actGetSectors());
+      dispatch(actGetStatByActivityId(id));
+      dispatch(actGetProjectByActivity({ id, page, search }));
+    };
+    fetchData();
+  }, [id]);
 
   useEffect(() => {
-    dispatch(actGetProjectByActivity({ id, page ,search}));
-    return () => {
-      dispatch(resetStat());
-    };
-  }, [dispatch, id, page,search]);
-
-  const handleShowProject = (project) => {
-    navigate(`/project/id/${project.id}`);
-  };
-  
-
+    dispatch(actGetProjectByActivity({ id, page, search }));
+  }, [search,page]);
 
   return (
     <>
@@ -132,57 +130,61 @@ const Activity = () => {
         height="calc(100vh - 130px)"
       >
         <Box borderRadius={2}>
-          {/* <LoadingWrapper loading={projectLoading} error={statError}> */}
+          <LoadingWrapper loading={statLoading} error={statError}>
             <TopStat stats={stats} />
             {/* center paper */}
             <CenterStat stats={stats} />
             {/* bottom paper */}
             <BottomStat stats={stats} />
-            <Box sx={{display:'flex', alignItems:'center' ,justifyContent:'space-between',marginTop:'10px' }}>
-                  < Box sx={{display: projects.length > 0 ? 'block': 'block'}}>
-                  <Typography variant="h6" color="initial" mt={1} >
-                  {projects.length >0 ? 'المشاريع الخاصة بـ   ' : ' '}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: "10px",
+              }}
+            >
+              <Box sx={{ display: projects.length > 0 ? "block" : "block" }}>
+                <Typography variant="h6" color="initial" mt={1}>
+                  {projects.length > 0 ? "المشاريع الخاصة بـ   " : " "}
                   <Typography
                     component="span"
                     variant="span"
                     color="initial"
                     fontWeight="bold"
-                    
                   >
-                    {projects.length > 0 ? projects[0].activityName: ''}
+                    {projects.length > 0 ? projects[0].activityName : ""}
                   </Typography>
-                    </Typography>
-                  </Box>
-                  <Box position="relative">
-                    <input
-                      type="text"
-                      className="search-input"
-                      placeholder="بحث عن اسم / وصف مشروع"
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <img
-                      src={SearchIcon}
-                      alt="search icon"
-                      style={{
-                        position: "absolute",
-                        zIndex: 5,
-                        left: 12,
-                        top: 15,
-                        width: "15px",
-                      }}
-                    />
-                  </Box>   
-               </Box>
+                </Typography>
+              </Box>
+              <Box position="relative">
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="بحث عن اسم / وصف مشروع"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <img
+                  src={SearchIcon}
+                  alt="search icon"
+                  style={{
+                    position: "absolute",
+                    zIndex: 5,
+                    left: 12,
+                    top: 15,
+                    width: "15px",
+                  }}
+                />
+              </Box>
+            </Box>
             {!projects?.length > 0 ? (
               <Stack textAlign="center" mt={4}>
-               
                 <Typography variant="h6" color="initial">
                   لا يوجد مشاريع لهذا النشاط
                 </Typography>
               </Stack>
             ) : (
               <>
-               
                 <TableContainer sx={{ marginTop: "8px" }}>
                   <Table aria-label="customized table">
                     <TableHead>
@@ -327,7 +329,7 @@ const Activity = () => {
                 </Stack>
               </>
             )}
-          {/* </LoadingWrapper> */}
+          </LoadingWrapper>
         </Box>
       </Box>
     </>

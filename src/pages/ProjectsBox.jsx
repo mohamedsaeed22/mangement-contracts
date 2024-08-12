@@ -44,13 +44,9 @@ import actGetSectors from "../store/sector/act/actGetSectors";
 import actGetContractors from "../store/contractor/act/actGetContractors";
 import { actGetActivities } from "../store/Activity/activitySlice";
 import { projectStateOptions } from "../utils/statusList";
-<<<<<<< HEAD
-
-=======
 import { initialContractor } from "../validations/contractorSchema";
 import MyIcon from "./../components/common/UI/MyIcon";
 import EditIcon from "../assets/icon/edit-icon.svg";
->>>>>>> 9e4af1487e9893f76516e231870b9ed73f28264a
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -106,37 +102,46 @@ const ProjectsBox = () => {
   const handleChangePage = (event, value) => {
     setPage(value);
   };
-<<<<<<< HEAD
+  console.log();
 
   useEffect(() => {
-    dispatch(actGetConsultants());
-    dispatch(actGetSectors());
-    dispatch(actGetContractors());
-    dispatch(actGetActivities());
-  }, [dispatch]);
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(actGetConsultants());
+      await dispatch(actGetSectors());
+      await dispatch(actGetContractors());
+      await dispatch(actGetActivities());
+      dispatch(
+        actGetProjects({
+          page,
+          search: debouncedSearch,
+          status: formData.status || "",
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+          activityId: formData.activityId?.id || "",
+          sectorId: formData.sectorId?.id || "",
+          spentBudget: formData.spentBudget,
+          contractorId: formData.contractorId?.id || "",
+          consultantId: formData.consultantId?.id || "",
+        })
+      ).then(() => setLoading(false));
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 600);
+    }, 500);
+    setPage(1);
     return () => {
       clearTimeout(handler);
     };
   }, [search]);
-=======
-console.log();
->>>>>>> 9e4af1487e9893f76516e231870b9ed73f28264a
 
-useEffect(() => {
-  const fetchData = async () => {
+  useEffect(() => {
     setLoading(true);
-<<<<<<< HEAD
-=======
-    await dispatch(actGetConsultants());
-    await dispatch(actGetSectors());
-    await dispatch(actGetContractors());
-    await dispatch(actGetActivities());
->>>>>>> 9e4af1487e9893f76516e231870b9ed73f28264a
     dispatch(
       actGetProjects({
         page,
@@ -151,44 +156,7 @@ useEffect(() => {
         consultantId: formData.consultantId?.id || "",
       })
     ).then(() => setLoading(false));
-<<<<<<< HEAD
-  }, [dispatch, search, page, formData, debouncedSearch]);
-=======
-  };
-
-  fetchData();
-}, []);
-
-
-useEffect(() => {
-  const handler = setTimeout(() => {
-    setDebouncedSearch(search);
-  }, 500);
-  return () => {
-    clearTimeout(handler);
-  };
-}, [search]);
-
-useEffect(() => {
-  setLoading(true);
-    dispatch(
-      actGetProjects({
-        page,
-        search: debouncedSearch,
-        status: formData.status || "",
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        activityId: formData.activityId?.id || "",
-        sectorId: formData.sectorId?.id || "",
-        spentBudget: formData.spentBudget,
-        contractorId: formData.contractorId?.id || "",
-        consultantId: formData.consultantId?.id || "",
-      })
-    ).then(() => setLoading(false));
-  
-}, [dispatch, page, debouncedSearch, formData]);
-
-
+  }, [dispatch, page, debouncedSearch, formData]);
 
   // useEffect(() => {
   //   setLoading(true);
@@ -207,7 +175,6 @@ useEffect(() => {
   //     })
   //   ).then(() => setLoading(false));
   // }, [dispatch, search, page, formData, debouncedSearch]);
->>>>>>> 9e4af1487e9893f76516e231870b9ed73f28264a
 
   const handleToggleFilter = () => {
     setToggleFilter(!toggleFilter);
@@ -561,16 +528,16 @@ useEffect(() => {
                         : "لا يوجد"}
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                          <Stack direction="row" justifyContent="right" gap={1}>
-                            <MyIcon
-                              icon={EditIcon}
-                              handleBtnClick={(e) => {
-                                e.stopPropagation(); // Stop propagation here
-                                handleUpdateContractor(row);
-                              }}
-                            />
-                          </Stack>
-                        </StyledTableCell>
+                      <Stack direction="row" justifyContent="right" gap={1}>
+                        <MyIcon
+                          icon={EditIcon}
+                          handleBtnClick={(e) => {
+                            e.stopPropagation(); // Stop propagation here
+                            handleUpdateContractor(row);
+                          }}
+                        />
+                      </Stack>
+                    </StyledTableCell>
                   </StyledTableRow>
                 </Tooltip>
               ))}
