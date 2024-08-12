@@ -32,7 +32,10 @@ import {
   resetStat,
 } from "../store/Statistics/statSlice";
 import LoadingWrapper from "../components/feedback/Loading/LoadingWrapper";
-
+import SearchIcon from "../assets/icon/search.svg";
+import actGetConsultants from "../store/consultant/act/actGetConsultants";
+import { actGetActivities } from "../store/Activity/activitySlice";
+import { actGetSectors } from "../store/sector/sectorSlice";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#BECAF9",
@@ -76,22 +79,41 @@ const Sector = () => {
     handleChangePge(value);
   };
 
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
   useEffect(() => {
-    dispatch(
-      actGetProjectsBySector({
-        page,
-        id,
-      })
-    );
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search]);
+
+  useEffect(  ()=>{
+    const fetchData = async () => {
+    await dispatch(actGetConsultants())
+    await dispatch(actGetActivities())
+    await dispatch(actGetSectors())
     dispatch(actGetStatBySectorId(id));
+    dispatch(actGetProjectsBySector({ page, id, search}));
+    };
+    fetchData()
+  },[])
+
+  useEffect(() => {
+    dispatch(actGetProjectsBySector({ page, id, search}));
+    // dispatch(actGetStatBySectorId(id));
     return () => {
       dispatch(resetStat());
     };
-  }, [dispatch, id, page]);
+  }, [dispatch, id, page,search]);
 
   const handleShowProject = (project) => {
     navigate(`/project/id/${project.id}`);
   };
+
 
   return (
     <>
@@ -109,12 +131,44 @@ const Sector = () => {
         height="calc(100vh - 130px)"
       >
         <Box borderRadius={2}>
-          <LoadingWrapper loading={projectLoading} error={statError}>
+          {/* <LoadingWrapper loading={projectLoading} error={statError}> */}
             <TopStat stats={stats} />
             {/* center paper */}
             <CenterStat stats={stats} />
             {/* bottom paper */}
             <BottomStat stats={stats} />
+            <Box sx={{display:'flex', alignItems:'center' ,justifyContent:'space-between',marginTop:'10px'}}>
+                <Typography variant="h6" color="initial" mt={1}>
+                {projects.length >0 ? 'المشاريع الخاصة بـ   ' : ' '}
+                  <Typography
+                    component="span"
+                    variant="span"
+                    color="initial"
+                    fontWeight="bold"
+                  >
+                    {projects.length > 0 ? projects[0].sectorName: ''}
+                  </Typography>
+                </Typography>
+                <Box position="relative">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="بحث عن اسم / وصف مشروع"
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                    <img
+                      src={SearchIcon}
+                      alt="search icon"
+                      style={{
+                        position: "absolute",
+                        zIndex: 5,
+                        left: 12,
+                        top: 15,
+                        width: "15px",
+                      }}
+                    />
+                  </Box>  
+                </Box> 
             {!projects?.length > 0 ? (
               <>
                 <Stack textAlign="center" mt={4}>
@@ -125,17 +179,6 @@ const Sector = () => {
               </>
             ) : (
               <>
-                <Typography variant="h6" color="initial" mt={1}>
-                  المشاريع الخاصة بـ {""}
-                  <Typography
-                    component="span"
-                    variant="span"
-                    color="initial"
-                    fontWeight="bold"
-                  >
-                    {projects.length > 0 && projects[0].sectorName}
-                  </Typography>
-                </Typography>
                 <TableContainer
                   sx={{
                     marginTop: "8px",
@@ -284,7 +327,7 @@ const Sector = () => {
                 </Stack>
               </>
             )}
-          </LoadingWrapper>
+          {/* </LoadingWrapper> */}
         </Box>
       </Box>
     </>

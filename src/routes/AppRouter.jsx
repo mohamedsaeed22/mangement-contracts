@@ -25,8 +25,11 @@ import AddConsultant from "../pages/AddConsultant";
 import ContractorDetails from "../pages/ContractorDetails";
 import ConsultantDetails from "../pages/ConsultantDetails";
 import ChangePassword from "../pages/ChangePassword";
+<<<<<<< HEAD
 import Dashboard from "../pages/Dashboard";
  
+=======
+>>>>>>> 9e4af1487e9893f76516e231870b9ed73f28264a
 const Login = lazy(() => import("../pages/Login"));
 const MainLayout = lazy(() => import("../layouts/MainLayout/MainLayout"));
 

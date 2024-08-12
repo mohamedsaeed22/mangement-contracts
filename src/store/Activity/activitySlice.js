@@ -25,7 +25,7 @@ const ActivitySlice = createSlice({
       state.error = null;
     });
     builder.addCase(actGetActivities.fulfilled, (state, { payload }) => {
-      state.loading = false;
+      state.loading = false;      
       state.activities = payload;
     });
     builder.addCase(actGetActivities.rejected, (state, action) => {
